@@ -1,17 +1,16 @@
 import React from 'react';
-import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { path } from './utils'
-import HomePage from './components/HomePage/HomePage';
-import UserManage from './components/System/UserManage'
+import UserManage from '../components/System/UserManage'
 
-function App() {
+function System() {
     return (
         <React.Fragment>
+            <div>
+                system
+            </div>
             <Router>
                 <Routes>
-                    <Route path={path.HOMEPAGE} element={<HomePage />}/>
                     <Route path='/system/user-manage' element={<UserManage />}/>
                 </Routes>
             </Router>
@@ -31,4 +30,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(System);
