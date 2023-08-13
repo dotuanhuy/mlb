@@ -1,5 +1,5 @@
 const initState = {
-    isLogin: false
+    isLogin: false,
 }
 
 const rootReducer = (state = initState, action) => {

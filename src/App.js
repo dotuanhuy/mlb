@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { path } from './utils'
 import HomePage from './components/HomePage/HomePage';
 import UserManage from './components/System/UserManage'
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
 
 function App() {
     return (
@@ -13,6 +15,8 @@ function App() {
                 <Routes>
                     <Route path={path.HOMEPAGE} element={<HomePage />}/>
                     <Route path='/system/user-manage' element={<UserManage />}/>
+                    <Route path={path.LOGIN} element={<Login />}/>
+                    <Route path={path.REGISTER} element={<Register />}/>
                 </Routes>
             </Router>
         </React.Fragment>

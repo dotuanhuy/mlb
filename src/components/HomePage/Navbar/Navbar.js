@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faMagnifyingGlass, faUser, faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons';
-import { shoes, bag, hat, shirts, PK, logo } from '../../../utils/images';
+import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
+import { faMagnifyingGlass, faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
+import { shoes, bag, hat, shirts, PK, logo, results } from '../../../utils/images';
 import './Navbar.scss'
+import { Link } from 'react-router-dom';
+import * as actions from '../../../store/actions'
+import { path } from '../../../utils';
 
-function HomeHeader() {
+function Navbar() {
+    
     return (
         <div className='header-top'>
-            <div className='container'>
-                <div className='nav'>
-                    <div className='logo'>
+            <div className='nav-container'>
+                <div className='header-top-nav'>
+                    <Link to={path.HOMEPAGE}>
+                        <div className='nav-logo'>
 
-                    </div>
-                    <div className='menu'>
+                        </div>
+                    </Link>
+                    <div className='nav-menu'>
                         <ul className='menu-list'>
                             <li className='menu-list_item'>
                                 <span className='menu-list_item-name'>Giày-dép</span>
@@ -226,22 +233,59 @@ function HomeHeader() {
                                 </div>
                             </li>
                             <li className='menu-list_item' >
-                                Tin mlb                               
+                                <span className='menu-list_item-name'>Tin mlb</span>                                                             
                             </li>
                         </ul>
                     </div>
                     <div className='infor'>
                         <div className='search'>
                             <FontAwesomeIcon className='icon-infor' icon={faMagnifyingGlass} />
+                            <div className='input-search'>
+                                <form className='form-search'>
+                                    <input placeholder='Tìm kiếm sản phẩm'/>
+                                    <button className='btn-search'>
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} className='icon-search'/>
+                                    </button>
+                                </form>
+                                <div className='results-box'>
+                                    <div className='results-box_item'>
+                                        <a href='#'>
+                                            <img src={results.result1} className='results-box_item-img'/>
+                                            <div className='result-box_item-infor'>
+                                                <div className='results-box_item-name'>MLB Bikini Set Classic Monogram Boston Red Sox L.Lavender</div>
+                                                <div className='results-box_item-price'>3.990.000đ</div>
+                                            </div>
+                                        </a>
+                                        <a href='#'>
+                                            <img src={results.result1} className='results-box_item-img'/>
+                                            <div className='result-box_item-infor'>
+                                                <div className='results-box_item-name'>MLB Bikini Set Classic Monogram Boston Red Sox L.Lavender</div>
+                                                <div className='results-box_item-price'>3.990.000đ</div>
+                                            </div>
+                                        </a>
+                                        <a href='#'>
+                                            Xem tất cả
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className='user'>
-                            <FontAwesomeIcon className='icon-infor' icon={faUser} />
+                            <Link to={path.LOGIN} className='user-link'>
+                                <FontAwesomeIcon className='icon-infor' icon={faUser} />
+                                <div className='box-acc'>
+                                    <Link to={path.LOGIN}>Đăng nhập</Link>
+                                    <Link to={path.REGISTER}>Đăng ký</Link>
+                                </div>
+                            </Link>
                         </div>
                         <div className='love'>
-                            <FontAwesomeIcon className='icon-infor' icon={faHeart} />
+                            <FontAwesomeIcon icon={faHeart} className='icon-infor' />
+                            <span className='numberTym'>0</span>
                         </div>
                         <div className='cart'>
                             <FontAwesomeIcon className='icon-infor' icon={faCartShopping} />
+                            <span className='numberProduct'>0</span>
                         </div>
                     </div>
                 </div>
@@ -252,14 +296,12 @@ function HomeHeader() {
 
 const mapStateToProps = state => {
     return {
-
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
