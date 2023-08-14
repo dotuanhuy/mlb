@@ -1,0 +1,19 @@
+.nav-system {
+    
+    .nav-container {
+
+        .bg-nav {
+            background: #04AA6D !important;
+        }
+
+        .nav-manage {
+
+            &:hover {
+
+                .manage-menu {
+                    display: block !important;
+                }
+            }
+        }
+    }
+}

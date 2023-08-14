@@ -4,9 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from './utils'
 import HomePage from './components/HomePage/HomePage';
-import UserManage from './components/System/UserManage'
+import UserManage from './components/System/CRUD/UserManage';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
+import Manage from './components/System/Manage/manage';
+import EditUser from './components/System/CRUD/EditUser';
 
 function App() {
     return (
@@ -14,7 +16,9 @@ function App() {
             <Router>
                 <Routes>
                     <Route path={path.HOMEPAGE} element={<HomePage />}/>
-                    <Route path='/system/user-manage' element={<UserManage />}/>
+                    <Route path={path.MANAGE} element={<Manage />}/> 
+                    <Route path={path.MANAGE_CREATE} element={<UserManage />}/>
+                    <Route path={path.MANAGE_EDIT} element={<EditUser />}/>
                     <Route path={path.LOGIN} element={<Login />}/>
                     <Route path={path.REGISTER} element={<Register />}/>
                 </Routes>
