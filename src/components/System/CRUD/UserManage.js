@@ -5,6 +5,12 @@ import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
 import TableUser from '../TableUsers/TableUser';
+import { useNavigate } from 'react-router-dom';
+import { path, Role } from '../../../utils';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
+
+const cookies = new Cookies();
 
 const initState = {
     email: '',
@@ -14,7 +20,7 @@ const initState = {
     phoneNumber: ''
 }
 
-function UserManage({provinces, genders, roles, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, createNewUserRedux}) {
+function UserManage({isLogout, provinces, genders, roles, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, createNewUserRedux}) {
     const [dataInput, setDataInput] = useState(initState)
     const [selectProvine, setSelectProvince] = useState([])
     const [selectGender, setSelectGender] = useState([])
@@ -23,6 +29,7 @@ function UserManage({provinces, genders, roles, fetchAllProvincesRedux, fetchAll
     const [listGenders, setListGenders] = useState([])
     const [listRoles, setListRoles] = useState([])
 
+    const navigate = useNavigate()
 
     const buildDataSelect = (inputData) => {
         let reslut = []
@@ -49,6 +56,16 @@ function UserManage({provinces, genders, roles, fetchAllProvincesRedux, fetchAll
 
     // ComponentDidMount
     useEffect(() => {
+        if (!cookies.get('userLogin')) {
+            navigate(path.LOGIN)
+        }
+        else {
+            let token = cookies.get('userLogin')
+            let loginInfor = jwt_decode(token)
+            if (loginInfor.role === Role.USER) {
+                navigate(path.HOMEPAGE)
+            }
+        }
         fetchAllProvincesRedux()
         fetchAllCodeByTypeRedux('GENDER')
         fetchAllCodeByTypeRedux('ROLE')
@@ -65,6 +82,11 @@ function UserManage({provinces, genders, roles, fetchAllProvincesRedux, fetchAll
         setListRoles(dataRole)
     }, [provinces, genders, roles])
 
+    useEffect(() => {
+        if (!cookies.get('userLogin')) {
+            navigate(path.LOGIN)
+        }
+    }, [isLogout])
 
     const handleOnchangeAddress = (selectProvine) => {
         setSelectProvince(selectProvine)
@@ -214,6 +236,7 @@ function UserManage({provinces, genders, roles, fetchAllProvincesRedux, fetchAll
 
 const mapStateToProps = state => {
     return {
+        isLogout: state.isLogout,
         provinces: state.provinces,
         genders: state.genders,
         roles: state.roles

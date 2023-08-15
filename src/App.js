@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from './utils'
 import HomePage from './components/HomePage/HomePage';
@@ -10,7 +10,7 @@ import Register from './components/Register/Register';
 import Manage from './components/System/Manage/manage';
 import EditUser from './components/System/CRUD/EditUser';
 
-function App() {
+function App({isLogin}) {
     return (
         <React.Fragment>
             <Router>
@@ -29,13 +29,12 @@ function App() {
 
 const mapStateToProps = state => {
     return {
-
+        isLogin: state.isLogin
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-
     }
 }
 

@@ -1,7 +1,9 @@
 const actionTypes = Object.freeze({
-    // login
+    // login/logout
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
     LOGIN_FAILED: 'LOGIN_FAILED',
+    LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
+    LOGOUT_FAILED: 'LOGOUT_SUCCESS',
 
     // user
     CREATE_NEW_USER_SUCCESS: 'CREATE_NEW_USER_SUCCESS',

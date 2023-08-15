@@ -1,12 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './manage.scss'
 import TableUser from '../TableUsers/TableUser';
 import Nav from '../nav/nav';
+import { useNavigate } from 'react-router-dom';
+import { path, Role } from '../../../utils';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
 
-function Manage() {
+const cookies = new Cookies();
 
-    return (
+function Manage({isLogout}) {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!cookies.get('userLogin')) {
+            navigate(path.LOGIN)
+        }
+        else {
+            let token = cookies.get('userLogin')
+            let loginInfor = jwt_decode(token)
+            if (loginInfor.role === Role.USER) {
+                navigate(path.HOMEPAGE)
+            }
+        }
+    }, [])
+    useEffect(() => {
+        if (!cookies.get('userLogin')) {
+            navigate(path.LOGIN)
+        }
+    }, [isLogout])
+
+    return (    
         <div className='manage-system'>
             <div className='manage-container'>
                 <Nav />
@@ -18,7 +43,7 @@ function Manage() {
 
 const mapStateToProps = state => {
     return {
-
+        isLogout: state.isLogout
     }
 }
 

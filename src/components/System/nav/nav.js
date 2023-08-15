@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import './nav.scss'
 import { Link } from 'react-router-dom';
 import { path } from '../../../utils'
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
+import { redirect } from 'react-router-dom';
+import * as actions from '../../../store/actions'
 
-function Nav() {
+const cookies = new Cookies()
+
+function Nav({isLogout, fetLogoutRedux}) {
+
+    const handleLogout = async () => {
+        cookies.remove('userLogin', { path: '/' })
+        console.log('check cookie: ', cookies.get('userLogin'))
+        fetLogoutRedux()
+        console.log('check nav, ', isLogout)
+    }
 
     return (
         <div className='nav-system'>
@@ -45,6 +58,12 @@ function Nav() {
                                     <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                                 </li>
                             </ul>
+                            <button 
+                                class="btn btn-success"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
                         </div>
                     </div>
                 </nav>
@@ -55,12 +74,13 @@ function Nav() {
 
 const mapStateToProps = state => {
     return {
-
+        isLogout: state.isLogout
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
+        fetLogoutRedux: () => dispatch(actions.fetLogout())
     }
 }
 

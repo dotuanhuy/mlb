@@ -1,12 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../HomePage/Navbar/Navbar';
 import './Login.scss'
 import { Link } from 'react-router-dom';
 import { socialLogin } from '../../utils/images';
-import { path } from '../../utils'
+import { path, Role } from '../../utils'
+import * as actions from '../../store/actions'
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
 
-function Login() {
+const cookies = new Cookies();
+
+const initState = {
+    email: '',
+    password: ''
+}
+
+function Login({users, isLogin, fetLoginRedux}) {
+    const [dataInput, setDataInput] = useState(initState)
+    const [token, setToken] = useState()
+    const navigate = useNavigate()
+
+    // useEffect(() => {
+    //     console.log('check login: ', isLogin)
+    //     if (users && users.dataRole && users.roleId === Role.USER) {
+    //         navigate(path.HOMEPAGE)
+    //     } 
+    //     if (users && users.dataRole && users.roleId === Role.ADMIN) {
+    //         navigate(path.MANAGE)
+    //     } 
+    // }, [isLogin])
+    useEffect(() => {
+        if (cookies.get('userLogin')) {
+            let token = cookies.get('userLogin')
+            let loginInfor = jwt_decode(token)
+            if (loginInfor.role === Role.ADMIN) {
+                navigate(path.MANAGE)
+            }
+            else if (loginInfor.role === Role.USER) {
+                navigate(path.HOMEPAGE)
+            }
+        }
+    }, [])
+
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        await fetLoginRedux(dataInput.email, dataInput.password)
+        if (cookies.get('userLogin')) {
+            let token = cookies.get('userLogin')
+            let loginInfor = jwt_decode(token)
+            if (loginInfor.role === Role.ADMIN) {
+                navigate(path.MANAGE)
+            }
+            else if (loginInfor.role === Role.USER) {
+                navigate(path.HOMEPAGE)
+            }
+        }
+    }
+
     return (
         <div className='container-not'>
             <Navbar />  
@@ -39,19 +91,45 @@ function Login() {
                                 <form className='p-4'>
                                     <div class="form-group pb-4">
                                         <label className='label-input' for="exampleInputEmail1">EMAIL*</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nhập Địa chỉ Email" />
-                                        {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
+                                        <input 
+                                            type="email" 
+                                            class="form-control" 
+                                            id="exampleInputEmail1" 
+                                            aria-describedby="emailHelp" 
+                                            placeholder="Nhập Địa chỉ Email" 
+                                            value={dataInput.email}
+                                            onChange={(e) => setDataInput({
+                                                ...dataInput,
+                                                email: e.target.value
+                                            })}
+                                        />
                                     </div>
                                     <div class="form-group">
                                         <label className='label-input' for="exampleInputPassword1">MẬT KHẨU*</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Nhập Mật khẩu" />
+                                        <input 
+                                            type="password" 
+                                            class="form-control" 
+                                            id="exampleInputPassword1" 
+                                            placeholder="Nhập Mật khẩu" 
+                                            value={dataInput.password}
+                                            onChange={(e) => setDataInput({
+                                                ...dataInput,
+                                                password: e.target.value
+                                            })}
+                                        />
                                     </div>
                                     <div class="form-group py-2">
                                         <label >
                                             <a href='#' class="form-forgot-label" >Quên mật khẩu?</a>
                                         </label>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 btn-login">ĐĂNG NHẬP</button>
+                                    <button 
+                                        type="submit" 
+                                        class="btn btn-primary w-100 btn-login"
+                                        onClick={(e) => handleLogin(e)}
+                                    >
+                                        ĐĂNG NHẬP
+                                    </button>
                                     <div className='commit'>
                                         MLB Việt Nam cam kết bảo mật và sẽ không bao giờ đăng
                                         <br></br>
@@ -80,13 +158,14 @@ function Login() {
 
 const mapStateToProps = state => {
     return {
-
+        users: state.users,
+        isLogin: state.isLogin
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        fetLoginRedux: (email, password) => dispatch(actions.fetLogin(email, password))
     }
 }
 

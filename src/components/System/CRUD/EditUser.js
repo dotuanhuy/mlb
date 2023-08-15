@@ -5,9 +5,13 @@ import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { path } from '../../../utils';
+import { path, Role } from '../../../utils';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
 
-function EditUser({users, provinces, genders, roles, fetchUserAllcodeRedux, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, updateUserRedux}) {
+const cookies = new Cookies();
+
+function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeRedux, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, updateUserRedux}) {
     const { state } = useLocation()
     const [dataInput, setDataInput] = useState([])
     const [selectProvine, setSelectProvince] = useState({})
@@ -16,6 +20,7 @@ function EditUser({users, provinces, genders, roles, fetchUserAllcodeRedux, fetc
     const [listProvinces, setListProvinces] = useState([])
     const [listGenders, setListGenders] = useState([])
     const [listRoles, setListRoles] = useState([])
+
     const navigate = useNavigate()
 
     const buildDataSelect = (inputData) => {
@@ -43,6 +48,16 @@ function EditUser({users, provinces, genders, roles, fetchUserAllcodeRedux, fetc
 
     // ComponentDidMount
     useEffect(() => {
+        if (!cookies.get('userLogin')) {
+            navigate(path.LOGIN)
+        }
+        else {
+            let token = cookies.get('userLogin')
+            let loginInfor = jwt_decode(token)
+            if (loginInfor.role === Role.USER) {
+                navigate(path.HOMEPAGE)
+            }
+        }
         fetchAllProvincesRedux()
         fetchAllCodeByTypeRedux('GENDER')
         fetchAllCodeByTypeRedux('ROLE')
@@ -73,6 +88,11 @@ function EditUser({users, provinces, genders, roles, fetchUserAllcodeRedux, fetc
         setListRoles(dataRole)
     }, [users, provinces, genders, roles])
 
+    useEffect(() => {
+        if (!cookies.get('userLogin')) {
+            navigate(path.LOGIN)
+        }
+    }, [isLogout])
 
     const handleOnchangeAddress = (selectProvine) => {
         setSelectProvince(selectProvine)
@@ -219,6 +239,7 @@ function EditUser({users, provinces, genders, roles, fetchUserAllcodeRedux, fetc
 
 const mapStateToProps = state => {
     return {
+        isLogout: state.isLogout,
         users: state.users,
         provinces: state.provinces,
         genders: state.genders,

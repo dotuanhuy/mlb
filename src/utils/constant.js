@@ -8,3 +8,8 @@ export const path = {
     MANAGE_CREATE: '/system/manage/create',
     MANAGE_EDIT: '/system/manage/edit'
 }
+
+export const Role = {
+    ADMIN: 'R1',
+    USER: 'R2'
+}

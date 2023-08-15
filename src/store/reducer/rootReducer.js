@@ -1,5 +1,5 @@
 const initState = {
-    isLogin: false,
+    isLogout: false,
     users: [],
     provinces: [],
     genders: [],
@@ -8,6 +8,16 @@ const initState = {
 
 const rootReducer = (state = initState, action) => {
     switch (action.type) {
+        case 'LOGOUT_SUCCESS': 
+            state.isLogout = true
+            return {
+                ...state,
+            }
+        case 'LOGOUT_FAILED':
+            state.isLogout = false 
+            return {
+                ...state
+            }
         case 'FETCH_ALL_USERS_SUCCESS':
             state.users = action.data
             return {
@@ -55,6 +65,7 @@ const rootReducer = (state = initState, action) => {
                 ...state
             }
         default: 
+            console.log('abc: ', state)
             return state
     }
 }
