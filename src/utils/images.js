@@ -31,7 +31,14 @@ import slider2 from '../assets/SilderHomePage/slider_2.png'
 import slider3 from '../assets/SilderHomePage/slider_5.jpg'
 import fb from '../assets/social-login/fb-btn.svg'
 import gp from '../assets/social-login/gp-btn.svg'
+import Chunky_Liner_Mid_New_York_Yankees_Green_c from '../assets/Shoes/Chunky_Liner_Mid_New_York_Yankees_Green/mlb-c.jpg'
+import Chunky_Liner_Mid_New_York_Yankees_Green_h from '../assets/Shoes/Chunky_Liner_Mid_New_York_Yankees_Green/mbl-hover.jpg'
+import logo_mlb from '../assets/logo/logo.png'
 
+
+export const LOGO_MLB = {
+    logo_mlb
+}
 
 export const shoes = {
     allShoes,
@@ -91,4 +98,9 @@ export const sliders = {
 export const socialLogin = {
     fb,
     gp
+}
+
+export const Chunky_Liner_Mid_New_York_Yankees_Green = {
+    Chunky_Liner_Mid_New_York_Yankees_Green_c,
+    Chunky_Liner_Mid_New_York_Yankees_Green_h
 }

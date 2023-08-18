@@ -1,16 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faMagnifyingGlass, faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { shoes, bag, hat, shirts, PK, logo, results } from '../../../utils/images';
 import './Navbar.scss'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { path } from '../../../utils';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
 
-function Navbar() {
-    
+const cookies = new Cookies();
+const initState = {
+    firstName: '',
+    lastName: '',
+    isLogin: false
+}
+
+function Navbar({isLogout, fetLogoutRedux}) {
+    const [userLogin, setUserLogin] = useState(initState)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (cookies.get('userLogin')) {
+            let token = cookies.get('userLogin')
+            let loginInfor = jwt_decode(token)
+            if (loginInfor) {
+                setUserLogin({
+                    firstName: loginInfor.firstName,
+                    lastName: loginInfor.lastName,
+                    isLogin: true
+                })
+            }
+        }
+    }, [])
+
+    const handleLogout = async () => {
+        cookies.remove('userLogin', { path: '/' })
+        fetLogoutRedux()
+    }
+
     return (
         <div className='header-top'>
             <div className='nav-container'>
@@ -23,7 +53,7 @@ function Navbar() {
                     <div className='nav-menu'>
                         <ul className='menu-list'>
                             <li className='menu-list_item'>
-                                <span className='menu-list_item-name'>Giày-dép</span>
+                                <Link to={path.GIAY_MLB} className='menu-list_item-name'>Giày-dép</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item'>
                                     <ul>
@@ -274,8 +304,14 @@ function Navbar() {
                             <Link to={path.LOGIN} className='user-link'>
                                 <FontAwesomeIcon className='icon-infor' icon={faUser} />
                                 <div className='box-acc'>
-                                    <Link to={path.LOGIN}>Đăng nhập</Link>
-                                    <Link to={path.REGISTER}>Đăng ký</Link>
+                                    {
+                                        userLogin.isLogin ? <Link to={path.ACCOUNT}>{`${userLogin.firstName} ${userLogin.lastName}`}</Link>
+                                        : <Link to={path.LOGIN}>Đăng nhập</Link>
+                                    }
+                                    {
+                                        userLogin.isLogin ? <Link to={path.LOGIN} onClick={handleLogout}>Đăng xuất</Link>
+                                        : <Link to={path.REGISTER}>Đăng ký</Link>
+                                    }
                                 </div>
                             </Link>
                         </div>
@@ -296,11 +332,13 @@ function Navbar() {
 
 const mapStateToProps = state => {
     return {
+        isLogout: state.isLogout
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
+        fetLogoutRedux: () => dispatch(actions.fetLogout())
     }
 }
 

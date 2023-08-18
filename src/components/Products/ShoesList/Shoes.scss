@@ -1,0 +1,223 @@
+.shoes-header {
+    min-height: 304px;
+    background: #ccc;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .title {
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: 6px;
+    }
+
+    .list-link {
+        display: flex;
+        gap: 20px;
+
+        .item-link-home {
+            position: relative;
+
+            &::after {
+                content: "/";
+                color: #fff;
+                position: absolute;
+                right: -14px;
+                top: 0;
+            }
+
+            a {
+                color: #fff;
+            }
+        }
+    }
+}
+
+.shoes-body {
+
+    .shoes-container {
+
+        .options {
+
+            .options-list {
+
+                .option-together {
+
+                    .option-together-title{
+                        font-size: 20px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+
+                        .action-down {
+                            font-size: 10px;
+                            float: right;
+                            padding-top: 4px;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .option-together-group {
+                        line-height: 26px;
+     
+                        ul {
+                            padding: 0;
+
+                            li {
+                            
+                                a {
+                                    cursor: pointer;
+                                    font-size: 15px;
+                                    color: #333333ba;
+                                    position: relative;
+
+                                    i {                                   
+                                        height: 11px;
+                                        width: 11px;
+                                        border: solid 1px #E7E7E7;
+                                        display: inline-block;
+                                        margin-right: 10px;
+                                        border-radius: 100%;
+                                        top: 1px;
+                                    }
+
+                                    input[type="checkbox"] {
+                                        display: none;
+                                    }
+                            
+                                    .checkSS {
+                                        display: block;
+                                        position: relative;
+                                        padding-left: 25px;
+                                        cursor: pointer;
+
+                                        &::before {
+                                            content: "";
+                                            display: inline-block;
+                                            width: 11px;
+                                            height: 11px;
+                                            border: 1px solid #ccc;
+                                            background-color: #fff;
+                                            position: absolute;
+                                            left: 0;
+                                            top: 6px;
+                                        }
+                                    }
+
+                                    input[type="checkbox"]:checked + .checkSS::before {
+                                        border-color: #942319;
+                                        background: #942319;
+                                    }
+
+                                    input {
+                                        margin-right: 10px;
+                                        border: solid 1px #E7E7E7;
+                                    }
+                                    .optionSelect {
+                                        border-color: #942319;
+                                        background: #942319;
+                                    }
+
+                                    &:hover {
+                                        color: #942319;
+
+                                        i {
+                                            border-color: #942319;
+                                        }
+
+                                        input {
+                                            border-color: #942319;
+                                            color: #942319;
+                                        }
+                                    }
+
+                                }
+
+                                .colorType {
+
+                                    label {
+                                        position: relative;
+                                        width: 26px;
+                                        height: 26px;
+                                        border-radius: 50%;
+                                        cursor: pointer;
+                                    }
+                                    .tick-color {
+                                        position: absolute;
+                                        color: #fff;
+                                        left: 7px;
+                                        top: -5px;
+                                    }
+                                    .tick-color-white {
+                                        position: absolute;
+                                        color: #333;
+                                        left: 7px;
+                                        top: -5px;
+                                    }
+
+                                    .colorWhite {
+                                        background: #fff;
+                                        border: 1px solid #ccc;
+                                    }
+                                    .colorBlack {
+                                        background: #000;
+                                        border: 1px solid #000;
+                                    }
+                                    .colorGray {
+                                        background: #ccc;
+                                        border: 1px solid #ccc;
+                                    }
+                                    .colorBrown {
+                                        background: #CC9966;
+                                        border: 1px solid #CC9966;
+                                    }
+                                    .colorBlue {
+                                        background: #3399FF;
+                                        border: 1px solid #3399FF;
+                                    }
+                                    .colorGreen {
+                                        background: #99FF66;
+                                        border: 1px solid #99FF66;
+                                    }
+                                    .colorPink {
+                                        background: #FF66CC;
+                                        border: 1px solid #FF66CC;
+                                    }
+                                    .colorLightPink {
+                                        background: #FF9999;
+                                        border: 1px solid #FF9999;
+                                    }
+                                    .colorRed {
+                                        background: #990000;
+                                        border: 1px solid #990000;
+                                    }
+                                    .colorOrange {
+                                        background: #FFCC33;
+                                        border: 1px solid #FFCC33;
+                                    }
+                                    .colorYellow {
+                                        background: #FFFF33;
+                                        border: 1px solid #FFFF33;
+                                    }
+                                }   
+                            }
+                        }
+                    }
+                    .hiden-option {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes showOptions {
+    100% {
+        transform: translateY(0);
+    }
+    0% {
+        transform: translateY(20px);
+    }
+}

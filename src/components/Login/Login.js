@@ -21,16 +21,7 @@ function Login({users, isLogin, fetLoginRedux}) {
     const [dataInput, setDataInput] = useState(initState)
     const [token, setToken] = useState()
     const navigate = useNavigate()
-
-    // useEffect(() => {
-    //     console.log('check login: ', isLogin)
-    //     if (users && users.dataRole && users.roleId === Role.USER) {
-    //         navigate(path.HOMEPAGE)
-    //     } 
-    //     if (users && users.dataRole && users.roleId === Role.ADMIN) {
-    //         navigate(path.MANAGE)
-    //     } 
-    // }, [isLogin])
+    
     useEffect(() => {
         if (cookies.get('userLogin')) {
             let token = cookies.get('userLogin')

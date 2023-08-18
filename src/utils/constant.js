@@ -6,7 +6,9 @@ export const path = {
     SYSTEM: '/system',
     MANAGE: '/system/manage',
     MANAGE_CREATE: '/system/manage/create',
-    MANAGE_EDIT: '/system/manage/edit'
+    MANAGE_EDIT: '/system/manage/edit',
+    GIAY_MLB: '/giay-mlb',
+    ACCOUNT: '/account'
 }
 
 export const Role = {

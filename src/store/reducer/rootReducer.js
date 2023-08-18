@@ -3,7 +3,9 @@ const initState = {
     users: [],
     provinces: [],
     genders: [],
-    roles: []
+    roles: [],
+    colors: [],
+    categories: []
 }
 
 const rootReducer = (state = initState, action) => {
@@ -64,8 +66,27 @@ const rootReducer = (state = initState, action) => {
             return {
                 ...state
             }
+        case 'FETCH_ALL_COLOR_SUCCSESS': 
+            state.colors = action.data
+            return {
+                ...state
+            }
+        case 'FETCH_ALL_COLOR_FAILED': 
+            state.colors = []
+            return {
+                ...state
+            }
+        case 'GET_CATEGORIES_BY_ID_SUCCESS':
+            state.categories = action.data
+            return {
+                ...state
+            }
+        case 'GET_CATEGORIES_BY_ID_FAILED':
+            state.categories = []
+            return {
+                ...state
+            }
         default: 
-            console.log('abc: ', state)
             return state
     }
 }

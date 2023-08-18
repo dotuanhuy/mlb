@@ -4,7 +4,7 @@ import Navbar from '../HomePage/Navbar/Navbar';
 import './Register.scss'
 import { Link } from 'react-router-dom';
 import { socialLogin } from '../../utils/images';
-import { path } from '../../utils'
+import { path, Role } from '../../utils'
 import * as actions from '../../store/actions'
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const inintState = {
     password: '',
     address: '',
     gender: '',
-    roleId: '',
+    roleId: Role.USER,
     avatar: ''
 }
 

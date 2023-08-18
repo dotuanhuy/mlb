@@ -9,6 +9,7 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Manage from './components/System/Manage/manage';
 import EditUser from './components/System/CRUD/EditUser';
+import Shoes from './components/Products/ShoesList/Shoes'
 
 function App({isLogin}) {
     return (
@@ -21,6 +22,7 @@ function App({isLogin}) {
                     <Route path={path.MANAGE_EDIT} element={<EditUser />}/>
                     <Route path={path.LOGIN} element={<Login />}/>
                     <Route path={path.REGISTER} element={<Register />}/>
+                    <Route path={path.GIAY_MLB} element={<Shoes />} />
                 </Routes>
             </Router>
         </React.Fragment>

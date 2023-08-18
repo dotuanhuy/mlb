@@ -1,0 +1,152 @@
+.homeFooter {
+    background: #181818;
+
+    .homefooter-menu {
+        border-bottom: 1px solid #8c8c8c;
+
+        .contact {
+
+            .homeFooter-logo {
+    
+            }
+    
+            .contact-menu {
+                color: #fff;
+                font-size: 14px;
+    
+                li {
+                    line-height: 25px;
+                    
+                    a {
+                        color: #fff;
+    
+                        &:hover {
+                            color: #942319;
+                        }
+                    }
+                }
+            }
+        }
+    
+        .general {
+            p {
+                color: #fff;
+                font-size: 16px;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+    
+            .general-menu {
+    
+                a {
+                    color: #fff;
+                    font-size: 14px;
+    
+                    &:hover {
+                        color: #942319;
+                    }
+                }
+            }
+        }
+    
+        .footer-right {
+    
+            .footer-right-box {
+    
+                .socail-footer {
+    
+                    p {
+                        color: #fff;
+                        font-size: 16px;
+                        font-weight: 600;
+    
+                        a {
+                            color: #2980b9;
+                            text-decoration: revert;
+                        }
+                    }
+    
+                    .socail-footer-menu {
+                        gap: 6px;
+                        margin-left: 1px;
+    
+                        .socail-footer-item {
+                            width: 40px;
+                            height: 40px;
+                            background: #420500;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all ease-in-out .3s;
+                            
+                            .socail-footer-icon {
+                                color: #fff;
+                                font-size: 20px;
+                            }
+    
+                            &:hover {
+                                background: #fff;
+    
+                                .socail-footer-icon {
+                                    color: #420500;
+                                }
+                            }
+                        }
+                    }
+                }
+    
+                .email-footer {
+    
+    
+                    p {
+                        color: #fff;
+                        font-size: 16px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                    }
+    
+                    .form-email {
+                        display: flex;
+    
+                        div {
+    
+                            input {
+                                border-radius: 0 !important;    
+                                outline: none !important;
+                                border: none !important;
+                            }
+                        }
+    
+                        button {
+                            border-radius: 0 !important;
+                            background: #420500;
+                            border: 1px solid #420500;
+                            font-weight: 600;
+    
+                            &:hover {
+                                background: #333;
+                                border-color: #333;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .copyright {
+
+        p {
+            color: #fff;
+            margin-top: 0;
+
+            a {
+                color: #fff;
+
+                &:hover {
+                    color: #420500;
+                }
+            }
+        }
+    }
+}

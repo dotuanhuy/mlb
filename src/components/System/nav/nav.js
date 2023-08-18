@@ -14,9 +14,7 @@ function Nav({isLogout, fetLogoutRedux}) {
 
     const handleLogout = async () => {
         cookies.remove('userLogin', { path: '/' })
-        console.log('check cookie: ', cookies.get('userLogin'))
         fetLogoutRedux()
-        console.log('check nav, ', isLogout)
     }
 
     return (

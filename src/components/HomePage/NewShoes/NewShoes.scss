@@ -1,0 +1,211 @@
+.newShoes {
+    margin-bottom: 60px;
+
+    .newShoes-container {
+
+        .title {
+
+            .title-newshoes {
+                line-height: 40px;
+
+                a {
+                    font-size: 40px;
+                    letter-spacing: 10px;
+                    position: relative;
+    
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        left: -30px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 10px;
+                        height: 10px;
+                        background: #420500;
+                        -webkit-transition: all 150ms ease-in-out;
+                        -moz-transition: all 150ms ease-in-out;
+                        -ms-transition: all 150ms ease-in-out;
+                        -o-transition: all 150ms ease-in-out;
+                        transition: all 150ms ease-in-out;
+                    }
+    
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        right: -15px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 10px;
+                        height: 10px;
+                        background: #420500;
+                        -webkit-transition: all 150ms ease-in-out;
+                        -moz-transition: all 150ms ease-in-out;
+                        -ms-transition: all 150ms ease-in-out;
+                        -o-transition: all 150ms ease-in-out;
+                        transition: all 150ms ease-in-out;
+                    }
+    
+                    &:hover {
+                        color: #942319;
+                    }
+                }
+            }
+
+            p {
+               font-weight: bolder; 
+               font-size: 16px;
+               color: #616161;
+
+               a {
+                    text-decoration: revert;
+                    color: #660000;
+               }
+            }
+        }
+
+        .menu-box {
+
+            .menu-product {
+
+                .product {
+                    border: 1px solid #ededed;
+                    position: relative;
+
+                    .actions {
+                        position: absolute;
+                        top: 8px;
+                        right: 12px;
+                        z-index: 99;
+
+                        .tym {
+                            cursor: pointer;
+                            color: #9e9999;
+                            position: relative;
+                        }
+
+                        .cart {
+                            display: none;
+                            animation: showBtnBuy ease-in-out .8s;
+                            
+                            .btn-buy {
+                                height: 35px;
+                                width: 35px;
+                                line-height: 35px;
+                                border: none;
+                                border-radius: 100%;
+                                color: #fff;
+                                background: #696969;
+
+                                &:hover {
+                                    background: #333;
+                                }
+                            }
+                        }
+                    }
+
+                    .product-img {
+                        cursor: pointer;
+
+                        img {
+                            max-width: 100%;
+                        }
+                    }
+
+                    .product-img-first {
+                        display: block;
+                        animation: showimage linear .5s;
+                    }
+
+                    .product-img-second {
+                        display: none;
+                        animation: showimage linear .5s;
+                    }
+
+                    .product-infor {
+                        line-height: 12px;
+                        padding: 25px 0;
+                        
+                        .brand {
+                            color: #adadad;
+                            font-size: 11px;
+                            letter-spacing: 2.5px;
+                            text-transform: uppercase;
+                        }
+
+                        .product-name {
+                            cursor: pointer;
+
+                            a {
+                                color: #333;
+                                font-size: 16px;
+                                font-weight: 400;
+                                margin: 0;
+                            }
+
+                            &:hover {
+                                a {
+                                    color: #942319;
+                                }
+                            }
+                        }
+
+                        .product-price {
+                            color: #942319;
+                            font-weight: 600;
+                        }
+                    }
+
+                    &:hover {
+                        .product-img-second {
+                            display: block;
+                        }
+
+                        .product-img-first {
+                            display: none;
+                        }
+
+                        .cart {
+                            display: block;
+                        }
+                    }
+                }
+            }
+
+            .view-all {
+                width: 245px;
+                height: 60px;
+                margin: auto;
+                margin-top: 45px;
+                background: #420500;
+                font-size: 18px;
+                line-height: 60px;
+
+                a {
+                    color: #fff;
+                    font-weight: bold;
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+@keyframes showBtnBuy {
+    0% {
+        opacity: 0;
+        transform: translateX(14px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes showimage {
+    0% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}

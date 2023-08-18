@@ -5,6 +5,12 @@ import SliderHomePage from './Slider/SliderHomePage';
 import './HomePage.scss'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Intro from './Intro/Intro';
+import NewShoes from './NewShoes/NewShoes';
+import MLBBag from './MLBBag/MLBBag';
+import MLBOutfit from './MLBOutfit/MLBOutfit';
+import MLBBackPack from './MLBBackPack/MLBBackPack';
+import HomeFooter from './HomeFooter/HomeFooter';
 
 function HomePage({isURLLogin}) {
     const settings = {
@@ -30,6 +36,12 @@ function HomePage({isURLLogin}) {
         <div>
             <Navbar />
             <SliderHomePage settings={settings}/>
+            <Intro />
+            <NewShoes />
+            <MLBBag />
+            <MLBOutfit />
+            <MLBBackPack />
+            <HomeFooter />
         </div>
     );
 }
