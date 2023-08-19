@@ -12,7 +12,7 @@ import MLBOutfit from './MLBOutfit/MLBOutfit';
 import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
 
-function HomePage({isURLLogin}) {
+function HomePage({isLogin}) {
     const settings = {
         dots: true,
         infinite: false,
@@ -48,7 +48,7 @@ function HomePage({isURLLogin}) {
 
 const mapStateToProps = state => {
     return {
-        isURLLogin: state.isURLLogin
+        isLogin: state.auth.isLogin
     }
 }
 

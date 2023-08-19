@@ -239,11 +239,11 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
 
 const mapStateToProps = state => {
     return {
-        isLogout: state.isLogout,
-        users: state.users,
-        provinces: state.provinces,
-        genders: state.genders,
-        roles: state.roles
+        isLogin: state.auth.isLogin,
+        users: state.user.users,
+        provinces: state.user.provinces,
+        genders: state.user.genders,
+        roles: state.user.roles
     }
 }
 

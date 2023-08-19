@@ -10,7 +10,7 @@ import jwt_decode from "jwt-decode";
 
 const cookies = new Cookies();
 
-function Manage({isLogout}) {
+function Manage({isLogin}) {
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -29,7 +29,7 @@ function Manage({isLogout}) {
         if (!cookies.get('userLogin')) {
             navigate(path.LOGIN)
         }
-    }, [isLogout])
+    }, [isLogin])
 
     return (    
         <div className='manage-system'>
@@ -43,7 +43,7 @@ function Manage({isLogout}) {
 
 const mapStateToProps = state => {
     return {
-        isLogout: state.isLogout
+        isLogin: state.auth.isLogin
     }
 }
 

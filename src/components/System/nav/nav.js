@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './nav.scss'
 import { Link } from 'react-router-dom';
@@ -6,16 +6,25 @@ import { path } from '../../../utils'
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 
 const cookies = new Cookies()
 
-function Nav({isLogout, fetLogoutRedux}) {
+function Nav({isLogin, fetLogoutRedux}) {
+    const navigate = useNavigate()
 
     const handleLogout = async () => {
         cookies.remove('userLogin', { path: '/' })
         fetLogoutRedux()
     }
+    
+    useEffect(() => {
+        console.log('check')
+        if (!isLogin) {
+            navigate(path.LOGIN)
+        }
+    }, [isLogin])
 
     return (
         <div className='nav-system'>
@@ -72,7 +81,7 @@ function Nav({isLogout, fetLogoutRedux}) {
 
 const mapStateToProps = state => {
     return {
-        isLogout: state.isLogout
+        isLogin: state.auth.isLogin
     }
 }
 

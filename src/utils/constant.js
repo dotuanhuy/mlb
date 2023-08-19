@@ -11,7 +11,37 @@ export const path = {
     ACCOUNT: '/account'
 }
 
+export const allCode = {
+    GENDER: 'GENDER',
+    ROLE: 'ROLE',
+    LOGO: 'LOGO',
+    COLOR: 'COLOR'
+}
+
 export const Role = {
     ADMIN: 'R1',
     USER: 'R2'
+}
+
+export const categorieType = {
+    SHOES_SANDAL: 'GS'
+}
+
+export const listShoesSandals = {
+    SHOES: 'G1',
+    SANDAL: 'G2'
+}
+
+export const listColor = {
+    WHITE: 'White',
+    BLACK: 'Black',
+    GRAY: 'Gray',
+    BROWN: 'Brown',
+    BLUE: 'Blue',
+    GREEN: 'Green',
+    PINK: 'Pink',
+    LPINK: 'LightPink',
+    RED: 'Red',
+    ORANGE: 'Orange',
+    YELLOW: 'Yellow'
 }

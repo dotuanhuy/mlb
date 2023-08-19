@@ -83,7 +83,7 @@ function TableUsers({users, fetAllUsersRedux, deleteUserRedux}) {
 
 const mapStateToProps = state => {
     return {
-        users: state.users
+        users: state.user.users
     }
 }
 

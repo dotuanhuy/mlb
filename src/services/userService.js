@@ -33,7 +33,7 @@ const getUserAllcode = (id) => {
 }
 
 const getCategoriesByIdService = (id) => {
-    return axios.get('/api/get-categories-by-id', {id})
+    return axios.get(`/api/get-categories-by-id?id=${id}`)
 }
 
 export {

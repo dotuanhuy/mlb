@@ -149,8 +149,8 @@ function Login({users, isLogin, fetLoginRedux}) {
 
 const mapStateToProps = state => {
     return {
-        users: state.users,
-        isLogin: state.isLogin
+        users: state.user.users,
+        isLogin: state.auth.isLogin
     }
 }
 

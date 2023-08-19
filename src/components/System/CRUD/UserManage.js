@@ -20,7 +20,7 @@ const initState = {
     phoneNumber: ''
 }
 
-function UserManage({isLogout, provinces, genders, roles, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, createNewUserRedux}) {
+function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, createNewUserRedux}) {
     const [dataInput, setDataInput] = useState(initState)
     const [selectProvine, setSelectProvince] = useState([])
     const [selectGender, setSelectGender] = useState([])
@@ -86,7 +86,7 @@ function UserManage({isLogout, provinces, genders, roles, fetchAllProvincesRedux
         if (!cookies.get('userLogin')) {
             navigate(path.LOGIN)
         }
-    }, [isLogout])
+    }, [isLogin])
 
     const handleOnchangeAddress = (selectProvine) => {
         setSelectProvince(selectProvine)
@@ -236,10 +236,10 @@ function UserManage({isLogout, provinces, genders, roles, fetchAllProvincesRedux
 
 const mapStateToProps = state => {
     return {
-        isLogout: state.isLogout,
-        provinces: state.provinces,
-        genders: state.genders,
-        roles: state.roles
+        isLogin: state.auth.isLogin,
+        provinces: state.user.provinces,
+        genders: state.user.genders,
+        roles: state.user.roles
     }
 }
 

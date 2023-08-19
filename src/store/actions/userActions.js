@@ -1,8 +1,7 @@
 import actionTypes from "./actionTypes";
-import Cookies from 'universal-cookie';
+import { allCode } from "../../utils";
 
 import { 
-    handleLoginAPI, 
     handleCreateNewUer, 
     handleUpdateUser,
     getAllUsers,
@@ -12,47 +11,6 @@ import {
     getUserAllcode,
     getCategoriesByIdService
 } from "../../services/userService";
-
-const cookies = new Cookies();
-
-export const fetLogin = (email, password) => {
-    return async (dispatch, getSate) => {
-        try {
-            let res = await handleLoginAPI(email, password)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.LOGIN_SUCCESS,
-                    data: res
-                })
-                cookies.set('userLogin', res.token, { path: '/'});
-            }
-            else {
-                dispatch({
-                    type: actionTypes.LOGIN_FAILED
-                })
-            }   
-        } catch (e) {
-            console.log('fetLogin error: ', e)
-            dispatch({
-                type: actionTypes.LOGIN_FAILED
-            })
-        }
-    }
-}
-
-export const fetLogout = () => {
-    return (dispatch, getSate) => {
-        try {
-            dispatch({
-                type: actionTypes.LOGOUT_SUCCESS
-            })
-        } catch(e) {
-            dispatch({
-                type: actionTypes.LOGOUT_FAILED
-            })
-        }
-    }
-}
 
 export const createNewUser = (data) => {
     return async (dispatch, getSate) => {
@@ -131,15 +89,21 @@ export const fetchAllCodeByType = (type) => {
         try {
             let res = await getAllCodeByType(type)
             if (res && res.errCode === 0) {
-                if (type === 'GENDER') {
+                if (type === allCode.GENDER) {
                     dispatch({
                         type: actionTypes.FETCH_ALL_GENDER_SUCCESS,
                         data: res.data
                     })
                 }
-                else if (type === 'ROLE') {
+                else if (type === allCode.ROLE) {
                     dispatch({
                         type: actionTypes.FETCH_ALL_ROLE_SUCCESS,
+                        data: res.data
+                    })
+                }
+                else if (type === allCode.LOGO) {
+                    dispatch({
+                        type: actionTypes.FETCH_ALL_LOGO_SUCCESS,
                         data: res.data
                     })
                 }

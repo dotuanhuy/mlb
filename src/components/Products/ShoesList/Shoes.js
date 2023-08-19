@@ -2,42 +2,90 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faMagnifyingGlass, faCaretDown, faCartShopping, faAngleDown, faCheck } from '@fortawesome/free-solid-svg-icons'
-import { shoes, bag, hat, shirts, PK, logo, results } from '../../../utils/images';
+import {  faCartShopping, faAngleDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 import './Shoes.scss'
 import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions'
-import { path } from '../../../utils';
+import { path, categorieType, listShoesSandals, listColor, allCode } from '../../../utils';
 import Navbar from '../../HomePage/Navbar/Navbar';
+import { Chunky_Liner_Mid_New_York_Yankees_Green } from '../../../utils/images';
 
 const initOptionType = {
     shoesMlb: false,
     sandal: false
 }
 
-function Shoes({colors, categories, fetchAllColorsRedux, getCategoriesByIdReduc}) {
+const initOptionColor = {
+    White: false,
+    Black: false,
+    Gray: false,
+    Brown: false,
+    Blue: false,
+    Green: false,
+    Pink: false,
+    LightPink: false,
+    Red: false,
+    Orange: false,
+    Yellow: false
+}
+
+const initOptionLogo = {
+    NY: false,
+    B: false,
+    LA: false,
+    P: false,
+    SF: false,
+}
+
+function Shoes({colors, categories, logos, fetchAllColorsRedux, getCategoriesByIdRedux, fetchAllCodeByTypeRedux}) {
     const [typeSort, setTypeSort] = useState(true)
     const [typeType, setTypeType] = useState(true)
     const [typeColor, setTypeColor] = useState(true)
+    const [typeLogo, setTypeLogo] = useState(true)
     const [optionSort, setOptionSort] = useState('default')
     const [optionType, setOptionType] = useState(initOptionType)
-    const [optionColor, setOptionColor] = useState('')
+    const [optionColor, setOptionColor] = useState(initOptionColor)
+    const [optionLogo, setOptionLogo] = useState(initOptionLogo)
 
     useEffect(() => {
-        fetchAllColorsRedux('COLOR')
-        getCategoriesByIdReduc()
+        fetchAllColorsRedux(allCode.COLOR)
+        getCategoriesByIdRedux(categorieType.SHOES_SANDAL)
+        fetchAllCodeByTypeRedux(allCode.LOGO)
     }, [])
 
-    const handleOnchangeTypeType = () => {
-        setOptionType({
-            ...optionType,
-            shoesMlb: !optionType.shoesMlb
-        })
-        if (optionType.shoesMlb) {
-            console.log('chuẩn')
+    const handleOnchangeTypeType = (e) => {
+        let checked = e.target.getAttribute('for')
+        if (checked === listShoesSandals.SHOES) {
+            setOptionType({
+                ...optionType,
+                shoesMlb: !optionType.shoesMlb
+            })
+        }
+        else if (checked === listShoesSandals.SANDAL) {
+            setOptionType({
+                ...optionType,
+                sandal: !optionType.sandal
+            })
         }
     }
+    
+    const handleOnchangeColor = (e) => {
+        let checked = e.target.getAttribute('for')
+        optionColor[checked] = !optionColor[checked]
+        setOptionColor({
+            ...optionColor
+        })
+    }
 
+    const handleOnchangeLogo = (e) => {
+        let checked = e.target.getAttribute('for')
+        optionLogo[checked] = !optionLogo[checked]
+        setOptionLogo({
+            ...optionLogo
+        })
+    }
+
+    console.log('check logo: ', optionLogo)
     return (
         <div className='shoes'>
             <Navbar />
@@ -119,21 +167,25 @@ function Shoes({colors, categories, fetchAllColorsRedux, getCategoriesByIdReduc}
                                     </div>
                                     <div className={typeType ? 'option-together-group' : 'option-together-group hiden-option'}>
                                         <ul>
-                                            <li>
-                                                <a onClick={handleOnchangeTypeType}>
-                                                    <input id='checkShoeMLB' type='checkbox' className={optionType.shoesMlb ? 'optionSelect' : ''}/>
-                                                    <label className='checkSS' for='checkShoeMLB'>Giày MLB</label>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a onClick={e => setOptionType({
-                                                    ...optionType,
-                                                    sandal: !optionType.sandal
-                                                })}>
-                                                    <input id='checkSandalMLB' type='checkbox' className={optionType.sandal ? 'optionSelect' : ''}/>
-                                                    <label className='checkSS' for='checkSandalMLB'>Sandal MLB</label>
-                                                </a>
-                                            </li>
+                                            {
+                                                categories && categories.length > 0 &&
+                                                categories.map((item, index) => {
+                                                    return (
+                                                        <li key={index}>
+                                                            <a>
+                                                                <input id={item.categoryId} type='checkbox' className={optionType ? 'optionSelect' : ''}/>
+                                                                <label 
+                                                                    className='checkSS' 
+                                                                    for={item.categoryId}
+                                                                    onClick={(e) => handleOnchangeTypeType(e)}
+                                                                >
+                                                                    {item.name}
+                                                                </label>
+                                                            </a>
+                                                        </li>
+                                                    )
+                                                })
+                                            } 
                                         </ul>
                                     </div>
                                 </div>
@@ -155,76 +207,145 @@ function Shoes({colors, categories, fetchAllColorsRedux, getCategoriesByIdReduc}
                                                 colors && colors.length > 0 &&
                                                 colors.map((item, index) => {
                                                     return (
-                                                        <li className='d-inline-block pe-2'>
+                                                        <li className='d-inline-block pe-2' key={index}>
                                                             <a 
-                                                                className='colorType' 
-                                                                onClick={e => setOptionColor(`${item.valueEn}`)}
-                                                            >
+                                                                className='colorType'                                                                 
+                                                                >
                                                                 <input 
-                                                                    id={`checkColor${item.valueEn}`} 
-                                                                    type='checkbox' className={optionColor === `${item.valueEn}` ? 'optionSelect' : ''}
-                                                                />
+                                                                    id={item.valueEn} 
+                                                                    type='checkbox' />
                                                                 <label 
                                                                     className={`color${item.valueEn}`} 
-                                                                    for={`checkColor${item.valueEn}`}
-                                                                    // onClick={}
+                                                                    for={item.valueEn}
+                                                                    onClick={(e) => handleOnchangeColor(e)}
                                                                 ></label>
-                                                                <FontAwesomeIcon icon={faCheck} className= {item.valueEn === 'White' ? 'tick-color-white' : 'tick-color'} />
+                                                                {
+                                                                    item.valueEn === 'White' ? <FontAwesomeIcon icon={faCheck} className= {optionColor.White ? 'tick-color-white color-show' : 'tick-color-white color-hiden'} />
+                                                                    : <FontAwesomeIcon icon={faCheck} className= { optionColor[`${item.valueEn}`] ? 'tick-color color-show' : 'tick-color color-hiden' } />
+                                                                }                                                            
                                                             </a>
                                                         </li>
                                                     )
                                                 })
-                                            }
-                                            
-                                            {/* <li className='d-inline-block pe-2'>
-                                                <a className='colorType' onClick={e => setOptionColor('black')}>
-                                                    <input id='checkColorBlack' type='checkbox' className={optionColor === 'black' ? 'optionSelect' : ''}/>
-                                                    <label className='colorBlack' for='checkColorBlack'></label>
-                                                    <FontAwesomeIcon icon={faCheck} className='tick-color' />
-                                                </a>
-                                            </li>
-                                            <li className='d-inline-block pe-2'>
-                                                <a className='colorType' onClick={e => setOptionColor('black')}>
-                                                    <input id='checkColorGray' type='checkbox' className={optionColor === 'black' ? 'optionSelect' : ''}/>
-                                                    <label className='colorGray' for='checkColorGray'></label>
-                                                    <FontAwesomeIcon icon={faCheck} className='tick-color' />
-                                                </a>
-                                            </li>
-                                            <li className='d-inline-block pe-2'>
-                                                <a className='colorType' onClick={e => setOptionColor('black')}>
-                                                    <input id='checkColorBrow' type='checkbox' className={optionColor === 'black' ? 'optionSelect' : ''}/>
-                                                    <label className='colorBrow' for='checkColorBrow'></label>
-                                                    <FontAwesomeIcon icon={faCheck} className='tick-color' />
-                                                </a>
-                                            </li>
-                                            <li className='d-inline-block pe-2'>
-                                                <a className='colorType' onClick={e => setOptionColor('black')}>
-                                                    <input id='checkColorBlue' type='checkbox' className={optionColor === 'black' ? 'optionSelect' : ''}/>
-                                                    <label className='colorBlue' for='checkColorBlue'></label>
-                                                    <FontAwesomeIcon icon={faCheck} className='tick-color' />
-                                                </a>
-                                            </li>
-                                            <li className='d-inline-block pe-2'>
-                                                <a className='colorType' onClick={e => setOptionColor('black')}>
-                                                    <input id='checkColorGreen' type='checkbox' className={optionColor === 'black' ? 'optionSelect' : ''}/>
-                                                    <label className='colorGreen' for='checkColorGreen'></label>
-                                                    <FontAwesomeIcon icon={faCheck} className='tick-color' />
-                                                </a>
-                                            </li>
-                                            <li className='d-inline-block pe-2'>
-                                                <a className='colorType' onClick={e => setOptionColor('black')}>
-                                                    <input id='checkColorGreen' type='checkbox' className={optionColor === 'black' ? 'optionSelect' : ''}/>
-                                                    <label className='colorGreen' for='checkColorGreen'></label>
-                                                    <FontAwesomeIcon icon={faCheck} className='tick-color' />
-                                                </a>
-                                            </li> */}
+                                            }                                      
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div className='option-together options-type'>
+                                    <div className='option-together-title mb-2'>
+                                        Logo
+                                        <span>
+                                            <FontAwesomeIcon 
+                                                icon={faAngleDown} 
+                                                className='action-down'
+                                                onClick={e => setTypeLogo(!typeLogo)}
+                                            />
+                                        </span>
+                                    </div>
+                                    <div className={typeLogo ? 'option-together-group' : 'option-together-group hiden-option'}>
+                                        <ul>
+                                            {
+                                                logos && logos.length > 0 &&
+                                                logos.map((item, index) => {
+                                                    return (
+                                                        <li key={index}>
+                                                            <a>
+                                                                <input id={item.keyMap} type='checkbox' className={ optionType ? 'optionSelect' : ''}/>
+                                                                <label 
+                                                                    className='checkSS' 
+                                                                    for={item.keyMap}
+                                                                    onClick={(e) => handleOnchangeLogo(e)}
+                                                                >
+                                                                    {item.valueEn}
+                                                                </label>
+                                                            </a>
+                                                        </li>
+                                                    )
+                                                })
+                                            } 
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className='shoes-list'>
-
+                        
+                        <div className='shoes-list col-9'>
+                            <div className='shoes-list-container'>
+                                <div className='menu-product row'>
+                                    <div className='product col-4'>
+                                        <div className='actions text-center'>
+                                            <div className='tym mb-2 px-3'>
+                                                <FontAwesomeIcon icon={faHeart} />
+                                            </div>
+                                            <div className='cart'>
+                                                <button className='btn-buy'>
+                                                    <FontAwesomeIcon icon={faCartShopping} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className='product-img product-img-first'>
+                                            <a href='#'>
+                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
+                                            </a>
+                                        </div>        
+                                        <div className='product-img product-img-second'>
+                                            <a href='#'>
+                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_h}/>
+                                            </a>
+                                        </div>           
+                                        <div className='product-infor text-center'>
+                                            <span className='brand'>MLB KOREA</span>    
+                                            <h4 className='product-name'>
+                                                <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
+                                            </h4>
+                                            <span className='product-price'>3.790.000₫</span>
+                                        </div>          
+                                    </div>
+                                    <div className='product col-4'>
+                                        <div className='product-img'>
+                                            <a href='#'>
+                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
+                                            </a>
+                                        </div>                  
+                                        <div className='product-infor text-center'>
+                                            <span className='brand'>MLB KOREA</span>    
+                                            <h4 className='product-name'>
+                                                <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
+                                            </h4>
+                                            <span className='product-price'>3.790.000₫</span>
+                                        </div>          
+                                    </div>
+                                    <div className='product col-4'>
+                                        <div className='product-img'>
+                                            <a href='#'>
+                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
+                                            </a>
+                                        </div>                  
+                                        <div className='product-infor text-center'>
+                                            <span className='brand'>MLB KOREA</span>    
+                                            <h4 className='product-name'>
+                                                <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
+                                            </h4>
+                                            <span className='product-price'>3.790.000₫</span>
+                                        </div>          
+                                    </div>
+                                    <div className='product col-4'>
+                                        <div className='product-img'>
+                                            <a href='#'>
+                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
+                                            </a>
+                                        </div>                  
+                                        <div className='product-infor text-center'>
+                                            <span className='brand'>MLB KOREA</span>    
+                                            <h4 className='product-name'>
+                                                <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
+                                            </h4>
+                                            <span className='product-price'>3.790.000₫</span>
+                                        </div>          
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -235,15 +356,17 @@ function Shoes({colors, categories, fetchAllColorsRedux, getCategoriesByIdReduc}
 
 const mapStateToProps = state => {
     return {
-        colors: state.colors,
-        categories: state.categories
+        colors: state.user.colors,
+        categories: state.user.categories,
+        logos: state.user.logos
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        getCategoriesByIdReduc: (id) => dispatch(actions.getCategoriesById(id))
+        getCategoriesByIdRedux: (id) => dispatch(actions.getCategoriesById(id)),
+        fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByType(type))
     }
 }
 

@@ -5,7 +5,7 @@ import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faMagnifyingGlass, faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { shoes, bag, hat, shirts, PK, logo, results } from '../../../utils/images';
 import './Navbar.scss'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { path } from '../../../utils';
 import Cookies from 'universal-cookie';
@@ -18,9 +18,8 @@ const initState = {
     isLogin: false
 }
 
-function Navbar({isLogout, fetLogoutRedux}) {
+function Navbar({isLogin, fetLogoutRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
-    const navigate = useNavigate()
 
     useEffect(() => {
         if (cookies.get('userLogin')) {
@@ -332,7 +331,7 @@ function Navbar({isLogout, fetLogoutRedux}) {
 
 const mapStateToProps = state => {
     return {
-        isLogout: state.isLogout
+        isLogin: state.auth.isLogin
     }
 }
 
