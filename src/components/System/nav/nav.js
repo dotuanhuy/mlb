@@ -20,7 +20,6 @@ function Nav({isLogin, fetLogoutRedux}) {
     }
     
     useEffect(() => {
-        console.log('check')
         if (!isLogin) {
             navigate(path.LOGIN)
         }
@@ -50,7 +49,14 @@ function Nav({isLogin, fetLogoutRedux}) {
                                                 Create New User
                                             </Link>
                                         </li>
-                                        <li><a className="dropdown-item" href="#">Another action</a></li>
+                                        <li>
+                                            <Link 
+                                                className="dropdown-item" 
+                                                to={path.MANAGE_PRODUCTS}
+                                            >
+                                                Product
+                                            </Link>
+                                        </li>
                                         <li><hr className="dropdown-divider"></hr></li>
                                         <li><a className="dropdown-item" href="#">Something else here</a></li>
                                     </ul>

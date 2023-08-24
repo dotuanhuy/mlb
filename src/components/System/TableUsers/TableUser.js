@@ -24,11 +24,6 @@ function TableUsers({users, fetAllUsersRedux, deleteUserRedux}) {
     return (
         <div className='user-all-system'>
             <div className='user-all-container'>
-                <div className='create'>
-                    <button className='btn btn-success my-4 btn-add'>
-                        <Link to={path.MANAGE_CREATE}>Add</Link>
-                    </button>
-                </div>
                 <div className='user-all-table'>
                     <table id="customers">
                         <tr>

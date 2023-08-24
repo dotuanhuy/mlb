@@ -1,9 +1,9 @@
-.manage-system {
-    
-    .manage-container {
+.manage-product {
+
+    .manage-product-container {
         
         .create {
-
+        
             .btn-add {
                 a {
                     color: #fff;
@@ -12,4 +12,12 @@
             }
         }
     }
+}
+
+.manage-shoes-create-form {
+    overflow-x: clip;
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
 }

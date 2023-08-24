@@ -85,7 +85,6 @@ function Shoes({colors, categories, logos, fetchAllColorsRedux, getCategoriesByI
         })
     }
 
-    console.log('check logo: ', optionLogo)
     return (
         <div className='shoes'>
             <Navbar />
@@ -356,9 +355,9 @@ function Shoes({colors, categories, logos, fetchAllColorsRedux, getCategoriesByI
 
 const mapStateToProps = state => {
     return {
-        colors: state.user.colors,
-        categories: state.user.categories,
-        logos: state.user.logos
+        colors: state.product.colors,
+        categories: state.product.categorieById,
+        logos: state.product.logos
     }
 }
 
@@ -366,7 +365,7 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
         getCategoriesByIdRedux: (id) => dispatch(actions.getCategoriesById(id)),
-        fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByType(type))
+        fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type))
     }
 }
 

@@ -3,9 +3,6 @@ const initState = {
     provinces: [],
     genders: [],
     roles: [],
-    colors: [],
-    categories: [],
-    logos: []
 }
 
 const userReducer = (state = initState, action) => {
@@ -52,8 +49,6 @@ const userReducer = (state = initState, action) => {
             }
         case 'FETCH_ALL_CODE_BY_TYPE_FAILED':
             state.genders = []
-            state.roles = []
-            state.logos = []
             return {
                 ...state
             }
@@ -64,31 +59,6 @@ const userReducer = (state = initState, action) => {
             }
         case 'FETCH_USER_ALLCODE_FAILED':
             state.users = []
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_COLOR_SUCCSESS': 
-            state.colors = action.data
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_COLOR_FAILED': 
-            state.colors = []
-            return {
-                ...state
-            }
-        case 'GET_CATEGORIES_BY_ID_SUCCESS':
-            state.categories = action.data
-            return {
-                ...state
-            }
-        case 'GET_CATEGORIES_BY_ID_FAILED':
-            state.categories = []
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_LOGO_SUCCESS':
-            state.logos = action.data 
             return {
                 ...state
             }

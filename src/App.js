@@ -10,6 +10,9 @@ import Register from './components/Register/Register';
 import Manage from './components/System/Manage/manage';
 import EditUser from './components/System/CRUD/EditUser';
 import Shoes from './components/Products/ShoesList/Shoes'
+import ManageProducts from './components/System/Manage/Products/ManageProducts';
+import ManageShoes from './components/System/Manage/Products/ManageShoes/ManageShoes';
+import ManageShoesCreate from './components/System/Manage/Products/ManageShoes/ManageShoesCreate';
 
 function App({isLogin}) {
     return (
@@ -17,11 +20,18 @@ function App({isLogin}) {
             <Router>
                 <Routes>
                     <Route path={path.HOMEPAGE} element={<HomePage />}/>
+
                     <Route path={path.MANAGE} element={<Manage />}/> 
                     <Route path={path.MANAGE_CREATE} element={<UserManage />}/>
                     <Route path={path.MANAGE_EDIT} element={<EditUser />}/>
+
+                    <Route path={path.MANAGE_PRODUCTS} element={<ManageProducts />}/>
+                    <Route path={path.MANAGE_PRODUCTS_SHOES} element={<ManageShoes />}/>
+                    <Route path={path.MANAGE_PRODUCTS_SHOES_CREATE} element={<ManageShoesCreate />}/>
+
                     <Route path={path.LOGIN} element={<Login />}/>
                     <Route path={path.REGISTER} element={<Register />}/>
+
                     <Route path={path.GIAY_MLB} element={<Shoes />} />
                 </Routes>
             </Router>

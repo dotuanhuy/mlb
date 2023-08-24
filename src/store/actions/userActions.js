@@ -9,7 +9,6 @@ import {
     getAllCodeByType,
     handleDeleteUser,
     getUserAllcode,
-    getCategoriesByIdService
 } from "../../services/userService";
 
 export const createNewUser = (data) => {
@@ -101,12 +100,6 @@ export const fetchAllCodeByType = (type) => {
                         data: res.data
                     })
                 }
-                else if (type === allCode.LOGO) {
-                    dispatch({
-                        type: actionTypes.FETCH_ALL_LOGO_SUCCESS,
-                        data: res.data
-                    })
-                }
             }
             else {
                 dispatch({
@@ -190,49 +183,6 @@ export const fetchUserAllcode = (id) => {
             console.log('fetchUserAllcode error: ', e)
             dispatch({
                 type: actionTypes.FETCH_USER_ALLCODE_FAILED
-            })
-        }
-    }
-}
-
-export const fetchAllColors = (type) => {
-    return async (dispatch, getSate) => {
-        try {
-            let res = await getAllCodeByType(type)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.FETCH_ALL_COLOR_SUCCSESS,
-                    data: res.data
-                })
-            }
-        } catch (e) {
-            console.log('fetchAllColors error: ', e)
-            dispatch({
-                type: actionTypes.FETCH_ALL_COLOR_FAILED
-            })
-        }
-    }
-}
-
-export const getCategoriesById = (id) => {
-    return async (dispatch, getSate) => {
-        try {
-            let res = await getCategoriesByIdService(id)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.GET_CATEGORIES_BY_ID_SUCCESS,
-                    data: res.data
-                })
-            }
-            else {
-                dispatch({
-                    type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
-                })
-            }
-        } catch(e) {
-            console.log('getCategoriesById error: ' ,e)
-            dispatch({
-                type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
             })
         }
     }

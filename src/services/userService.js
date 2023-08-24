@@ -32,10 +32,6 @@ const getUserAllcode = (id) => {
     return axios.get(`/api/get-user-allCode?id=${id}`)
 }
 
-const getCategoriesByIdService = (id) => {
-    return axios.get(`/api/get-categories-by-id?id=${id}`)
-}
-
 export {
     handleLoginAPI,
     handleCreateNewUer,
@@ -45,5 +41,4 @@ export {
     getAllCodeByType,
     handleDeleteUser,
     getUserAllcode,
-    getCategoriesByIdService
 }

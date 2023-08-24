@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import './manage.scss'
-import TableUser from '../TableUsers/TableUser';
-import Nav from '../nav/nav';
+import './ManageShoes.scss'
+import Nav from '../../../nav/nav';
 import { Link, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../utils';
+import { path, Role } from '../../../../../utils';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
+import TableProducts from '../TableProducts/TableProducts';
 
 const cookies = new Cookies();
 
-function Manage({isLogin}) {
+function ManageShoes({isLogin}) {
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -32,15 +32,15 @@ function Manage({isLogin}) {
     }, [isLogin])
 
     return (    
-        <div className='manage-system'>
-            <div className='manage-container'>
+        <div className='manage-product'>
+            <div className='manage-product-container'>
                 <Nav />
                 <div className='create'>
                     <button className='btn btn-success my-4 btn-add'>
-                        <Link to={path.MANAGE_CREATE}>Add</Link>
+                        <Link to={path.MANAGE_PRODUCTS_SHOES_CREATE}>Add</Link>
                     </button>
                 </div>
-                <TableUser />
+                <TableProducts />
             </div>
         </div>
     );
@@ -57,4 +57,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Manage);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageShoes);
