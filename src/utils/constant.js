@@ -10,6 +10,7 @@ export const path = {
     MANAGE_PRODUCTS: '/system/manage/products',
     MANAGE_PRODUCTS_SHOES: '/system/manage/products/shoes',
     MANAGE_PRODUCTS_SHOES_CREATE: '/system/manage/products/shoes/create',
+    MANAGE_PRODUCTS_SHOES_EDIT: '/system/manage/products/shoes/edit',
     GIAY_MLB: '/giay-mlb',
     ACCOUNT: '/account'
 }

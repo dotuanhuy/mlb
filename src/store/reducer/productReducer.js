@@ -77,6 +77,16 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
+        case 'FETCH_PRODUCT_BY_ID_SUCCESS':
+            state.products = action.data
+            return {
+                ...state
+            }
+        case 'FETCH_PRODUCT_BY_ID_FAILED':
+            state.products = []
+            return {
+                ...state
+            }
         default:
             return state
     }

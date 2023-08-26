@@ -4,6 +4,9 @@ import {
     getAllCategoriesService,
     getCategoriesByIdService,
     createNewProductService,
+    deleteProductService,
+    getProductByIdService,
+    updateProductService,
 
 } from "../../services/productService";
 import { getAllCodeByType } from "../../services/userService";
@@ -146,7 +149,7 @@ export const createNewProduct = (product) => {
                 dispatch({
                     type: actionTypes.CREATE_NEW_PRODUCT_SUCCESS
                 })
-                getAllProducts()
+                dispatch(getAllProducts())
             }
             else {
                 dispatch({
@@ -159,5 +162,77 @@ export const createNewProduct = (product) => {
                 type: actionTypes.CREATE_NEW_PRODUCT_FAILED
             })
         }
+    }
+}
+
+export const deleteProduct = (id) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await deleteProductService(id)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.DELETE_PRODUCT_SUCCESS
+                })
+                dispatch(getAllProducts())
+            }
+            else {
+                dispatch({
+                    type: actionTypes.DELETE_PRODUCT_FAILED
+                })
+            }
+        } catch(e) {
+            console.log('deleteProduct error: ', e)
+            dispatch({
+                type: actionTypes.DELETE_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
+export const getProductById = (id) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await getProductByIdService(id) 
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_PRODUCT_BY_ID_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
+                })
+            }
+        } catch(e) {
+            console.log('getProductById error: ', e) 
+            dispatch({
+                type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
+            })
+        }
+    }
+}
+
+export const updateProduct = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await updateProductService(data)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.EDIT_PRODUCT_SUCCESS
+                })
+                dispatch(getAllProducts())
+            }
+            else {
+                dispatch({
+                    type: actionTypes.EDIT_PRODUCT_SUCCESS
+                })
+            }
+        } catch (e) {
+            console.log('updateProduct error: ', e)
+            dispatch({
+                type: actionTypes.EDIT_PRODUCT_SUCCESS
+            })
+        } 
     }
 }

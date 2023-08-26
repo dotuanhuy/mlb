@@ -16,9 +16,24 @@ const createNewProductService = (data) => {
     return axios.post('/api/create-new-product', data)
 }
 
+const deleteProductService = (id) => {
+    return axios.post('/api/delete-product', { id })
+}
+
+const getProductByIdService = (id) => {
+    return axios.get(`/api/get-product-by-id?id=${id}`)
+}
+
+const updateProductService = (data) => {
+    return axios.post('/api/update-product', data)
+}
+
 export {
     getAllProductsService,
     createNewProductService,
     getAllCategoriesService,
-    getCategoriesByIdService
+    getCategoriesByIdService,
+    deleteProductService,
+    getProductByIdService,
+    updateProductService
 }

@@ -13,6 +13,7 @@ import Shoes from './components/Products/ShoesList/Shoes'
 import ManageProducts from './components/System/Manage/Products/ManageProducts';
 import ManageShoes from './components/System/Manage/Products/ManageShoes/ManageShoes';
 import ManageShoesCreate from './components/System/Manage/Products/ManageShoes/ManageShoesCreate';
+import ManageShoesEdit from './components/System/Manage/Products/ManageShoes/ManageShoesEdit';
 
 function App({isLogin}) {
     return (
@@ -28,6 +29,7 @@ function App({isLogin}) {
                     <Route path={path.MANAGE_PRODUCTS} element={<ManageProducts />}/>
                     <Route path={path.MANAGE_PRODUCTS_SHOES} element={<ManageShoes />}/>
                     <Route path={path.MANAGE_PRODUCTS_SHOES_CREATE} element={<ManageShoesCreate />}/>
+                    <Route path={path.MANAGE_PRODUCTS_SHOES_EDIT} element={<ManageShoesEdit />}/>
 
                     <Route path={path.LOGIN} element={<Login />}/>
                     <Route path={path.REGISTER} element={<Register />}/>

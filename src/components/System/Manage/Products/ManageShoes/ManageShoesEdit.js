@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import Nav from '../../../nav/nav';
 import Select from 'react-select';
 import * as actions from '../../../../../store/actions'
-import TableProducts from '../TableProducts/TableProducts';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { path, Role, allCode, formatDateVN } from '../../../../../utils';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
@@ -12,6 +11,8 @@ import CommonUtils from '../../../../../utils/CommonUtils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+import {Buffer} from 'buffer';
+import _ from 'lodash'
 
 const cookies = new Cookies();
 
@@ -28,18 +29,21 @@ const initStateImage = {
     previewImgURL: null
 }
 
-function ManageShoesCreate({
+function ManageShoesEdit({
+    products,
     categories, 
     discounts, 
     brands, 
     colors, 
     logos, 
+    getProductByIdRedux,
     getAllCategoriesRedux, 
     fetchAllCodeByTypeRedux, 
     fetchAllColorsRedux,
-    createNewProductRedux
+    updateProductRedux
 }) {
     const navigate = useNavigate()
+    const { state } = useLocation()
     const [selectCategory, setSelectCategory] = useState()
     const [selectObject, setSelectObject] = useState(initState)
     const [selectDiscount, setSelectDiscount] = useState()
@@ -65,11 +69,13 @@ function ManageShoesCreate({
                 navigate(path.HOMEPAGE)
             }
         }
+        
         getAllCategoriesRedux()
         fetchAllCodeByTypeRedux(allCode.DISCOUNT)
         fetchAllCodeByTypeRedux(allCode.BRAND)
         fetchAllColorsRedux(allCode.COLOR)
         fetchAllCodeByTypeRedux(allCode.LOGO)
+        getProductByIdRedux(state)
     }, [])
 
     const buildDataSelect = (inputData) => {
@@ -92,6 +98,49 @@ function ManageShoesCreate({
     }
 
     useEffect(() => {
+        if (products) {
+            setSelectObject({
+                name: products.name,
+                productCode: products.productCode,
+                price: products.price,
+                description: products.description,
+                productionSite: products.productionSite
+            })
+            setSelectCategory({
+                label: products.dataCategory ? products.dataCategory.name : '', 
+                value: products.dataCategory ? products.dataCategory.categoryId: ''
+            })
+            setSelectDiscount({
+                label: products.dataDiscount ? products.dataDiscount.valueEn : '', 
+                value: products.dataDiscount ? products.dataDiscount.keyMap : ''
+            })
+            setSelectBrand({
+                label: products.dataBrand ? products.dataBrand.valueEn : '', 
+                value: products.dataBrand ? products.dataBrand.keyMap : ''
+            })
+            setSelectLogo({
+                label: products.dataLogo ? products.dataLogo.valueEn : '', 
+                value: products.dataLogo ? products.dataLogo.keyMap : ''
+            })
+            if (products.image) {
+                let imageBase64 = Buffer.from(products.image.data, 'base64').toString('binary')
+                setSelectImage({
+                    image: imageBase64,
+                    previewImgURL: imageBase64
+                })
+            }
+            if (products.listColor) {
+                let arrColor = products.listColor.split(',')
+                setListColor(arrColor)
+            }
+            if (products.releaseDate) {
+                const date = new Date(`${products.releaseDate} 00:00:00 GMT+0700 (Indochina Time)`)
+                setSelectReleaseDate(date)
+            }
+        }
+    }, [products])
+
+    useEffect(() => {
         let dataCategory = buildDataSelect(categories)
         let dataDiscount = buildDataSelect(discounts)
         let dataBrand = buildDataSelect(brands)
@@ -103,7 +152,6 @@ function ManageShoesCreate({
         setListLogos(dataLogo)
 
     }, [categories, discounts, brands, colors])
-
     const handleOnchangeCategories = (selectCategory) => {
         setSelectCategory(selectCategory)
     }
@@ -129,8 +177,8 @@ function ManageShoesCreate({
     const handhandleOnchangeBrands = (selectBrand) => {
         setSelectBrand(selectBrand)
     }
-    
-    const handleOnchangeColor = (e) => {
+
+    const handleOnchangeColor = async (e) => {
         let arr = [...listColors]
         if (e.target.checked) {
             arr.push(e.target.value)
@@ -140,14 +188,15 @@ function ManageShoesCreate({
         }
         setListColor(arr)
     }
-    
+
     const handhandleOnchangeLogos = (selectLogo) => {
         setSelectLogo(selectLogo)
     }
 
-    const handleCreateNewProduct = (e) => {
+    const handleUpdateProduct = (e) => {
         e.preventDefault()
         let product = {
+            id: state,
             categoresId: selectCategory.value,
             name: selectObject.name,
             productCode: selectObject.productCode,
@@ -161,25 +210,16 @@ function ManageShoesCreate({
             listColor: listColors.toString(),
             logoId: selectLogo.value
         }
-        
-        createNewProductRedux(product)
-        setSelectObject(initState)
-        setSelectImage(initStateImage)
-        setSelectCategory('')
-        setSelectDiscount('')
-        setSelectBrand('')
-        setSelectLogo('')
-        setSelectReleaseDate('')
-        setListColor([])
+        updateProductRedux(product)
+        navigate(path.MANAGE_PRODUCTS_SHOES) 
     }
-    
 
     return (
         <div className='manage-shoes-create'>
             <div className='manage-shoes-create-container'>
                 <Nav />
                 <div className='manage-shoes-create-title text-center m-3 fs-5 fw-semibold'>
-                    Thêm Mới Giày Dép
+                    Sửa Giày Dép
                 </div>
                 <div className='manage-shoes-create-form mx-2 my-4'>
                     <form>
@@ -288,7 +328,8 @@ function ManageShoesCreate({
                             </div>
                             <div class="mb-3 col-4">
                                 <label for="exampleInputReleaseDate" class="form-label">Release date</label>
-                                <DatePicker                                   
+                                <DatePicker 
+                                    // value={selectReleaseDate}
                                     className='form-control'
                                     dateFormat='MM/dd/yyyy'
                                     selected={selectReleaseDate}
@@ -319,7 +360,7 @@ function ManageShoesCreate({
                                         colors && colors.length > 0 &&
                                         colors.map((item, index) => {
                                             return (
-                                                <div className='col-4 pb-1'>
+                                                <div className='col-4 pb-1' key={index}>
                                                     <input 
                                                         checked={
                                                             listColors.some(color => color === item.keyMap) ? true : false
@@ -328,7 +369,7 @@ function ManageShoesCreate({
                                                         class="form-check-input" 
                                                         id={`checkItem${item.valueEn}`}
                                                         value={item.keyMap}
-                                                        onClick={(e) => handleOnchangeColor(e)}
+                                                        onChange={(e) => handleOnchangeColor(e)}
                                                     />
                                                     <label 
                                                         class="form-check-label ps-2" 
@@ -355,15 +396,15 @@ function ManageShoesCreate({
                         <button 
                             type="submit" 
                             class="btn btn-primary"
-                            onClick={(e) => handleCreateNewProduct(e)}
+                            onClick={(e) => handleUpdateProduct(e)}
                         >
-                            Tạo
+                            Lưu
                         </button>
                     </form>
                 </div>
-                <div className='manage-shoes-create-table'>
+                {/* <div className='manage-shoes-create-table'>
                     <TableProducts />
-                </div>
+                </div> */}
             </div>
         </div>
     );
@@ -372,6 +413,7 @@ function ManageShoesCreate({
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
+        products: state.product.products,
         categories: state.product.categories,
         discounts: state.product.discounts,
         brands: state.product.brands,
@@ -382,11 +424,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        getProductByIdRedux: (id) => dispatch(actions.getProductById(id)),
         getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
         fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        createNewProductRedux: (data) => dispatch(actions.createNewProduct(data))
+        updateProductRedux: (data) => dispatch(actions.updateProduct(data))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageShoesCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageShoesEdit);
