@@ -5,7 +5,9 @@ const initState = {
     categories: [],
     logos: [],
     discounts: [],
-    brands: []
+    brands: [],
+    sizes: [],
+    genders: [] 
 }
 
 const productReducer = (state = initState, action) => {
@@ -14,6 +16,8 @@ const productReducer = (state = initState, action) => {
             state.logos = []
             state.discounts = []
             state.brands = []
+            state.sizes = []
+            state.genders = []
             return {
                 ...state
             }
@@ -49,6 +53,16 @@ const productReducer = (state = initState, action) => {
             }
         case 'FETCH_ALL_LOGO_SUCCESS':
             state.logos = action.data 
+            return {
+                ...state
+            }
+        case 'FETCH_ALL_SIZEGIAY_SUCCESS': 
+            state.sizes = action.data 
+            return {
+                ...state
+            }
+        case 'FETCH_GENDER_PRODUCT_SUCCESS':
+            state.genders = action.data
             return {
                 ...state
             }

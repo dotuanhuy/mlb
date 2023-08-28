@@ -11,6 +11,7 @@ export const path = {
     MANAGE_PRODUCTS_SHOES: '/system/manage/products/shoes',
     MANAGE_PRODUCTS_SHOES_CREATE: '/system/manage/products/shoes/create',
     MANAGE_PRODUCTS_SHOES_EDIT: '/system/manage/products/shoes/edit',
+    MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     GIAY_MLB: '/giay-mlb',
     ACCOUNT: '/account'
 }
@@ -21,7 +22,8 @@ export const allCode = {
     LOGO: 'LOGO',
     COLOR: 'COLOR',
     DISCOUNT: 'DISCOUNT',
-    BRAND: 'BRAND'
+    BRAND: 'BRAND',
+    SIZEGIAY: 'SIZEGIAY'
 }
 
 export const Role = {

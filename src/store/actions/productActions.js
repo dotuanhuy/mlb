@@ -59,6 +59,18 @@ export const fetchAllCodeByTypeProduct = (type) => {
                         data: res.data
                     })
                 }
+                else if (type === allCode.SIZEGIAY) {
+                    dispatch({
+                        type: actionTypes.FETCH_ALL_SIZEGIAY_SUCCESS,
+                        data: res.data
+                    })
+                }
+                else if (type == allCode.GENDER) {
+                    dispatch({
+                        type: actionTypes.FETCH_GENDER_PRODUCT_SUCCESS,
+                        data: res.data
+                    })
+                }
             }
             else {
                 dispatch({

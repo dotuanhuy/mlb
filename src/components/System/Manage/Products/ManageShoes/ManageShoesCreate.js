@@ -19,8 +19,8 @@ const initState = {
     name: '',
     productCode: '',
     price: '',
-    description: '',
-    productionSite: ''
+    productionSite: '',
+    material: ''
 }
 
 const initStateImage = {
@@ -34,6 +34,8 @@ function ManageShoesCreate({
     brands, 
     colors, 
     logos, 
+    sizes,
+    genders,
     getAllCategoriesRedux, 
     fetchAllCodeByTypeRedux, 
     fetchAllColorsRedux,
@@ -49,9 +51,11 @@ function ManageShoesCreate({
     const [selectLogo, setSelectLogo] = useState()
     const [listCategories, setListCategories] = useState([]) 
     const [listDiscount, setListDiscount] = useState([])
+    const [listSizes, setListSizes] = useState([])
     const [listBrands, setListBrands] = useState([])
-    const [listColors, setListColor] = useState([])
+    const [listColors, setListColors] = useState([])
     const [listLogos, setListLogos] = useState([])
+    const [listGenders, setListGenders] = useState([])
 
     // ComponentDidMount
     useEffect(() => {
@@ -70,6 +74,8 @@ function ManageShoesCreate({
         fetchAllCodeByTypeRedux(allCode.BRAND)
         fetchAllColorsRedux(allCode.COLOR)
         fetchAllCodeByTypeRedux(allCode.LOGO)
+        fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
+        fetchAllCodeByTypeRedux(allCode.GENDER)
     }, [])
 
     const buildDataSelect = (inputData) => {
@@ -78,8 +84,14 @@ function ManageShoesCreate({
             inputData.map((item, index) => {
                 let obj = {}
                 if (item.keyMap) {
-                    obj.label = item.valueEn
-                    obj.value = item.keyMap
+                    if (item.type === 'SIZEGIAY') {
+                        obj.label = `${item.valueVi} - ${item.valueEn}` 
+                        obj.value = item.keyMap
+                    }
+                    else {
+                        obj.label = item.valueEn
+                        obj.value = item.keyMap
+                    }
                 }
                 else {
                     obj.label = item.name
@@ -101,8 +113,7 @@ function ManageShoesCreate({
         setListDiscount(dataDiscount)
         setListBrands(dataBrand)
         setListLogos(dataLogo)
-
-    }, [categories, discounts, brands, colors])
+    }, [categories, discounts, brands, logos])
 
     const handleOnchangeCategories = (selectCategory) => {
         setSelectCategory(selectCategory)
@@ -111,7 +122,7 @@ function ManageShoesCreate({
     const handleOnchangeDiscount = (selectDiscount) => {
         setSelectDiscount(selectDiscount)
     }
-    
+
     const handleOnchangeImage = async (e) => {
         let files = e.target.files
         let file = files[0]
@@ -130,15 +141,37 @@ function ManageShoesCreate({
         setSelectBrand(selectBrand)
     }
     
-    const handleOnchangeColor = (e) => {
-        let arr = [...listColors]
-        if (e.target.checked) {
-            arr.push(e.target.value)
+    const handleOnchangeColorOrGender = (e, type) => {
+        if (type === allCode.COLOR) {
+            let arr = [...listColors]
+            if (e.target.checked) {
+                arr.push(e.target.value)
+            }
+            else {
+                arr = arr.filter(item => item !== e.target.value)
+            }
+            setListColors(arr)
         }
-        else {
-            arr = arr.filter(item => item !== e.target.value)
+        else if (type === allCode.GENDER) {
+            let arr = [...listGenders]
+            if (e.target.checked) {
+                arr.push(e.target.value)
+            }
+            else {
+                arr = arr.filter(item => item !== e.target.value)
+            }
+            setListGenders(arr)
         }
-        setListColor(arr)
+        else if (type === allCode.SIZEGIAY) {
+            let arr = [...listSizes]
+            if (e.target.checked) {
+                arr.push(e.target.value)
+            }
+            else {
+                arr = arr.filter(item => item !== e.target.value)
+            }
+            setListSizes(arr)
+        }
     }
     
     const handhandleOnchangeLogos = (selectLogo) => {
@@ -154,14 +187,16 @@ function ManageShoesCreate({
             price: +(selectObject.price),
             discountId: selectDiscount ? selectDiscount.value : '',
             image: selectImage.image,
-            description: selectObject.description,
             productionSite: selectObject.productionSite,
             releaseDate: moment(selectReleaseDate).format('MM/DD/YYYY'),
             brandId: selectBrand.value,
             listColor: listColors.toString(),
-            logoId: selectLogo.value
+            logoId: selectLogo.value,
+            listSize: listSizes.toString(),
+            material: selectObject.material,
+            listGender: listGenders.toString(),
         }
-        
+
         createNewProductRedux(product)
         setSelectObject(initState)
         setSelectImage(initStateImage)
@@ -170,9 +205,10 @@ function ManageShoesCreate({
         setSelectBrand('')
         setSelectLogo('')
         setSelectReleaseDate('')
-        setListColor([])
+        setListColors([])
+        setListSizes([])
+        setListGenders([])
     }
-    
 
     return (
         <div className='manage-shoes-create'>
@@ -184,19 +220,19 @@ function ManageShoesCreate({
                 <div className='manage-shoes-create-form mx-2 my-4'>
                     <form>
                         <div className='form row'>
-                            <div class="mb-3 col-4">
-                                <label class="form-label">CategoreId</label>
+                            <div className="mb-3 col-4">
+                                <label className="form-label">CategoreId</label>
                                 <Select
                                     value={selectCategory}
                                     onChange={handleOnchangeCategories}
                                     options={listCategories}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputName" class="form-label">Name</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputName" className="form-label">Name</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputName" 
                                     value={selectObject.name}
                                     onChange={(e) => setSelectObject({
@@ -205,11 +241,11 @@ function ManageShoesCreate({
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputCode" class="form-label">Product Code</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputCode" className="form-label">Product Code</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputCode" 
                                     value={selectObject.productCode}
                                     onChange={(e) => setSelectObject({
@@ -218,11 +254,11 @@ function ManageShoesCreate({
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputFirstPrice" class="form-label">Prices</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputFirstPrice" className="form-label">Prices</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputFirstPrice" 
                                     value={selectObject.price}
                                     onChange={(e) => setSelectObject({
@@ -231,19 +267,19 @@ function ManageShoesCreate({
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputLastName" class="form-label">Discount</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputLastName" className="form-label">Discount</label>
                                 <Select
                                     value={selectDiscount}
                                     onChange={handleOnchangeDiscount}
                                     options={listDiscount}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputImage" class="form-label">Image</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputImage" className="form-label">Image</label>
                                 <input 
                                     type="file" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputImage" 
                                     onChange={(e) => handleOnchangeImage(e)}
                                 />
@@ -259,25 +295,20 @@ function ManageShoesCreate({
                                     ></div> 
                                     : ''
                                 }
+                            </div> 
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputBrand" className="form-label">BrandId</label>
+                                <Select
+                                    value={selectBrand}
+                                    onChange={handhandleOnchangeBrands}
+                                    options={listBrands}
+                                />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label class="form-label">Description</label>
-                                <textarea 
-                                    className='form-control'
-                                    value={selectObject.description}
-                                    onChange={(e) => setSelectObject({
-                                        ...selectObject,
-                                        description: e.target.value
-                                    })}
-                                >
-
-                                </textarea>
-                            </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputSite" class="form-label">Site</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputSite" className="form-label">Site</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputSite" 
                                     value={selectObject.productionSite}
                                     onChange={(e) => setSelectObject({
@@ -286,8 +317,8 @@ function ManageShoesCreate({
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputReleaseDate" class="form-label">Release date</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputReleaseDate" className="form-label">Release date</label>
                                 <DatePicker                                   
                                     className='form-control'
                                     dateFormat='MM/dd/yyyy'
@@ -295,21 +326,45 @@ function ManageShoesCreate({
                                     onChange={(date) => setSelectReleaseDate(date)}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputLastName" class="form-label">BrandId</label>
-                                <Select
-                                    value={selectBrand}
-                                    onChange={handhandleOnchangeBrands}
-                                    options={listBrands}
-                                />
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputSize" className="form-label">SizeId</label>
+                                <div className='row'>
+                                    {
+                                        sizes && sizes.length > 0 &&
+                                        sizes.map((item, index) => {
+                                            let value = `${item.valueVi} - ${item.valueEn}`
+                                            return (
+                                                <div className='col-4 pb-1' key={index}>
+                                                    <input 
+                                                        checked={
+                                                            listSizes.some(size => size === item.valueVi) ? true : false
+                                                        }
+                                                        type="checkbox" 
+                                                        className="form-check-input" 
+                                                        id={`checkItem${item.valueEn}`}
+                                                        value={item.valueVi}
+                                                        onChange={(e) => handleOnchangeColorOrGender(e, allCode.SIZEGIAY)}
+                                                    />
+                                                    <label 
+                                                        className="form-check-label ps-2" 
+                                                        htmlFor={`checkItem${item.valueEn}`}
+                                                        style={{ color: `${item.valueEn}`}}
+                                                    >
+                                                        {value}
+                                                    </label>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
                             <div 
-                                class="mb-3 col-4"
+                                className="mb-3 col-4"
                                 style={{ background: '#453c3c' }}
                             >
                                 <label 
-                                    for="exampleInputLastName" 
-                                    class="form-label"
+                                    htmlFor="exampleInputColor" 
+                                    className="form-label"
                                     style={{ color: '#fff'}}
                                 >   
                                     ColorId
@@ -319,20 +374,20 @@ function ManageShoesCreate({
                                         colors && colors.length > 0 &&
                                         colors.map((item, index) => {
                                             return (
-                                                <div className='col-4 pb-1'>
+                                                <div className='col-4 pb-1' key={index}>
                                                     <input 
                                                         checked={
                                                             listColors.some(color => color === item.keyMap) ? true : false
                                                         }
                                                         type="checkbox" 
-                                                        class="form-check-input" 
+                                                        className="form-check-input" 
                                                         id={`checkItem${item.valueEn}`}
                                                         value={item.keyMap}
-                                                        onClick={(e) => handleOnchangeColor(e)}
+                                                        onChange={(e) => handleOnchangeColorOrGender(e, allCode.COLOR)}
                                                     />
                                                     <label 
-                                                        class="form-check-label ps-2" 
-                                                        for={`checkItem${item.valueEn}`}
+                                                        className="form-check-label ps-2" 
+                                                        htmlFor={`checkItem${item.valueEn}`}
                                                         style={{ color: `${item.valueEn}`}}
                                                     >
                                                         {item.valueEn}
@@ -343,18 +398,59 @@ function ManageShoesCreate({
                                     }
                                 </div>
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputLastName" class="form-label">Logos</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputLogo" className="form-label">Logos</label>
                                 <Select
                                     value={selectLogo}
                                     onChange={handhandleOnchangeLogos}
                                     options={listLogos}
                                 />
                             </div>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputMaterial" className="form-label">Material</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    id="exampleInputMaterial" 
+                                    value={selectObject.material}
+                                    onChange={(e) => setSelectObject({
+                                        ...selectObject,
+                                        material: e.target.value
+                                    })}
+                                />
+                            </div>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputGender" className="form-label">Gender</label>
+                                {
+                                        genders && genders.length > 0 &&
+                                        genders.map((item, index) => {
+                                            return (
+                                                <div className='col-4 pb-1' key={index}>
+                                                    <input 
+                                                        checked={
+                                                            listGenders.some(gender => gender === item.valueVi) ? true : false
+                                                        }
+                                                        type="checkbox" 
+                                                        className="form-check-input" 
+                                                        id={`checkItem${item.valueEn}`}
+                                                        value={item.valueVi}
+                                                        onChange={(e) => handleOnchangeColorOrGender(e, allCode.GENDER)}
+                                                    />
+                                                    <label 
+                                                        className="form-check-label ps-2" 
+                                                        htmlFor={`checkItem${item.valueEn}`}
+                                                    >
+                                                        {item.valueVi}
+                                                    </label>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                            </div>
                         </div>
                         <button 
                             type="submit" 
-                            class="btn btn-primary"
+                            className="btn btn-primary"
                             onClick={(e) => handleCreateNewProduct(e)}
                         >
                             Tạo
@@ -376,7 +472,9 @@ const mapStateToProps = state => {
         discounts: state.product.discounts,
         brands: state.product.brands,
         colors: state.product.colors,
-        logos: state.product.logos
+        logos: state.product.logos,
+        sizes: state.product.sizes,
+        genders: state.product.genders
     }
 }
 

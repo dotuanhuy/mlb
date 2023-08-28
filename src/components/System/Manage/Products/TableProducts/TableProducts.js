@@ -22,6 +22,10 @@ function TableProducts({products, getAllProductsRedux, deleteProductRedux}) {
         navigate(path.MANAGE_PRODUCTS_SHOES_EDIT, {state: id})
     }
 
+    const handleAddImage = (id) => {
+        navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, { state: id})
+    }
+
     return (
         <div className='products-all-system'>
             <div className='products-all-container'>
@@ -35,12 +39,14 @@ function TableProducts({products, getAllProductsRedux, deleteProductRedux}) {
                             <th>Price</th>
                             <th>DiscountId</th>
                             <th>Image</th>
-                            <th>Description</th>
                             <th>Site</th>
                             <th>Release date</th>
                             <th>BrandId</th>
                             <th>List color</th>
                             <th>LogoId</th>
+                            <th>Material</th>
+                            <th>ListSize</th>
+                            <th>ListGender</th>
                             <th>Actions</th>
                         </tr>
                         {
@@ -70,12 +76,26 @@ function TableProducts({products, getAllProductsRedux, deleteProductRedux}) {
                                                 }}
                                             ></div>
                                         </td>
-                                        <td>{item.description}</td>
                                         <td>{item.productionSite}</td>
                                         <td>{item.releaseDate}</td>
                                         <td>{item.brandId}</td>
-                                        <td>{item.listColor}</td>
+                                        <td>                                          
+                                            <div 
+                                                style={{ wordWrap: 'break-word', width: '120px'}}
+                                            >
+                                                {item.listColor}
+                                            </div>
+                                        </td>
                                         <td>{item.logoId}</td>
+                                        <td>{item.material}</td>
+                                        <td>
+                                            <div 
+                                                style={{ wordWrap: 'break-word', width: '100px'}}
+                                            >
+                                                {item.listSize}
+                                            </div>
+                                        </td>
+                                        <td>{item.listGender}</td>
                                         <td>
                                             <div className='action'>
                                                 <button 
@@ -92,9 +112,15 @@ function TableProducts({products, getAllProductsRedux, deleteProductRedux}) {
                                                 </button>
                                                 <button 
                                                     className='btn btn-outline-info btn-image'
-                                                    
+                                                    onClick={() => handleAddImage(item.id)}
                                                 >
                                                     Image
+                                                </button>
+                                                <button 
+                                                    className='btn btn-outline-info btn-description'
+                                                    
+                                                >
+                                                    Description
                                                 </button>
                                             </div>
                                         </td>

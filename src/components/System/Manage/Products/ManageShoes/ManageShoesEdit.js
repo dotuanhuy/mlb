@@ -21,7 +21,7 @@ const initState = {
     productCode: '',
     price: '',
     description: '',
-    productionSite: ''
+    material: ''
 }
 
 const initStateImage = {
@@ -36,6 +36,8 @@ function ManageShoesEdit({
     brands, 
     colors, 
     logos, 
+    sizes,
+    genders,
     getProductByIdRedux,
     getAllCategoriesRedux, 
     fetchAllCodeByTypeRedux, 
@@ -54,8 +56,11 @@ function ManageShoesEdit({
     const [listCategories, setListCategories] = useState([]) 
     const [listDiscount, setListDiscount] = useState([])
     const [listBrands, setListBrands] = useState([])
-    const [listColors, setListColor] = useState([])
+    const [listColors, setListColors] = useState([])
     const [listLogos, setListLogos] = useState([])
+    const [listSizes, setListSizes] = useState([])
+    const [listGenders, setListGenders] = useState([])
+
 
     // ComponentDidMount
     useEffect(() => {
@@ -75,6 +80,8 @@ function ManageShoesEdit({
         fetchAllCodeByTypeRedux(allCode.BRAND)
         fetchAllColorsRedux(allCode.COLOR)
         fetchAllCodeByTypeRedux(allCode.LOGO)
+        fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
+        fetchAllCodeByTypeRedux(allCode.GENDER)
         getProductByIdRedux(state)
     }, [])
 
@@ -103,7 +110,7 @@ function ManageShoesEdit({
                 name: products.name,
                 productCode: products.productCode,
                 price: products.price,
-                description: products.description,
+                material: products.material,
                 productionSite: products.productionSite
             })
             setSelectCategory({
@@ -131,11 +138,19 @@ function ManageShoesEdit({
             }
             if (products.listColor) {
                 let arrColor = products.listColor.split(',')
-                setListColor(arrColor)
+                setListColors(arrColor)
             }
             if (products.releaseDate) {
                 const date = new Date(`${products.releaseDate} 00:00:00 GMT+0700 (Indochina Time)`)
                 setSelectReleaseDate(date)
+            }
+            if (products.listSize) {
+                let arrSize = products.listSize.split(',')
+                setListSizes(arrSize)
+            }
+            if (products.listGender) {
+                let arrGender = products.listGender.split(',')
+                setListGenders(arrGender)
             }
         }
     }, [products])
@@ -151,7 +166,7 @@ function ManageShoesEdit({
         setListBrands(dataBrand)
         setListLogos(dataLogo)
 
-    }, [categories, discounts, brands, colors])
+    }, [categories, discounts, brands, logos])
     const handleOnchangeCategories = (selectCategory) => {
         setSelectCategory(selectCategory)
     }
@@ -178,15 +193,37 @@ function ManageShoesEdit({
         setSelectBrand(selectBrand)
     }
 
-    const handleOnchangeColor = async (e) => {
-        let arr = [...listColors]
-        if (e.target.checked) {
-            arr.push(e.target.value)
+    const handleOnchangeColorOrGender = (e, type) => {
+        if (type === allCode.COLOR) {
+            let arr = [...listColors]
+            if (e.target.checked) {
+                arr.push(e.target.value)
+            }
+            else {
+                arr = arr.filter(item => item !== e.target.value)
+            }
+            setListColors(arr)
         }
-        else {
-            arr = arr.filter(item => item !== e.target.value)
+        else if (type === allCode.GENDER) {
+            let arr = [...listGenders]
+            if (e.target.checked) {
+                arr.push(e.target.value)
+            }
+            else {
+                arr = arr.filter(item => item !== e.target.value)
+            }
+            setListGenders(arr)
         }
-        setListColor(arr)
+        else if (type === allCode.SIZEGIAY) {
+            let arr = [...listSizes]
+            if (e.target.checked) {
+                arr.push(e.target.value)
+            }
+            else {
+                arr = arr.filter(item => item !== e.target.value)
+            }
+            setListSizes(arr)
+        }
     }
 
     const handhandleOnchangeLogos = (selectLogo) => {
@@ -208,10 +245,14 @@ function ManageShoesEdit({
             releaseDate: moment(selectReleaseDate).format('MM/DD/YYYY'),
             brandId: selectBrand.value,
             listColor: listColors.toString(),
-            logoId: selectLogo.value
+            logoId: selectLogo.value,
+            listSize: listSizes.toString(),
+            material: selectObject.material,
+            listGender: listGenders.toString(),
         }
         updateProductRedux(product)
         navigate(path.MANAGE_PRODUCTS_SHOES) 
+        console.log('product: ', product)
     }
 
     return (
@@ -301,17 +342,12 @@ function ManageShoesEdit({
                                 }
                             </div>
                             <div class="mb-3 col-4">
-                                <label class="form-label">Description</label>
-                                <textarea 
-                                    className='form-control'
-                                    value={selectObject.description}
-                                    onChange={(e) => setSelectObject({
-                                        ...selectObject,
-                                        description: e.target.value
-                                    })}
-                                >
-
-                                </textarea>
+                                <label for="exampleInputLastName" class="form-label">BrandId</label>
+                                <Select
+                                    value={selectBrand}
+                                    onChange={handhandleOnchangeBrands}
+                                    options={listBrands}
+                                />
                             </div>
                             <div class="mb-3 col-4">
                                 <label for="exampleInputSite" class="form-label">Site</label>
@@ -336,13 +372,37 @@ function ManageShoesEdit({
                                     onChange={(date) => setSelectReleaseDate(date)}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputLastName" class="form-label">BrandId</label>
-                                <Select
-                                    value={selectBrand}
-                                    onChange={handhandleOnchangeBrands}
-                                    options={listBrands}
-                                />
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputSize" className="form-label">SizeId</label>
+                                <div className='row'>
+                                    {
+                                        sizes && sizes.length > 0 &&
+                                        sizes.map((item, index) => {
+                                            let value = `${item.valueVi} - ${item.valueEn}`
+                                            return (
+                                                <div className='col-4 pb-1' key={index}>
+                                                    <input 
+                                                        checked={
+                                                            listSizes.some(size => size === item.valueVi) ? true : false
+                                                        }
+                                                        type="checkbox" 
+                                                        className="form-check-input" 
+                                                        id={`checkItem${item.valueEn}`}
+                                                        value={item.valueVi}
+                                                        onChange={(e) => handleOnchangeColorOrGender(e, allCode.SIZEGIAY)}
+                                                    />
+                                                    <label 
+                                                        className="form-check-label ps-2" 
+                                                        htmlFor={`checkItem${item.valueEn}`}
+                                                        style={{ color: `${item.valueEn}`}}
+                                                    >
+                                                        {value}
+                                                    </label>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
                             <div 
                                 class="mb-3 col-4"
@@ -369,7 +429,7 @@ function ManageShoesEdit({
                                                         class="form-check-input" 
                                                         id={`checkItem${item.valueEn}`}
                                                         value={item.keyMap}
-                                                        onChange={(e) => handleOnchangeColor(e)}
+                                                        onChange={(e) => handleOnchangeColorOrGender(e, allCode.COLOR)}
                                                     />
                                                     <label 
                                                         class="form-check-label ps-2" 
@@ -391,6 +451,47 @@ function ManageShoesEdit({
                                     onChange={handhandleOnchangeLogos}
                                     options={listLogos}
                                 />
+                            </div>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputMaterial" className="form-label">Material</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    id="exampleInputMaterial" 
+                                    value={selectObject.material}
+                                    onChange={(e) => setSelectObject({
+                                        ...selectObject,
+                                        material: e.target.value
+                                    })}
+                                />
+                            </div>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputGender" className="form-label">Gender</label>
+                                {
+                                        genders && genders.length > 0 &&
+                                        genders.map((item, index) => {
+                                            return (
+                                                <div className='col-4 pb-1' key={index}>
+                                                    <input 
+                                                        checked={
+                                                            listGenders.some(gender => gender === item.valueVi) ? true : false
+                                                        }
+                                                        type="checkbox" 
+                                                        className="form-check-input" 
+                                                        id={`checkItem${item.valueEn}`}
+                                                        value={item.valueVi}
+                                                        onChange={(e) => handleOnchangeColorOrGender(e, allCode.GENDER)}
+                                                    />
+                                                    <label 
+                                                        className="form-check-label ps-2" 
+                                                        htmlFor={`checkItem${item.valueEn}`}
+                                                    >
+                                                        {item.valueVi}
+                                                    </label>
+                                                </div>
+                                            )
+                                        })
+                                    }
                             </div>
                         </div>
                         <button 
@@ -418,7 +519,9 @@ const mapStateToProps = state => {
         discounts: state.product.discounts,
         brands: state.product.brands,
         colors: state.product.colors,
-        logos: state.product.logos
+        logos: state.product.logos,
+        sizes: state.product.sizes,
+        genders: state.product.genders
     }
 }
 
