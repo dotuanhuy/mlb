@@ -5,7 +5,7 @@ import Select from 'react-select';
 import * as actions from '../../../../../store/actions'
 import TableProducts from '../TableProducts/TableProducts';
 import { useNavigate } from 'react-router-dom';
-import { path, Role, allCode, formatDateVN } from '../../../../../utils';
+import { path, Role, allCode, categorieType } from '../../../../../utils';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 import CommonUtils from '../../../../../utils/CommonUtils';
@@ -197,7 +197,7 @@ function ManageShoesCreate({
             listGender: listGenders.toString(),
         }
 
-        createNewProductRedux(product)
+        createNewProductRedux(product, categorieType.SHOES_SANDAL)
         setSelectObject(initState)
         setSelectImage(initStateImage)
         setSelectCategory('')
@@ -483,7 +483,7 @@ const mapDispatchToProps = dispatch => {
         getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
         fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        createNewProductRedux: (data) => dispatch(actions.createNewProduct(data))
+        createNewProductRedux: (data, type) => dispatch(actions.createNewProduct(data, type))
     }
 }
 

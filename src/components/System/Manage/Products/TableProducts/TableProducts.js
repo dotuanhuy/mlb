@@ -7,23 +7,27 @@ import * as actions from '../../../../../store/actions'
 import { useNavigate } from 'react-router-dom';
 import {Buffer} from 'buffer';
 
-function TableProducts({products, getAllProductsRedux, deleteProductRedux}) {
+function TableProducts({typeCategore, products, getAllProductsRedux, deleteProductRedux}) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        getAllProductsRedux()
+        getAllProductsRedux(typeCategore)
     }, [])
 
     const handleDeleteProduct = (id) => {
-        deleteProductRedux(id)
+        deleteProductRedux(id, typeCategore)
     }
 
     const handleEditProduct = (id) => {
         navigate(path.MANAGE_PRODUCTS_SHOES_EDIT, {state: id})
     }
 
-    const handleAddImage = (id) => {
-        navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, { state: id})
+    const handleAddImage = (product) => {
+        navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, { state: product})
+    }
+
+    const handleAddDescription = (id) => {
+        navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, { state: id })
     }
 
     return (
@@ -112,13 +116,13 @@ function TableProducts({products, getAllProductsRedux, deleteProductRedux}) {
                                                 </button>
                                                 <button 
                                                     className='btn btn-outline-info btn-image'
-                                                    onClick={() => handleAddImage(item.id)}
+                                                    onClick={() => handleAddImage(item)}
                                                 >
                                                     Image
                                                 </button>
                                                 <button 
                                                     className='btn btn-outline-info btn-description'
-                                                    
+                                                    onClick={() => handleAddDescription(item.id)}
                                                 >
                                                     Description
                                                 </button>
@@ -143,7 +147,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllProductsRedux: () => dispatch(actions.getAllProducts()),
+        getAllProductsRedux: (type) => dispatch(actions.getAllProducts(type)),
         deleteProductRedux: (id) => dispatch(actions.deleteProduct(id))
     }
 }

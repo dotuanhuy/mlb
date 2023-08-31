@@ -7,15 +7,20 @@ import {
     deleteProductService,
     getProductByIdService,
     updateProductService,
+    getAllImageProductService,
+    addImageProductService,
+    deleteImageProductService,
+    addDescriptionProductService,
+    fetchDescriptionProductService
 
 } from "../../services/productService";
 import { getAllCodeByType } from "../../services/userService";
 import { allCode } from "../../utils";
 
-export const getAllProducts = () => {
+export const getAllProducts = (type) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllProductsService()
+            let res = await getAllProductsService(type)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_PRODUCTS_SUCCESS,
@@ -65,7 +70,7 @@ export const fetchAllCodeByTypeProduct = (type) => {
                         data: res.data
                     })
                 }
-                else if (type == allCode.GENDER) {
+                else if (type === allCode.GENDER) {
                     dispatch({
                         type: actionTypes.FETCH_GENDER_PRODUCT_SUCCESS,
                         data: res.data
@@ -153,7 +158,7 @@ export const getAllCategories = () => {
     }
 }
 
-export const createNewProduct = (product) => {
+export const createNewProduct = (product, type) => {
     return async (dispatch, getState) => {
         try {
             let res = await createNewProductService(product)
@@ -161,7 +166,7 @@ export const createNewProduct = (product) => {
                 dispatch({
                     type: actionTypes.CREATE_NEW_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts())
+                dispatch(getAllProducts(type))
             }
             else {
                 dispatch({
@@ -177,7 +182,7 @@ export const createNewProduct = (product) => {
     }
 }
 
-export const deleteProduct = (id) => {
+export const deleteProduct = (id, type) => {
     return async (dispatch, getSate) => {
         try {
             let res = await deleteProductService(id)
@@ -185,7 +190,7 @@ export const deleteProduct = (id) => {
                 dispatch({
                     type: actionTypes.DELETE_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts())
+                dispatch(getAllProducts(type))
             }
             else {
                 dispatch({
@@ -225,7 +230,7 @@ export const getProductById = (id) => {
     }
 }
 
-export const updateProduct = (data) => {
+export const updateProduct = (data, type) => {
     return async (dispatch, getState) => {
         try {
             let res = await updateProductService(data)
@@ -233,7 +238,7 @@ export const updateProduct = (data) => {
                 dispatch({
                     type: actionTypes.EDIT_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts())
+                dispatch(getAllProducts(type))
             }
             else {
                 dispatch({
@@ -246,5 +251,125 @@ export const updateProduct = (data) => {
                 type: actionTypes.EDIT_PRODUCT_SUCCESS
             })
         } 
+    }
+}
+
+export const fetchAllImageProduct = (id) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await getAllImageProductService(id)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_IMAGE_PRODUCT_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_IMAGE_PRODUCT_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('fetchAllImageProduct error: ', e)
+            dispatch({
+                type: actionTypes.FETCH_ALL_IMAGE_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
+export const addImageProduct = (data) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await addImageProductService(data)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.ADD_IMAGE_PRODUCT_SUCCESS
+                })
+                dispatch(fetchAllImageProduct(data.productId))
+            }
+            else {
+                dispatch({
+                    type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('addImageProduct error: ', e)
+            dispatch({
+                type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
+export const deleteImageProduct = (id, type) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await deleteImageProductService(id)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.DELETE_IMAGE_PRODUCT_SUCCESS
+                })
+                dispatch(fetchAllImageProduct(type))
+            }
+            else {
+                dispatch({
+                    type: actionTypes.DELETE_IMAGE_PRODUCT_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('deleteImageProduct error: ', e)
+            dispatch({
+                type: actionTypes.DELETE_IMAGE_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
+export const fetchDescriptionProduct = (productId) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await fetchDescriptionProductService(productId) 
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_DESCRIPTION_PRODUCT_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.FETCH_DESCRIPTION_PRODUCT_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('fetchDescriptionProduct error: ', e)
+            dispatch({
+                type: actionTypes.FETCH_DESCRIPTION_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
+export const addDescriptionProduct = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await addDescriptionProductService(data) 
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.ADD_DESCRIPTION_PRODUCT_SUCCESS
+                })
+                dispatch(fetchDescriptionProduct(data.productId))
+            }
+            else {
+                dispatch({
+                    type: actionTypes.ADD_DESCRIPTION_PRODUCT_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('addDescriptionProduct error: ', e)
+            dispatch({
+                type: actionTypes.ADD_DESCRIPTION_PRODUCT_FAILED
+            })
+        }
     }
 }

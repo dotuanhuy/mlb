@@ -1,7 +1,7 @@
 import axios from "../axios";
 
-const getAllProductsService = () => {
-    return axios.get('/api/get-all-prducts')
+const getAllProductsService = (type) => {
+    return axios.get(`/api/get-all-prducts?type=${type}`)
 }
 
 const getAllCategoriesService = () => {
@@ -28,6 +28,26 @@ const updateProductService = (data) => {
     return axios.post('/api/update-product', data)
 }
 
+const getAllImageProductService = (id) => {
+    return axios.get(`/api/get-all-image-product?id=${id}`)
+}
+
+const addImageProductService = (data) => {
+    return axios.post('/api/add-image-product', data)
+}
+
+const deleteImageProductService = (id) => {
+    return axios.post('/api/delete-image-product', { id })
+}
+
+const fetchDescriptionProductService = (id) => {
+    return axios.get(`/api/get-all-description-product?id=${id}`)
+}
+
+const addDescriptionProductService = (data) => {
+    return axios.post('/api/add-description-product', data)
+}
+
 export {
     getAllProductsService,
     createNewProductService,
@@ -35,5 +55,10 @@ export {
     getCategoriesByIdService,
     deleteProductService,
     getProductByIdService,
-    updateProductService
+    updateProductService,
+    getAllImageProductService,
+    addImageProductService,
+    deleteImageProductService,
+    addDescriptionProductService,
+    fetchDescriptionProductService
 }

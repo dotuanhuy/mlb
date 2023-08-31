@@ -12,6 +12,7 @@ export const path = {
     MANAGE_PRODUCTS_SHOES_CREATE: '/system/manage/products/shoes/create',
     MANAGE_PRODUCTS_SHOES_EDIT: '/system/manage/products/shoes/edit',
     MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
+    MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
     GIAY_MLB: '/giay-mlb',
     ACCOUNT: '/account'
 }
@@ -52,4 +53,9 @@ export const listColor = {
     RED: 'Red',
     ORANGE: 'Orange',
     YELLOW: 'Yellow'
+}
+
+export const passwordLength = {
+    minLength: 8,
+    maxLength: 20
 }

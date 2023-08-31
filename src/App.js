@@ -15,6 +15,7 @@ import ManageShoes from './components/System/Manage/Products/ManageShoes/ManageS
 import ManageShoesCreate from './components/System/Manage/Products/ManageShoes/ManageShoesCreate';
 import ManageShoesEdit from './components/System/Manage/Products/ManageShoes/ManageShoesEdit';
 import AddImageProduct from './components/System/Manage/Products/ManageShoes/HandleImage/AddImageProduct';
+import AddDescriptionProduc from './components/System/Manage/Products/ManageShoes/HandleDescription/AddDescriptionProduc';
 
 function App({isLogin}) {
     return (
@@ -32,6 +33,7 @@ function App({isLogin}) {
                     <Route path={path.MANAGE_PRODUCTS_SHOES_CREATE} element={<ManageShoesCreate />}/>
                     <Route path={path.MANAGE_PRODUCTS_SHOES_EDIT} element={<ManageShoesEdit />}/>
                     <Route path={path.MANAGE_PRODUCTS_IMAGE_ADD} element={<AddImageProduct />}/>
+                    <Route path={path.MANAGE_PRODUCTS_DESCRIPTION_ADD} element={<AddDescriptionProduc />}/>
 
                     <Route path={path.LOGIN} element={<Login />}/>
                     <Route path={path.REGISTER} element={<Register />}/>

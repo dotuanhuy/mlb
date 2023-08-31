@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import './ManageShoes.scss'
 import Nav from '../../../nav/nav';
 import { Link, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../../../utils';
+import { path, Role, categorieType } from '../../../../../utils';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 import TableProducts from '../TableProducts/TableProducts';
@@ -40,7 +40,7 @@ function ManageShoes({isLogin}) {
                         <Link to={path.MANAGE_PRODUCTS_SHOES_CREATE}>Add</Link>
                     </button>
                 </div>
-                <TableProducts />
+                <TableProducts typeCategore={categorieType.SHOES_SANDAL}/>
             </div>
         </div>
     );

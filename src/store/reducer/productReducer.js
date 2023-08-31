@@ -7,7 +7,9 @@ const initState = {
     discounts: [],
     brands: [],
     sizes: [],
-    genders: [] 
+    genders: [],
+    images: [],
+    descriptions: [] 
 }
 
 const productReducer = (state = initState, action) => {
@@ -98,6 +100,26 @@ const productReducer = (state = initState, action) => {
             }
         case 'FETCH_PRODUCT_BY_ID_FAILED':
             state.products = []
+            return {
+                ...state
+            }
+        case 'FETCH_ALL_IMAGE_PRODUCT_SUCCESS':
+            state.images = action.data
+            return {
+                ...state
+            }
+        case 'FETCH_ALL_IMAGE_PRODUCT_FAILED':
+            state.images = []
+            return {
+                ...state
+            }
+        case 'FETCH_DESCRIPTION_PRODUCT_SUCCESS': 
+            state.descriptions = action.data
+            return {
+                ...state
+            }
+        case 'FETCH_DESCRIPTION_PRODUCT_FAILED': 
+            state.descriptions = []
             return {
                 ...state
             }

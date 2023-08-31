@@ -4,7 +4,7 @@ import Nav from '../../../nav/nav';
 import Select from 'react-select';
 import * as actions from '../../../../../store/actions'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { path, Role, allCode, formatDateVN } from '../../../../../utils';
+import { path, Role, allCode, categorieType } from '../../../../../utils';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 import CommonUtils from '../../../../../utils/CommonUtils';
@@ -250,9 +250,8 @@ function ManageShoesEdit({
             material: selectObject.material,
             listGender: listGenders.toString(),
         }
-        updateProductRedux(product)
+        updateProductRedux(product, categorieType.SHOES_SANDAL)
         navigate(path.MANAGE_PRODUCTS_SHOES) 
-        console.log('product: ', product)
     }
 
     return (
@@ -531,7 +530,7 @@ const mapDispatchToProps = dispatch => {
         getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
         fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        updateProductRedux: (data) => dispatch(actions.updateProduct(data))
+        updateProductRedux: (data, categorieType) => dispatch(actions.updateProduct(data, categorieType))
     }
 }
 
