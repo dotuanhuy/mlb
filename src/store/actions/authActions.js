@@ -2,6 +2,7 @@ import actionTypes from "./actionTypes";
 import Cookies from 'universal-cookie';
 import { 
     handleLoginAPI, 
+    handleLogoutAPI
 } from "../../services/userService";
 
 const cookies = new Cookies();
@@ -15,7 +16,7 @@ export const fetLogin = (email, password) => {
                     type: actionTypes.LOGIN_SUCCESS,
                     data: res
                 })
-                cookies.set('userLogin', res.token, { path: '/'});
+                // cookies.set('userLogin', res.token, { path: '/'});
             }
             else {
                 dispatch({
@@ -32,11 +33,19 @@ export const fetLogin = (email, password) => {
 }
 
 export const fetLogout = () => {
-    return (dispatch, getSate) => {
+    return async (dispatch, getSate) => {
         try {
-            dispatch({
-                type: actionTypes.LOGOUT_SUCCESS
-            })
+            let res = await handleLogoutAPI() 
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.LOGOUT_SUCCESS
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.LOGOUT_FAILED
+                })
+            }
         } catch(e) {
             dispatch({
                 type: actionTypes.LOGOUT_FAILED

@@ -97,10 +97,10 @@ function HomeFooter() {
                                 <div className='email-footer mt-4'>
                                     <p>Đăng ký để nhận tin</p>
                                     <form className='form-email form-inline'>
-                                        <div class="form-group">
-                                            <input type="email" class="form-control" placeholder="Nhập địa chỉ email" />
+                                        <div className="form-group">
+                                            <input type="email" className="form-control" placeholder="Nhập địa chỉ email" />
                                         </div>
-                                        <button type="submit" class="btn btn-primary mb-2">Gửi</button>
+                                        <button type="submit" className="btn btn-primary mb-2">Gửi</button>
                                     </form>
                                 </div>
                             </div>

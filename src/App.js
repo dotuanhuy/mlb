@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, memo } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from './utils'
 import HomePage from './components/HomePage/HomePage';
@@ -16,30 +16,40 @@ import ManageShoesCreate from './components/System/Manage/Products/ManageShoes/M
 import ManageShoesEdit from './components/System/Manage/Products/ManageShoes/ManageShoesEdit';
 import AddImageProduct from './components/System/Manage/Products/ManageShoes/HandleImage/AddImageProduct';
 import AddDescriptionProduc from './components/System/Manage/Products/ManageShoes/HandleDescription/AddDescriptionProduc';
+import PrivateRouter from './route/PrivateRouter';
+import System from './route/system';
+import AuthRoute from './route/authRoute';
+import PublicRoute from './route/publicRoute';
+import NoMatch from './route/NoMatch';
 
-function App({isLogin}) {
+function App({isLogin, isAdmin}) {
     return (
         <React.Fragment>
             <Router>
-                <Routes>
+                <AuthRoute />
+                <System />
+                <PublicRoute />
+                {/* <Routes>
+                    <Route path='*' element={<NoMatch />}/>
+                </Routes> */}
+                {/* <Routes>
                     <Route path={path.HOMEPAGE} element={<HomePage />}/>
 
-                    <Route path={path.MANAGE} element={<Manage />}/> 
-                    <Route path={path.MANAGE_CREATE} element={<UserManage />}/>
-                    <Route path={path.MANAGE_EDIT} element={<EditUser />}/>
-
-                    <Route path={path.MANAGE_PRODUCTS} element={<ManageProducts />}/>
-                    <Route path={path.MANAGE_PRODUCTS_SHOES} element={<ManageShoes />}/>
-                    <Route path={path.MANAGE_PRODUCTS_SHOES_CREATE} element={<ManageShoesCreate />}/>
-                    <Route path={path.MANAGE_PRODUCTS_SHOES_EDIT} element={<ManageShoesEdit />}/>
-                    <Route path={path.MANAGE_PRODUCTS_IMAGE_ADD} element={<AddImageProduct />}/>
-                    <Route path={path.MANAGE_PRODUCTS_DESCRIPTION_ADD} element={<AddDescriptionProduc />}/>
+                    <Route path={path.MANAGE} element={isLogin && <Manage /> }/>
+                    <Route path={path.MANAGE_CREATE} element={isLogin && <UserManage />}/>
+                    <Route path={path.MANAGE_EDIT} element={isLogin && <EditUser />}/>
+                    <Route path={path.MANAGE_PRODUCTS} element={isLogin && <ManageProducts />}/>
+                    <Route path={path.MANAGE_PRODUCTS_SHOES} element={isLogin && <ManageShoes />}/>
+                    <Route path={path.MANAGE_PRODUCTS_SHOES_CREATE} element={isLogin && <ManageShoesCreate />}/>
+                    <Route path={path.MANAGE_PRODUCTS_SHOES_EDIT} element={isLogin && <ManageShoesEdit />}/>
+                    <Route path={path.MANAGE_PRODUCTS_IMAGE_ADD} element={isLogin && <AddImageProduct />}/>
+                    <Route path={path.MANAGE_PRODUCTS_DESCRIPTION_ADD} element={isLogin && <AddDescriptionProduc />}/>
 
                     <Route path={path.LOGIN} element={<Login />}/>
                     <Route path={path.REGISTER} element={<Register />}/>
 
                     <Route path={path.GIAY_MLB} element={<Shoes />} />
-                </Routes>
+                </Routes> */}
             </Router>
         </React.Fragment>
     );
@@ -47,7 +57,8 @@ function App({isLogin}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.isLogin
+        isLogin: state.auth.isLogin,
+        isAdmin: state.auth.isAdmin,
     }
 }
 
@@ -56,4 +67,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(App));

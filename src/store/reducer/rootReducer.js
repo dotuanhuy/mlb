@@ -14,7 +14,7 @@ const commonConfig = {
 const authConfig = {
     ...commonConfig,
     key: 'auth',
-    whitelist: ['isLogin']  // chọn những state lưu vào storage
+    whitelist: ['isLogin', 'token']  // chọn những state lưu vào storage
 }
 
 const rootReducer = combineReducers({

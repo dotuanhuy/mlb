@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo, useCallback } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../HomePage/Navbar/Navbar';
 import './Login.scss'
@@ -17,37 +17,28 @@ const initState = {
     password: ''
 }
 
-function Login({users, isLogin, fetLoginRedux}) {
+function Login({user, isLogin, isAdmin, fetLoginRedux}) {
     const [dataInput, setDataInput] = useState(initState)
-    const [token, setToken] = useState()
     const navigate = useNavigate()
     
     useEffect(() => {
-        if (cookies.get('userLogin')) {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.ADMIN) {
-                navigate(path.MANAGE)
-            }
-            else if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
+        if(isLogin) {
+            navigate(path.HOMEPAGE)
         }
     }, [])
 
-    const handleLogin = async (e) => {
-        e.preventDefault()
-        await fetLoginRedux(dataInput.email, dataInput.password)
-        if (cookies.get('userLogin')) {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.ADMIN) {
-                navigate(path.MANAGE)
-            }
-            else if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
+    useEffect(() => {
+        if (isLogin && user.roleId === 'R1') {
+            navigate(path.MANAGE)
         }
+        else if (isLogin && user.roleId === 'R2') {
+            navigate(path.HOMEPAGE)
+        }
+    }, [isLogin])
+
+    const handleLogin = (e) => {
+        e.preventDefault()
+        fetLoginRedux(dataInput.email, dataInput.password)
     }
 
     return (
@@ -80,11 +71,11 @@ function Login({users, isLogin, fetLoginRedux}) {
                             </div>
                             <div className='login-form-input'>
                                 <form className='p-4'>
-                                    <div class="form-group pb-4">
-                                        <label className='label-input' for="exampleInputEmail1">EMAIL*</label>
+                                    <div className="form-group pb-4">
+                                        <label className='label-input' htmlFor="exampleInputEmail1">EMAIL*</label>
                                         <input 
                                             type="email" 
-                                            class="form-control" 
+                                            className="form-control" 
                                             id="exampleInputEmail1" 
                                             aria-describedby="emailHelp" 
                                             placeholder="Nhập Địa chỉ Email" 
@@ -95,11 +86,11 @@ function Login({users, isLogin, fetLoginRedux}) {
                                             })}
                                         />
                                     </div>
-                                    <div class="form-group">
-                                        <label className='label-input' for="exampleInputPassword1">MẬT KHẨU*</label>
+                                    <div className="form-group">
+                                        <label className='label-input' htmlFor="exampleInputPassword1">MẬT KHẨU*</label>
                                         <input 
                                             type="password" 
-                                            class="form-control" 
+                                            className="form-control" 
                                             id="exampleInputPassword1" 
                                             placeholder="Nhập Mật khẩu" 
                                             value={dataInput.password}
@@ -109,14 +100,14 @@ function Login({users, isLogin, fetLoginRedux}) {
                                             })}
                                         />
                                     </div>
-                                    <div class="form-group py-2">
+                                    <div className="form-group py-2">
                                         <label >
-                                            <a href='#' class="form-forgot-label" >Quên mật khẩu?</a>
+                                            <a href='#' className="form-forgot-label" >Quên mật khẩu?</a>
                                         </label>
                                     </div>
                                     <button 
                                         type="submit" 
-                                        class="btn btn-primary w-100 btn-login"
+                                        className="btn btn-primary w-100 btn-login"
                                         onClick={(e) => handleLogin(e)}
                                     >
                                         ĐĂNG NHẬP
@@ -149,8 +140,9 @@ function Login({users, isLogin, fetLoginRedux}) {
 
 const mapStateToProps = state => {
     return {
-        users: state.user.users,
-        isLogin: state.auth.isLogin
+        user: state.auth.user,
+        isLogin: state.auth.isLogin,
+        isAdmin: state.auth.isAdmin
     }
 }
 
@@ -160,4 +152,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(Login));

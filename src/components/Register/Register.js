@@ -60,11 +60,11 @@ function Register({createNewUserRedux}) {
                             </div>
                             <div className='register-form-input'>
                                 <form className='p-4'>
-                                    <div class="form-group pb-4">
-                                        <label className='label-input' for="exampleInputFirstName">HỌ*</label>
+                                    <div className="form-group pb-4">
+                                        <label className='label-input' htmlFor="exampleInputFirstName">HỌ*</label>
                                         <input 
                                             type="text" 
-                                            class="form-control" 
+                                            className="form-control" 
                                             id="exampleInputFirstName" 
                                             placeholder="Nhập Họ" 
                                             value={inforUser.firstName}
@@ -74,11 +74,11 @@ function Register({createNewUserRedux}) {
                                             })}
                                         />
                                     </div>
-                                    <div class="form-group pb-4">
-                                        <label className='label-input' for="exampleInputLastName">TÊN*</label>
+                                    <div className="form-group pb-4">
+                                        <label className='label-input' htmlFor="exampleInputLastName">TÊN*</label>
                                         <input 
                                             type="text" 
-                                            class="form-control" 
+                                            className="form-control" 
                                             id="exampleInputLastName" 
                                             placeholder="Nhập Tên" 
                                             value={inforUser.lastName}
@@ -88,11 +88,11 @@ function Register({createNewUserRedux}) {
                                             })}
                                         />
                                     </div>  
-                                    <div class="form-group pb-4">
-                                        <label className='label-input' for="exampleInputPhoneNumber">SỐ ĐIỆN THOẠI*</label>
+                                    <div className="form-group pb-4">
+                                        <label className='label-input' htmlFor="exampleInputPhoneNumber">SỐ ĐIỆN THOẠI*</label>
                                         <input 
                                             type="text" 
-                                            class="form-control" 
+                                            className="form-control" 
                                             id="exampleInputPhoneNumber" 
                                             placeholder="Nhập Số điện thoại" 
                                             value={inforUser.phoneNumber}
@@ -102,11 +102,11 @@ function Register({createNewUserRedux}) {
                                             })}
                                         />
                                     </div>
-                                    <div class="form-group pb-4">
-                                        <label className='label-input' for="exampleInputEmail1">EMAIL*</label>
+                                    <div className="form-group pb-4">
+                                        <label className='label-input' htmlFor="exampleInputEmail1">EMAIL*</label>
                                         <input 
                                             type="email" 
-                                            class="form-control" 
+                                            className="form-control" 
                                             id="exampleInputEmail1" 
                                             aria-describedby="emailHelp" 
                                             placeholder="Nhập Địa chỉ Email" 
@@ -117,11 +117,11 @@ function Register({createNewUserRedux}) {
                                             })}
                                         />
                                     </div>
-                                    <div class="form-group pb-4">
-                                        <label className='label-input' for="exampleInputPassword1">MẬT KHẨU*</label>
+                                    <div className="form-group pb-4">
+                                        <label className='label-input' htmlFor="exampleInputPassword1">MẬT KHẨU*</label>
                                         <input 
                                             type="password" 
-                                            class="form-control" 
+                                            className="form-control" 
                                             id="exampleInputPassword1" 
                                             placeholder="Nhập Mật khẩu" 
                                             value={inforUser.password}
@@ -133,7 +133,7 @@ function Register({createNewUserRedux}) {
                                     </div>
                                     <button 
                                         type="submit" 
-                                        class="btn btn-primary w-100 btn-register"
+                                        className="btn btn-primary w-100 btn-register"
                                         onClick={(e) => handleRegister(e)}
                                     >
                                         TẠO TÀI KHOẢN

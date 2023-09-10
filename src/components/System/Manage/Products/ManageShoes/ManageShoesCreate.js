@@ -29,6 +29,7 @@ const initStateImage = {
 }
 
 function ManageShoesCreate({
+    accessToken,
     categories, 
     discounts, 
     brands, 
@@ -59,17 +60,7 @@ function ManageShoesCreate({
 
     // ComponentDidMount
     useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-        else {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
-        }
-        getAllCategoriesRedux()
+        getAllCategoriesRedux(accessToken)
         fetchAllCodeByTypeRedux(allCode.DISCOUNT)
         fetchAllCodeByTypeRedux(allCode.BRAND)
         fetchAllColorsRedux(allCode.COLOR)
@@ -197,7 +188,7 @@ function ManageShoesCreate({
             listGender: listGenders.toString(),
         }
 
-        createNewProductRedux(product, categorieType.SHOES_SANDAL)
+        createNewProductRedux(product, categorieType.SHOES_SANDAL, accessToken)
         setSelectObject(initState)
         setSelectImage(initStateImage)
         setSelectCategory('')
@@ -458,7 +449,7 @@ function ManageShoesCreate({
                     </form>
                 </div>
                 <div className='manage-shoes-create-table'>
-                    <TableProducts />
+                    <TableProducts typeCategore={categorieType.SHOES_SANDAL}/>
                 </div>
             </div>
         </div>
@@ -468,6 +459,7 @@ function ManageShoesCreate({
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
+        accessToken: state.auth.token,
         categories: state.product.categories,
         discounts: state.product.discounts,
         brands: state.product.brands,
@@ -480,10 +472,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
+        getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
         fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        createNewProductRedux: (data, type) => dispatch(actions.createNewProduct(data, type))
+        createNewProductRedux: (data, type, accessToken) => dispatch(actions.createNewProduct(data, type, accessToken))
     }
 }
 

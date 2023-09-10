@@ -6,15 +6,15 @@ import { path } from '../../../utils'
 import * as actions from '../../../store/actions'
 import { useNavigate } from 'react-router-dom';
 
-function TableUsers({users, fetAllUsersRedux, deleteUserRedux}) {
-    const navigate = useNavigate()
+function TableUsers({users, accessToken, fetAllUsersRedux, deleteUserRedux}) {
+    const navigate = useNavigate()   
 
     useEffect(() => {
-        fetAllUsersRedux()
+        fetAllUsersRedux(accessToken)
     }, [])
 
     const handleDeleteUser = (id) => {
-        deleteUserRedux(id)
+        deleteUserRedux(id, accessToken)
     }
 
     const handleEdit = (user) => {
@@ -78,14 +78,15 @@ function TableUsers({users, fetAllUsersRedux, deleteUserRedux}) {
 
 const mapStateToProps = state => {
     return {
-        users: state.user.users
+        users: state.user.users,
+        accessToken: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetAllUsersRedux: () => dispatch(actions.fetAllUsers()),
-        deleteUserRedux: (id) => dispatch(actions.deleteUser(id))
+        fetAllUsersRedux: (accessToken) => dispatch(actions.fetAllUsers(accessToken)),
+        deleteUserRedux: (id, accessToken) => dispatch(actions.deleteUser(id, accessToken))
     }
 }
 

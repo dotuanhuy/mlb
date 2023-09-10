@@ -13,23 +13,23 @@ const cookies = new Cookies();
 function ManageShoes({isLogin}) {
     const navigate = useNavigate()
 
-    useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-        else {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
-        }
-    }, [])
-    useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-    }, [isLogin])
+    // useEffect(() => {
+    //     if (!cookies.get('userLogin')) {
+    //         navigate(path.LOGIN)
+    //     }
+    //     else {
+    //         let token = cookies.get('userLogin')
+    //         let loginInfor = jwt_decode(token)
+    //         if (loginInfor.role === Role.USER) {
+    //             navigate(path.HOMEPAGE)
+    //         }
+    //     }
+    // }, [])
+    // useEffect(() => {
+    //     if (!cookies.get('userLogin')) {
+    //         navigate(path.LOGIN)
+    //     }
+    // }, [isLogin])
 
     return (    
         <div className='manage-product'>

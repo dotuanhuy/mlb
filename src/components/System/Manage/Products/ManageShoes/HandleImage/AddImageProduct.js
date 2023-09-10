@@ -12,35 +12,19 @@ import CommonUtils from '../../../../../../utils/CommonUtils';
 
 const cookies = new Cookies();
 
-function AddImageProduct({isLogin, images, fetchAllImageProductRedux, addImageProductRedux, deleteImageProductRedux}) {
+function AddImageProduct({isLogin, images, accessToken, fetchAllImageProductRedux, addImageProductRedux, deleteImageProductRedux}) {
     const navigate = useNavigate()
     const [imageMain, setImageMain] = useState()
     const [listImage, setListImage] = useState([])
     const { state } = useLocation()
 
     useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-        else {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
-        }
         if (state.image) {
             let imageBase64 = Buffer.from(state.image, 'base64').toString('binary')
             setImageMain(imageBase64)
         }
-        fetchAllImageProductRedux(state.id)
+        fetchAllImageProductRedux(state.id, accessToken)
     }, [])
-
-    useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-    }, [isLogin])
 
     useEffect(() => {
         setListImage([])
@@ -64,13 +48,13 @@ function AddImageProduct({isLogin, images, fetchAllImageProductRedux, addImagePr
             image: listImage,
             productId: state.id
         }
-        addImageProductRedux(data)
+        addImageProductRedux(data, accessToken)
         setListImage([])
         navigate(path.MANAGE_PRODUCTS_SHOES)
     }
 
     const handleDeleteImage = (id) => {
-        deleteImageProductRedux(id, state.id)
+        deleteImageProductRedux(id, state.id, accessToken)
     }
 
     return (    
@@ -175,15 +159,16 @@ function AddImageProduct({isLogin, images, fetchAllImageProductRedux, addImagePr
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        images: state.product.images
+        images: state.product.images,
+        accessToken: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllImageProductRedux: (id) => dispatch(actions.fetchAllImageProduct(id)),
-        addImageProductRedux: (data) => dispatch(actions.addImageProduct(data)),
-        deleteImageProductRedux: (id, type) => dispatch(actions.deleteImageProduct(id, type))
+        fetchAllImageProductRedux: (id, accessToken) => dispatch(actions.fetchAllImageProduct(id, accessToken)),
+        addImageProductRedux: (data, accessToken) => dispatch(actions.addImageProduct(data, accessToken)),
+        deleteImageProductRedux: (id, type, accessToken) => dispatch(actions.deleteImageProduct(id, type, accessToken))
     }
 }
 

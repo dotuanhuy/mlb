@@ -20,30 +20,14 @@ const initState = {
     contentHTML: ''
 }
 
-function AddDescriptionProduct({isLogin, descriptions, fetchDescriptionProductRedux, addDescriptionProductRedux}) {
+function AddDescriptionProduct({isLogin, descriptions, accessToken, fetchDescriptionProductRedux, addDescriptionProductRedux}) {
     const navigate = useNavigate()
     const { state } = useLocation()
     const [markdown, setMarkdown] = useState(initState)
 
     useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-        else {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
-        }
-        fetchDescriptionProductRedux(state)
+        fetchDescriptionProductRedux(state, accessToken)
     }, [])
-
-    // useEffect(() => {
-    //     if (!cookies.get('userLogin')) {
-    //         navigate(path.LOGIN)
-    //     }
-    // }, [isLogin])
 
     useEffect(() => {
         if (Object.keys(descriptions).length > 0) {
@@ -68,11 +52,10 @@ function AddDescriptionProduct({isLogin, descriptions, fetchDescriptionProductRe
         addDescriptionProductRedux({
             ...markdown,
             productId: state
-        })
+        }, accessToken)
         setMarkdown(initState)
         navigate(path.MANAGE_PRODUCTS_SHOES)
     }
-    console.log('check markdown: ', markdown)
     return (    
         <div className='add-description-product'>
             <Nav />
@@ -97,14 +80,15 @@ function AddDescriptionProduct({isLogin, descriptions, fetchDescriptionProductRe
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        descriptions: state.product.descriptions
+        descriptions: state.product.descriptions,
+        accessToken: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchDescriptionProductRedux: (productId) => dispatch(actions.fetchDescriptionProduct(productId)),
-        addDescriptionProductRedux: (data) => dispatch(actions.addDescriptionProduct(data))
+        fetchDescriptionProductRedux: (productId, accessToken) => dispatch(actions.fetchDescriptionProduct(productId, accessToken)),
+        addDescriptionProductRedux: (data, accessToken) => dispatch(actions.addDescriptionProduct(data, accessToken))
     }
 }
 

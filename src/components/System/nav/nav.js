@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'react-redux';
 import './nav.scss'
 import { Link } from 'react-router-dom';
@@ -14,16 +14,15 @@ const cookies = new Cookies()
 function Nav({isLogin, fetLogoutRedux}) {
     const navigate = useNavigate()
 
-    const handleLogout = async () => {
-        cookies.remove('userLogin', { path: '/' })
+    const handleLogout = () => {
         fetLogoutRedux()
     }
     
-    useEffect(() => {
-        if (!isLogin) {
-            navigate(path.LOGIN)
-        }
-    }, [isLogin])
+    // useEffect(() => {
+    //     if (!isLogin) {
+    //         navigate(path.LOGIN)
+    //     }
+    // }, [isLogin])
 
     return (
         <div className='nav-system'>
@@ -72,7 +71,7 @@ function Nav({isLogin, fetLogoutRedux}) {
                                 </li>
                             </ul>
                             <button 
-                                class="btn btn-success"
+                                className="btn btn-success"
                                 onClick={handleLogout}
                             >
                                 Logout
@@ -97,4 +96,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Nav);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(Nav));

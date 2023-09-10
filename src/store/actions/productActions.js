@@ -17,10 +17,10 @@ import {
 import { getAllCodeByType } from "../../services/userService";
 import { allCode } from "../../utils";
 
-export const getAllProducts = (type) => {
+export const getAllProducts = (type, accessToken) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllProductsService(type)
+            let res = await getAllProductsService(type, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_PRODUCTS_SUCCESS,
@@ -134,10 +134,10 @@ export const getCategoriesById = (id) => {
     }
 }
 
-export const getAllCategories = () => {
+export const getAllCategories = (accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllCategoriesService()
+            let res = await getAllCategoriesService(accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_CATEGORIES_SUCCESS,
@@ -158,15 +158,15 @@ export const getAllCategories = () => {
     }
 }
 
-export const createNewProduct = (product, type) => {
+export const createNewProduct = (product, type, accessToken) => {
     return async (dispatch, getState) => {
         try {
-            let res = await createNewProductService(product)
+            let res = await createNewProductService(product, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_NEW_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts(type))
+                dispatch(getAllProducts(type, accessToken))
             }
             else {
                 dispatch({
@@ -182,15 +182,15 @@ export const createNewProduct = (product, type) => {
     }
 }
 
-export const deleteProduct = (id, type) => {
+export const deleteProduct = (id, type, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await deleteProductService(id)
+            let res = await deleteProductService(id, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.DELETE_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts(type))
+                dispatch(getAllProducts(type, accessToken))
             }
             else {
                 dispatch({
@@ -206,10 +206,10 @@ export const deleteProduct = (id, type) => {
     }
 }
 
-export const getProductById = (id) => {
+export const getProductById = (id, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getProductByIdService(id) 
+            let res = await getProductByIdService(id, accessToken) 
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_PRODUCT_BY_ID_SUCCESS,
@@ -230,15 +230,15 @@ export const getProductById = (id) => {
     }
 }
 
-export const updateProduct = (data, type) => {
+export const updateProduct = (data, type, accessToken) => {
     return async (dispatch, getState) => {
         try {
-            let res = await updateProductService(data)
+            let res = await updateProductService(data, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.EDIT_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts(type))
+                dispatch(getAllProducts(type, accessToken))
             }
             else {
                 dispatch({
@@ -254,10 +254,10 @@ export const updateProduct = (data, type) => {
     }
 }
 
-export const fetchAllImageProduct = (id) => {
+export const fetchAllImageProduct = (id, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllImageProductService(id)
+            let res = await getAllImageProductService(id, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_IMAGE_PRODUCT_SUCCESS,
@@ -278,15 +278,15 @@ export const fetchAllImageProduct = (id) => {
     }
 }
 
-export const addImageProduct = (data) => {
+export const addImageProduct = (data, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await addImageProductService(data)
+            let res = await addImageProductService(data, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.ADD_IMAGE_PRODUCT_SUCCESS
                 })
-                dispatch(fetchAllImageProduct(data.productId))
+                dispatch(fetchAllImageProduct(data.productId, accessToken))
             }
             else {
                 dispatch({
@@ -302,15 +302,15 @@ export const addImageProduct = (data) => {
     }
 }
 
-export const deleteImageProduct = (id, type) => {
+export const deleteImageProduct = (id, type, accessToken) => {
     return async (dispatch, getState) => {
         try {
-            let res = await deleteImageProductService(id)
+            let res = await deleteImageProductService(id, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.DELETE_IMAGE_PRODUCT_SUCCESS
                 })
-                dispatch(fetchAllImageProduct(type))
+                dispatch(fetchAllImageProduct(type, accessToken))
             }
             else {
                 dispatch({
@@ -326,10 +326,10 @@ export const deleteImageProduct = (id, type) => {
     }
 }
 
-export const fetchDescriptionProduct = (productId) => {
+export const fetchDescriptionProduct = (productId, accessToken) => {
     return async (dispatch, getState) => {
         try {
-            let res = await fetchDescriptionProductService(productId) 
+            let res = await fetchDescriptionProductService(productId, accessToken) 
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_DESCRIPTION_PRODUCT_SUCCESS,
@@ -350,15 +350,15 @@ export const fetchDescriptionProduct = (productId) => {
     }
 }
 
-export const addDescriptionProduct = (data) => {
+export const addDescriptionProduct = (data, accessToken) => {
     return async (dispatch, getState) => {
         try {
-            let res = await addDescriptionProductService(data) 
+            let res = await addDescriptionProductService(data, accessToken) 
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.ADD_DESCRIPTION_PRODUCT_SUCCESS
                 })
-                dispatch(fetchDescriptionProduct(data.productId))
+                dispatch(fetchDescriptionProduct(data.productId, accessToken))
             }
             else {
                 dispatch({

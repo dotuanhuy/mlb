@@ -7,11 +7,11 @@ import * as actions from '../../../../../store/actions'
 import { useNavigate } from 'react-router-dom';
 import {Buffer} from 'buffer';
 
-function TableProducts({typeCategore, products, getAllProductsRedux, deleteProductRedux}) {
+function TableProducts({typeCategore, products, accessToken, getAllProductsRedux, deleteProductRedux}) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        getAllProductsRedux(typeCategore)
+        getAllProductsRedux(typeCategore, accessToken)
     }, [])
 
     const handleDeleteProduct = (id) => {
@@ -141,13 +141,14 @@ function TableProducts({typeCategore, products, getAllProductsRedux, deleteProdu
 
 const mapStateToProps = state => {
     return {
-        products: state.product.products
+        products: state.product.products,
+        accessToken: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllProductsRedux: (type) => dispatch(actions.getAllProducts(type)),
+        getAllProductsRedux: (type, accessToken) => dispatch(actions.getAllProducts(type, accessToken)),
         deleteProductRedux: (id) => dispatch(actions.deleteProduct(id))
     }
 }

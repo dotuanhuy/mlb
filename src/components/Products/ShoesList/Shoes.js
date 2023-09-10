@@ -37,7 +37,7 @@ const initOptionLogo = {
     SF: false,
 }
 
-function Shoes({colors, categories, logos, fetchAllColorsRedux, getCategoriesByIdRedux, fetchAllCodeByTypeRedux}) {
+function Shoes({colors, categories, logos, accessToken, fetchAllColorsRedux, getCategoriesByIdRedux, fetchAllCodeByTypeRedux}) {
     const [typeSort, setTypeSort] = useState(true)
     const [typeType, setTypeType] = useState(true)
     const [typeColor, setTypeColor] = useState(true)
@@ -175,7 +175,7 @@ function Shoes({colors, categories, logos, fetchAllColorsRedux, getCategoriesByI
                                                                 <input id={item.categoryId} type='checkbox' className={optionType ? 'optionSelect' : ''}/>
                                                                 <label 
                                                                     className='checkSS' 
-                                                                    for={item.categoryId}
+                                                                    htmlFor={item.categoryId}
                                                                     onClick={(e) => handleOnchangeTypeType(e)}
                                                                 >
                                                                     {item.name}
@@ -215,7 +215,7 @@ function Shoes({colors, categories, logos, fetchAllColorsRedux, getCategoriesByI
                                                                     type='checkbox' />
                                                                 <label 
                                                                     className={`color${item.valueEn}`} 
-                                                                    for={item.valueEn}
+                                                                    htmlFor={item.valueEn}
                                                                     onClick={(e) => handleOnchangeColor(e)}
                                                                 ></label>
                                                                 {
@@ -253,7 +253,7 @@ function Shoes({colors, categories, logos, fetchAllColorsRedux, getCategoriesByI
                                                                 <input id={item.keyMap} type='checkbox' className={ optionType ? 'optionSelect' : ''}/>
                                                                 <label 
                                                                     className='checkSS' 
-                                                                    for={item.keyMap}
+                                                                    htmlFor={item.keyMap}
                                                                     onClick={(e) => handleOnchangeLogo(e)}
                                                                 >
                                                                     {item.valueEn}
@@ -357,7 +357,8 @@ const mapStateToProps = state => {
     return {
         colors: state.product.colors,
         categories: state.product.categorieById,
-        logos: state.product.logos
+        logos: state.product.logos,
+        accessToken: state.auth.token
     }
 }
 

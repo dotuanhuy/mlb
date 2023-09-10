@@ -11,17 +11,20 @@ import {
     getUserAllcode,
 } from "../../services/userService";
 
-export const createNewUser = (data) => {
+export const createNewUser = (data, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleCreateNewUer(data)
+            console.log('check token: ', accessToken)
+            let res = await handleCreateNewUer(data, accessToken)
+            console.log('check res: ', res)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_NEW_USER_SUCCESS
                 })
-                dispatch(fetAllUsers())
+                dispatch(fetAllUsers(accessToken))
             }
             else {
+                alert(res.errMessage)
                 dispatch({
                     type: actionTypes.CREATE_NEW_USER_FAILED
                 })
@@ -35,10 +38,10 @@ export const createNewUser = (data) => {
     }
 }
 
-export const fetAllUsers = () => {
+export const fetAllUsers = (accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllUsers()
+            let res = await getAllUsers(accessToken)  
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_USERS_SUCCESS,
@@ -59,10 +62,10 @@ export const fetAllUsers = () => {
     }
 }
 
-export const fetchAllProvinces = () => {
+export const fetchAllProvinces = (accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllProvinces()
+            let res = await getAllProvinces(accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_PROVINCES_SUCCESS,
@@ -115,15 +118,15 @@ export const fetchAllCodeByType = (type) => {
     }
 }
 
-export const deleteUser = (id) => {
+export const deleteUser = (id, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleDeleteUser(id)
+            let res = await handleDeleteUser(id, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.DELTE_USER_SUCCESS
                 })
-                dispatch(fetAllUsers())
+                dispatch(fetAllUsers(accessToken))
             }
             else {
                 dispatch({
@@ -139,18 +142,18 @@ export const deleteUser = (id) => {
     }
 }
 
-export const updateUser = (data) => {
+export const updateUser = (data, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            console.log('check data: ', data)
-            let res = await handleUpdateUser(data)
+            let res = await handleUpdateUser(data, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.EDIT_USER_SUCCESS
                 })
-                dispatch(fetAllUsers())
+                dispatch(fetAllUsers(accessToken))
             }
             else {
+                alert(res.errMessage)
                 dispatch({
                     type: actionTypes.EDIT_USER_FAILED
                 })
@@ -164,17 +167,18 @@ export const updateUser = (data) => {
     }
 }
 
-export const fetchUserAllcode = (id) => {
+export const fetchUserAllcode = (id, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getUserAllcode(id)
+            let res = await getUserAllcode(id, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_USER_ALLCODE_SUCCESS,
                     data: res.data
                 })
             }
-            else {
+            else {  
+                alert(res.errMessage)
                 dispatch({
                     type: actionTypes.FETCH_USER_ALLCODE_FAILED
                 })

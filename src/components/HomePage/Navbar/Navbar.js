@@ -15,28 +15,43 @@ const cookies = new Cookies();
 const initState = {
     firstName: '',
     lastName: '',
-    isLogin: false
 }
 
-function Navbar({isLogin, fetLogoutRedux}) {
+function Navbar({isLogin, user, token, fetLogoutRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
-
     useEffect(() => {
-        if (cookies.get('userLogin')) {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor) {
-                setUserLogin({
-                    firstName: loginInfor.firstName,
-                    lastName: loginInfor.lastName,
-                    isLogin: true
-                })
-            }
+        if (token) {
+            let tokenDecoded = jwt_decode(token)
+            setUserLogin({
+                firstName: tokenDecoded.firstName,
+                lastName: tokenDecoded.lastName,
+            })
         }
     }, [])
+    // if (isLogin && isAdmin) {
+    //     navigate(path.MANAGE)
+    // }
+    // else if (isLogin && !isAdmin) {
+    //     navigate(path.HOMEPAGE)
+    // }
+
+
+    // useEffect(() => {
+    //     if (cookies.get('userLogin')) {
+    //         let token = cookies.get('userLogin')
+    //         let loginInfor = jwt_decode(token)
+    //         if (loginInfor) {
+    //             setUserLogin({
+    //                 firstName: loginInfor.firstName,
+    //                 lastName: loginInfor.lastName,
+    //                 isLogin: true
+    //             })
+    //         }
+    //     }
+    // }, [])
 
     const handleLogout = async () => {
-        cookies.remove('userLogin', { path: '/' })
+        // cookies.remove('userLogin', { path: '/' })
         fetLogoutRedux()
     }
 
@@ -304,11 +319,11 @@ function Navbar({isLogin, fetLogoutRedux}) {
                                 <FontAwesomeIcon className='icon-infor' icon={faUser} />
                                 <div className='box-acc'>
                                     {
-                                        userLogin.isLogin ? <Link to={path.ACCOUNT}>{`${userLogin.firstName} ${userLogin.lastName}`}</Link>
+                                        userLogin && isLogin ? <Link to={path.ACCOUNT}>{`${userLogin.firstName} ${userLogin.lastName}`}</Link>
                                         : <Link to={path.LOGIN}>Đăng nhập</Link>
                                     }
                                     {
-                                        userLogin.isLogin ? <Link to={path.LOGIN} onClick={handleLogout}>Đăng xuất</Link>
+                                        userLogin && isLogin ? <Link to={path.LOGIN} onClick={handleLogout}>Đăng xuất</Link>
                                         : <Link to={path.REGISTER}>Đăng ký</Link>
                                     }
                                 </div>
@@ -331,7 +346,10 @@ function Navbar({isLogin, fetLogoutRedux}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin
+        user: state.auth.user,
+        token: state.auth.token,
+        isLogin: state.auth.isLogin,
+        isAdmin: state.auth.isAdmin
     }
 }
 

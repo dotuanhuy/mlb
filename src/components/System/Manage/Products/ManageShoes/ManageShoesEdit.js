@@ -30,6 +30,7 @@ const initStateImage = {
 }
 
 function ManageShoesEdit({
+    accessToken,
     products,
     categories, 
     discounts, 
@@ -64,25 +65,15 @@ function ManageShoesEdit({
 
     // ComponentDidMount
     useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-        else {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
-        }
         
-        getAllCategoriesRedux()
+        getAllCategoriesRedux(accessToken)
         fetchAllCodeByTypeRedux(allCode.DISCOUNT)
         fetchAllCodeByTypeRedux(allCode.BRAND)
         fetchAllColorsRedux(allCode.COLOR)
         fetchAllCodeByTypeRedux(allCode.LOGO)
         fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
         fetchAllCodeByTypeRedux(allCode.GENDER)
-        getProductByIdRedux(state)
+        getProductByIdRedux(state, accessToken)
     }, [])
 
     const buildDataSelect = (inputData) => {
@@ -250,7 +241,7 @@ function ManageShoesEdit({
             material: selectObject.material,
             listGender: listGenders.toString(),
         }
-        updateProductRedux(product, categorieType.SHOES_SANDAL)
+        updateProductRedux(product, categorieType.SHOES_SANDAL, accessToken)
         navigate(path.MANAGE_PRODUCTS_SHOES) 
     }
 
@@ -264,19 +255,19 @@ function ManageShoesEdit({
                 <div className='manage-shoes-create-form mx-2 my-4'>
                     <form>
                         <div className='form row'>
-                            <div class="mb-3 col-4">
-                                <label class="form-label">CategoreId</label>
+                            <div className="mb-3 col-4">
+                                <label className="form-label">CategoreId</label>
                                 <Select
                                     value={selectCategory}
                                     onChange={handleOnchangeCategories}
                                     options={listCategories}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputName" class="form-label">Name</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputName" className="form-label">Name</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputName" 
                                     value={selectObject.name}
                                     onChange={(e) => setSelectObject({
@@ -285,11 +276,11 @@ function ManageShoesEdit({
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputCode" class="form-label">Product Code</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputCode" className="form-label">Product Code</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputCode" 
                                     value={selectObject.productCode}
                                     onChange={(e) => setSelectObject({
@@ -298,11 +289,11 @@ function ManageShoesEdit({
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputFirstPrice" class="form-label">Prices</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputFirstPrice" className="form-label">Prices</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputFirstPrice" 
                                     value={selectObject.price}
                                     onChange={(e) => setSelectObject({
@@ -311,19 +302,19 @@ function ManageShoesEdit({
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputLastName" class="form-label">Discount</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputLastName" className="form-label">Discount</label>
                                 <Select
                                     value={selectDiscount}
                                     onChange={handleOnchangeDiscount}
                                     options={listDiscount}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputImage" class="form-label">Image</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputImage" className="form-label">Image</label>
                                 <input 
                                     type="file" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputImage" 
                                     onChange={(e) => handleOnchangeImage(e)}
                                 />
@@ -340,19 +331,19 @@ function ManageShoesEdit({
                                     : ''
                                 }
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputLastName" class="form-label">BrandId</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputLastName" className="form-label">BrandId</label>
                                 <Select
                                     value={selectBrand}
                                     onChange={handhandleOnchangeBrands}
                                     options={listBrands}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputSite" class="form-label">Site</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputSite" className="form-label">Site</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputSite" 
                                     value={selectObject.productionSite}
                                     onChange={(e) => setSelectObject({
@@ -361,8 +352,8 @@ function ManageShoesEdit({
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputReleaseDate" class="form-label">Release date</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputReleaseDate" className="form-label">Release date</label>
                                 <DatePicker 
                                     // value={selectReleaseDate}
                                     className='form-control'
@@ -372,7 +363,7 @@ function ManageShoesEdit({
                                 />
                             </div>
                             <div className="mb-3 col-4">
-                                <label htmlFor="exampleInputSize" className="form-label">SizeId</label>
+                                <label htmlhtmlFor="exampleInputSize" className="form-label">SizeId</label>
                                 <div className='row'>
                                     {
                                         sizes && sizes.length > 0 &&
@@ -404,12 +395,12 @@ function ManageShoesEdit({
                                 </div>
                             </div>
                             <div 
-                                class="mb-3 col-4"
+                                className="mb-3 col-4"
                                 style={{ background: '#453c3c' }}
                             >
                                 <label 
-                                    for="exampleInputLastName" 
-                                    class="form-label"
+                                    htmlFor="exampleInputLastName" 
+                                    className="form-label"
                                     style={{ color: '#fff'}}
                                 >   
                                     ColorId
@@ -425,13 +416,13 @@ function ManageShoesEdit({
                                                             listColors.some(color => color === item.keyMap) ? true : false
                                                         }
                                                         type="checkbox" 
-                                                        class="form-check-input" 
+                                                        className="form-check-input" 
                                                         id={`checkItem${item.valueEn}`}
                                                         value={item.keyMap}
                                                         onChange={(e) => handleOnchangeColorOrGender(e, allCode.COLOR)}
                                                     />
                                                     <label 
-                                                        class="form-check-label ps-2" 
+                                                        className="form-check-label ps-2" 
                                                         for={`checkItem${item.valueEn}`}
                                                         style={{ color: `${item.valueEn}`}}
                                                     >
@@ -443,8 +434,8 @@ function ManageShoesEdit({
                                     }
                                 </div>
                             </div>
-                            <div class="mb-3 col-4">
-                                <label for="exampleInputLastName" class="form-label">Logos</label>
+                            <div className="mb-3 col-4">
+                                <label htmlFor="exampleInputLastName" className="form-label">Logos</label>
                                 <Select
                                     value={selectLogo}
                                     onChange={handhandleOnchangeLogos}
@@ -452,7 +443,7 @@ function ManageShoesEdit({
                                 />
                             </div>
                             <div className="mb-3 col-4">
-                                <label htmlFor="exampleInputMaterial" className="form-label">Material</label>
+                                <label htmlhtmlFor="exampleInputMaterial" className="form-label">Material</label>
                                 <input 
                                     type="text" 
                                     className="form-control" 
@@ -465,7 +456,7 @@ function ManageShoesEdit({
                                 />
                             </div>
                             <div className="mb-3 col-4">
-                                <label htmlFor="exampleInputGender" className="form-label">Gender</label>
+                                <label htmlhtmlFor="exampleInputGender" className="form-label">Gender</label>
                                 {
                                         genders && genders.length > 0 &&
                                         genders.map((item, index) => {
@@ -495,7 +486,7 @@ function ManageShoesEdit({
                         </div>
                         <button 
                             type="submit" 
-                            class="btn btn-primary"
+                            className="btn btn-primary"
                             onClick={(e) => handleUpdateProduct(e)}
                         >
                             Lưu
@@ -513,6 +504,7 @@ function ManageShoesEdit({
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
+        accessToken: state.auth.token,
         products: state.product.products,
         categories: state.product.categories,
         discounts: state.product.discounts,
@@ -526,11 +518,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getProductByIdRedux: (id) => dispatch(actions.getProductById(id)),
-        getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
+        getProductByIdRedux: (id, accessToken) => dispatch(actions.getProductById(id, accessToken)),
+        getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
         fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        updateProductRedux: (data, categorieType) => dispatch(actions.updateProduct(data, categorieType))
+        updateProductRedux: (data, categorieType, accessToken) => dispatch(actions.updateProduct(data, categorieType, accessToken))
     }
 }
 

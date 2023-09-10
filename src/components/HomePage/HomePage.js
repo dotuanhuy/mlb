@@ -11,8 +11,14 @@ import MLBBag from './MLBBag/MLBBag';
 import MLBOutfit from './MLBOutfit/MLBOutfit';
 import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
+import * as actions from '../../store/actions'
+import { categorieType } from '../../utils';
 
-function HomePage({isLogin}) {
+function HomePage({users, isLogin, accessToken, getAllProductsRedux}) {
+  useEffect(() => {
+    getAllProductsRedux(categorieType.SHOES_SANDAL, accessToken)
+  }, [])
+  
     const settings = {
         dots: true,
         infinite: false,
@@ -48,13 +54,15 @@ function HomePage({isLogin}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin
+        users: state.user.users,
+        isLogin: state.auth.isLogin,
+        accessToken: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-
+      getAllProductsRedux: (type, accessToken) => dispatch(actions.getAllProducts(type, accessToken))
     }
 }
 

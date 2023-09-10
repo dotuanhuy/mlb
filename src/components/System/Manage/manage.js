@@ -7,30 +7,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { path, Role } from '../../../utils';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
+import * as actions from '../../../store/actions'
 
 const cookies = new Cookies();
 
-function Manage({isLogin}) {
+function Manage({isLogin, isAdmin, accessToken, fetAllUsersRedux}) {
     const navigate = useNavigate()
-
-    useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-        else {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
-        }
-    }, [])
-    useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-    }, [isLogin])
-
+    
     return (    
         <div className='manage-system'>
             <div className='manage-container'>
@@ -48,7 +31,10 @@ function Manage({isLogin}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin
+        users: state.user.users,
+        isLogin: state.auth.isLogin,
+        isAdmin: state.auth.isAdmin,
+        accessToken: state.auth.token
     }
 }
 

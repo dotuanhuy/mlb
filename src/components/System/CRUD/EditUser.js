@@ -11,7 +11,7 @@ import jwt_decode from "jwt-decode";
 
 const cookies = new Cookies();
 
-function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeRedux, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, updateUserRedux}) {
+function EditUser({isLogout, accessToken, users, provinces, genders, roles, fetchUserAllcodeRedux, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, updateUserRedux}) {
     const { state } = useLocation()
     const [dataInput, setDataInput] = useState([])
     const [selectProvine, setSelectProvince] = useState({})
@@ -48,20 +48,10 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
 
     // ComponentDidMount
     useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-        else {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
-        }
-        fetchAllProvincesRedux()
+        fetchAllProvincesRedux(accessToken)
         fetchAllCodeByTypeRedux('GENDER')
         fetchAllCodeByTypeRedux('ROLE')
-        fetchUserAllcodeRedux(state)
+        fetchUserAllcodeRedux(state, accessToken)
     }, [])
     
     
@@ -77,22 +67,16 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
         })
         setSelectGender({
             label: users.dataGender ? users.dataGender.valueVi : '',
-            value: users.dataGender ? users.dataGender.id : ''
+            value: users.dataGender ? users.dataGender.keyMap : ''
         })
         setSelectRole({
             label: users.dataRole ? users.dataRole.valueVi : '',
-            value: users.dataRole ? users.dataRole.id : ''
+            value: users.dataRole ? users.dataRole.keyMap : ''
         })
         setListProvinces(dataProvinces)
         setListGenders(dataGenders)
         setListRoles(dataRole)
     }, [users, provinces, genders, roles])
-
-    useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-    }, [isLogout])
 
     const handleOnchangeAddress = (selectProvine) => {
         setSelectProvince(selectProvine)
@@ -108,7 +92,7 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
 
     const handleUpdateUser = (e) => {
         e.preventDefault()
-        updateUserRedux({
+        let newUser = {
             id: dataInput.id,
             email: dataInput.email,
             firstName: dataInput.firstName,
@@ -118,8 +102,9 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
             gender: selectGender.value,
             roleId: selectRole.value,
             avatar: ''
-        })
-        // navigate(path.MANAGE)
+        }
+        updateUserRedux(newUser, accessToken)
+        navigate(path.MANAGE)
     }
 
     return (
@@ -132,11 +117,11 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
                 <div className='user-manage-form mx-2 my-4'>
                     <form>
                         <div className='form row'>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputEmail1" class="form-label">Email</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
                                 <input 
                                     type="email" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputEmail1" 
                                     aria-describedby="emailHelp" 
                                     value={dataInput.email}
@@ -146,21 +131,21 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                                 <input 
                                     type="password" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputPassword1" 
                                     value={dataInput.password}
                                     disabled
                                 />
                             </div>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputFirstName" class="form-label">First name</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputFirstName" className="form-label">First name</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputFirstName" 
                                     value={dataInput.firstName}
                                     onChange={(e) => setDataInput({
@@ -169,11 +154,11 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputLastName" class="form-label">Last name</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputLastName" className="form-label">Last name</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputLastName" 
                                     value={dataInput.lastName}
                                     onChange={(e) => setDataInput({
@@ -182,11 +167,11 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputPhoneNumber" class="form-label">Phone number</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputPhoneNumber" className="form-label">Phone number</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputPhoneNumber" 
                                     value={dataInput.phoneNumber}
                                     onChange={(e) => setDataInput({
@@ -195,28 +180,25 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
                                     })}
                                 />
                             </div>
-                            <div class="mb-3 col-3">
-                                <label class="form-label">Address</label>
+                            <div className="mb-3 col-3">
+                                <label className="form-label">Address</label>
                                 <Select
-                                    defaultValue={selectProvine}
                                     onChange={handleOnchangeAddress}
                                     value={selectProvine}
                                     options={listProvinces}
                                 />
                             </div>
-                            <div class="mb-3 col-3">
-                                <label class="form-label">Gender</label>
+                            <div className="mb-3 col-3">
+                                <label className="form-label">Gender</label>
                                 <Select
-                                    defaultValue={selectGender}
                                     value={selectGender}
                                     onChange={handleOnchangeGender}
                                     options={listGenders}
                                 />
                             </div>
-                            <div class="mb-3 col-3">
-                                <label class="form-label">Role</label>
+                            <div className="mb-3 col-3">
+                                <label className="form-label">Role</label>
                                 <Select
-                                    defaultValue={selectRole}
                                     value={selectRole}
                                     onChange={handleOnchangeRole}
                                     options={listRoles}
@@ -225,7 +207,7 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
                         </div>
                         <button 
                             type="submit" 
-                            class="btn btn-primary"
+                            className="btn btn-primary"
                             onClick={(e) => handleUpdateUser(e)}
                         >
                             Lưu
@@ -240,6 +222,7 @@ function EditUser({isLogout, users, provinces, genders, roles, fetchUserAllcodeR
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
+        accessToken: state.auth.token,
         users: state.user.users,
         provinces: state.user.provinces,
         genders: state.user.genders,
@@ -249,10 +232,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllProvincesRedux: () => dispatch(actions.fetchAllProvinces()),
+        fetchAllProvincesRedux: (accessToken) => dispatch(actions.fetchAllProvinces(accessToken)),
         fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByType(type)),
-        updateUserRedux: (data) =>  dispatch(actions.updateUser(data)),
-        fetchUserAllcodeRedux: (id) => dispatch(actions.fetchUserAllcode(id))
+        updateUserRedux: (data, accessToken) =>  dispatch(actions.updateUser(data, accessToken)),
+        fetchUserAllcodeRedux: (id, accessToken) => dispatch(actions.fetchUserAllcode(id, accessToken))
     }
 }
 

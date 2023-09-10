@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { path, Role } from '../../../utils';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
+import { validate, validateSelect } from '../../../validate/valiedate';
 
 const cookies = new Cookies();
 
@@ -20,7 +21,7 @@ const initState = {
     phoneNumber: ''
 }
 
-function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, createNewUserRedux}) {
+function UserManage({isLogin, accessToken, provinces, genders, roles, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, createNewUserRedux}) {
     const [dataInput, setDataInput] = useState(initState)
     const [selectProvine, setSelectProvince] = useState([])
     const [selectGender, setSelectGender] = useState([])
@@ -28,6 +29,9 @@ function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux,
     const [listProvinces, setListProvinces] = useState([])
     const [listGenders, setListGenders] = useState([])
     const [listRoles, setListRoles] = useState([])
+    const [errors, setErrors] = useState({})
+    const [errorSelect, setErrorSelect] = useState({})
+    const check = false
 
     const navigate = useNavigate()
 
@@ -56,17 +60,8 @@ function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux,
 
     // ComponentDidMount
     useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-        else {
-            let token = cookies.get('userLogin')
-            let loginInfor = jwt_decode(token)
-            if (loginInfor.role === Role.USER) {
-                navigate(path.HOMEPAGE)
-            }
-        }
-        fetchAllProvincesRedux()
+
+        fetchAllProvincesRedux(accessToken)
         fetchAllCodeByTypeRedux('GENDER')
         fetchAllCodeByTypeRedux('ROLE')
     }, [])
@@ -82,27 +77,49 @@ function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux,
         setListRoles(dataRole)
     }, [provinces, genders, roles])
 
-    useEffect(() => {
-        if (!cookies.get('userLogin')) {
-            navigate(path.LOGIN)
-        }
-    }, [isLogin])
-
     const handleOnchangeAddress = (selectProvine) => {
+        if (errorSelect && errorSelect.errorProvine) {
+            setErrorSelect({
+                ...errorSelect,
+                errorProvine: ''
+            })
+        }
         setSelectProvince(selectProvine)
     }
     
     const handleOnchangeGender = (selectGender) => {
+        if (errorSelect && errorSelect.errorGender) {
+            setErrorSelect({
+                ...errorSelect,
+                errorGender: ''
+            })
+        }
         setSelectGender(selectGender)
     }
 
     const handleOnchangeRole = (selectRole) => {
+        if (errorSelect && errorSelect.errorRole) {
+            setErrorSelect({
+                ...errorSelect,
+                errorRole: ''
+            })
+        }
         setSelectRole(selectRole)
     }
 
     const handleCreateNewUser = (e) => {
         e.preventDefault()
-        createNewUserRedux({
+        let error = validate(dataInput)
+        let errorProvine = validateSelect(selectProvine)
+        let errorGender = validateSelect(selectGender)
+        let errorRole = validateSelect(selectRole) 
+        setErrors(error)
+        setErrorSelect({
+            errorProvine, 
+            errorGender,
+            errorRole
+        })
+        let user = {
             email: dataInput.email,
             password: dataInput.password,
             firstName: dataInput.firstName,
@@ -112,9 +129,22 @@ function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux,
             gender: selectGender.value,
             roleId: selectRole.value,
             avatar: ''
-        })
-        setDataInput(initState)
+        }
+        
+        if (Object.keys(error).length === 0 && errorProvine === '' && errorGender === '' && errorRole === '') {
+            createNewUserRedux(user, accessToken)
+            setDataInput(initState)
+            setSelectProvince([])
+            setSelectGender([])
+            setSelectRole([])
+        }
     }
+
+    useEffect(() => {
+        setErrors({})
+        setErrorSelect({})
+    }, [dataInput, selectGender, selectProvine, selectRole])
+
 
     return (
         <div className='user-manage'>
@@ -126,11 +156,11 @@ function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux,
                 <div className='user-manage-form mx-2 my-4'>
                     <form>
                         <div className='form row'>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputEmail1" class="form-label">Email</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
                                 <input 
                                     type="email" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputEmail1" 
                                     aria-describedby="emailHelp" 
                                     value={dataInput.email}
@@ -138,88 +168,117 @@ function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux,
                                         ...dataInput,
                                         email: e.target.value
                                     })}
+                                    // onBlur={(e) => handleOnBlur(e)}
                                 />
+                                {
+                                    errors && errors.email ? <span className='error'>{errors.email}</span> : ''
+                                }
                             </div>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                                 <input 
                                     type="password" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputPassword1" 
                                     value={dataInput.password}
                                     onChange={(e) => setDataInput({
                                         ...dataInput,
                                         password: e.target.value
                                     })}
+                                    // onBlur={(e) => handleOnBlur(e)}
                                 />
+                                {
+                                    errors && errors.password ? <span className='error'>{errors.password}</span> : ''
+                                }
                             </div>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputFirstName" class="form-label">First name</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputFirstName" className="form-label">First name</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputFirstName" 
                                     value={dataInput.firstName}
                                     onChange={(e) => setDataInput({
                                         ...dataInput,
                                         firstName: e.target.value
                                     })}
+                                    // onBlur={(e) => handleOnBlur(e)}
                                 />
+                                {
+                                    errors && errors.firstName ? <span className='error'>{errors.firstName}</span> : ''
+                                }
                             </div>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputLastName" class="form-label">Last name</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputLastName" className="form-label">Last name</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputLastName" 
                                     value={dataInput.lastName}
                                     onChange={(e) => setDataInput({
                                         ...dataInput,
                                         lastName: e.target.value
                                     })}
+                                    // onBlur={(e) => handleOnBlur(e)}
                                 />
+                                {
+                                    errors && errors.lastName ? <span className='error'>{errors.lastName}</span> : ''
+                                }
                             </div>
-                            <div class="mb-3 col-3">
-                                <label for="exampleInputPhoneNumber" class="form-label">Phone number</label>
+                            <div className="mb-3 col-3">
+                                <label htmlFor="exampleInputPhoneNumber" className="form-label">Phone number</label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     id="exampleInputPhoneNumber" 
                                     value={dataInput.phoneNumber}
                                     onChange={(e) => setDataInput({
                                         ...dataInput,
                                         phoneNumber: e.target.value
                                     })}
+                                    // onBlur={(e) => handleOnBlur(e)}
                                 />
+                                {
+                                    errors && errors.phoneNumber ? <span className='error'>{errors.phoneNumber}</span> : ''
+                                }
                             </div>
-                            <div class="mb-3 col-3">
-                                <label class="form-label">Address</label>
+                            <div className="mb-3 col-3">
+                                <label className="form-label">Address</label>
                                 <Select
-                                    defaultValue={selectProvine}
+                                    value={selectProvine}
                                     onChange={handleOnchangeAddress}
                                     options={listProvinces}
                                 />
+                                {
+                                    errorSelect && errorSelect.errorProvine ? <span className='error'>{errorSelect.errorProvine}</span> : ''
+                                }
                             </div>
-                            <div class="mb-3 col-3">
-                                <label class="form-label">Gender</label>
+                            <div className="mb-3 col-3">
+                                <label className="form-label">Gender</label>
                                 <Select
-                                    defaultValue={selectGender}
+                                    value={selectGender}
                                     onChange={handleOnchangeGender}
                                     options={listGenders}
-                                />
+                                />     
+                                {
+                                    errorSelect && errorSelect.errorGender ? <span className='error'>{errorSelect.errorGender}</span> : ''
+                                }                          
                             </div>
-                            <div class="mb-3 col-3">
-                                <label class="form-label">Role</label>
+                            <div className="mb-3 col-3">
+                                <label className="form-label">Role</label>
                                 <Select
-                                    defaultValue={selectRole}
+                                    value={selectRole}
                                     onChange={handleOnchangeRole}
                                     options={listRoles}
                                 />
+                                {
+                                    errorSelect && errorSelect.errorRole ? <span className='error'>{errorSelect.errorRole}</span> : ''
+                                }
                             </div>
                         </div>
                         <button 
                             type="submit" 
-                            class="btn btn-primary"
+                            className="btn btn-primary"
                             onClick={(e) => handleCreateNewUser(e)}
                         >
                             Tạo
@@ -237,6 +296,7 @@ function UserManage({isLogin, provinces, genders, roles, fetchAllProvincesRedux,
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
+        accessToken: state.auth.token,
         provinces: state.user.provinces,
         genders: state.user.genders,
         roles: state.user.roles
@@ -245,9 +305,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllProvincesRedux: () => dispatch(actions.fetchAllProvinces()),
+        fetchAllProvincesRedux: (accessToken) => dispatch(actions.fetchAllProvinces(accessToken)),
         fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByType(type)),
-        createNewUserRedux: (data) =>  dispatch(actions.createNewUser(data))
+        createNewUserRedux: (data, accessToken) =>  dispatch(actions.createNewUser(data, accessToken))
     }
 }
 
