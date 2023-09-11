@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './AddImageProduct.scss'
-import Nav from '../../../../nav/nav'
+import Nav from '../../../nav/nav'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../../../../utils';
-import * as actions from '../../../../../../store/actions'
+import { path, Role } from '../../../../../utils';
+import * as actions from '../../../../../store/actions'
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 import {Buffer} from 'buffer';
-import CommonUtils from '../../../../../../utils/CommonUtils';
+import CommonUtils from '../../../../../utils/CommonUtils';
 
 const cookies = new Cookies();
 

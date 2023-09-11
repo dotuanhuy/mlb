@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import './manage.scss'
-import TableUser from '../TableUsers/TableUser';
-import Nav from '../nav/nav';
+import './ManageBag.scss'
+import Nav from '../../../nav/nav';
 import { Link, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../utils';
+import { path, Role, categorieType } from '../../../../../utils';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
-import * as actions from '../../../store/actions'
+import TableProducts from '../TableProducts/TableProducts';
 
 const cookies = new Cookies();
 
-function Manage({isLogin, accessToken, fetAllUsersRedux}) {
+function ManageBag({isLogin}) {
     const navigate = useNavigate()
-    
+
     return (    
-        <div className='manage-system'>
-            <div className='manage-container'>
+        <div className='manage-product'>
+            <div className='manage-product-container'>
                 <Nav />
                 <div className='create'>
                     <button className='btn btn-success my-4 btn-add'>
-                        <Link to={path.MANAGE_CREATE}>Add</Link>
+                        <Link to={path.MANAGE_PRODUCTS_BAG_BALO_CREATE} state={categorieType.BAG_BALO}>Add</Link>
                     </button>
                 </div>
-                <TableUser />
+                <TableProducts typeCategore={categorieType.BAG_BALO}/>
             </div>
         </div>
     );
@@ -31,9 +30,7 @@ function Manage({isLogin, accessToken, fetAllUsersRedux}) {
 
 const mapStateToProps = state => {
     return {
-        users: state.user.users,
-        isLogin: state.auth.isLogin,
-        accessToken: state.auth.token
+        isLogin: state.auth.isLogin
     }
 }
 
@@ -42,4 +39,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Manage);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageBag);

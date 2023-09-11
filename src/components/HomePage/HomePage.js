@@ -14,11 +14,11 @@ import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
 import { categorieType } from '../../utils';
 
-function HomePage({users, isLogin, accessToken, getAllProductsRedux}) {
+function HomePage({users, isLogin, accessToken, products, getAllProductsRedux, getAllProductPublicRedux}) {
   useEffect(() => {
-    getAllProductsRedux(categorieType.SHOES_SANDAL, accessToken)
+    getAllProductPublicRedux(accessToken)
   }, [])
-  
+    console.log('check products: ', products)
     const settings = {
         dots: true,
         infinite: false,
@@ -56,13 +56,15 @@ const mapStateToProps = state => {
     return {
         users: state.user.users,
         isLogin: state.auth.isLogin,
-        accessToken: state.auth.token
+        accessToken: state.auth.token,
+        products: state.product.products
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-      getAllProductsRedux: (type, accessToken) => dispatch(actions.getAllProducts(type, accessToken))
+      getAllProductsRedux: (type, accessToken) => dispatch(actions.getAllProducts(type, accessToken)),
+      getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken))
     }
 }
 

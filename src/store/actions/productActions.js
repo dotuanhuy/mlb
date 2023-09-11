@@ -1,6 +1,7 @@
 import actionTypes from "./actionTypes";
 import { 
     getAllProductsService, 
+    getAllProductPublicService,
     getAllCategoriesService,
     getCategoriesByIdService,
     createNewProductService,
@@ -36,6 +37,30 @@ export const getAllProducts = (type, accessToken) => {
             console.log('getAllProducts error: ', e)
             dispatch({
                 type: actionTypes.FETCH_ALL_PRODUCTS_FAILED
+            })
+        }
+    }
+}
+
+export const getAllProductPublic = (accessToken) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getAllProductPublicService(accessToken)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_PRODUCTS_PUBLIC_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_PRODUCTS_PUBLIC_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getAllProductPublic error: ', e)
+            dispatch({
+                type: actionTypes.FETCH_ALL_PRODUCTS_PUBLIC_FAILED
             })
         }
     }

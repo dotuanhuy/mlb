@@ -17,7 +17,7 @@ const initState = {
     password: ''
 }
 
-function Login({user, isLogin, isAdmin, fetLoginRedux}) {
+function Login({user, isLogin, fetLoginRedux}) {
     const [dataInput, setDataInput] = useState(initState)
     const navigate = useNavigate()
     
@@ -142,7 +142,6 @@ const mapStateToProps = state => {
     return {
         user: state.auth.user,
         isLogin: state.auth.isLogin,
-        isAdmin: state.auth.isAdmin
     }
 }
 

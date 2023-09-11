@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Nav from '../../../../nav/nav'
+import Nav from '../../../nav/nav'
 import './AddDescriptionProduct.scss'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../../../../utils';
-import * as actions from '../../../../../../store/actions'
+import { path, Role } from '../../../../../utils';
+import * as actions from '../../../../../store/actions'
 import Cookies from 'universal-cookie';
-import jwt_decode from "jwt-decode";
-import {Buffer} from 'buffer';
-import CommonUtils from '../../../../../../utils/CommonUtils';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';

@@ -6,7 +6,7 @@ import Login from '../components/Login/Login';
 import Register from '../components/Register/Register';
 
 
-function AuthRoute({isLogin, isAdmin}) {
+function AuthRoute({isLogin}) {
 
     return (
         <>
@@ -21,7 +21,6 @@ function AuthRoute({isLogin, isAdmin}) {
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        isAdmin: state.auth.isAdmin,
     }
 }
 

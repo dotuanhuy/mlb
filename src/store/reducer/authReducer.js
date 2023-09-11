@@ -2,14 +2,12 @@ const initState = {
     user: {},
     isLogin: false,
     token: '',
-    isAdmin: false
 }
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
         case 'LOGIN_SUCCESS': 
             state.isLogin = true
-            state.isAdmin = true
             state.token = action?.data?.data?.accessToken
             let {email, firstName, lastName, phoneNumber, gender, address, roleId} = action?.data?.data
             state.user = {
@@ -28,7 +26,6 @@ const authReducer = (state = initState, action) => {
         case 'LOGIN_FAILED': 
             state.isLogin = false
             state.token = ''
-            state.isAdmin = false
             state.user = {}
             return {
                 ...state
@@ -36,7 +33,6 @@ const authReducer = (state = initState, action) => {
         case 'LOGOUT_SUCCESS': 
             state.isLogin = false
             state.token = ''
-            state.isAdmin = false
             return {
                 ...state,
             }

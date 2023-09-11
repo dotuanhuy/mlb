@@ -349,7 +349,6 @@ const mapStateToProps = state => {
         user: state.auth.user,
         token: state.auth.token,
         isLogin: state.auth.isLogin,
-        isAdmin: state.auth.isAdmin
     }
 }
 

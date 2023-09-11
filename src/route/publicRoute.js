@@ -7,7 +7,7 @@ import Shoes from '../components/Products/ShoesList/Shoes';
 
 
 
-function PublicRoute({isLogin, isAdmin}) {
+function PublicRoute({isLogin}) {
 
     return (
         <>
@@ -22,7 +22,6 @@ function PublicRoute({isLogin, isAdmin}) {
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        isAdmin: state.auth.isAdmin,
     }
 }
 

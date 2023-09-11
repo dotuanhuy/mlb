@@ -4,13 +4,20 @@ export const path = {
     LOG_OUT: '/logout',
     REGISTER: '/register',
     SYSTEM: '/system',
+    
     MANAGE: '/system/manage',
     MANAGE_CREATE: '/system/manage/create',
     MANAGE_EDIT: '/system/manage/edit',
+
     MANAGE_PRODUCTS: '/system/manage/products',
+
     MANAGE_PRODUCTS_SHOES: '/system/manage/products/shoes',
     MANAGE_PRODUCTS_SHOES_CREATE: '/system/manage/products/shoes/create',
     MANAGE_PRODUCTS_SHOES_EDIT: '/system/manage/products/shoes/edit',
+
+    MANAGE_PRODUCTS_BAG_BALO: '/system/manage/products/bag-balo',
+    MANAGE_PRODUCTS_BAG_BALO_CREATE: '/system/manage/products/bag-balo/create',
+    
     MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
     GIAY_MLB: '/giay-mlb',
@@ -33,7 +40,8 @@ export const Role = {
 }
 
 export const categorieType = {
-    SHOES_SANDAL: 'GS'
+    SHOES_SANDAL: 'GS',
+    BAG_BALO: 'TB'
 }
 
 export const listShoesSandals = {

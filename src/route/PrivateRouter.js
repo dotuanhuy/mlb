@@ -1,13 +1,11 @@
-import React, { useEffect, memo } from 'react';
-import {Routes, Route, redirect, useNavigate, Navigate } from 'react-router-dom';
+import React, { memo } from 'react';
+import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { path } from '.././utils'
-import Login from '../components/Login/Login';
-import Register from '../components/Register/Register';
-import Manage from '../components/System/Manage/manage';
+import jwtDecode from 'jwt-decode';
 
 
-function PrivateRouter({users, isLogin, isAdmin, Component}) {
+function PrivateRouter({users, isLogin, accessToken, Component}) {
+    
     return ( 
         // <>
         //     <Route path={path.MANAGE} element={<component />}/>
@@ -20,7 +18,7 @@ const mapStateToProps = state => {
     return {
         users: state.user.users,
         isLogin: state.auth.isLogin,
-        isAdmin: state.auth.isAdmin,
+        accessToken: state.auth.token
     }
 }
 

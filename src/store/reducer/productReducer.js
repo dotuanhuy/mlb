@@ -33,6 +33,16 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
+        case 'FETCH_ALL_PRODUCTS_PUBLIC_SUCCESS':
+            state.products = action.data
+            return {
+                ...state
+            }
+        case 'FETCH_ALL_PRODUCTS_PUBLIC_FAILED':
+            state.products = []
+            return {
+                ...state
+            }
         case 'FETCH_ALL_COLOR_SUCCSESS': 
             state.colors = action.data
             return {

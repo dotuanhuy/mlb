@@ -4,10 +4,9 @@ import Nav from '../../../nav/nav';
 import Select from 'react-select';
 import * as actions from '../../../../../store/actions'
 import TableProducts from '../TableProducts/TableProducts';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { path, Role, allCode, categorieType } from '../../../../../utils';
 import Cookies from 'universal-cookie';
-import jwt_decode from "jwt-decode";
 import CommonUtils from '../../../../../utils/CommonUtils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -28,6 +27,12 @@ const initStateImage = {
     previewImgURL: null
 }
 
+const initSize = {
+    sizeLength: '',
+    sizeWidth: '',
+    sizeD: ''
+}
+
 function ManageShoesCreate({
     accessToken,
     categories, 
@@ -43,6 +48,7 @@ function ManageShoesCreate({
     createNewProductRedux
 }) {
     const navigate = useNavigate()
+    const location = useLocation()
     const [selectCategory, setSelectCategory] = useState()
     const [selectObject, setSelectObject] = useState(initState)
     const [selectDiscount, setSelectDiscount] = useState()
@@ -52,7 +58,7 @@ function ManageShoesCreate({
     const [selectLogo, setSelectLogo] = useState()
     const [listCategories, setListCategories] = useState([]) 
     const [listDiscount, setListDiscount] = useState([])
-    const [listSizes, setListSizes] = useState([])
+    const [listSizes, setListSizes] = useState(location.state === categorieType.SHOES_SANDAL ? [] : initSize)
     const [listBrands, setListBrands] = useState([])
     const [listColors, setListColors] = useState([])
     const [listLogos, setListLogos] = useState([])
@@ -65,7 +71,9 @@ function ManageShoesCreate({
         fetchAllCodeByTypeRedux(allCode.BRAND)
         fetchAllColorsRedux(allCode.COLOR)
         fetchAllCodeByTypeRedux(allCode.LOGO)
-        fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
+        if (location.state === categorieType.SHOES_SANDAL) {
+            fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
+        }
         fetchAllCodeByTypeRedux(allCode.GENDER)
     }, [])
 
@@ -171,6 +179,13 @@ function ManageShoesCreate({
 
     const handleCreateNewProduct = (e) => {
         e.preventDefault()
+        let valueListSize = null
+        if (location.state === categorieType.SHOES_SANDAL) {
+            valueListSize = listSizes.toString()
+        }
+        else {
+            valueListSize = Object.keys(listSizes).map(item => listSizes[item]).toString()
+        }
         let product = {
             categoresId: selectCategory.value,
             name: selectObject.name,
@@ -183,12 +198,12 @@ function ManageShoesCreate({
             brandId: selectBrand.value,
             listColor: listColors.toString(),
             logoId: selectLogo.value,
-            listSize: listSizes.toString(),
+            listSize: valueListSize,
             material: selectObject.material,
             listGender: listGenders.toString(),
         }
 
-        createNewProductRedux(product, categorieType.SHOES_SANDAL, accessToken)
+        createNewProductRedux(product, categorieType.BAG_BALO, accessToken)
         setSelectObject(initState)
         setSelectImage(initStateImage)
         setSelectCategory('')
@@ -197,7 +212,7 @@ function ManageShoesCreate({
         setSelectLogo('')
         setSelectReleaseDate('')
         setListColors([])
-        setListSizes([])
+        setListSizes(location.state === categorieType.SHOES_SANDAL ? [] : initSize)
         setListGenders([])
     }
 
@@ -319,35 +334,84 @@ function ManageShoesCreate({
                             </div>
                             <div className="mb-3 col-4">
                                 <label htmlFor="exampleInputSize" className="form-label">SizeId</label>
-                                <div className='row'>
-                                    {
-                                        sizes && sizes.length > 0 &&
-                                        sizes.map((item, index) => {
-                                            let value = `${item.valueVi} - ${item.valueEn}`
-                                            return (
-                                                <div className='col-4 pb-1' key={index}>
-                                                    <input 
-                                                        checked={
-                                                            listSizes.some(size => size === item.valueVi) ? true : false
-                                                        }
-                                                        type="checkbox" 
-                                                        className="form-check-input" 
-                                                        id={`checkItem${item.valueEn}`}
-                                                        value={item.valueVi}
-                                                        onChange={(e) => handleOnchangeColorOrGender(e, allCode.SIZEGIAY)}
-                                                    />
-                                                    <label 
-                                                        className="form-check-label ps-2" 
-                                                        htmlFor={`checkItem${item.valueEn}`}
-                                                        style={{ color: `${item.valueEn}`}}
-                                                    >
-                                                        {value}
-                                                    </label>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
+                                {
+                                    location.state === categorieType.SHOES_SANDAL ? 
+                                    <div className='row'>
+                                        {   
+                                            sizes && sizes.length > 0 &&
+                                            sizes.map((item, index) => {
+                                                let value = `${item.valueVi} - ${item.valueEn}`
+                                                return (
+                                                    <div className='col-4 pb-1' key={index}>
+                                                        <input 
+                                                            checked={
+                                                                listSizes.some(size => size === item.valueVi) ? true : false
+                                                            }
+                                                            type="checkbox" 
+                                                            className="form-check-input" 
+                                                            id={`checkItem${item.valueEn}`}
+                                                            value={item.valueVi}
+                                                            onChange={(e) => handleOnchangeColorOrGender(e, allCode.SIZEGIAY)}
+                                                        />
+                                                        <label 
+                                                            className="form-check-label ps-2" 
+                                                            htmlFor={`checkItem${item.valueEn}`}
+                                                            style={{ color: `${item.valueEn}`}}
+                                                        >
+                                                            {value}
+                                                        </label>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    : ''
+                                }
+                    
+                                {
+                                    location.state === categorieType.BAG_BALO ?
+                                    <div>
+                                        <div className='row'>
+                                            <div className='col-4'>
+                                                <label htmlFor='inputSizeWidth' className='form-label'>Chiều rộng</label>
+                                                <input 
+                                                    className='form-control' 
+                                                    id='inputSizeWidth'
+                                                    value={listSizes.sizeWidth}
+                                                    onChange={(e) => setListSizes({
+                                                        ...listSizes,
+                                                        sizeWidth: e.target.value
+                                                    })}
+                                                />
+                                            </div>
+                                            <div className='col-4'>
+                                                <label htmlFor='inputSizeLength' className='form-label'>Chiều dài</label>
+                                                <input 
+                                                    className='form-control' 
+                                                    id='inputSizeLength'
+                                                    value={listSizes.sizeHeight}
+                                                    onChange={(e) => setListSizes({
+                                                        ...listSizes,
+                                                        sizeHeight: e.target.value
+                                                    })}
+                                                />
+                                            </div>
+                                            <div className='col-4'>
+                                                <label htmlFor='inputSizeHeight' className='form-label'>Chiều dày</label>
+                                                <input 
+                                                    className='form-control' 
+                                                    id='inputSizeHeight'
+                                                    value={listSizes.sizeD}
+                                                    onChange={(e) => setListSizes({
+                                                        ...listSizes,
+                                                        sizeD: e.target.value
+                                                    })}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    : ''
+                                }
                             </div>
                             <div 
                                 className="mb-3 col-4"
@@ -449,7 +513,7 @@ function ManageShoesCreate({
                     </form>
                 </div>
                 <div className='manage-shoes-create-table'>
-                    <TableProducts typeCategore={categorieType.SHOES_SANDAL}/>
+                    <TableProducts typeCategore={categorieType.BAG_BALO}/>
                 </div>
             </div>
         </div>

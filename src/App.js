@@ -3,26 +3,26 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from './utils'
-import HomePage from './components/HomePage/HomePage';
-import UserManage from './components/System/CRUD/UserManage';
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
-import Manage from './components/System/Manage/manage';
-import EditUser from './components/System/CRUD/EditUser';
-import Shoes from './components/Products/ShoesList/Shoes'
-import ManageProducts from './components/System/Manage/Products/ManageProducts';
-import ManageShoes from './components/System/Manage/Products/ManageShoes/ManageShoes';
-import ManageShoesCreate from './components/System/Manage/Products/ManageShoes/ManageShoesCreate';
-import ManageShoesEdit from './components/System/Manage/Products/ManageShoes/ManageShoesEdit';
-import AddImageProduct from './components/System/Manage/Products/ManageShoes/HandleImage/AddImageProduct';
-import AddDescriptionProduc from './components/System/Manage/Products/ManageShoes/HandleDescription/AddDescriptionProduc';
-import PrivateRouter from './route/PrivateRouter';
+// import HomePage from './components/HomePage/HomePage';
+// import UserManage from './components/System/CRUD/UserManage';
+// import Login from './components/Login/Login';
+// import Register from './components/Register/Register';
+// import Manage from './components/System/Manage/manage';
+// import EditUser from './components/System/CRUD/EditUser';
+// import Shoes from './components/Products/ShoesList/Shoes'
+// import ManageProducts from './components/System/Manage/Products/ManageProducts';
+// import ManageShoes from './components/System/Manage/Products/ManageShoes/ManageShoes';
+// import ManageShoesCreate from './components/System/Manage/Products/ManageShoes/ManageShoesCreate';
+// import ManageShoesEdit from './components/System/Manage/Products/ManageShoes/ManageShoesEdit';
+// import AddImageProduct from './components/System/Manage/Products/ManageShoes/HandleImage/AddImageProduct';
+// import AddDescriptionProduc from './components/System/Manage/Products/ManageShoes/HandleDescription/AddDescriptionProduc';
+// import PrivateRouter from './route/PrivateRouter';
 import System from './route/system';
 import AuthRoute from './route/authRoute';
 import PublicRoute from './route/publicRoute';
 import NoMatch from './route/NoMatch';
 
-function App({isLogin, isAdmin}) {
+function App({isLogin}) {
     return (
         <React.Fragment>
             <Router>
@@ -58,7 +58,6 @@ function App({isLogin, isAdmin}) {
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        isAdmin: state.auth.isAdmin,
     }
 }
 

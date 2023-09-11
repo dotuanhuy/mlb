@@ -13,31 +13,13 @@ const cookies = new Cookies();
 function ManageShoes({isLogin}) {
     const navigate = useNavigate()
 
-    // useEffect(() => {
-    //     if (!cookies.get('userLogin')) {
-    //         navigate(path.LOGIN)
-    //     }
-    //     else {
-    //         let token = cookies.get('userLogin')
-    //         let loginInfor = jwt_decode(token)
-    //         if (loginInfor.role === Role.USER) {
-    //             navigate(path.HOMEPAGE)
-    //         }
-    //     }
-    // }, [])
-    // useEffect(() => {
-    //     if (!cookies.get('userLogin')) {
-    //         navigate(path.LOGIN)
-    //     }
-    // }, [isLogin])
-
     return (    
         <div className='manage-product'>
             <div className='manage-product-container'>
                 <Nav />
                 <div className='create'>
                     <button className='btn btn-success my-4 btn-add'>
-                        <Link to={path.MANAGE_PRODUCTS_SHOES_CREATE}>Add</Link>
+                        <Link to={path.MANAGE_PRODUCTS_SHOES_CREATE} state={categorieType.SHOES_SANDAL}>Add</Link>
                     </button>
                 </div>
                 <TableProducts typeCategore={categorieType.SHOES_SANDAL}/>

@@ -2,9 +2,17 @@ import axios from "../axios";
 import {createAxios} from '../axiosJWT'
 
 const getAllProductsService = (type, accessToken) => {
-    // return axios.get(`/api/get-all-prducts?type=${type}`)
     const axiosJWT = createAxios(accessToken)
     return axiosJWT.get(`/api/get-all-prducts?type=${type}`, { headers: {token: `Bearer ${accessToken}`}})
+    // return axios.get(`/api/get-all-prducts?type=${type}`)
+}
+
+const getAllProductPublicService = (accessToken) => {
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get('/api/get-all-product-public', { headers: {token: `Bearer ${accessToken}`}})
+    }
+    else return axios.get('/api/get-all-product-public')
 }
 
 const getAllCategoriesService = (accessToken) => {
@@ -73,6 +81,7 @@ const addDescriptionProductService = (data, accessToken) => {
 
 export {
     getAllProductsService,
+    getAllProductPublicService,
     createNewProductService,
     getAllCategoriesService,
     getCategoriesByIdService,

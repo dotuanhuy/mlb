@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 
 
-function PublicRoute({isLogin, isAdmin}) {
+function PublicRoute({isLogin}) {
 
     return (
         <>
@@ -16,7 +16,6 @@ function PublicRoute({isLogin, isAdmin}) {
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        isAdmin: state.auth.isAdmin,
     }
 }
 

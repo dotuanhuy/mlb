@@ -9,13 +9,12 @@ import {Buffer} from 'buffer';
 
 function TableProducts({typeCategore, products, accessToken, getAllProductsRedux, deleteProductRedux}) {
     const navigate = useNavigate()
-
     useEffect(() => {
         getAllProductsRedux(typeCategore, accessToken)
     }, [])
 
     const handleDeleteProduct = (id) => {
-        deleteProductRedux(id, typeCategore)
+        deleteProductRedux(id, typeCategore, accessToken)
     }
 
     const handleEditProduct = (id) => {
@@ -149,7 +148,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getAllProductsRedux: (type, accessToken) => dispatch(actions.getAllProducts(type, accessToken)),
-        deleteProductRedux: (id) => dispatch(actions.deleteProduct(id))
+        deleteProductRedux: (id, typeCategore, accessToken) => dispatch(actions.deleteProduct(id, typeCategore, accessToken))
     }
 }
 
