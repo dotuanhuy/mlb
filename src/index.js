@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import './styles/style.scss'
 import reduxStore from './redux';
+import 'react-toastify/dist/ReactToastify.css';
 
 const { store, persistor } = reduxStore()
 

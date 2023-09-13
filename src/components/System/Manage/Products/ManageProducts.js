@@ -4,10 +4,7 @@ import './ManageProducts.scss'
 import Nav from '../../nav/nav';
 import { Link, useNavigate } from 'react-router-dom';
 import { path, Role } from '../../../../utils';
-import Cookies from 'universal-cookie';
-import jwt_decode from "jwt-decode";
 
-const cookies = new Cookies();
 
 function ManageProducts({isLogin}) {
     const navigate = useNavigate()
@@ -31,7 +28,7 @@ function ManageProducts({isLogin}) {
                                 <Link to={path.MANAGE_PRODUCTS_BAG_BALO}>Túi-balo</Link>
                             </div>
                             <div className='product-type-item col-3'>
-                                <a>Mũ nón</a>
+                                <Link to={path.MANAGE_PRODUCTS_HAT}>Mũ-nón</Link>
                             </div>
                             <div className='product-type-item col-3'>
                                 <a>Áo quần</a>

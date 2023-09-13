@@ -1,15 +1,10 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import './nav.scss'
 import { Link } from 'react-router-dom';
 import { path } from '../../../utils'
-import Cookies from 'universal-cookie';
-import jwt_decode from "jwt-decode";
-import { redirect } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import * as actions from '../../../store/actions'
-
-const cookies = new Cookies()
 
 function Nav({isLogin, fetLogoutRedux}) {
     const navigate = useNavigate()
@@ -17,12 +12,6 @@ function Nav({isLogin, fetLogoutRedux}) {
     const handleLogout = () => {
         fetLogoutRedux()
     }
-    
-    // useEffect(() => {
-    //     if (!isLogin) {
-    //         navigate(path.LOGIN)
-    //     }
-    // }, [isLogin])
 
     return (
         <div className='nav-system'>

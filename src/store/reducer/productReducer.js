@@ -9,11 +9,17 @@ const initState = {
     sizes: [],
     genders: [],
     images: [],
-    descriptions: [] 
+    descriptions: [],
+    isLoadingProduct: true
 }
 
 const productReducer = (state = initState, action) => {
     switch (action.type) {
+        case 'LOADING_PRODUCT_SUCCESS':
+            state.isLoadingProduct = true
+            return {
+                ...state
+            }
         case 'FETCH_ALL_CODE_BY_TYPE_FAILED':
             state.logos = []
             state.discounts = []
@@ -25,11 +31,13 @@ const productReducer = (state = initState, action) => {
             }
         case 'FETCH_ALL_PRODUCTS_SUCCESS':
             state.products = action.data
+            state.isLoadingProduct = false
             return {
                 ...state
             }
         case 'FETCH_ALL_PRODUCTS_FAILED': 
             state.products = []
+            state.isLoadingProduct = true
             return {
                 ...state
             }
@@ -105,31 +113,37 @@ const productReducer = (state = initState, action) => {
             }
         case 'FETCH_PRODUCT_BY_ID_SUCCESS':
             state.products = action.data
+            state.isLoadingProduct = false
             return {
                 ...state
             }
         case 'FETCH_PRODUCT_BY_ID_FAILED':
             state.products = []
+            state.isLoadingProduct = true
             return {
                 ...state
             }
         case 'FETCH_ALL_IMAGE_PRODUCT_SUCCESS':
             state.images = action.data
+            state.isLoadingProduct = false
             return {
                 ...state
             }
         case 'FETCH_ALL_IMAGE_PRODUCT_FAILED':
             state.images = []
+            state.isLoadingProduct = true
             return {
                 ...state
             }
         case 'FETCH_DESCRIPTION_PRODUCT_SUCCESS': 
             state.descriptions = action.data
+            state.isLoadingProduct = false
             return {
                 ...state
             }
         case 'FETCH_DESCRIPTION_PRODUCT_FAILED': 
             state.descriptions = []
+            state.isLoadingProduct = false
             return {
                 ...state
             }

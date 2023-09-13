@@ -19,7 +19,6 @@ const authReducer = (state = initState, action) => {
                 address,
                 roleId
             }
-            console.log('check user: ', state.user)
             return {
                 ...state
             }

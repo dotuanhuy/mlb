@@ -191,3 +191,19 @@ export const fetchUserAllcode = (id, accessToken) => {
         }
     }
 }
+
+
+export const refreshIsloadingState = () => {
+    return async (dispatch, getSate) => {
+        try {
+            dispatch({
+                type: actionTypes.LOADING_SUCCESS
+            })
+        } catch(e) {
+            console.log('refreshIsloadingState error: ', e)
+            dispatch({
+                type: actionTypes.LOADING_FAILED
+            })
+        }
+    }
+}

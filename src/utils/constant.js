@@ -17,6 +17,11 @@ export const path = {
 
     MANAGE_PRODUCTS_BAG_BALO: '/system/manage/products/bag-balo',
     MANAGE_PRODUCTS_BAG_BALO_CREATE: '/system/manage/products/bag-balo/create',
+    MANAGE_PRODUCTS_BAG_BALO_EDIT: '/system/manage/products/bag-balo/edit',
+
+    MANAGE_PRODUCTS_HAT: '/system/manage/products/hat',
+    MANAGE_PRODUCTS_HAT_CREATE: '/system/manage/products/hat/create',
+    MANAGE_PRODUCTS_HAT_EDIT: '/system/manage/products/hat/edit',
     
     MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
@@ -41,7 +46,8 @@ export const Role = {
 
 export const categorieType = {
     SHOES_SANDAL: 'GS',
-    BAG_BALO: 'TB'
+    BAG_BALO: 'TB',
+    HAT: 'MN'
 }
 
 export const listShoesSandals = {

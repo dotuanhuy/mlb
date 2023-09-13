@@ -3,27 +3,20 @@ const initState = {
     provinces: [],
     genders: [],
     roles: [],
+    isLoadingUser: true
 }
 
 const userReducer = (state = initState, action) => {
     switch (action.type) {
-        // case 'LOGOUT_SUCCESS': 
-        //     state.isLogout = true
-        //     return {
-        //         ...state,
-        //     }
-        // case 'LOGOUT_FAILED':
-        //     state.isLogout = false 
-        //     return {
-        //         ...state
-        //     }
         case 'FETCH_ALL_USERS_SUCCESS':
             state.users = action.data
+            state.isLoadingUser  = false
             return {
                 ...state
             }
         case 'FETCH_ALL_USERS_FAILED':
             state.users = []
+            state.isLoadingUser  = true
             return {
                 ...state
             }
@@ -54,11 +47,19 @@ const userReducer = (state = initState, action) => {
             }
         case 'FETCH_USER_ALLCODE_SUCCESS':
             state.users = action.data
+            state.isLoadingUser = false
             return {
                 ...state
             }
         case 'FETCH_USER_ALLCODE_FAILED':
             state.users = []
+            state.isLoadingUser = true
+            return {
+                ...state
+            }
+
+        case 'LOADING_SUCCESS': 
+            state.isLoadingUser = true
             return {
                 ...state
             }

@@ -12,8 +12,7 @@ import * as actions from '../../../store/actions'
 const cookies = new Cookies();
 
 function Manage({isLogin, accessToken, fetAllUsersRedux}) {
-    const navigate = useNavigate()
-    
+    const navigate = useNavigate()    
     return (    
         <div className='manage-system'>
             <div className='manage-container'>
@@ -25,7 +24,7 @@ function Manage({isLogin, accessToken, fetAllUsersRedux}) {
                 </div>
                 <TableUser />
             </div>
-        </div>
+        </div>        
     );
 }
 
@@ -33,7 +32,7 @@ const mapStateToProps = state => {
     return {
         users: state.user.users,
         isLogin: state.auth.isLogin,
-        accessToken: state.auth.token
+        accessToken: state.auth.token,
     }
 }
 

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import './ManageBag.scss'
+import './ManageHat.scss'
 import Nav from '../../../nav/nav';
 import { Link, useNavigate } from 'react-router-dom';
-import { path, Role, categorieType } from '../../../../../utils';
+import { path, categorieType } from '../../../../../utils';
 import TableProducts from '../TableProducts/TableProducts';
 
 
-function ManageBag({isLogin}) {
+function ManageHat({isLogin}) {
     const navigate = useNavigate()
 
     return (    
@@ -16,10 +16,10 @@ function ManageBag({isLogin}) {
                 <Nav />
                 <div className='create'>
                     <button className='btn btn-success my-4 btn-add'>
-                        <Link to={path.MANAGE_PRODUCTS_BAG_BALO_CREATE} state={categorieType.BAG_BALO}>Add</Link>
+                        <Link to={path.MANAGE_PRODUCTS_HAT_CREATE} state={categorieType.HAT}>Add</Link>
                     </button>
                 </div>
-                <TableProducts typeCategore={categorieType.BAG_BALO}/>
+                <TableProducts typeCategore={categorieType.HAT}/>
             </div>
         </div>
     );
@@ -36,4 +36,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageBag);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageHat);

@@ -18,6 +18,21 @@ import {
 import { getAllCodeByType } from "../../services/userService";
 import { allCode } from "../../utils";
 
+export const refreshIsloadingStateProduct = () => {
+    return async (dispatch, getSate) => {
+        try {
+            dispatch({
+                type: actionTypes.LOADING_PRODUCT_SUCCESS
+            })
+        } catch(e) {
+            console.log('refreshIsloadingState error: ', e)
+            dispatch({
+                type: actionTypes.LOADING_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
 export const getAllProducts = (type, accessToken) => {
     return async (dispatch, getState) => {
         try {

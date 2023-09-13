@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import jwtDecode from 'jwt-decode';
+import { MutatingDots } from 'react-loader-spinner'
 
 
 function PrivateRouter({users, isLogin, accessToken, Component}) {
-    
     return ( 
         // <>
         //     <Route path={path.MANAGE} element={<component />}/>
@@ -18,7 +17,7 @@ const mapStateToProps = state => {
     return {
         users: state.user.users,
         isLogin: state.auth.isLogin,
-        accessToken: state.auth.token
+        accessToken: state.auth.token,
     }
 }
 

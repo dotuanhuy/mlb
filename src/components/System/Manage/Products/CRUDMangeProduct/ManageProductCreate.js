@@ -5,14 +5,12 @@ import Select from 'react-select';
 import * as actions from '../../../../../store/actions'
 import TableProducts from '../TableProducts/TableProducts';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { path, Role, allCode, categorieType } from '../../../../../utils';
-import Cookies from 'universal-cookie';
+import { allCode, categorieType } from '../../../../../utils';
 import CommonUtils from '../../../../../utils/CommonUtils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 
-const cookies = new Cookies();
 
 const initState = {
     name: '',
@@ -28,7 +26,7 @@ const initStateImage = {
 }
 
 const initSize = {
-    sizeLength: '',
+    sizeHeight: '',
     sizeWidth: '',
     sizeD: ''
 }
@@ -179,12 +177,15 @@ function ManageShoesCreate({
 
     const handleCreateNewProduct = (e) => {
         e.preventDefault()
-        let valueListSize = null
+        let valueListSize = ''
         if (location.state === categorieType.SHOES_SANDAL) {
             valueListSize = listSizes.toString()
         }
-        else {
+        else if (location.state === categorieType.BAG_BALO) {
             valueListSize = Object.keys(listSizes).map(item => listSizes[item]).toString()
+        }
+        else if (location.state === categorieType.HAT) {
+            valueListSize = ''
         }
         let product = {
             categoresId: selectCategory.value,
@@ -203,7 +204,7 @@ function ManageShoesCreate({
             listGender: listGenders.toString(),
         }
 
-        createNewProductRedux(product, categorieType.BAG_BALO, accessToken)
+        createNewProductRedux(product, location.state, accessToken)
         setSelectObject(initState)
         setSelectImage(initStateImage)
         setSelectCategory('')
@@ -385,10 +386,10 @@ function ManageShoesCreate({
                                                 />
                                             </div>
                                             <div className='col-4'>
-                                                <label htmlFor='inputSizeLength' className='form-label'>Chiều dài</label>
+                                                <label htmlFor='inputSizeHeight' className='form-label'>Chiều dài</label>
                                                 <input 
                                                     className='form-control' 
-                                                    id='inputSizeLength'
+                                                    id='inputSizeHeight'
                                                     value={listSizes.sizeHeight}
                                                     onChange={(e) => setListSizes({
                                                         ...listSizes,
@@ -397,10 +398,10 @@ function ManageShoesCreate({
                                                 />
                                             </div>
                                             <div className='col-4'>
-                                                <label htmlFor='inputSizeHeight' className='form-label'>Chiều dày</label>
+                                                <label htmlFor='inputSizeD' className='form-label'>Chiều dày</label>
                                                 <input 
                                                     className='form-control' 
-                                                    id='inputSizeHeight'
+                                                    id='inputSizeD'
                                                     value={listSizes.sizeD}
                                                     onChange={(e) => setListSizes({
                                                         ...listSizes,
@@ -513,7 +514,7 @@ function ManageShoesCreate({
                     </form>
                 </div>
                 <div className='manage-shoes-create-table'>
-                    <TableProducts typeCategore={categorieType.BAG_BALO}/>
+                    <TableProducts typeCategore={location.state}/>
                 </div>
             </div>
         </div>

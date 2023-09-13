@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './TableUser.scss'
 import { Link } from 'react-router-dom';
 import { path } from '../../../utils'
 import * as actions from '../../../store/actions'
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../../components/Loading/Loading'
 
-function TableUsers({users, accessToken, fetAllUsersRedux, deleteUserRedux}) {
+function TableUsers({users, accessToken, isLoading, refreshIsloadingStateRedux, fetAllUsersRedux, deleteUserRedux}) {
     const navigate = useNavigate()   
-
+    
     useEffect(() => {
+        refreshIsloadingStateRedux()
         fetAllUsersRedux(accessToken)
     }, [])
 
@@ -22,71 +24,81 @@ function TableUsers({users, accessToken, fetAllUsersRedux, deleteUserRedux}) {
     }
 
     return (
-        <div className='user-all-system'>
-            <div className='user-all-container'>
-                <div className='user-all-table'>
-                    <table id="customers">
-                        <tr>
-                            <th>ID</th>
-                            <th>Email</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone number</th>
-                            <th>Address</th>
-                            <th>Gender</th>
-                            <th>RoleId</th>
-                            <th>Actions</th>
-                        </tr>
-                        { users && users.length > 0 &&
-                            users.map((item, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td>{item.id}</td>
-                                        <td>{item.email}</td>
-                                        <td>{item.firstName}</td>
-                                        <td>{item.lastName}</td>
-                                        <td>{item.phoneNumber}</td>
-                                        <td>{item.address}</td>
-                                        <td>{item.gender}</td>
-                                        <td>{item.roleId}</td>
-                                        <td>
-                                            <div className='actions'>
-                                                <button 
-                                                    className='btn btn-outline-primary btn-delete'
-                                                    onClick={() => handleDeleteUser(item.id)}
-                                                >
-                                                    Delete
-                                                </button>
-                                                <button 
-                                                    className='btn btn-outline-info btn-edit'
-                                                    onClick={() => handleEdit(item)}
-                                                >
-                                                    Edit
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                        }
-                    </table>
+        <>
+            {
+                isLoading ? 
+                <Loading />
+                :
+                <div className='user-all-system'>
+                    <div className='user-all-container'>
+                        <div className='user-all-table'>
+                            <table id="customers">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Phone number</th>
+                                    <th>Address</th>
+                                    <th>Gender</th>
+                                    <th>RoleId</th>
+                                    <th>Actions</th>
+                                </tr>
+                                { users && users.length > 0 &&
+                                    users.map((item, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{item.id}</td>
+                                                <td>{item.email}</td>
+                                                <td>{item.firstName}</td>
+                                                <td>{item.lastName}</td>
+                                                <td>{item.phoneNumber}</td>
+                                                <td>{item.address}</td>
+                                                <td>{item.gender}</td>
+                                                <td>{item.roleId}</td>
+                                                <td>
+                                                    <div className='actions'>
+                                                        <button 
+                                                            className='btn btn-outline-primary btn-delete'
+                                                            onClick={() => handleDeleteUser(item.id)}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                        <button 
+                                                            className='btn btn-outline-info btn-edit'
+                                                            onClick={() => handleEdit(item)}
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            }
+        </>
     );
 }
 
 const mapStateToProps = state => {
     return {
         users: state.user.users,
-        accessToken: state.auth.token
+        accessToken: state.auth.token,
+        isLoading: state.user.isLoadingUser
+
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         fetAllUsersRedux: (accessToken) => dispatch(actions.fetAllUsers(accessToken)),
-        deleteUserRedux: (id, accessToken) => dispatch(actions.deleteUser(id, accessToken))
+        deleteUserRedux: (id, accessToken) => dispatch(actions.deleteUser(id, accessToken)),
+        refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState())
     }
 }
 
