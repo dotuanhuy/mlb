@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './ManageBag.scss'
 import Nav from '../../../nav/nav';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { path, Role, categorieType } from '../../../../../utils';
 import TableProducts from '../TableProducts/TableProducts';
 
 
 function ManageBag({isLogin}) {
-    const navigate = useNavigate()
-
     return (    
         <div className='manage-product'>
             <div className='manage-product-container'>
