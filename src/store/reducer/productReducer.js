@@ -81,6 +81,11 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
+        case 'FETCH_ALL_SIZEAO_SUCCESS': 
+            state.sizes = action.data
+            return {
+                ...state
+            }
         case 'FETCH_GENDER_PRODUCT_SUCCESS':
             state.genders = action.data
             return {

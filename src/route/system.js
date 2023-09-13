@@ -10,6 +10,7 @@ import ManageProductCreate from '../components/System/Manage/Products/CRUDMangeP
 import ManageProductEdit from '../components/System/Manage/Products/CRUDMangeProduct/ManageProductEdit';
 import ManageBag from '../components/System/Manage/Products/ManageBag/ManageBag';
 import ManageHat from '../components/System/Manage/Products/ManageHat/ManageHat';
+import ManageClothes from '../components/System/Manage/Products/ManageClothes/ManageClothes';
 import AddImageProduct from '../components/System/Manage/Products/HandleAddImages/AddImageProduct';
 import AddDescriptionProduc from '../components/System/Manage/Products/HandleAddDescriptions/AddDescriptionProduc';
 import { path } from '../utils';
@@ -37,6 +38,10 @@ function System({isLogin}) {
                 <Route path={path.MANAGE_PRODUCTS_HAT} element={<PrivateRouter Component={ManageHat}/>} /> 
                 <Route path={path.MANAGE_PRODUCTS_HAT_CREATE} element={<PrivateRouter Component={ManageProductCreate}/>} />
                 <Route path={path.MANAGE_PRODUCTS_HAT_EDIT} element={<PrivateRouter Component={ManageProductEdit}/>} />
+                
+                <Route path={path.MANAGE_PRODUCTS_CLOTHES} element={<PrivateRouter Component={ManageClothes}/>} /> 
+                <Route path={path.MANAGE_PRODUCTS_CLOTHES_CREATE} element={<PrivateRouter Component={ManageProductCreate}/>} />
+                <Route path={path.MANAGE_PRODUCTS_CLOTHES_EDIT} element={<PrivateRouter Component={ManageProductEdit}/>} />
 
                 <Route path={path.MANAGE_PRODUCTS_IMAGE_ADD} element={<PrivateRouter Component={AddImageProduct}/>} />
                 <Route path={path.MANAGE_PRODUCTS_DESCRIPTION_ADD} element={<PrivateRouter Component={AddDescriptionProduc}/>} />

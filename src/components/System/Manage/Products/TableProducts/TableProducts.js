@@ -47,6 +47,15 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
                 }
             })
         }
+        else if (typeCategore === categorieType.CLOTHES) {
+            navigate(path.MANAGE_PRODUCTS_CLOTHES_EDIT, {
+                state: { 
+                    id, 
+                    typeCategore, 
+                    path: path.MANAGE_PRODUCTS_CLOTHES 
+                }
+            })
+        }
     }
 
     const handleAddImage = (product) => {

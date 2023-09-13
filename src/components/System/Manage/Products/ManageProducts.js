@@ -31,7 +31,7 @@ function ManageProducts({isLogin}) {
                                 <Link to={path.MANAGE_PRODUCTS_HAT}>Mũ-nón</Link>
                             </div>
                             <div className='product-type-item col-3'>
-                                <a>Áo quần</a>
+                                <Link to={path.MANAGE_PRODUCTS_CLOTHES}>Áo-quần</Link>
                             </div>
                         </div>
                     </div>

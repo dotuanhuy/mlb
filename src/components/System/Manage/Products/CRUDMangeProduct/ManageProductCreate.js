@@ -56,7 +56,7 @@ function ManageShoesCreate({
     const [selectLogo, setSelectLogo] = useState()
     const [listCategories, setListCategories] = useState([]) 
     const [listDiscount, setListDiscount] = useState([])
-    const [listSizes, setListSizes] = useState(location.state === categorieType.SHOES_SANDAL ? [] : initSize)
+    const [listSizes, setListSizes] = useState(location.state === categorieType.SHOES_SANDAL || location.state === categorieType.CLOTHES ? [] : initSize)
     const [listBrands, setListBrands] = useState([])
     const [listColors, setListColors] = useState([])
     const [listLogos, setListLogos] = useState([])
@@ -69,8 +69,11 @@ function ManageShoesCreate({
         fetchAllCodeByTypeRedux(allCode.BRAND)
         fetchAllColorsRedux(allCode.COLOR)
         fetchAllCodeByTypeRedux(allCode.LOGO)
-        if (location.state === categorieType.SHOES_SANDAL) {
+        if (location.state === categorieType.SHOES_SANDAL ) {
             fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
+        }
+        else if (location.state === categorieType.CLOTHES) {
+            fetchAllCodeByTypeRedux(allCode.SIZEAO)
         }
         fetchAllCodeByTypeRedux(allCode.GENDER)
     }, [])
@@ -159,7 +162,7 @@ function ManageShoesCreate({
             }
             setListGenders(arr)
         }
-        else if (type === allCode.SIZEGIAY) {
+        else if (type === allCode.SIZEGIAY || type === allCode.SIZEAO) {
             let arr = [...listSizes]
             if (e.target.checked) {
                 arr.push(e.target.value)
@@ -178,7 +181,7 @@ function ManageShoesCreate({
     const handleCreateNewProduct = (e) => {
         e.preventDefault()
         let valueListSize = ''
-        if (location.state === categorieType.SHOES_SANDAL) {
+        if (location.state === categorieType.SHOES_SANDAL || location.state === categorieType.CLOTHES) {
             valueListSize = listSizes.toString()
         }
         else if (location.state === categorieType.BAG_BALO) {
@@ -213,7 +216,7 @@ function ManageShoesCreate({
         setSelectLogo('')
         setSelectReleaseDate('')
         setListColors([])
-        setListSizes(location.state === categorieType.SHOES_SANDAL ? [] : initSize)
+        setListSizes(location.state === categorieType.SHOES_SANDAL || location.state === categorieType.CLOTHES ? [] : initSize)
         setListGenders([])
     }
 
@@ -410,6 +413,38 @@ function ManageShoesCreate({
                                                 />
                                             </div>
                                         </div>
+                                    </div>
+                                    : ''
+                                }
+
+                                {
+                                    location.state === categorieType.CLOTHES ? 
+                                    <div className='row'>
+                                        {   
+                                            sizes && sizes.length > 0 &&
+                                            sizes.map((item, index) => {                                                return (
+                                                    <div className='col-4 pb-1' key={index}>
+                                                        <input 
+                                                            checked={
+                                                                listSizes.some(size => size === item.valueVi) ? true : false
+                                                            }
+                                                            type="checkbox" 
+                                                            className="form-check-input" 
+                                                            id={`checkItem${item.valueEn}`}
+                                                            value={item.valueVi}
+                                                            onChange={(e) => handleOnchangeColorOrGender(e, allCode.SIZEAO)}
+                                                        />
+                                                        <label 
+                                                            className="form-check-label ps-2" 
+                                                            htmlFor={`checkItem${item.valueEn}`}
+                                                            style={{ color: `${item.valueEn}`}}
+                                                        >
+                                                            {item.valueVi}
+                                                        </label>
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                     : ''
                                 }

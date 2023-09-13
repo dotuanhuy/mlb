@@ -116,6 +116,12 @@ export const fetchAllCodeByTypeProduct = (type) => {
                         data: res.data
                     })
                 }
+                else if (type === allCode.SIZEAO) {
+                    dispatch({
+                        type: actionTypes.FETCH_ALL_SIZEAO_SUCCESS,
+                        data: res.data
+                    })
+                }
             }
             else {
                 dispatch({

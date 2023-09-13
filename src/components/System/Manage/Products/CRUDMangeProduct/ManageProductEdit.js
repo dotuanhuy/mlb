@@ -68,7 +68,7 @@ function ManageShoesEdit({
     const [listBrands, setListBrands] = useState([])
     const [listColors, setListColors] = useState([])
     const [listLogos, setListLogos] = useState([])
-    const [listSizes, setListSizes] = useState(location.state.typeCategore === categorieType.SHOES_SANDAL ? [] : initSize)
+    const [listSizes, setListSizes] = useState(location.state.typeCategore === categorieType.SHOES_SANDAL || location.state.typeCategore === categorieType.CLOTHES ? [] : initSize)
     const [listGenders, setListGenders] = useState([])
 
     // ComponentDidMount
@@ -82,6 +82,9 @@ function ManageShoesEdit({
         if (location.state.typeCategore === categorieType.SHOES_SANDAL) {
             fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
         } 
+        else if (location.state.typeCategore === categorieType.CLOTHES) {
+            fetchAllCodeByTypeRedux(allCode.SIZEAO)
+        }
         fetchAllCodeByTypeRedux(allCode.GENDER)
         getProductByIdRedux(location.state.id, accessToken)
     }, [])
@@ -147,7 +150,7 @@ function ManageShoesEdit({
             }
             if (products.listSize) {
                 let arrSize = products.listSize.split(',')
-                if (location.state.typeCategore === categorieType.SHOES_SANDAL) {
+                if (location.state.typeCategore === categorieType.SHOES_SANDAL || location.state.typeCategore === categorieType.CLOTHES) {
                     setListSizes(arrSize)
                 }
                 else if (location.state.typeCategore === categorieType.BAG_BALO) {
@@ -224,7 +227,7 @@ function ManageShoesEdit({
             }
             setListGenders(arr)
         }
-        else if (type === allCode.SIZEGIAY) {
+        else if (type === allCode.SIZEGIAY || type === allCode.SIZEAO) {
             let arr = [...listSizes]
             if (e.target.checked) {
                 arr.push(e.target.value)
@@ -243,11 +246,14 @@ function ManageShoesEdit({
     const handleUpdateProduct = (e) => {
         e.preventDefault()
         let valueListSize = ''
-        if (location.state.typeCategore === categorieType.SHOES_SANDAL) {
+        if (location.state.typeCategore === categorieType.SHOES_SANDAL || location.state.typeCategore === categorieType.CLOTHES) {
             valueListSize = listSizes.toString()
         }
         else if (location.state.typeCategore === categorieType.BAG_BALO) {
             valueListSize = Object.keys(listSizes).map(item => listSizes[item]).toString()
+        }
+        else if (location.state === categorieType.HAT) {
+            valueListSize = ''
         }
         let product = {
             id: location.state.id,
@@ -270,7 +276,7 @@ function ManageShoesEdit({
         updateProductRedux(product, location.state.typeCategore, accessToken)
         navigate(location.state.path) 
     }
-    console.log('check location: ', location)
+    
     return (
         <>
             {
@@ -469,6 +475,38 @@ function ManageShoesEdit({
                                                         />
                                                     </div>
                                                 </div>
+                                            </div>
+                                            : ''
+                                        }
+                                        {
+                                            location.state.typeCategore === categorieType.CLOTHES ? 
+                                            <div className='row'>
+                                                {   
+                                                    sizes && sizes.length > 0 &&
+                                                    sizes.map((item, index) => {                                                
+                                                        return (
+                                                            <div className='col-4 pb-1' key={index}>
+                                                                <input 
+                                                                    checked={
+                                                                        listSizes.some(size => size === item.valueVi) ? true : false
+                                                                    }
+                                                                    type="checkbox" 
+                                                                    className="form-check-input" 
+                                                                    id={`checkItem${item.valueEn}`}
+                                                                    value={item.valueVi}
+                                                                    onChange={(e) => handleOnchangeColorOrGender(e, allCode.SIZEAO)}
+                                                                />
+                                                                <label 
+                                                                    className="form-check-label ps-2" 
+                                                                    htmlFor={`checkItem${item.valueEn}`}
+                                                                    style={{ color: `${item.valueEn}`}}
+                                                                >
+                                                                    {item.valueVi}
+                                                                </label>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
                                             </div>
                                             : ''
                                         }
