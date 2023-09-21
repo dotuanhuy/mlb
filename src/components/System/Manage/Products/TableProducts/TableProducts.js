@@ -59,11 +59,75 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
     }
 
     const handleAddImage = (product) => {
-        navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, { state: product})
+        // navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, { state: product})
+        if (typeCategore === categorieType.SHOES_SANDAL) {
+            navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
+                state: { 
+                    product, 
+                    path:  path.MANAGE_PRODUCTS_SHOES
+                }
+            })
+        }
+        else if (typeCategore === categorieType.BAG_BALO) {
+            navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
+                state: {  
+                    product, 
+                    path: path.MANAGE_PRODUCTS_BAG_BALO 
+                }
+            })
+        }
+        else if (typeCategore === categorieType.HAT) {
+            navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
+                state: {  
+                    product, 
+                    path: path.MANAGE_PRODUCTS_HAT 
+                }
+            })
+        }
+        else if (typeCategore === categorieType.CLOTHES) {
+            navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
+                state: {  
+                    product, 
+                    path: path.MANAGE_PRODUCTS_CLOTHES 
+                }
+            })
+        }
     }
 
     const handleAddDescription = (id) => {
-        navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, { state: id })
+        // navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, { state: id })
+        if (typeCategore === categorieType.SHOES_SANDAL) {
+            navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, {
+                state: { 
+                    id, 
+                    path:  path.MANAGE_PRODUCTS_SHOES
+                }
+            })
+        }
+        else if (typeCategore === categorieType.BAG_BALO) {
+            navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, {
+                state: {  
+                    id, 
+                    path: path.MANAGE_PRODUCTS_BAG_BALO 
+                }
+            })
+        }
+        else if (typeCategore === categorieType.HAT) {
+            navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, {
+                state: {  
+                    id, 
+                    path: path.MANAGE_PRODUCTS_HAT 
+                }
+            })
+        }
+        else if (typeCategore === categorieType.CLOTHES) {
+            navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
+                state: {  
+                    id, 
+                    path: path.MANAGE_PRODUCTS_CLOTHES 
+                }
+            })
+        }
     }
 
     return (

@@ -152,6 +152,16 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
+        case 'GET_PRODUCT_BY_CATEGORY_SUCCESS':
+            state.products = action.data
+            return {
+                ...state
+            }
+        case 'GET_PRODUCT_BY_CATEGORY_FAILED':
+            state.products = []
+            return {
+                ...state
+            }
         default:
             return state
     }

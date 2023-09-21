@@ -6,11 +6,21 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import './NewShoes.scss'
 import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions'
-import { path } from '../../../utils';
+import { path, categorieType } from '../../../utils';
 import { Chunky_Liner_Mid_New_York_Yankees_Green } from '../../../utils/images';
+import { useState } from 'react';
+import {Buffer} from 'buffer';
+import { formatVND } from '../../../utils';
 
-function NewShoes() {
-    
+function NewShoes({products, images}) {
+    const [shoes, setShoes] = useState([])
+
+    useEffect(() => {
+        if (products && products.length > 0) {
+            let arr = products.filter(item => item.dataCategory.type === categorieType.SHOES_SANDAL)
+            setShoes(arr)
+        }
+    }, [products])
     return (
         <div className='newShoes'>
             <div className='newShoes-container px-4'>
@@ -18,81 +28,77 @@ function NewShoes() {
                     <h2 className='title-newshoes mb-4'>
                         <a href='#'>NEW SHOES</a>
                     </h2>
-                    <p>Những phiên bản <a href='#'>Giày MLB</a> mới nhất tại Việt Nam</p>
+                    <p>Những phiên bản <Link to={path.GIAY_MLB}>Giày MLB</Link> mới nhất tại Việt Nam</p>
                 </div>
                 <div className='menu-box'>
                     <div className='menu-product row'>
-                        <div className='product col-3'>
-                            <div className='actions text-center'>
-                                <div className='tym mb-2 px-3'>
-                                    <FontAwesomeIcon icon={faHeart} />
-                                </div>
-                                <div className='cart'>
-                                    <button className='btn-buy'>
-                                        <FontAwesomeIcon icon={faCartShopping} />
-                                    </button>
-                                </div>
-                            </div>
-                            <div className='product-img product-img-first'>
-                                <a href='#'>
-                                    <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
-                                </a>
-                            </div>        
-                            <div className='product-img product-img-second'>
-                                <a href='#'>
-                                    <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_h}/>
-                                </a>
-                            </div>           
-                            <div className='product-infor text-center'>
-                                <span className='brand'>MLB KOREA</span>    
-                                <h4 className='product-name'>
-                                    <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
-                                </h4>
-                                <span className='product-price'>3.790.000₫</span>
-                            </div>          
-                        </div>
-                        <div className='product col-3'>
-                            <div className='product-img'>
-                                <a href='#'>
-                                    <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
-                                </a>
-                            </div>                  
-                            <div className='product-infor text-center'>
-                                <span className='brand'>MLB KOREA</span>    
-                                <h4 className='product-name'>
-                                    <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
-                                </h4>
-                                <span className='product-price'>3.790.000₫</span>
-                            </div>          
-                        </div>
-                        <div className='product col-3'>
-                            <div className='product-img'>
-                                <a href='#'>
-                                    <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
-                                </a>
-                            </div>                  
-                            <div className='product-infor text-center'>
-                                <span className='brand'>MLB KOREA</span>    
-                                <h4 className='product-name'>
-                                    <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
-                                </h4>
-                                <span className='product-price'>3.790.000₫</span>
-                            </div>          
-                        </div>
-                        <div className='product col-3'>
-                            <div className='product-img'>
-                                <a href='#'>
-                                    <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
-                                </a>
-                            </div>                  
-                            <div className='product-infor text-center'>
-                                <span className='brand'>MLB KOREA</span>    
-                                <h4 className='product-name'>
-                                    <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
-                                </h4>
-                                <span className='product-price'>3.790.000₫</span>
-                            </div>          
-                        </div>
+                        {
+                            shoes && shoes.length > 0 &&
+                            shoes.map((item, index) => {
+                                let imageBase64 = ''
+                                let imageHoverBase64 = ''
+                                let imageHover = images.find(image => image.productId === item.id)
+                                let price = ''
+                                if (item.image) {
+                                    imageBase64 = Buffer.from(item.image.data, 'base64').toString('binary')
+                                }
+                                if (imageHover) {
+                                    imageHoverBase64 = Buffer.from(imageHover.image.data, 'base64').toString('binary')
+                                }
+                                if (item.price) {
+                                    price = formatVND(item.price)
+                                }
+                                return (
+                                    <div className='product col-3' key={index}>
+                                        <div className='actions text-center'>
+                                            <div className='tym mb-2 px-3'>
+                                                <FontAwesomeIcon icon={faHeart} />
+                                            </div>
+                                            <div className='cart'>
+                                                <button className='btn-buy'>
+                                                    <FontAwesomeIcon icon={faCartShopping} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className='product-img product-img-first'>
+                                            <a href='#'> 
+                                                <div 
+                                                    style={{ 
+                                                        maxWidth: '100%', 
+                                                        height: '340px',
+                                                        backgroundImage: `url(${imageBase64})`,
+                                                        backgroundPosition: '0% 0%',
+                                                        backgroundSize: 'cover',
+                                                        backgroundRepeat: 'no-repeat'
+                                                    }}
+                                                ></div>
+                                            </a>
+                                        </div>        
+                                        <div className='product-img product-img-second'>
+                                            <a href='#'>
+                                                <div 
+                                                    style={{ 
+                                                        maxWidth: '100%', 
+                                                        height: '340px',
+                                                        backgroundImage: `url(${imageHoverBase64})`,
+                                                        backgroundPosition: '0% 0%',
+                                                        backgroundSize: 'cover',
+                                                        backgroundRepeat: 'no-repeat'
+                                                    }}
+                                                ></div>                                                
+                                            </a>
+                                        </div>           
+                                        <div className='product-infor text-center'>
+                                            <span className='brand'>{item.dataBrand.valueEn}</span>    
+                                            <h4 className='product-name'>
+                                                <a href='#'>{item.name}</a>
+                                            </h4>
+                                            <span className='product-price'>{price}</span>
+                                        </div>          
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                     <div className='view-all text-center'>
                         <a href='#'>Xem tất cả</a>
@@ -105,6 +111,8 @@ function NewShoes() {
 
 const mapStateToProps = state => {
     return {
+        products: state.product.products,
+        images: state.product.images
     }
 }
 

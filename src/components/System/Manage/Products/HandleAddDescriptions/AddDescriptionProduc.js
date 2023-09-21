@@ -31,7 +31,7 @@ function AddDescriptionProduct({
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        fetchDescriptionProductRedux(state, accessToken)
+        fetchDescriptionProductRedux(state.id, accessToken)
     }, [])
 
     useEffect(() => {
@@ -56,10 +56,10 @@ function AddDescriptionProduct({
     const handleSaveDescription = () => {
         addDescriptionProductRedux({
             ...markdown,
-            productId: state
+            productId: state.id
         }, accessToken)
         setMarkdown(initState)
-        navigate(path.MANAGE_PRODUCTS_SHOES)
+        navigate(state.path)
     }
     return (    
         <>

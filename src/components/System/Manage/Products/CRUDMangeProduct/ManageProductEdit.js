@@ -4,9 +4,7 @@ import Nav from '../../../nav/nav';
 import Select from 'react-select';
 import * as actions from '../../../../../store/actions'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { path, Role, allCode, categorieType } from '../../../../../utils';
-import Cookies from 'universal-cookie';
-import jwt_decode from "jwt-decode";
+import { allCode, categorieType } from '../../../../../utils';
 import CommonUtils from '../../../../../utils/CommonUtils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,8 +12,6 @@ import moment from 'moment';
 import {Buffer} from 'buffer';
 import _ from 'lodash'
 import Loading from '../../../../Loading/Loading';
-
-const cookies = new Cookies();
 
 const initState = {
     name: '',

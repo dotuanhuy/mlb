@@ -9,6 +9,8 @@ import * as actions from '../../../store/actions'
 import { path, categorieType, listShoesSandals, listColor, allCode } from '../../../utils';
 import Navbar from '../../HomePage/Navbar/Navbar';
 import { Chunky_Liner_Mid_New_York_Yankees_Green } from '../../../utils/images';
+import {Buffer} from 'buffer';
+import { formatVND } from '../../../utils';
 
 const initOptionType = {
     shoesMlb: false,
@@ -37,7 +39,19 @@ const initOptionLogo = {
     SF: false,
 }
 
-function Shoes({colors, categories, logos, accessToken, fetchAllColorsRedux, getCategoriesByIdRedux, fetchAllCodeByTypeRedux}) {
+function Shoes({
+    colors, 
+    categories, 
+    logos, 
+    accessToken, 
+    images,
+    products,
+    fetchAllColorsRedux, 
+    getCategoriesByIdRedux, 
+    fetchAllCodeByTypeRedux,
+    fetchAllImageProductRedux,
+    getProductByCategoryRedux
+}) {
     const [typeSort, setTypeSort] = useState(true)
     const [typeType, setTypeType] = useState(true)
     const [typeColor, setTypeColor] = useState(true)
@@ -51,6 +65,10 @@ function Shoes({colors, categories, logos, accessToken, fetchAllColorsRedux, get
         fetchAllColorsRedux(allCode.COLOR)
         getCategoriesByIdRedux(categorieType.SHOES_SANDAL)
         fetchAllCodeByTypeRedux(allCode.LOGO)
+        if (images.length === 0) {
+            fetchAllImageProductRedux(accessToken)
+        }
+        getProductByCategoryRedux(categorieType.SHOES_SANDAL)
     }, [])
 
     const handleOnchangeTypeType = (e) => {
@@ -84,6 +102,8 @@ function Shoes({colors, categories, logos, accessToken, fetchAllColorsRedux, get
             ...optionLogo
         })
     }
+
+    console.log('check products: ', products)
 
     return (
         <div className='shoes'>
@@ -272,77 +292,73 @@ function Shoes({colors, categories, logos, accessToken, fetchAllColorsRedux, get
                         <div className='shoes-list col-9'>
                             <div className='shoes-list-container'>
                                 <div className='menu-product row'>
-                                    <div className='product col-4'>
-                                        <div className='actions text-center'>
-                                            <div className='tym mb-2 px-3'>
-                                                <FontAwesomeIcon icon={faHeart} />
-                                            </div>
-                                            <div className='cart'>
-                                                <button className='btn-buy'>
-                                                    <FontAwesomeIcon icon={faCartShopping} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className='product-img product-img-first'>
-                                            <a href='#'>
-                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
-                                            </a>
-                                        </div>        
-                                        <div className='product-img product-img-second'>
-                                            <a href='#'>
-                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_h}/>
-                                            </a>
-                                        </div>           
-                                        <div className='product-infor text-center'>
-                                            <span className='brand'>MLB KOREA</span>    
-                                            <h4 className='product-name'>
-                                                <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
-                                            </h4>
-                                            <span className='product-price'>3.790.000₫</span>
-                                        </div>          
-                                    </div>
-                                    <div className='product col-4'>
-                                        <div className='product-img'>
-                                            <a href='#'>
-                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
-                                            </a>
-                                        </div>                  
-                                        <div className='product-infor text-center'>
-                                            <span className='brand'>MLB KOREA</span>    
-                                            <h4 className='product-name'>
-                                                <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
-                                            </h4>
-                                            <span className='product-price'>3.790.000₫</span>
-                                        </div>          
-                                    </div>
-                                    <div className='product col-4'>
-                                        <div className='product-img'>
-                                            <a href='#'>
-                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
-                                            </a>
-                                        </div>                  
-                                        <div className='product-infor text-center'>
-                                            <span className='brand'>MLB KOREA</span>    
-                                            <h4 className='product-name'>
-                                                <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
-                                            </h4>
-                                            <span className='product-price'>3.790.000₫</span>
-                                        </div>          
-                                    </div>
-                                    <div className='product col-4'>
-                                        <div className='product-img'>
-                                            <a href='#'>
-                                                <img src={Chunky_Liner_Mid_New_York_Yankees_Green.Chunky_Liner_Mid_New_York_Yankees_Green_c}/>
-                                            </a>
-                                        </div>                  
-                                        <div className='product-infor text-center'>
-                                            <span className='brand'>MLB KOREA</span>    
-                                            <h4 className='product-name'>
-                                                <a href='#'>Giày MLB Korea Chunky Liner Mid New York</a>
-                                            </h4>
-                                            <span className='product-price'>3.790.000₫</span>
-                                        </div>          
-                                    </div>
+                                    {
+                                        products && products.length > 0 &&
+                                        products.map((item, index) => {
+                                            let imageBase64 = ''
+                                            let imageHoverBase64 = ''
+                                            let imageHover = images.find(image => image.productId === item.id)
+                                            let price = ''
+                                            if (item.image) {
+                                                imageBase64 = Buffer.from(item.image.data, 'base64').toString('binary')
+                                            }
+                                            if (imageHover) {
+                                                imageHoverBase64 = Buffer.from(imageHover.image.data, 'base64').toString('binary')
+                                            }
+                                            if (item.price) {
+                                                price = formatVND(item.price)
+                                            }
+                                            return (
+                                                <div className='product col-4' key={index}>
+                                                    <div className='actions text-center'>
+                                                        <div className='tym mb-2 px-3'>
+                                                            <FontAwesomeIcon icon={faHeart} />
+                                                        </div>
+                                                        <div className='cart'>
+                                                            <button className='btn-buy'>
+                                                                <FontAwesomeIcon icon={faCartShopping} />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className='product-img product-img-first'>
+                                                        <a href='#'>
+                                                            <div 
+                                                                style={{ 
+                                                                    maxWidth: '100%', 
+                                                                    height: '340px',
+                                                                    backgroundImage: `url(${imageBase64})`,
+                                                                    backgroundPosition: '0% 0%',
+                                                                    backgroundSize: 'cover',
+                                                                    backgroundRepeat: 'no-repeat'
+                                                                }}
+                                                            ></div>
+                                                        </a>
+                                                    </div>        
+                                                    <div className='product-img product-img-second'>
+                                                        <a href='#'>
+                                                            <div 
+                                                                style={{ 
+                                                                    maxWidth: '100%', 
+                                                                    height: '340px',
+                                                                    backgroundImage: `url(${imageHoverBase64})`,
+                                                                    backgroundPosition: '0% 0%',
+                                                                    backgroundSize: 'cover',
+                                                                    backgroundRepeat: 'no-repeat'
+                                                                }}
+                                                            ></div>
+                                                        </a>
+                                                    </div>           
+                                                    <div className='product-infor text-center'>
+                                                        <span className='brand'>{item.dataBrand.valueEn}</span>    
+                                                        <h4 className='product-name'>
+                                                            <a href='#'>{item.name}</a>
+                                                        </h4>
+                                                        <span className='product-price'>{price}</span>
+                                                    </div>          
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -358,7 +374,9 @@ const mapStateToProps = state => {
         colors: state.product.colors,
         categories: state.product.categorieById,
         logos: state.product.logos,
-        accessToken: state.auth.token
+        accessToken: state.auth.token,
+        images: state.product.images,
+        products: state.product.products
     }
 }
 
@@ -366,7 +384,9 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
         getCategoriesByIdRedux: (id) => dispatch(actions.getCategoriesById(id)),
-        fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type))
+        fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
+        fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
+        getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),
     }
 }
 

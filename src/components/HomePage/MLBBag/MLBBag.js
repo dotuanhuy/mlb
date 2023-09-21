@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import './MLBBag.scss'
-import { Link } from 'react-router-dom';
-import * as actions from '../../../store/actions'
-import { path } from '../../../utils';
 import CrossBag from './CrossBag/CrossBag';
 import Bucketbag from './BucketBag/Bucketbag';
 import HipStack from './HipStack/HipStack';

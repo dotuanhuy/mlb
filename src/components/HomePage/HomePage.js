@@ -12,13 +12,12 @@ import MLBOutfit from './MLBOutfit/MLBOutfit';
 import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
-import { categorieType } from '../../utils';
 
-function HomePage({users, isLogin, accessToken, products, getAllProductsRedux, getAllProductPublicRedux}) {
+function HomePage({ accessToken, products, getAllProductsRedux, getAllProductPublicRedux, fetchAllImageProductRedux }) {
   useEffect(() => {
     getAllProductPublicRedux(accessToken)
+    fetchAllImageProductRedux(accessToken)
   }, [])
-    console.log('check products: ', products)
     const settings = {
         dots: true,
         infinite: false,
@@ -54,8 +53,6 @@ function HomePage({users, isLogin, accessToken, products, getAllProductsRedux, g
 
 const mapStateToProps = state => {
     return {
-        users: state.user.users,
-        isLogin: state.auth.isLogin,
         accessToken: state.auth.token,
         products: state.product.products
     }
@@ -64,7 +61,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
       getAllProductsRedux: (type, accessToken) => dispatch(actions.getAllProducts(type, accessToken)),
-      getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken))
+      getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken)),
+      fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken))
     }
 }
 

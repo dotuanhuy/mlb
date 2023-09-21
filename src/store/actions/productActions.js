@@ -12,7 +12,8 @@ import {
     addImageProductService,
     deleteImageProductService,
     addDescriptionProductService,
-    fetchDescriptionProductService
+    fetchDescriptionProductService,
+    getProductByCategoryService
 
 } from "../../services/productService";
 import { getAllCodeByType } from "../../services/userService";
@@ -415,6 +416,30 @@ export const addDescriptionProduct = (data, accessToken) => {
             console.log('addDescriptionProduct error: ', e)
             dispatch({
                 type: actionTypes.ADD_DESCRIPTION_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
+export const getProductByCategory = (category) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getProductByCategoryService(category) 
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_PRODUCT_BY_CATEGORY_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_PRODUCT_BY_CATEGORY_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getProductByCategory error: ', e)
+            dispatch({
+                type: actionTypes.GET_PRODUCT_BY_CATEGORY_FAILED
             })
         }
     }

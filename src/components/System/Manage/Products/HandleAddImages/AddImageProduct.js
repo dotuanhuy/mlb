@@ -27,11 +27,11 @@ function AddImageProduct({
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        if (state.image) {
-            let imageBase64 = Buffer.from(state.image, 'base64').toString('binary')
+        if (state.product.image) {
+            let imageBase64 = Buffer.from(state.product.image, 'base64').toString('binary')
             setImageMain(imageBase64)
         }
-        fetchAllImageProductRedux(state.id, accessToken)
+        fetchAllImageProductRedux(state.product.id, accessToken)
     }, [])
 
     useEffect(() => {
@@ -50,19 +50,19 @@ function AddImageProduct({
             setListImage(arrImage)
         }
     }
-
+    
     const handleSaveImage = () => {
         let data = {
             image: listImage,
-            productId: state.id
+            productId: state.product.id
         }
         addImageProductRedux(data, accessToken)
         setListImage([])
-        navigate(path.MANAGE_PRODUCTS_SHOES)
+        navigate(state.path)
     }
 
     const handleDeleteImage = (id) => {
-        deleteImageProductRedux(id, state.id, accessToken)
+        deleteImageProductRedux(id, state.product.id, accessToken)
     }
 
     return (    
