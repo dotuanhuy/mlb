@@ -17,7 +17,7 @@ function ManageBag({isLogin}) {
                         <Link to={path.MANAGE_PRODUCTS_BAG_BALO_CREATE} state={categorieType.BAG_BALO}>Add</Link>
                     </button>
                 </div>
-                <TableProducts typeCategore={categorieType.BAG_BALO}/>
+                <TableProducts typeCategore={categorieType.BAG_BALO} pathPage={path.MANAGE_PRODUCTS_BAG_BALO}/>
             </div>
         </div>
     );

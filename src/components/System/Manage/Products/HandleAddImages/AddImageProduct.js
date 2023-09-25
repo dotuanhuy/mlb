@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './AddImageProduct.scss'
 import Nav from '../../../nav/nav'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../../../utils';
+import { useLocation, useNavigate, createSearchParams } from 'react-router-dom';
 import * as actions from '../../../../../store/actions'
 import {Buffer} from 'buffer';
 import CommonUtils from '../../../../../utils/CommonUtils';
@@ -11,7 +10,6 @@ import Loading from '../../../../Loading/Loading';
 
 
 function AddImageProduct({
-    isLogin, 
     images, 
     accessToken, 
     isLoading,
@@ -50,7 +48,7 @@ function AddImageProduct({
             setListImage(arrImage)
         }
     }
-    
+
     const handleSaveImage = () => {
         let data = {
             image: listImage,
@@ -58,11 +56,21 @@ function AddImageProduct({
         }
         addImageProductRedux(data, accessToken)
         setListImage([])
-        navigate(state.path)
+        navigate({
+            pathname: state.path,
+            search: createSearchParams({
+                page: state.pageCurrent
+            }).toString(),
+        })
     }
 
     const handleDeleteImage = (id) => {
         deleteImageProductRedux(id, state.product.id, accessToken)
+    }
+
+    const handleDeleteImageClient = (item) => {
+        let arr = listImage.filter(image => image !== item)
+        setListImage(arr)
     }
 
     return (    
@@ -136,7 +144,10 @@ function AddImageProduct({
                                             listImage.map((item, index) => {
                                                 return (
                                                     <div className='col-2' key={index}>
-                                                        <div className='delete-image-item'>
+                                                        <div 
+                                                            className='delete-image-item'
+                                                            onClick={() => handleDeleteImageClient(item)}
+                                                        >
                                                             X
                                                         </div>
                                                         <div
@@ -173,7 +184,6 @@ function AddImageProduct({
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
         images: state.product.images,
         accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct

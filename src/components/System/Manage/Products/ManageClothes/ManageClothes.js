@@ -17,7 +17,7 @@ function ManageClothes({isLogin}) {
                         <Link to={path.MANAGE_PRODUCTS_CLOTHES_CREATE} state={categorieType.CLOTHES}>Add</Link>
                     </button>
                 </div>
-                <TableProducts typeCategore={categorieType.CLOTHES}/>
+                <TableProducts typeCategore={categorieType.CLOTHES} pathPage={path.MANAGE_PRODUCTS_CLOTHES}/>
             </div>
         </div>
     );

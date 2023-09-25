@@ -8,7 +8,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { path, Role } from '../../../utils';
 import Loading from '../../Loading/Loading';
 
-function EditUser({accessToken, users, provinces, genders, roles, isLoading, refreshIsloadingStateRedux, fetchUserAllcodeRedux, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, updateUserRedux}) {
+function EditUser({
+    accessToken, 
+    users, 
+    provinces, 
+    genders, 
+    roles, 
+    isLoading, 
+    refreshIsloadingStateRedux, 
+    fetchUserAllcodeRedux, 
+    fetchAllProvincesRedux, 
+    fetchAllCodeByTypeRedux, 
+    updateUserRedux
+}) {
     const { state } = useLocation()
     const [dataInput, setDataInput] = useState([])
     const [selectProvine, setSelectProvince] = useState({})
@@ -18,7 +30,7 @@ function EditUser({accessToken, users, provinces, genders, roles, isLoading, ref
     const [listGenders, setListGenders] = useState([])
     const [listRoles, setListRoles] = useState([])    
     const navigate = useNavigate()
-
+    
     const buildDataSelect = (inputData) => {
         let reslut = []
         if (inputData && inputData.length > 0) {
@@ -48,9 +60,9 @@ function EditUser({accessToken, users, provinces, genders, roles, isLoading, ref
         fetchAllProvincesRedux(accessToken)
         fetchAllCodeByTypeRedux('GENDER')
         fetchAllCodeByTypeRedux('ROLE')
-        fetchUserAllcodeRedux(state, accessToken)
+        fetchUserAllcodeRedux(state.id, accessToken)
     }, [])
-    console.log('check isLoading: ', isLoading)
+
     // ComponentDidUpdate
     useEffect(() => {
         let dataProvinces = buildDataSelect(provinces)
@@ -99,7 +111,7 @@ function EditUser({accessToken, users, provinces, genders, roles, isLoading, ref
             roleId: selectRole.value,
             avatar: ''
         }
-        updateUserRedux(newUser, accessToken)
+        updateUserRedux(newUser, accessToken, state.pageCurrent)
         navigate(path.MANAGE)
     }
 
@@ -239,7 +251,7 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchAllProvincesRedux: (accessToken) => dispatch(actions.fetchAllProvinces(accessToken)),
         fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByType(type)),
-        updateUserRedux: (data, accessToken) =>  dispatch(actions.updateUser(data, accessToken)),
+        updateUserRedux: (data, accessToken, page) =>  dispatch(actions.updateUser(data, accessToken, page)),
         fetchUserAllcodeRedux: (id, accessToken) => dispatch(actions.fetchUserAllcode(id, accessToken)),
         refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState())
     }

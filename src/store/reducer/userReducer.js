@@ -3,7 +3,8 @@ const initState = {
     provinces: [],
     genders: [],
     roles: [],
-    isLoadingUser: true
+    isLoadingUser: true,
+    count: 0
 }
 
 const userReducer = (state = initState, action) => {
@@ -59,6 +60,20 @@ const userReducer = (state = initState, action) => {
             }
 
         case 'LOADING_SUCCESS': 
+            state.isLoadingUser = true
+            return {
+                ...state
+            }
+        case 'GET_LIMIT_USERS_SUCCESS': 
+            state.users = action.data.rows
+            state.count = action.data.count
+            state.isLoadingUser = false
+            return {
+                ...state
+            }
+        case 'GET_LIMIT_USERS_FAILED': 
+            state.users = []
+            state.count = 0
             state.isLoadingUser = true
             return {
                 ...state

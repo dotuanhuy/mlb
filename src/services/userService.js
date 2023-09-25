@@ -19,7 +19,7 @@ const handleCreateNewUer = (data, accessToken) => {
     // return axios.post('/api/create-new-user', data)
 }
 
-const handleUpdateUser = (data, accessToken) => {
+const handleUpdateUser = (data, accessToken, page) => {
     const axiosJWT = createAxios(accessToken)
     return axiosJWT.post('/api/update-user', data, { headers: {token: `Bearer ${accessToken}`}})
     // return axios.post('/api/update-user', data)
@@ -40,7 +40,7 @@ const getAllCodeByType = (type) => {
     return axios.get(`/api/get-allcode-by-type?type=${type}`)
 }
  
-const handleDeleteUser = (id, accessToken) => {
+const handleDeleteUser = (id, accessToken, page) => {
     const axiosJWT = createAxios(accessToken)
     return axiosJWT.post('/api/delete-user', {id}, { headers: {token: `Bearer ${accessToken}`}})
     // return axios.post('/api/delete-user', {id})
@@ -50,6 +50,11 @@ const getUserAllcode = (id, accessToken) => {
     const axiosJWT = createAxios(accessToken)
     return axiosJWT.get(`/api/get-user-allCode?id=${id}`, { headers: {token: `Bearer ${accessToken}`}})
     // return axios.get(`/api/get-user-allCode?id=${id}`)
+}
+
+const getLimitUserService = (page, accessToken) => {
+    const axiosJWT = createAxios(accessToken) 
+    return axiosJWT.get(`/api/get-limit-users?page=${page}`, { headers: {token: `Bearer ${accessToken}`}})
 }
 
 export {
@@ -63,4 +68,5 @@ export {
     getAllCodeByType,
     handleDeleteUser,
     getUserAllcode,
+    getLimitUserService,
 }

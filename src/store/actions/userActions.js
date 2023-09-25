@@ -9,19 +9,19 @@ import {
     getAllCodeByType,
     handleDeleteUser,
     getUserAllcode,
+    getLimitUserService
 } from "../../services/userService";
 
-export const createNewUser = (data, accessToken) => {
+export const createNewUser = (data, accessToken, page) => {
     return async (dispatch, getSate) => {
         try {
-            console.log('check token: ', accessToken)
             let res = await handleCreateNewUer(data, accessToken)
-            console.log('check res: ', res)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_NEW_USER_SUCCESS
                 })
-                dispatch(fetAllUsers(accessToken))
+                // dispatch(fetAllUsers(accessToken))
+                dispatch(getLimitUsers(page, accessToken))
             }
             else {
                 alert(res.errMessage)
@@ -118,15 +118,16 @@ export const fetchAllCodeByType = (type) => {
     }
 }
 
-export const deleteUser = (id, accessToken) => {
+export const deleteUser = (id, accessToken, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleDeleteUser(id, accessToken)
+            let res = await handleDeleteUser(id, accessToken, page)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.DELTE_USER_SUCCESS
                 })
-                dispatch(fetAllUsers(accessToken))
+                // dispatch(fetAllUsers(accessToken))
+                dispatch(getLimitUsers(page, accessToken))
             }
             else {
                 dispatch({
@@ -142,15 +143,16 @@ export const deleteUser = (id, accessToken) => {
     }
 }
 
-export const updateUser = (data, accessToken) => {
+export const updateUser = (data, accessToken, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleUpdateUser(data, accessToken)
+            let res = await handleUpdateUser(data, accessToken ,page)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.EDIT_USER_SUCCESS
                 })
-                dispatch(fetAllUsers(accessToken))
+                // dispatch(fetAllUsers(accessToken))
+                dispatch(getLimitUsers(page, accessToken, page))
             }
             else {
                 alert(res.errMessage)
@@ -203,6 +205,31 @@ export const refreshIsloadingState = () => {
             console.log('refreshIsloadingState error: ', e)
             dispatch({
                 type: actionTypes.LOADING_FAILED
+            })
+        }
+    }
+}
+
+export const getLimitUsers = (page, accessToken) => {
+    return async (dispatch, getState) => {
+        try {
+            const newPage = +page - 1
+            let res = await getLimitUserService(newPage, accessToken)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_LIMIT_USERS_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_LIMIT_USERS_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getLimitUsers error: ', e)
+            dispatch({
+                type: actionTypes.GET_LIMIT_USERS_FAILED
             })
         }
     }

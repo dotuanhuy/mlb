@@ -5,13 +5,10 @@ import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
 import TableUser from '../TableUsers/TableUser';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { path, Role } from '../../../utils';
-import Cookies from 'universal-cookie';
-import jwt_decode from "jwt-decode";
 import { validate, validateSelect } from '../../../validate/valiedate';
 
-const cookies = new Cookies();
 
 const initState = {
     email: '',
@@ -32,8 +29,8 @@ function UserManage({isLogin, accessToken, provinces, genders, roles, fetchAllPr
     const [errors, setErrors] = useState({})
     const [errorSelect, setErrorSelect] = useState({})
     const check = false
-
     const navigate = useNavigate()
+    const [params] = useSearchParams() 
 
     const buildDataSelect = (inputData) => {
         let reslut = []
@@ -132,7 +129,7 @@ function UserManage({isLogin, accessToken, provinces, genders, roles, fetchAllPr
         }
         
         if (Object.keys(error).length === 0 && errorProvine === '' && errorGender === '' && errorRole === '') {
-            createNewUserRedux(user, accessToken)
+            createNewUserRedux(user, accessToken, params.get('page') ? params.get('page') : 1)
             setDataInput(initState)
             setSelectProvince([])
             setSelectGender([])
@@ -286,7 +283,7 @@ function UserManage({isLogin, accessToken, provinces, genders, roles, fetchAllPr
                     </form>
                 </div>
                 <div className='user-manage-table'>
-                    <TableUser />
+                    <TableUser pathPage={path.MANAGE_CREATE}/>
                 </div>
             </div>
         </div>
@@ -307,7 +304,7 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchAllProvincesRedux: (accessToken) => dispatch(actions.fetchAllProvinces(accessToken)),
         fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByType(type)),
-        createNewUserRedux: (data, accessToken) =>  dispatch(actions.createNewUser(data, accessToken))
+        createNewUserRedux: (data, accessToken ,page) =>  dispatch(actions.createNewUser(data, accessToken, page))
     }
 }
 

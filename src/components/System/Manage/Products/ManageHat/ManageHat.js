@@ -19,7 +19,7 @@ function ManageHat({isLogin}) {
                         <Link to={path.MANAGE_PRODUCTS_HAT_CREATE} state={categorieType.HAT}>Add</Link>
                     </button>
                 </div>
-                <TableProducts typeCategore={categorieType.HAT}/>
+                <TableProducts typeCategore={categorieType.HAT} pathPage={path.MANAGE_PRODUCTS_HAT}/>
             </div>
         </div>
     );

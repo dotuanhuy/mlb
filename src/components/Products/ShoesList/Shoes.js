@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
+import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import {  faCartShopping, faAngleDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 import './Shoes.scss'
 import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { path, categorieType, listShoesSandals, listColor, allCode } from '../../../utils';
 import Navbar from '../../HomePage/Navbar/Navbar';
-import { Chunky_Liner_Mid_New_York_Yankees_Green } from '../../../utils/images';
 import {Buffer} from 'buffer';
 import { formatVND } from '../../../utils';
 
@@ -102,8 +101,6 @@ function Shoes({
             ...optionLogo
         })
     }
-
-    console.log('check products: ', products)
 
     return (
         <div className='shoes'>

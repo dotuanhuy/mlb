@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Nav from '../../../nav/nav'
 import './AddDescriptionProduct.scss'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../../../utils';
+import { useLocation, useNavigate, createSearchParams } from 'react-router-dom';
 import * as actions from '../../../../../store/actions'
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
@@ -17,7 +16,6 @@ const initState = {
 }
 
 function AddDescriptionProduct({
-    isLogin, 
     descriptions, 
     accessToken, 
     isLoading,
@@ -59,7 +57,12 @@ function AddDescriptionProduct({
             productId: state.id
         }, accessToken)
         setMarkdown(initState)
-        navigate(state.path)
+        navigate({
+            pathname: state.path,
+            search: createSearchParams({
+                page: state.pageCurrent
+            }).toString(),
+        })
     }
     return (    
         <>
@@ -91,7 +94,6 @@ function AddDescriptionProduct({
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
         descriptions: state.product.descriptions,
         accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct

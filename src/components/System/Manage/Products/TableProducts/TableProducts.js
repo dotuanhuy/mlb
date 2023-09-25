@@ -1,22 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './TableProducts.scss'
-import { Link } from 'react-router-dom';
 import { path, categorieType } from '../../../../../utils';
 import * as actions from '../../../../../store/actions'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {Buffer} from 'buffer';
 import Loading from '../../../../Loading/Loading';
+import Pagination from '../../../../Paginations/Pagination';
+import { useRef } from 'react';
 
-function TableProducts({typeCategore, products, accessToken, isLoading, getAllProductsRedux, deleteProductRedux, refreshIsloadingStateProductRedux}) {
+function TableProducts({
+    typeCategore, 
+    pathPage,
+    products, 
+    accessToken, 
+    isLoading, 
+    getAllProductsRedux, 
+    deleteProductRedux, 
+    refreshIsloadingStateProductRedux,
+    getLimitProductsRedux
+}) {
     const navigate = useNavigate()
+    const [params] = useSearchParams()
+    const listRef = useRef()
+    
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        getAllProductsRedux(typeCategore, accessToken)
+        // getAllProductsRedux(typeCategore, accessToken)
+        getLimitProductsRedux(typeCategore, params.get('page') ? params.get('page') : 1, accessToken)
     }, [])
 
+    useEffect(() => {
+        if (params.get('page')) {
+            getLimitProductsRedux(typeCategore, params.get('page') ? params.get('page') : 1, accessToken)
+            if (listRef.current) {
+                window.scrollTo({
+                  behavior: "smooth",
+                  top: listRef.current.offsetTop
+                });
+            }
+        }
+    }, [params.get('page')])
+    
     const handleDeleteProduct = (id) => {
-        deleteProductRedux(id, typeCategore, accessToken)
+        deleteProductRedux(id, typeCategore, accessToken, params.get('page') ? params.get('page') : 1)
     }
 
     const handleEditProduct = (id) => {
@@ -25,7 +52,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
                 state: { 
                     id, 
                     typeCategore, 
-                    path:  path.MANAGE_PRODUCTS_SHOES
+                    path:  path.MANAGE_PRODUCTS_SHOES,
+                    pageCurrent: params.get('page') ? params.get('page') : 1
                 }
             })
         }
@@ -34,7 +62,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
                 state: { 
                     id, 
                     typeCategore, 
-                    path: path.MANAGE_PRODUCTS_BAG_BALO 
+                    path: path.MANAGE_PRODUCTS_BAG_BALO ,
+                    pageCurrent: params.get('page') ? params.get('page') : 1
                 }
             })
         }
@@ -43,7 +72,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
                 state: { 
                     id, 
                     typeCategore, 
-                    path: path.MANAGE_PRODUCTS_HAT 
+                    path: path.MANAGE_PRODUCTS_HAT ,
+                    pageCurrent: params.get('page') ? params.get('page') : 1
                 }
             })
         }
@@ -52,7 +82,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
                 state: { 
                     id, 
                     typeCategore, 
-                    path: path.MANAGE_PRODUCTS_CLOTHES 
+                    path: path.MANAGE_PRODUCTS_CLOTHES ,
+                    pageCurrent: params.get('page') ? params.get('page') : 1
                 }
             })
         }
@@ -64,7 +95,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
             navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
                 state: { 
                     product, 
-                    path:  path.MANAGE_PRODUCTS_SHOES
+                    path:  path.MANAGE_PRODUCTS_SHOES,
+                    pageCurrent: params.get('page') ? params.get('page') : 1
                 }
             })
         }
@@ -72,7 +104,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
             navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
                 state: {  
                     product, 
-                    path: path.MANAGE_PRODUCTS_BAG_BALO 
+                    path: path.MANAGE_PRODUCTS_BAG_BALO,
+                    pageCurrent: params.get('page') ? params.get('page') : 1
                 }
             })
         }
@@ -80,7 +113,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
             navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
                 state: {  
                     product, 
-                    path: path.MANAGE_PRODUCTS_HAT 
+                    path: path.MANAGE_PRODUCTS_HAT,
+                    pageCurrent: params.get('page') ? params.get('page') : 1 
                 }
             })
         }
@@ -88,7 +122,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
             navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
                 state: {  
                     product, 
-                    path: path.MANAGE_PRODUCTS_CLOTHES 
+                    path: path.MANAGE_PRODUCTS_CLOTHES,
+                    pageCurrent: params.get('page') ? params.get('page') : 1 
                 }
             })
         }
@@ -100,7 +135,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
             navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, {
                 state: { 
                     id, 
-                    path:  path.MANAGE_PRODUCTS_SHOES
+                    path:  path.MANAGE_PRODUCTS_SHOES,
+                    pageCurrent: params.get('page') ? params.get('page') : 1
                 }
             })
         }
@@ -108,7 +144,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
             navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, {
                 state: {  
                     id, 
-                    path: path.MANAGE_PRODUCTS_BAG_BALO 
+                    path: path.MANAGE_PRODUCTS_BAG_BALO,
+                    pageCurrent: params.get('page') ? params.get('page') : 1 
                 }
             })
         }
@@ -116,7 +153,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
             navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, {
                 state: {  
                     id, 
-                    path: path.MANAGE_PRODUCTS_HAT 
+                    path: path.MANAGE_PRODUCTS_HAT,
+                    pageCurrent: params.get('page') ? params.get('page') : 1 
                 }
             })
         }
@@ -124,7 +162,8 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
             navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
                 state: {  
                     id, 
-                    path: path.MANAGE_PRODUCTS_CLOTHES 
+                    path: path.MANAGE_PRODUCTS_CLOTHES,
+                    pageCurrent: params.get('page') ? params.get('page') : 1 
                 }
             })
         }
@@ -136,7 +175,7 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
                 isLoading ? 
                 <Loading />
                 :
-                <div className='products-all-system'>
+                <div ref={listRef} className='products-all-system'>
                     <div className='products-all-container'>
                         <div className='products-all-table'>
                             <table id="customers">
@@ -158,7 +197,7 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
                                     <th>ListGender</th>
                                     <th>Actions</th>
                                 </tr>
-                                {
+                                {   
                                     products && products.length > 0 &&
                                     products.map((item, index) => {
                                         let imageBase64 = ''
@@ -238,7 +277,9 @@ function TableProducts({typeCategore, products, accessToken, isLoading, getAllPr
                                     })
                                 }
                             </table>
-                        </div>
+                        </div>   
+                        
+                        <Pagination pathPage={pathPage} currentPage={params.get('page') || 1} />                     
                     </div>
                 </div>
             }
@@ -257,8 +298,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getAllProductsRedux: (type, accessToken) => dispatch(actions.getAllProducts(type, accessToken)),
-        deleteProductRedux: (id, typeCategore, accessToken) => dispatch(actions.deleteProduct(id, typeCategore, accessToken)),
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct())
+        deleteProductRedux: (id, typeCategore, accessToken, page) => dispatch(actions.deleteProduct(id, typeCategore, accessToken, page)),
+        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
+        getLimitProductsRedux: (categore, page, accessToken) => dispatch(actions.getLimitProducts(categore, page, accessToken))
     }
 }
 

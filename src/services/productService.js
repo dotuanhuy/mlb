@@ -87,6 +87,15 @@ const getProductByCategoryService = (category) => {
     return axios.get(`/api/get-product-by-category?category=${category}`)
 }
 
+const getLimitProductService = (categore, page, accessToken) => {
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get(`/api/get-limit-products?categore=${categore}&page=${page}`, { headers: {token: `Bearer ${accessToken}`}})
+    }
+    else
+        return axios.get(`/api/get-limit-products?categore=${categore}&page=${page}`)
+}
+
 export {
     getAllProductsService,
     getAllProductPublicService,
@@ -101,5 +110,6 @@ export {
     deleteImageProductService,
     addDescriptionProductService,
     fetchDescriptionProductService,
-    getProductByCategoryService
+    getProductByCategoryService,
+    getLimitProductService
 }

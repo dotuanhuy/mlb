@@ -4,8 +4,8 @@ import Nav from '../../../nav/nav';
 import Select from 'react-select';
 import * as actions from '../../../../../store/actions'
 import TableProducts from '../TableProducts/TableProducts';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { allCode, categorieType } from '../../../../../utils';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { allCode, categorieType, path } from '../../../../../utils';
 import CommonUtils from '../../../../../utils/CommonUtils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -60,6 +60,7 @@ function ManageShoesCreate({
     const [listColors, setListColors] = useState([])
     const [listLogos, setListLogos] = useState([])
     const [listGenders, setListGenders] = useState([])
+    const [params] = useSearchParams() 
 
     // ComponentDidMount
     useEffect(() => {
@@ -206,7 +207,7 @@ function ManageShoesCreate({
             listGender: listGenders.toString(),
         }
 
-        createNewProductRedux(product, location.state, accessToken)
+        createNewProductRedux(product, location.state, accessToken, params.get('page') ? params.get('page') : 1)
         setSelectObject(initState)
         setSelectImage(initStateImage)
         setSelectCategory('')
@@ -218,7 +219,7 @@ function ManageShoesCreate({
         setListSizes(location.state === categorieType.SHOES_SANDAL || location.state === categorieType.CLOTHES ? [] : initSize)
         setListGenders([])
     }
-
+    
     return (
         <div className='manage-shoes-create'>
             <div className='manage-shoes-create-container'>
@@ -548,7 +549,7 @@ function ManageShoesCreate({
                     </form>
                 </div>
                 <div className='manage-shoes-create-table'>
-                    <TableProducts typeCategore={location.state}/>
+                    <TableProducts typeCategore={location.state} pathPage={location.pathname}/>
                 </div>
             </div>
         </div>
@@ -557,7 +558,6 @@ function ManageShoesCreate({
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
         accessToken: state.auth.token,
         categories: state.product.categories,
         discounts: state.product.discounts,
@@ -574,7 +574,7 @@ const mapDispatchToProps = dispatch => {
         getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
         fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        createNewProductRedux: (data, type, accessToken) => dispatch(actions.createNewProduct(data, type, accessToken))
+        createNewProductRedux: (data, type, accessToken, page) => dispatch(actions.createNewProduct(data, type, accessToken, page))
     }
 }
 

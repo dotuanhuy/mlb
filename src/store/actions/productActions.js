@@ -13,7 +13,8 @@ import {
     deleteImageProductService,
     addDescriptionProductService,
     fetchDescriptionProductService,
-    getProductByCategoryService
+    getProductByCategoryService,
+    getLimitProductService
 
 } from "../../services/productService";
 import { getAllCodeByType } from "../../services/userService";
@@ -205,7 +206,7 @@ export const getAllCategories = (accessToken) => {
     }
 }
 
-export const createNewProduct = (product, type, accessToken) => {
+export const createNewProduct = (product, type, accessToken, page) => {
     return async (dispatch, getState) => {
         try {
             let res = await createNewProductService(product, accessToken)
@@ -213,7 +214,8 @@ export const createNewProduct = (product, type, accessToken) => {
                 dispatch({
                     type: actionTypes.CREATE_NEW_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts(type, accessToken))
+                // dispatch(getAllProducts(type, accessToken))
+                dispatch(getLimitProducts(type, page, accessToken))
             }
             else {
                 dispatch({
@@ -229,7 +231,7 @@ export const createNewProduct = (product, type, accessToken) => {
     }
 }
 
-export const deleteProduct = (id, type, accessToken) => {
+export const deleteProduct = (id, type, accessToken, page) => {
     return async (dispatch, getSate) => {
         try {
             let res = await deleteProductService(id, accessToken)
@@ -237,7 +239,8 @@ export const deleteProduct = (id, type, accessToken) => {
                 dispatch({
                     type: actionTypes.DELETE_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts(type, accessToken))
+                // dispatch(getAllProducts(type, accessToken))
+                dispatch(getLimitProducts(type, page, accessToken))
             }
             else {
                 dispatch({
@@ -277,7 +280,7 @@ export const getProductById = (id, accessToken) => {
     }
 }
 
-export const updateProduct = (data, type, accessToken) => {
+export const updateProduct = (data, type, accessToken, page) => {
     return async (dispatch, getState) => {
         try {
             let res = await updateProductService(data, accessToken)
@@ -285,7 +288,8 @@ export const updateProduct = (data, type, accessToken) => {
                 dispatch({
                     type: actionTypes.EDIT_PRODUCT_SUCCESS
                 })
-                dispatch(getAllProducts(type, accessToken))
+                // dispatch(getAllProducts(type, accessToken))
+                dispatch(getLimitProducts(type, page, accessToken))
             }
             else {
                 dispatch({
@@ -440,6 +444,31 @@ export const getProductByCategory = (category) => {
             console.log('getProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_BY_CATEGORY_FAILED
+            })
+        }
+    }
+}
+
+export const getLimitProducts = (categore, page, accessToken) => {
+    return async (dispatch, getState) => {
+        try {
+            const newPage = +page - 1 
+            let res = await getLimitProductService(categore, newPage, accessToken)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_LIMIT_PRODUCTS_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_LIMIT_PRODUCTS_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getLimitProducts error: ', e) 
+            dispatch({
+                type: actionTypes.GET_LIMIT_PRODUCTS_FAILED
             })
         }
     }

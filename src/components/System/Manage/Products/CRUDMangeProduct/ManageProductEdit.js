@@ -269,8 +269,8 @@ function ManageShoesEdit({
             material: selectObject.material,
             listGender: listGenders.toString(),
         }
-        updateProductRedux(product, location.state.typeCategore, accessToken)
-        navigate(location.state.path) 
+        updateProductRedux(product, location?.state?.typeCategore, accessToken, location?.state?.pageCurrent)
+        navigate(location?.state?.path) 
     }
     
     return (

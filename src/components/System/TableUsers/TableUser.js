@@ -1,26 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './TableUser.scss'
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { path } from '../../../utils'
 import * as actions from '../../../store/actions'
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../components/Loading/Loading'
+import Pagination from '../../Paginations/Pagination';
 
-function TableUsers({users, accessToken, isLoading, refreshIsloadingStateRedux, fetAllUsersRedux, deleteUserRedux}) {
+function TableUsers({
+    pathPage,
+    users, 
+    accessToken, 
+    isLoading, 
+    refreshIsloadingStateRedux, 
+    fetAllUsersRedux, 
+    getLimitUsersRedux,
+    deleteUserRedux
+}) {
     const navigate = useNavigate()   
+    const [params] = useSearchParams()
     
     useEffect(() => {
         refreshIsloadingStateRedux()
-        fetAllUsersRedux(accessToken)
+        // fetAllUsersRedux(accessToken)
+        getLimitUsersRedux(params.get('page') ? params.get('page') : 1, accessToken)
     }, [])
 
+    useEffect(() => {
+        if (params.get('page')) {
+            getLimitUsersRedux(params.get('page') ? params.get('page') : 1, accessToken)
+        }
+    }, [params.get('page')])
+
     const handleDeleteUser = (id) => {
-        deleteUserRedux(id, accessToken)
+        deleteUserRedux(id, accessToken, params.get('page') ? params.get('page') : 1)
     }
 
     const handleEdit = (user) => {
-        navigate(path.MANAGE_EDIT, {state: user.id})
+        navigate(
+            path.MANAGE_EDIT, 
+            {
+                state: {
+                    id: user.id, 
+                    pageCurrent: (params.get('page') ? params.get('page') : 1)
+                }
+            }
+        )
     }
 
     return (
@@ -78,6 +104,8 @@ function TableUsers({users, accessToken, isLoading, refreshIsloadingStateRedux, 
                                 }
                             </table>
                         </div>
+                        
+                        <Pagination pathPage={pathPage} currentPage={params.get('page') || 1} />
                     </div>
                 </div>
             }
@@ -97,8 +125,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetAllUsersRedux: (accessToken) => dispatch(actions.fetAllUsers(accessToken)),
-        deleteUserRedux: (id, accessToken) => dispatch(actions.deleteUser(id, accessToken)),
-        refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState())
+        deleteUserRedux: (id, accessToken, page) => dispatch(actions.deleteUser(id, accessToken, page)),
+        refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState()),
+        getLimitUsersRedux: (page, accessToken) => dispatch(actions.getLimitUsers(page, accessToken))
     }
 }
 

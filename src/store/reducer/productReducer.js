@@ -10,7 +10,8 @@ const initState = {
     genders: [],
     images: [],
     descriptions: [],
-    isLoadingProduct: true
+    isLoadingProduct: true,
+    count: 0
 }
 
 const productReducer = (state = initState, action) => {
@@ -159,6 +160,20 @@ const productReducer = (state = initState, action) => {
             }
         case 'GET_PRODUCT_BY_CATEGORY_FAILED':
             state.products = []
+            return {
+                ...state
+            }
+        case 'GET_LIMIT_PRODUCTS_SUCCESS':
+            state.products = action.data.rows
+            state.count = action.data.count
+            state.isLoadingProduct = false
+            return {
+                ...state
+            }
+        case 'GET_LIMIT_PRODUCTS_FAILED':
+            state.products = []
+            state.count = 0
+            state.isLoadingProduct = true
             return {
                 ...state
             }

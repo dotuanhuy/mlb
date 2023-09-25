@@ -1,0 +1,27 @@
+.pagination {
+    padding-top: 10px;
+    align-items: center;
+    justify-content: center;
+
+    li {
+        padding: 0 2px;
+
+        &.active {
+            span {
+                background-color: #04AA6D !important;  
+                border-color: #04AA6D !important;
+            }
+        }
+        span {
+            background-color:#cccccc85 !important;  
+            // border-color: #ccc !important;
+            color: #333 !important;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #04AA6D !important;  
+                border-color: #04AA6D !important;
+            }
+        }
+    }
+}
