@@ -177,6 +177,20 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
+        case 'GET_LIMIT_PRODUCTS_BY_OPTION_SORT_SUCCESS': 
+            state.products = action.data.rows
+            state.count = action.data.count
+            state.isLoadingProduct = false
+            return {
+                ...state
+            }
+        case 'GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED': 
+            state.products = []
+            state.count = 0
+            state.isLoadingProduct = true
+            return {
+                ...state
+            }
         default:
             return state
     }

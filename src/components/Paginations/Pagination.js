@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './Pagination.scss'
 import { useNavigate, createSearchParams, useLocation } from 'react-router-dom';
-import { path } from '../../utils';
+import { path, limit_page } from '../../utils';
 
 function Pagination({countProduct, countUser, pathPage, currentPage}) {
     const navigate = useNavigate()
@@ -13,9 +13,9 @@ function Pagination({countProduct, countUser, pathPage, currentPage}) {
     const [isHidenPrev, setIsHidenPrev] = useState(true)
     const [isHidenBack, setIsHidenBack] = useState(false)
     const location = useLocation()
-
+    
     useEffect(() => {
-        let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE  ? countUser : countProduct)  / 2)
+        let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE  ? countUser : countProduct)  / +limit_page)
         let end = (+currentPageP + 2) > maxPage ? maxPage : (+currentPageP + 2)
         let start = (+currentPageP - 2) <= 0 ? 1 : (+currentPageP - 2)
         let arr = []
@@ -71,7 +71,7 @@ function Pagination({countProduct, countUser, pathPage, currentPage}) {
     }   
 
     const handleToEnd = () => {
-        let end = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE ?  countUser : countProduct) / 2)
+        let end = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE ?  countUser : countProduct) / +limit_page)
         setCurrentPageP(end)
         navigate({
             pathname: pathPage,
@@ -83,57 +83,62 @@ function Pagination({countProduct, countUser, pathPage, currentPage}) {
 
     return (
         <>
-            <nav aria-label="...">
-                <ul className="pagination">
-                    {   
-                        isHidenBegin ? '' :
-                        <li 
-                            className='page-item'
-                            onClick={handleToBegin}
-                        >
-                            <span className="page-link" aria-disabled="true">&laquo;</span>
-                        </li>
-                    }
-                    {
-                        isHidenPrev ? '' : 
-                        <li className="page-item">
-                            <span className="page-link" >...</span>
-                        </li>
-                    }
-                    {
-                        arrPage.length > 0 && arrPage.map((item, index) => {
-                            return (
-                                <li 
-                                    key={index} 
-                                    className={item === +currentPage ? 'page-item active' : 'page-item'} 
-                                    aria-current='1'
-                                >
-                                    <span 
-                                        className="page-link" 
-                                        data-page={item}
-                                        onClick={(e) => handleChangePage(e)}
-                                    >{item}</span>
-                                </li>
-                            )
-                        })
-                    }
-                    {
-                        isHidenBack ? '' : 
-                        <li className="page-item">
-                            <span className="page-link" >...</span>
-                        </li>
-                    }
-                    {
-                        isHidenEnd ? '' :
-                        <li 
-                            className='page-item'
-                            onClick={handleToEnd}
-                        >
-                            <span className="page-link" >&raquo;</span>
-                        </li>
-                    }
-                </ul>
-            </nav>
+            {
+                arrPage.length === 0 ? 
+                <div className='not-product'>Không có sản phẩm thỏa mãn</div>
+                :
+                <nav aria-label="...">
+                    <ul className="pagination">
+                        {   
+                            isHidenBegin ? '' :
+                            <li 
+                                className='page-item'
+                                onClick={handleToBegin}
+                            >
+                                <span className="page-link" aria-disabled="true">&laquo;</span>
+                            </li>
+                        }
+                        {
+                            isHidenPrev ? '' : 
+                            <li className="page-item">
+                                <span className="page-link" >...</span>
+                            </li>
+                        }
+                        {
+                            arrPage.length > 0 && arrPage.map((item, index) => {
+                                return (
+                                    <li 
+                                        key={index} 
+                                        className={item === +currentPage ? 'page-item active' : 'page-item'} 
+                                        aria-current='1'
+                                    >
+                                        <span 
+                                            className="page-link" 
+                                            data-page={item}
+                                            onClick={(e) => handleChangePage(e)}
+                                        >{item}</span>
+                                    </li>
+                                )
+                            })
+                        }
+                        {
+                            isHidenBack ? '' : 
+                            <li className="page-item">
+                                <span className="page-link" >...</span>
+                            </li>
+                        }
+                        {
+                            isHidenEnd || arrPage.length === 0  ? '' :
+                            <li 
+                                className='page-item'
+                                onClick={handleToEnd}
+                            >
+                                <span className="page-link" >&raquo;</span>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
         </>
     );
 }

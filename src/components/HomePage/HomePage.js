@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './Navbar/Navbar'
 import SliderHomePage from './Slider/SliderHomePage';
@@ -66,4 +66,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(HomePage));

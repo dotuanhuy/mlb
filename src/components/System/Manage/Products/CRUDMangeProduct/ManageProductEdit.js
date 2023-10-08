@@ -638,7 +638,7 @@ const mapDispatchToProps = dispatch => {
         getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
         fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        updateProductRedux: (data, categorieType, accessToken) => dispatch(actions.updateProduct(data, categorieType, accessToken)),
+        updateProductRedux: (data, categorieType, accessToken, page) => dispatch(actions.updateProduct(data, categorieType, accessToken, page)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct())
     }
 }

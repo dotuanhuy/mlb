@@ -38,6 +38,13 @@ function Shorts({products, images}) {
                     }
                     return (
                         <div className='product col-3' key={index}>
+                            {
+                                item.dataDiscount.valueEn !== '0' ?
+                                <div className='discount'>
+                                    <span>-{item.dataDiscount.valueEn}</span>
+                                </div>
+                                : ''
+                            }
                             <div className='actions text-center'>
                                 <div className='tym mb-2 px-3'>
                                     <FontAwesomeIcon icon={faHeart} />

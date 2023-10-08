@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import {  faCartShopping, faAngleDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 import './Shoes.scss'
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { 
     path, 
@@ -12,7 +12,7 @@ import {
     listShoesSandals, 
     listColor, 
     allCode, 
-    typeShoesSandanl,
+    optionSortContant,
 } from '../../../utils';
 import Navbar from '../../HomePage/Navbar/Navbar';
 import {Buffer} from 'buffer';
@@ -52,7 +52,7 @@ const initOptionLogo = {
     SF: false,
 }
 
-function Shoes({
+function ShoesTypeName({
     colors, 
     categories, 
     logos, 
@@ -79,7 +79,6 @@ function Shoes({
     const [optionLogo, setOptionLogo] = useState(initOptionLogo)
     const [params] = useSearchParams()
     const listRef = useRef()
-    const { state } = useLocation();
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
@@ -117,37 +116,22 @@ function Shoes({
             strColor = newArrColor.toString()
         }
         if (newArrOptionType.length > 0) {
-            strType = newArrOptionType.length > 1 ? '' : newArrOptionType.toString()
+            strType = newArrOptionType.toString()
         }
         if (newArrOptionLogo.length > 0) {
             strLogo = newArrOptionLogo.toString()
         }
-        
         const data = {
             optionType: strType ? strType : categorieType.SHOES_SANDAL,
             colors: strColor,
             logos: strLogo
-        }
-        const optionTypeName = state?.typeName ? state?.typeName : ''
-
-        if (optionTypeName && optionTypeName !== typeShoesSandanl.DEP_MLB) {
-            getCategoriesByIdRedux(listShoesSandals.SHOES)
-            data['optionType'] = listShoesSandals.SHOES
-        }
-        else if (optionTypeName && optionTypeName === typeShoesSandanl.DEP_MLB) {
-            getCategoriesByIdRedux(listShoesSandals.SANDAL)
-            data['optionType'] = listShoesSandals.SANDAL
-        }
-        else {
-            getCategoriesByIdRedux(categorieType.SHOES_SANDAL)
         }
         // console.log('check data: ', data)
         getLimitProductByOptionRedux(
             data, 
             params.get('page') ? params.get('page') : 1, 
             optionSort, 
-            accessToken,
-            optionTypeName
+            accessToken
         )
         if (listRef.current) {
             window.scrollTo({
@@ -156,8 +140,7 @@ function Shoes({
             });
         }
 
-    }, [params.get('page'), optionSort, optionType, optionColor, optionLogo, state])
-
+    }, [params.get('page'), optionSort, optionType, optionColor, optionLogo])
     
     const handleOnchangeTypeType = (e) => {
         let checked = e.target.getAttribute('for')
@@ -491,9 +474,9 @@ const mapDispatchToProps = dispatch => {
         fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
         getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),
         getLimitProductsRedux: (category, page, accessToken) => dispatch(actions.getLimitProducts(category, page, accessToken)),
-        getLimitProductByOptionRedux: (optionData, page, option, accessToken, optionTypeName) => dispatch(actions.getLimitProductByOption(optionData, page, option, accessToken, optionTypeName)),
+        getLimitProductByOptionRedux: (optionData, page, option, accessToken) => dispatch(actions.getLimitProductByOption(optionData, page, option, accessToken)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct())
     }
 }
 
-export default memo(connect(mapStateToProps, mapDispatchToProps)(Shoes));
+export default memo(connect(mapStateToProps, mapDispatchToProps)(ShoesTypeName));

@@ -96,6 +96,27 @@ const getLimitProductService = (categore, page, accessToken) => {
         return axios.get(`/api/get-limit-products?categore=${categore}&page=${page}`)
 }
 
+const getLimitProductByOptionSortService = (optionData, page, option, accessToken, optionTypeName) => {
+    // if (accessToken) {
+    //     const axiosJWT = createAxios(accessToken)
+    //     return axiosJWT.get(`/api/get-limit-product-by-option-sort?categore=${categore}&page=${page}&option=${option}`, { headers: {token: `Bearer ${accessToken}`}})
+    // }
+    // else
+    //     return axios.get(`/api/get-limit-product-by-option-sort?categore=${categore}&page=${page}&option=${option}`)
+
+    let url = `/api/get-limit-product-by-option-sort?page=${page}&option=${option}`
+    url = optionData?.optionType ? url + `&type=${optionData?.optionType}` : url
+    url = optionData?.colors? url + `&colors=${optionData?.colors}` : url
+    url = optionData?.logos? url + `&logos=${optionData?.logos}` : url
+    url = optionTypeName ? url + `&optionTypeName=${optionTypeName}` : url
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get(url, { headers: {token: `Bearer ${accessToken}`}})
+    }
+    else
+        return axios.get(url)
+}
+
 export {
     getAllProductsService,
     getAllProductPublicService,
@@ -111,5 +132,6 @@ export {
     addDescriptionProductService,
     fetchDescriptionProductService,
     getProductByCategoryService,
-    getLimitProductService
+    getLimitProductService,
+    getLimitProductByOptionSortService
 }

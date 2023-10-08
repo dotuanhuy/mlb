@@ -14,7 +14,8 @@ import {
     addDescriptionProductService,
     fetchDescriptionProductService,
     getProductByCategoryService,
-    getLimitProductService
+    getLimitProductService,
+    getLimitProductByOptionSortService
 
 } from "../../services/productService";
 import { getAllCodeByType } from "../../services/userService";
@@ -216,6 +217,12 @@ export const createNewProduct = (product, type, accessToken, page) => {
                 })
                 // dispatch(getAllProducts(type, accessToken))
                 dispatch(getLimitProducts(type, page, accessToken))
+            }
+            else if (res && res.errCode === 1) {
+                alert('Sản phẩm đã tồn tại')
+                dispatch({
+                    type: actionTypes.CREATE_NEW_PRODUCT_FAILED
+                })
             }
             else {
                 dispatch({
@@ -469,6 +476,31 @@ export const getLimitProducts = (categore, page, accessToken) => {
             console.log('getLimitProducts error: ', e) 
             dispatch({
                 type: actionTypes.GET_LIMIT_PRODUCTS_FAILED
+            })
+        }
+    }
+}
+
+export const getLimitProductByOption = (optionData, page, option, accessToken, optionTypeName) => {
+    return async (dispatch, getState) => {
+        try {
+            const newPage = +page - 1 
+            let res = await getLimitProductByOptionSortService(optionData, newPage, option, accessToken, optionTypeName)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getLimitProductByOption error: ', e) 
+            dispatch({
+                type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED
             })
         }
     }

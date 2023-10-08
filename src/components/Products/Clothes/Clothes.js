@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import {  faCartShopping, faAngleDown, faCheck } from '@fortawesome/free-solid-svg-icons';
-import './Shoes.scss'
+import './Clothes.scss'
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { 
     path, 
     categorieType, 
-    listShoesSandals, 
+    listClothes, 
     listColor, 
     allCode, 
-    typeShoesSandanl,
+    typeClothes,
 } from '../../../utils';
 import Navbar from '../../HomePage/Navbar/Navbar';
 import {Buffer} from 'buffer';
@@ -22,12 +22,14 @@ import { useRef } from 'react';
 import Loading from '../../Loading/Loading';
 
 const arrColor = ['White', 'Black', 'Gray', 'Brown', 'Blue', 'Green', 'Pink', 'LightPink', 'Red', 'Orange', 'Yellow']
-const arrOptionType = ['shoesMlb', 'sandal']
+const arrOptionType = ['SHIRT', 'DRESS1', 'SHORTS', 'DRESS2']
 const arrOptionLogo = ['NY', 'B', 'LA', 'P', 'SF']
 
 const initOptionType = {
-    shoesMlb: false,
-    sandal: false
+    SHIRT: false,
+    DRESS1: false,
+    SHORTS: false,
+    DRESS2: false
 }
 
 const initOptionColor = {
@@ -52,7 +54,7 @@ const initOptionLogo = {
     SF: false,
 }
 
-function Shoes({
+function Clothes({
     colors, 
     categories, 
     logos, 
@@ -84,7 +86,7 @@ function Shoes({
     useEffect(() => {
         refreshIsloadingStateProductRedux()
         fetchAllColorsRedux(allCode.COLOR)
-        getCategoriesByIdRedux(categorieType.SHOES_SANDAL)
+        getCategoriesByIdRedux(categorieType.CLOTHES)
         fetchAllCodeByTypeRedux(allCode.LOGO)
         if (images.length === 0) {
             fetchAllImageProductRedux(accessToken)
@@ -104,11 +106,11 @@ function Shoes({
             }
         })
         arrOptionType.forEach(item => {
-            if (optionType[item]) {
-                let newOptionType = item === 'shoesMlb' ? listShoesSandals.SHOES : listShoesSandals.SANDAL
-                newArrOptionType.push(newOptionType)
+            if (optionType[item]) {                
+                newArrOptionType.push(listClothes[item])
             }
         })
+        console.log('check: ',newArrOptionType)
         arrOptionLogo.forEach(item => {
             if (optionLogo[item]) 
                 newArrOptionLogo.push(item)
@@ -117,31 +119,36 @@ function Shoes({
             strColor = newArrColor.toString()
         }
         if (newArrOptionType.length > 0) {
-            strType = newArrOptionType.length > 1 ? '' : newArrOptionType.toString()
+            strType = newArrOptionType.length === 4 ? '' : newArrOptionType.toString()
         }
         if (newArrOptionLogo.length > 0) {
             strLogo = newArrOptionLogo.toString()
         }
         
         const data = {
-            optionType: strType ? strType : categorieType.SHOES_SANDAL,
+            optionType: strType ? strType : categorieType.CLOTHES,
             colors: strColor,
             logos: strLogo
         }
         const optionTypeName = state?.typeName ? state?.typeName : ''
 
-        if (optionTypeName && optionTypeName !== typeShoesSandanl.DEP_MLB) {
-            getCategoriesByIdRedux(listShoesSandals.SHOES)
-            data['optionType'] = listShoesSandals.SHOES
+        if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_SHORTS) {
+            getCategoriesByIdRedux(listClothes.SHORTS)
+            data['optionType'] = listClothes.SHORTS
         }
-        else if (optionTypeName && optionTypeName === typeShoesSandanl.DEP_MLB) {
-            getCategoriesByIdRedux(listShoesSandals.SANDAL)
-            data['optionType'] = listShoesSandals.SANDAL
+        else if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_TSHIRT) {
+            getCategoriesByIdRedux(listClothes.SHIRT)
+            data['optionType'] = listClothes.SHIRT
+        }
+        else if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_SKIRT_DRESS) {
+            let str = `${listClothes.DRESS1},${listClothes.DRESS2}`
+            getCategoriesByIdRedux(str)
+            data['optionType'] = str
         }
         else {
-            getCategoriesByIdRedux(categorieType.SHOES_SANDAL)
+            getCategoriesByIdRedux(categorieType.CLOTHES)
         }
-        // console.log('check data: ', data)
+        console.log('check data: ', data)
         getLimitProductByOptionRedux(
             data, 
             params.get('page') ? params.get('page') : 1, 
@@ -157,20 +164,32 @@ function Shoes({
         }
 
     }, [params.get('page'), optionSort, optionType, optionColor, optionLogo, state])
-
     
+
     const handleOnchangeTypeType = (e) => {
         let checked = e.target.getAttribute('for')
-        if (checked === listShoesSandals.SHOES) {
+        if (checked === listClothes.SHIRT) {
             setOptionType({
                 ...optionType,
-                shoesMlb: !optionType.shoesMlb
+                SHIRT: !optionType.SHIRT
             })
         }
-        else if (checked === listShoesSandals.SANDAL) {
+        else if (checked === listClothes.DRESS1) {
             setOptionType({
                 ...optionType,
-                sandal: !optionType.sandal
+                DRESS1: !optionType.DRESS1
+            })
+        }
+        else if (checked === listClothes.SHORTS) {
+            setOptionType({
+                ...optionType,
+                SHORTS: !optionType.SHORTS
+            })
+        }
+        else if (checked === listClothes.DRESS2) {
+            setOptionType({
+                ...optionType,
+                DRESS2: !optionType.DRESS2
             })
         }
     }
@@ -201,14 +220,14 @@ function Shoes({
                     <Navbar />
                     <div className='shoes-header'>
                         <div className='title'>
-                            MLB VIETNAM | GIÀY MLB CHÍNH HÃNG TẠI VIỆT NAM
+                            MLB VIETNAM | OUTFIT MLB CHÍNH HÃNG TẠI VIỆT NAM
                         </div>
                         <ul className='list-link'>
                             <li className='item-link-home'>
                                 <Link to='/'>Trang chủ</Link>
                             </li>
                             <li>
-                                <span>Giày MLB</span>
+                                <span>Outfit MLB</span>
                             </li>
                         </ul>
                     </div>
@@ -496,4 +515,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default memo(connect(mapStateToProps, mapDispatchToProps)(Shoes));
+export default memo(connect(mapStateToProps, mapDispatchToProps)(Clothes));

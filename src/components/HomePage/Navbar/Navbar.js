@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
@@ -8,10 +8,9 @@ import './Navbar.scss'
 import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { path } from '../../../utils';
-import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
+import { typeShoesSandanl, typeBagBalo, typeHat, typeClothes } from '../../../utils';
 
-const cookies = new Cookies();
 const initState = {
     firstName: '',
     lastName: '',
@@ -28,27 +27,6 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
             })
         }
     }, [])
-    // if (isLogin && isAdmin) {
-    //     navigate(path.MANAGE)
-    // }
-    // else if (isLogin && !isAdmin) {
-    //     navigate(path.HOMEPAGE)
-    // }
-
-
-    // useEffect(() => {
-    //     if (cookies.get('userLogin')) {
-    //         let token = cookies.get('userLogin')
-    //         let loginInfor = jwt_decode(token)
-    //         if (loginInfor) {
-    //             setUserLogin({
-    //                 firstName: loginInfor.firstName,
-    //                 lastName: loginInfor.lastName,
-    //                 isLogin: true
-    //             })
-    //         }
-    //     }
-    // }, [])
 
     const handleLogout = async () => {
         // cookies.remove('userLogin', { path: '/' })
@@ -72,160 +50,160 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                                 <div className='menu-item'>
                                     <ul>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.GIAY_MLB}>
                                                 <img src={shoes.allShoes}/>
-                                            </a>
-                                            <a href='#' className='name-shoes' >all shoes</a>
+                                            </Link>
+                                            <Link to={path.GIAY_MLB} className='name-shoes' >all shoes</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.GIAY_MLB_BIGBALL_CHUNKY} state={{typeName: typeShoesSandanl.GIAY_MLB_BIGBALL_CHUNKY}}>
                                                 <img src={shoes.BIGBALL_CHUNKY}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>BIGBALL CHUNKY</a>
+                                            </Link>
+                                            <Link to={path.GIAY_MLB_BIGBALL_CHUNKY} state={{typeName: typeShoesSandanl.GIAY_MLB_BIGBALL_CHUNKY}} className='name-shoes'>BIGBALL CHUNKY</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.GIAY_MLB_MULE} state={{typeName: typeShoesSandanl.GIAY_MLB_MULE}}>
                                                 <img src={shoes.MULE}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>MULE</a>
+                                            </Link>
+                                            <Link to={path.GIAY_MLB_MULE} state={{typeName: typeShoesSandanl.GIAY_MLB_MULE}} className='name-shoes'>MULE</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.GIAY_MLB_CHUNKY_LINER} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_LINER}}>
                                                 <img src={shoes.CHUNKY_LINER}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>CHUNKY LINER</a>
+                                            </Link>
+                                            <Link path={path.GIAY_MLB_CHUNKY_LINER} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_LINER}} className='name-shoes'>CHUNKY LINER</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.GIAY_MLB_PLAYBALL} state={{typeName: typeShoesSandanl.GIAY_MLB_PLAYBALL}}>
                                                 <img src={shoes.PLAYBALL}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>PLAYBALL</a>
+                                            </Link>
+                                            <Link path={path.GIAY_MLB_PLAYBALL} state={{typeName: typeShoesSandanl.GIAY_MLB_PLAYBALL}} className='name-shoes'>PLAYBALL</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.GIAY_MLB_CHUNKY_CLASSIC} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_CLASSIC}}>
                                                 <img src={shoes.CHUNKY_CLASSIC}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>CHUNKY CLASSIC</a>
+                                            </Link>
+                                            <Link to={path.GIAY_MLB_CHUNKY_CLASSIC} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_CLASSIC}} className='name-shoes'>CHUNKY CLASSIC</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.GIAY_MLB_CHUNKY_RUNNER} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_RUNNRE}}>
                                                 <img src={shoes.CHUNKY_JOGGER_RUNNER}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>CHUNKY JOGGER/RUNNER</a>
+                                            </Link>
+                                            <Link to={path.GIAY_MLB_CHUNKY_RUNNER} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_RUNNRE}} className='name-shoes'>CHUNKY JOGGER/RUNNER</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.DEP_MLB} state={{typeName: typeShoesSandanl.DEP_MLB}}>
                                                 <img src={shoes.SLIDERS_SANDALS}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>SLIDERS/SANDALS</a>
+                                            </Link>
+                                            <Link to={path.DEP_MLB} state={{typeName: typeShoesSandanl.DEP_MLB}} className='name-shoes'>SLIDERS/SANDALS</Link>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li className='menu-list_item' >
-                                <span className='menu-list_item-name'>Túi-BaLo</span>
+                                <Link to={path.TUI_MLB} className='menu-list_item-name'>Túi-BaLo</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item'>
                                     <ul>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.TUI_MLB}>
                                                 <img src={bag.allBag}/>
-                                            </a>
-                                            <a href='#' className='name-shoes' >All bag</a>
+                                            </Link>
+                                            <Link to={path.TUI_MLB} className='name-shoes' >All bag</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}} >
                                                 <img src={bag.BACKPACK}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>BACKPACK</a>
+                                            </Link>
+                                            <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}} className='name-shoes'>BACKPACK</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.TUI_MLB_BUCKET_BAG} state={{typeName: typeBagBalo.TUI_MLB_BUCKET_BAG}}>
                                                 <img src={bag.BUCKET_BAG}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>BUCKET BAG</a>
+                                            </Link>
+                                            <Link to={path.TUI_MLB_BUCKET_BAG} state={{typeName: typeBagBalo.TUI_MLB_BUCKET_BAG}} className='name-shoes'>BUCKET BAG</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.TUI_MLB_HIP_SACK} state={{typeName: typeBagBalo.TUI_MLB_HIP_SACK}}>
                                                 <img src={bag.HIP_SACK}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>HIP SACK</a>
+                                            </Link>
+                                            <Link to={path.TUI_MLB_HIP_SACK} state={{typeName: typeBagBalo.TUI_MLB_HIP_SACK}} className='name-shoes'>HIP SACK</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.TUI_MLB_HOBO_BAG} state={{typeName: typeBagBalo.TUI_MLB_HOBO_BAG}}>
                                                 <img src={bag.HOBO_BAG}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>HOBO BAG</a>
+                                            </Link>
+                                            <Link to={path.TUI_MLB_HOBO_BAG} state={{typeName: typeBagBalo.TUI_MLB_HOBO_BAG}} className='name-shoes'>HOBO BAG</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.TUI_MLB_CROSS_BAG} state={{typeName: typeBagBalo.TUI_MLB_CROSS_BAG}}>
                                                 <img src={bag.CROSS_BAG}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>CROSS BAG</a>
+                                            </Link>
+                                            <Link to={path.TUI_MLB_CROSS_BAG} state={{typeName: typeBagBalo.TUI_MLB_CROSS_BAG}} className='name-shoes'>CROSS BAG</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.TUI_MLB_TOTE_BAG} state={{typeName: typeBagBalo.TUI_MLB_TOTE_BAG}}>
                                                 <img src={bag.TOTE_BAG}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>TOTE BAG</a>
+                                            </Link>
+                                            <Link to={path.TUI_MLB_TOTE_BAG} state={{typeName: typeBagBalo.TUI_MLB_TOTE_BAG}} className='name-shoes'>TOTE BAG</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.TUI_MLB_PHONE_POUCH} state={{typeName: typeBagBalo.TUI_MLB_PHONE_POUCH}}>
                                                 <img src={bag.PHONE_POUCH}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>PHONE POUCH</a>
+                                            </Link>
+                                            <Link to={path.TUI_MLB_PHONE_POUCH} state={{typeName: typeBagBalo.TUI_MLB_PHONE_POUCH}} className='name-shoes'>PHONE POUCH</Link>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li className='menu-list_item' >
-                                <span className='menu-list_item-name'>Mũ-nón</span>
+                                <Link to={path.MU_NON_MLB} className='menu-list_item-name'>Mũ-nón</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item'>
                                     <ul>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.NON_MLB_BALL_CAP} state={{typeName: typeHat.NON_MLB_BALL_CAP}}>
                                                 <img src={hat.BALL_CAP}/>
-                                            </a>
-                                            <a href='#' className='name-shoes' >ball cap</a>
+                                            </Link>
+                                            <Link to={path.NON_MLB_BALL_CAP} state={{typeName: typeHat.NON_MLB_BALL_CAP}} className='name-shoes' >ball cap</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.NON_MLB_BUCKET_HAT} state={{typeName: typeHat.NON_MLB_BUCKET_HAT}}>
                                                 <img src={hat.BUCKET_HAT}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>BUCKET HAT</a>
+                                            </Link>
+                                            <Link to={path.NON_MLB_BUCKET_HAT} state={{typeName: typeHat.NON_MLB_BUCKET_HAT}} className='name-shoes'>BUCKET HAT</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.NON_MLB_SUN_CAP} state={{typeName: typeHat.NON_MLB_SUN_CAP}}>
                                                 <img src={hat.SUN_CAP}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>SUN CAP</a>
+                                            </Link>
+                                            <Link to={path.NON_MLB_SUN_CAP} state={{typeName: typeHat.NON_MLB_SUN_CAP}} className='name-shoes'>SUN CAP</Link>
                                         </li>
                                     </ul>
                                 </div> 
                             </li>
                             <li className='menu-list_item' >
-                                <span className='menu-list_item-name'>Áo-quần</span>
+                                <Link to={path.OUTFIT_MLB} className='menu-list_item-name'>Áo-quần</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item'>
                                     <ul>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.OUTFIT_MLB_TSHIRT} state={{typeName: typeClothes.OUTFIT_MLB_TSHIRT}}>
                                                 <img src={shirts.T_SHIRT}/>
-                                            </a>
-                                            <a href='#' className='name-shoes' >T-SHIRT</a>
+                                            </Link>
+                                            <Link to={path.OUTFIT_MLB_TSHIRT} state={{typeName: typeClothes.OUTFIT_MLB_TSHIRT}} className='name-shoes' >T-SHIRT</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.OUTFIT_MLB_SHORTS} state={{typeName: typeClothes.OUTFIT_MLB_SHORTS}}>
                                                 <img src={shirts.SHORTS}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>SHORTS</a>
+                                            </Link>
+                                            <Link to={path.OUTFIT_MLB_SHORTS} state={{typeName: typeClothes.OUTFIT_MLB_SHORTS}} className='name-shoes'>SHORTS</Link>
                                         </li>
                                         <li>
-                                            <a href='#'>
+                                            <Link to={path.OUTFIT_MLB_SKIRT_DRESS} state={{typeName: typeClothes.OUTFIT_MLB_SKIRT_DRESS}}>
                                                 <img src={shirts.SKIRT_DRESS}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>SKIRT-DRESS</a>
+                                            </Link>
+                                            <Link to={path.OUTFIT_MLB_SKIRT_DRESS} state={{typeName: typeClothes.OUTFIT_MLB_SKIRT_DRESS}} className='name-shoes'>SKIRT-DRESS</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -358,4 +336,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(Navbar));

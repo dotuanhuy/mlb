@@ -13,7 +13,7 @@ function HipStack({products, images}) {
     useEffect(() => {
         if (products && products.length > 0) {
             let arr = products.filter(item => item.dataCategory.type === categorieType.BAG_BALO)
-            let newArr = arr.filter(item => item.name.includes('Hip Stack'))
+            let newArr = arr.filter(item => item.name.includes('Hip Sack'))
             setbagBalo(newArr)
         }
     }, [products])
@@ -38,6 +38,13 @@ function HipStack({products, images}) {
                     }
                     return (
                         <div className='product col-3'>
+                            {
+                                item.dataDiscount.valueEn !== '0' ?
+                                <div className='discount'>
+                                    <span>-{item.dataDiscount.valueEn}</span>
+                                </div>
+                                : ''
+                            }
                             <div className='actions text-center'>
                                 <div className='tym mb-2 px-3'>
                                     <FontAwesomeIcon icon={faHeart} />

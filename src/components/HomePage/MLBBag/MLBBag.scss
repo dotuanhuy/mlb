@@ -98,6 +98,22 @@
                     padding: 0 0.5px !important;
                     background: #fff;
 
+                    .discount {
+                        position: absolute;
+                        top: 12px;
+                        left: 12px;
+                        background: #942319;
+                        color: #fff;
+                        font-size: 12px;
+                        padding: 2px 4px;
+                        z-index: 99;
+                        cursor: default;
+
+                        span {
+                            padding: 0px 4px;
+                        }
+                    }
+
                     .actions {
                         position: absolute;
                         top: 8px;

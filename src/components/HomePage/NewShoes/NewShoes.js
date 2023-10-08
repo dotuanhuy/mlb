@@ -7,19 +7,19 @@ import './NewShoes.scss'
 import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { path, categorieType } from '../../../utils';
-import { Chunky_Liner_Mid_New_York_Yankees_Green } from '../../../utils/images';
 import { useState } from 'react';
 import {Buffer} from 'buffer';
 import { formatVND } from '../../../utils';
 
-function NewShoes({products, images}) {
+function NewShoes({products, images, isLoadingProduct}) {
     const [shoes, setShoes] = useState([])
-
+    
     useEffect(() => {
         if (products && products.length > 0) {
             let arr = products.filter(item => item.dataCategory.type === categorieType.SHOES_SANDAL)
             setShoes(arr)
         }
+        // console.log('check product: ', products.dataDiscount.valuEn)
     }, [products])
     return (
         <div className='newShoes'>
@@ -50,6 +50,13 @@ function NewShoes({products, images}) {
                                 }
                                 return (
                                     <div className='product col-3' key={index}>
+                                        {
+                                            item.dataDiscount.valueEn !== '0' ?
+                                            <div className='discount'>
+                                                <span>-{item.dataDiscount.valueEn}</span>
+                                            </div>
+                                            : ''
+                                        }
                                         <div className='actions text-center'>
                                             <div className='tym mb-2 px-3'>
                                                 <FontAwesomeIcon icon={faHeart} />
@@ -101,7 +108,7 @@ function NewShoes({products, images}) {
                         }
                     </div>
                     <div className='view-all text-center'>
-                        <a href='#'>Xem tất cả</a>
+                        <Link to={path.GIAY_MLB}>Xem tất cả</Link>
                     </div>
                 </div>  
             </div>
@@ -112,7 +119,8 @@ function NewShoes({products, images}) {
 const mapStateToProps = state => {
     return {
         products: state.product.products,
-        images: state.product.images
+        images: state.product.images,
+        isLoadingProduct: state.product.isLoadingProduct
     }
 }
 
