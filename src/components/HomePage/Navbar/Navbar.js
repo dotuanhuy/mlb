@@ -293,7 +293,7 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                             </div>
                         </div>
                         <div className='user'>
-                            <Link to={path.LOGIN} className='user-link'>
+                            <Link to={userLogin && isLogin ? path.ACCOUNT : path.LOGIN} className='user-link'>
                                 <FontAwesomeIcon className='icon-infor' icon={faUser} />
                                 <div className='box-acc'>
                                     {

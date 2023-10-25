@@ -7,6 +7,8 @@ import HipStack from './HipStack/HipStack';
 import HoboBag from './HoboBag/HoboBag';
 import ToteBag from './ToteBag/ToteBag';
 import PhonePouch from './PhonePouch/PhonePouch';
+import { Link } from 'react-router-dom';
+import { path } from '../../../utils';
 
 function MLBBag() {
     const [type, setType] = useState('CrossBag')
@@ -16,9 +18,9 @@ function MLBBag() {
             <div className='mlbbag-container px-4'>
                 <div className='title text-center py-5'>
                     <h2 className='title-mlbbag mb-4'>
-                        <a href='#'>MLB BAG</a>
+                        <Link to={path.TUI_MLB}>MLB BAG</Link>
                     </h2>
-                    <p>Những bộ sưu tập <a href='#'>Túi MLB</a> hot nhất</p>
+                    <p>Những bộ sưu tập <Link to={path.TUI_MLB}>Túi MLB</Link> hot nhất</p>
                     <ul className='mlbbag-tabs row my-4'>
                         <li 
                             className={type === 'CrossBag' ? 'tab col-1 tab-current' : 'tab col-1'}

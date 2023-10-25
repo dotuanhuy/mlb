@@ -57,6 +57,14 @@ const getLimitUserService = (page, accessToken) => {
     return axiosJWT.get(`/api/get-limit-users?page=${page}`, { headers: {token: `Bearer ${accessToken}`}})
 }
 
+const registerSevice = (data) => {
+    return axios.post('/api/register', data)
+}
+
+const resetPasswordService = (data) => {
+    return axios.post('/api/reset-password', data)
+}
+
 export {
     refreshTokenService,
     handleLoginAPI,
@@ -69,4 +77,6 @@ export {
     handleDeleteUser,
     getUserAllcode,
     getLimitUserService,
+    registerSevice,
+    resetPasswordService
 }

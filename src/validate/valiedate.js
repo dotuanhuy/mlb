@@ -5,20 +5,23 @@ export const validate = (obj, value) => {
     let errors = {}
     arrKeys.forEach((item, index) => {
         if (obj[item].length === 0) {
-            errors[item] = `${item} không được để trống`
+            errors[item] = `Trường không được để trống`
         }
         else if (item === 'price' && (typeof obj[item] === 'string' || obj[item] <= 0)) {
             errors[item] = `${item} phải là số nguyên`
         }
         else if (item === 'email' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(obj[item]))) {
-            errors[item] = `${item} không hợp lệ`
+            errors[item] = `Email không hợp lệ`
         }
         else if (item === 'phoneNumber' && !(/^0[0-9]{9}$/.test(obj[item]))) {
-            errors[item] = `${item} không hợp lệ`
+            errors[item] = `Số điện thoại không hợp lệ`
         }
-        else if (item === 'password' && (obj[item].length < passwordLength.minLength || obj[item] > passwordLength.maxLength)) {
-            errors[item] = `${item} tối thiểu ${passwordLength.minLength}, tối đa ${passwordLength.maxLength}`
+        else if ((item === 'password' || item === 'newPassword' || item === 'rePassword') && (obj[item].length < passwordLength.minLength || obj[item] > passwordLength.maxLength)) {
+            errors[item] = `Password tối thiểu ${passwordLength.minLength}, tối đa ${passwordLength.maxLength}`
         } 
+        else if (item === 'rePassword' && obj[item] !== obj['newPassword']) {
+            errors[item] = 'Mật khẩu không khớp'
+        }
     })
     return errors
 }

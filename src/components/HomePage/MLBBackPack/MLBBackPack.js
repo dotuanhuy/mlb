@@ -6,8 +6,7 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import './MLBBackPack.scss'
 import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions'
-import { path } from '../../../utils';
-import { Chunky_Liner_Mid_New_York_Yankees_Green } from '../../../utils/images';
+import { path, typeBagBalo } from '../../../utils';
 import { categorieType } from '../../../utils';
 import {Buffer} from 'buffer';
 import { formatVND } from '../../../utils';
@@ -28,9 +27,9 @@ function MLBBackPack({products, images}) {
             <div className='mlbbackpack-container px-4'>
                 <div className='title text-center'>
                     <h2 className='title-mlbbackpack mb-4'>
-                        <a href='#'>MLB BACK PACK</a>
+                        <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}}>MLB BACK PACK</Link>
                     </h2>
-                    <p>Balo mới nhất tại <a href='#'>MLB Việt Nam</a></p>
+                    <p>Balo mới nhất tại <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}}>MLB Việt Nam</Link></p>
                 </div>
                 <div className='menu-box'>
                     <div className='menu-product row'>
@@ -110,7 +109,7 @@ function MLBBackPack({products, images}) {
                         }
                     </div>
                     <div className='view-all text-center'>
-                        <a href='#'>Xem tất cả</a>
+                        <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}}>Xem tất cả</Link>
                     </div>
                 </div>  
             </div>

@@ -58,7 +58,8 @@ export const path = {
     OUTFIT_MLB_SHORTS: '/quan-short-mlb',
     OUTFIT_MLB_SKIRT_DRESS: '/chan-vay-dam-mlb',
 
-    ACCOUNT: '/account'
+    ACCOUNT: '/account',
+    ACCOUNT_CHANGE_PASSWORD: '/account/changepassword'
 }
 
 export const allCode = {

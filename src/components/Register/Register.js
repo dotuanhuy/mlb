@@ -7,6 +7,7 @@ import { socialLogin } from '../../utils/images';
 import { path, Role } from '../../utils'
 import * as actions from '../../store/actions'
 import { useNavigate } from 'react-router-dom';
+import { validate } from '../../validate/valiedate';
 
 const inintState = {
     firstName: '',
@@ -14,20 +15,31 @@ const inintState = {
     phoneNumber: '',
     email: '',
     password: '',
+    roleId: Role.USER,
+}
+
+const inforUserNotValue = {
     address: '',
     gender: '',
-    roleId: Role.USER,
     avatar: ''
 }
 
 function Register({createNewUserRedux}) {
     const [inforUser, setInforUser] = useState(inintState)
+    const [errors, setErrors] = useState({})
     const navigate = useNavigate()
     
-    const handleRegister = async (e) => {
+    const handleRegister = (e) => {
         e.preventDefault()
-        await createNewUserRedux(inforUser)
-        navigate('/login')
+        let error = validate(inforUser)
+        setErrors(error)
+        if (Object.keys(error).length === 0) {
+            let newInfoUser = { ...inforUser, ...inforUserNotValue }
+            console.log('check data register: ', newInfoUser)
+            createNewUserRedux(newInfoUser)
+            navigate('/login')
+        }
+        
     }
 
     return (
@@ -68,11 +80,17 @@ function Register({createNewUserRedux}) {
                                             id="exampleInputFirstName" 
                                             placeholder="Nhập Họ" 
                                             value={inforUser.firstName}
-                                            onChange={(e) => setInforUser({
-                                                ...inforUser,
-                                                firstName: e.target.value
-                                            })}
+                                            onChange={(e) => {
+                                                setErrors({})
+                                                setInforUser({
+                                                    ...inforUser,
+                                                    firstName: e.target.value
+                                                })
+                                            }}
                                         />
+                                        {
+                                            errors && errors.firstName ? <span className='error'>{errors.firstName}</span> : ''
+                                        }                                        
                                     </div>
                                     <div className="form-group pb-4">
                                         <label className='label-input' htmlFor="exampleInputLastName">TÊN*</label>
@@ -82,11 +100,17 @@ function Register({createNewUserRedux}) {
                                             id="exampleInputLastName" 
                                             placeholder="Nhập Tên" 
                                             value={inforUser.lastName}
-                                            onChange={(e) => setInforUser({
-                                                ...inforUser,
-                                                lastName: e.target.value
-                                            })}
+                                            onChange={(e) => {
+                                                setErrors({})
+                                                setInforUser({
+                                                    ...inforUser,
+                                                    lastName: e.target.value
+                                                })
+                                            }}
                                         />
+                                        {
+                                            errors && errors.lastName ? <span className='error'>{errors.lastName}</span> : ''
+                                        }  
                                     </div>  
                                     <div className="form-group pb-4">
                                         <label className='label-input' htmlFor="exampleInputPhoneNumber">SỐ ĐIỆN THOẠI*</label>
@@ -96,11 +120,17 @@ function Register({createNewUserRedux}) {
                                             id="exampleInputPhoneNumber" 
                                             placeholder="Nhập Số điện thoại" 
                                             value={inforUser.phoneNumber}
-                                            onChange={(e) => setInforUser({
-                                                ...inforUser,
-                                                phoneNumber: e.target.value
-                                            })}
+                                            onChange={(e) =>  {
+                                                setErrors({})
+                                                setInforUser({
+                                                    ...inforUser,
+                                                    phoneNumber: e.target.value
+                                                })
+                                            }}
                                         />
+                                        {
+                                            errors && errors.phoneNumber ? <span className='error'>{errors.phoneNumber}</span> : ''
+                                        }  
                                     </div>
                                     <div className="form-group pb-4">
                                         <label className='label-input' htmlFor="exampleInputEmail1">EMAIL*</label>
@@ -111,11 +141,17 @@ function Register({createNewUserRedux}) {
                                             aria-describedby="emailHelp" 
                                             placeholder="Nhập Địa chỉ Email" 
                                             value={inforUser.email}
-                                            onChange={(e) => setInforUser({
-                                                ...inforUser,
-                                                email: e.target.value
-                                            })}
+                                            onChange={(e) => {
+                                                setErrors({})
+                                                setInforUser({
+                                                    ...inforUser,
+                                                    email: e.target.value
+                                                })
+                                            }}
                                         />
+                                        {
+                                            errors && errors.email ? <span className='error'>{errors.email}</span> : ''
+                                        }  
                                     </div>
                                     <div className="form-group pb-4">
                                         <label className='label-input' htmlFor="exampleInputPassword1">MẬT KHẨU*</label>
@@ -125,11 +161,17 @@ function Register({createNewUserRedux}) {
                                             id="exampleInputPassword1" 
                                             placeholder="Nhập Mật khẩu" 
                                             value={inforUser.password}
-                                            onChange={(e) => setInforUser({
-                                                ...inforUser,
-                                                password: e.target.value
-                                            })}
+                                            onChange={(e) => {
+                                                setErrors({})
+                                                setInforUser({
+                                                    ...inforUser,
+                                                    password: e.target.value
+                                                })
+                                            }}
                                         />
+                                        {
+                                            errors && errors.password ? <span className='error'>{errors.password}</span> : ''
+                                        }  
                                     </div>
                                     <button 
                                         type="submit" 
@@ -167,7 +209,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        createNewUserRedux: (data) => dispatch(actions.createNewUser(data)) 
+        createNewUserRedux: (data) => dispatch(actions.register(data)) 
     }
 }
 

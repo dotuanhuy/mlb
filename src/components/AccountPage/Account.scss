@@ -1,0 +1,123 @@
+.account {
+    overflow-x: hidden;
+
+    .account-header {
+        min-height: 304px;
+        background: #ccc;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    
+        .title {
+            font-size: 30px;
+            font-weight: 600;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+        }
+    
+        .list-link {
+            display: flex;
+            gap: 20px;
+    
+            .item-link-home {
+                position: relative;
+    
+                &::after {
+                    content: "/";
+                    color: #fff;
+                    position: absolute;
+                    right: -14px;
+                    top: 0;
+                }
+    
+                a {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    .account-body {
+
+        .list-option {
+
+            h5 {
+                font-size: 20px;
+                text-transform: uppercase;
+                color: #212B25;
+                font-weight: 400;
+            }
+
+            p {
+                font-size: 16px;
+                font-weight: 700;
+                color: #212B25;
+                line-height: 16px;
+            }
+
+            ul {
+                padding: 0;
+                margin: 0;
+
+                li {
+                    margin-bottom: 6px;
+
+                    a {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: #666;
+
+                        &.active {
+                            color: #951308;
+                        }
+
+                        &:hover {
+                            color: #951308;
+                        }
+                    }
+                }
+            }
+        }
+
+        .list-option-select {
+
+            h5 {
+                font-size: 20px;
+                text-transform: uppercase;
+                color: #212B25;
+                font-weight: 400;
+                margin-bottom: 24px;
+            }
+
+            p {
+                margin-top: 0;
+                color: #333;
+                font-weight: 300;
+            }
+
+            form {
+                
+                label {
+                    font-weight: 600;
+                    font-size: 14px;
+                }
+
+                .btn-resetPassword {
+                    background-color: #000;
+                    color: #ccc;
+                    font-size: 14px;
+
+                    &:hover {
+                        background-color: #420500;
+                    }
+                }
+
+                .error {
+                    color: red;
+                }
+            }
+        }
+    }
+}

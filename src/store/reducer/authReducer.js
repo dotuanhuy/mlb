@@ -2,6 +2,7 @@ const initState = {
     user: {},
     isLogin: false,
     token: '',
+    isResetPassword: false
 }
 
 const authReducer = (state = initState, action) => {
@@ -32,11 +33,23 @@ const authReducer = (state = initState, action) => {
         case 'LOGOUT_SUCCESS': 
             state.isLogin = false
             state.token = ''
+            state.isResetPassword = false
             return {
                 ...state,
             }
         case 'LOGOUT_FAILED':
             state.isLogin = true
+            state.isResetPassword = true
+            return {
+                ...state
+            }
+        case 'RESET_PASSWORD_SUCCESS':
+            state.isResetPassword = true
+            return {
+                ...state
+            }
+        case 'RESET_PASSWORD_FAILED':
+            state.isResetPassword = false
             return {
                 ...state
             }

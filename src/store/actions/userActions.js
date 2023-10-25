@@ -9,7 +9,8 @@ import {
     getAllCodeByType,
     handleDeleteUser,
     getUserAllcode,
-    getLimitUserService
+    getLimitUserService,
+    registerSevice
 } from "../../services/userService";
 
 export const createNewUser = (data, accessToken, page) => {
@@ -230,6 +231,29 @@ export const getLimitUsers = (page, accessToken) => {
             console.log('getLimitUsers error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_USERS_FAILED
+            })
+        }
+    }
+}
+
+export const register = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await registerSevice(data)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.REGISTER_SUCCESS,
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.REGISTER_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('register error: ',e)
+            dispatch({
+                type: actionTypes.REGISTER_FAILED
             })
         }
     }

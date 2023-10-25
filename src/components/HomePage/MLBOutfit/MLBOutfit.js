@@ -21,9 +21,9 @@ function MLBOutfit() {
             <div className='mlboutfit-container px-4'>
                 <div className='title text-center py-5'>
                     <h2 className='title-mlboutfit mb-4'>
-                        <a href='#'>MLB OUTFIT</a>
+                        <Link to={path.OUTFIT_MLB}>MLB OUTFIT</Link>
                     </h2>
-                    <p>Những bộ sưu tập <a href='#'>OUTFIT MLB</a> hot nhất</p>
+                    <p>Những bộ sưu tập <Link to={path.OUTFIT_MLB}>OUTFIT MLB</Link> hot nhất</p>
                     <ul className='mlboutfit-tabs row my-4'>
                         <li 
                             className={type === 'TShirt' ? 'tab col-1 tab-current' : 'tab col-1'}

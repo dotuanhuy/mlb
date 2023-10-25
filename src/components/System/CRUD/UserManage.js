@@ -9,7 +9,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { path, Role } from '../../../utils';
 import { validate, validateSelect } from '../../../validate/valiedate';
 
-
 const initState = {
     email: '',
     password: '',
