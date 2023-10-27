@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { path } from '.././utils'
 import Login from '../components/Login/Login';
 import Register from '../components/Register/Register';
+import Logout from '../components/Logout/Logout';
 
 
 function AuthRoute({isLogin}) {
@@ -13,6 +14,7 @@ function AuthRoute({isLogin}) {
             <Routes>
                 <Route path={path.LOGIN} element={<Login />}/>
                 <Route path={path.REGISTER} element={<Register />}/>
+                <Route path={path.LOG_OUT} element={<Logout />}></Route>
             </Routes>
         </>
     );

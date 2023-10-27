@@ -5,6 +5,7 @@ import { MutatingDots } from 'react-loader-spinner'
 
 
 function PrivateRouter({users, isLogin, accessToken, Component}) {
+    
     return ( 
         // <>
         //     <Route path={path.MANAGE} element={<component />}/>

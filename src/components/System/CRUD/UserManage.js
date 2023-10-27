@@ -141,7 +141,6 @@ function UserManage({isLogin, accessToken, provinces, genders, roles, fetchAllPr
         setErrorSelect({})
     }, [dataInput, selectGender, selectProvine, selectRole])
 
-
     return (
         <div className='user-manage'>
             <div className='user-manage-container'>

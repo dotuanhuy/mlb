@@ -1,9 +1,10 @@
 import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'react-redux';
 import './Account.scss'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { path } from '../../utils';
+import * as action from '../../store/actions'
 
 // const initState = {
 //     firstName: '',
@@ -11,24 +12,23 @@ import { path } from '../../utils';
 //     email: ''
 // }
 
-function Account({token, userLogin, activeType}) {
+function Account({token, userLogin, activeType, fetLogoutRedux}) {
     const [active, setActive] = useState('infor')
-    // const [userLogin, setUserLogin] = useState(initState)
-    // useEffect(() => {
-    //     if (token) {
-    //         let tokenDecoded = jwt_decode(token)
-    //         setUserLogin({
-    //             firstName: tokenDecoded.firstName,
-    //             lastName: tokenDecoded.lastName,
-    //             email: tokenDecoded.email
-    //         })
-    //     }
-    // }, [])
-    // console.log('check userLogin: ', userLogin)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+       if (!token) {
+            navigate(path.LOGIN)
+       }
+    }, [])
     
     useEffect(() => {
         setActive(activeType)
     }, [])
+
+    const handleLogout = () => {
+        fetLogoutRedux()
+    }
 
     return (
         <>
@@ -58,7 +58,10 @@ function Account({token, userLogin, activeType}) {
                         <Link>Sổ địa chỉ(0)</Link>
                     </li>
                     <li>
-                        <Link>Đăng xuất</Link>
+                        <Link
+                            to={path.LOG_OUT}
+                            onClick={handleLogout}
+                        >Đăng xuất</Link>
                     </li>
                 </ul>
             {/* } */}
@@ -74,6 +77,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        fetLogoutRedux: () => dispatch(action.fetLogout()) 
     }
 }
 

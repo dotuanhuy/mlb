@@ -5,7 +5,7 @@ import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faMagnifyingGlass, faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { shoes, bag, hat, shirts, PK, logo, results } from '../../../utils/images';
 import './Navbar.scss'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { path } from '../../../utils';
 import jwt_decode from "jwt-decode";
@@ -18,6 +18,7 @@ const initState = {
 
 function Navbar({isLogin, user, token, fetLogoutRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
+    const navigate = useNavigate()
     useEffect(() => {
         if (token) {
             let tokenDecoded = jwt_decode(token)
@@ -301,7 +302,7 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                                         : <Link to={path.LOGIN}>Đăng nhập</Link>
                                     }
                                     {
-                                        userLogin && isLogin ? <Link to={path.LOGIN} onClick={handleLogout}>Đăng xuất</Link>
+                                        userLogin && isLogin ? <Link to={path.LOG_OUT} onClick={handleLogout}>Đăng xuất</Link>
                                         : <Link to={path.REGISTER}>Đăng ký</Link>
                                     }
                                 </div>

@@ -11,6 +11,7 @@ function Nav({isLogin, fetLogoutRedux}) {
 
     const handleLogout = () => {
         fetLogoutRedux()
+        navigate(path.LOG_OUT)
     }
 
     return (
