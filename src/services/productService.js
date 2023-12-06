@@ -117,6 +117,14 @@ const getLimitProductByOptionSortService = (optionData, page, option, accessToke
         return axios.get(url)
 }
 
+const searchProductByNameService = (productName, offset) => {
+    return axios.get(`/api/search-product-by-name?productName=${productName}&offset=${offset}`)
+}
+
+const searchProductByNameServiceLimit = (productName, offset) => {
+    return axios.get(`/api/search-product-by-name-limit?productName=${productName}&offset=${offset}`)
+}
+
 export {
     getAllProductsService,
     getAllProductPublicService,
@@ -133,5 +141,7 @@ export {
     fetchDescriptionProductService,
     getProductByCategoryService,
     getLimitProductService,
-    getLimitProductByOptionSortService
+    getLimitProductByOptionSortService,
+    searchProductByNameService,
+    searchProductByNameServiceLimit
 }

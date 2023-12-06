@@ -23,7 +23,6 @@ function Pagination({countProduct, countUser, pathPage, currentPage}) {
             arr.push(i)
         }
         setArrPage(arr)
-
         if (+currentPageP === 1) {
             setIsHidenBegin(true)
         }

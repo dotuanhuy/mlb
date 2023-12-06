@@ -11,7 +11,9 @@ const initState = {
     images: [],
     descriptions: [],
     isLoadingProduct: true,
-    count: 0
+    count: 0,
+    productSearch: [],
+    productSearchLimit: []
 }
 
 const productReducer = (state = initState, action) => {
@@ -188,6 +190,37 @@ const productReducer = (state = initState, action) => {
             state.products = []
             state.count = 0
             state.isLoadingProduct = true
+            return {
+                ...state
+            }
+        case 'SEARCH_PRODUCT_BY_NAME_SUCCESS':
+            state.isLoadingProduct = false
+            state.productSearch = action.data
+            return {
+                ...state
+            }
+        case 'SEARCH_PRODUCT_BY_NAME_FAILED':
+            state.isLoadingProduct = false
+            state.productSearch = []
+            return {
+                ...state
+            }
+        case 'REFRESH PRODUCT SEARCH':
+            state.productSearch = []
+            return {
+                ...state
+            }
+        case 'SEARCH_PRODUCT_BY_NAME_LIMIT_SUCCESS':
+            state.isLoadingProduct = false
+            state.productSearchLimit = action.data.rows
+            state.count = action.data.count
+            return {
+                ...state
+            }
+        case 'SEARCH_PRODUCT_BY_NAME_LIMIT_FAILED':
+            state.productSearchLimit = []
+            state.isLoadingProduct = true
+            state.count = 0
             return {
                 ...state
             }

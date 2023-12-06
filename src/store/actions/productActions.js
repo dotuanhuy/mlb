@@ -15,7 +15,9 @@ import {
     fetchDescriptionProductService,
     getProductByCategoryService,
     getLimitProductService,
-    getLimitProductByOptionSortService
+    getLimitProductByOptionSortService,
+    searchProductByNameService,
+    searchProductByNameServiceLimit
 
 } from "../../services/productService";
 import { getAllCodeByType } from "../../services/userService";
@@ -503,5 +505,70 @@ export const getLimitProductByOption = (optionData, page, option, accessToken, o
                 type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED
             })
         }
+    }
+}
+
+export const searchProductByName = (productName, offset) => {
+    return async (dispatch, getState) => {
+        try {
+            const newPage = +offset - 1 
+            let res = await searchProductByNameService(productName, newPage)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.SEARCH_PRODUCT_BY_NAME_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.SEARCH_PRODUCT_BY_NAME_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('searchProductByName error: ', e)
+            dispatch({
+                type: actionTypes.SEARCH_PRODUCT_BY_NAME_FAILED
+            })
+        }
+    }
+}
+
+export const refreshProductSearch = () => {
+    return (dispatch, getState) => {
+        try {
+            dispatch({
+                type: 'REFRESH PRODUCT SEARCH'
+            })
+        } catch (e) {
+            console.log('refreshProductSearch error: ', e)
+            dispatch({
+                type: 'REFRESH PRODUCT SEARCH'
+            })
+        }
+    }
+}
+
+export const searchProductByNameLimit = (productName, offset) => {
+    return async (dispatch, getState) => {
+        try {
+            let newOffset = +offset - 1
+            let res = await searchProductByNameServiceLimit(productName, newOffset)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.SEARCH_PRODUCT_BY_NAME_LIMIT_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.SEARCH_PRODUCT_BY_NAME_LIMIT_FAILED
+                })
+            }
+        } catch(e) {
+            console.log('searchProductByNameLimit error: ', e)
+            dispatch({
+                type: actionTypes.SEARCH_PRODUCT_BY_NAME_LIMIT_FAILED
+            })
+        } 
     }
 }

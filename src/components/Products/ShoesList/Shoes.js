@@ -141,7 +141,6 @@ function Shoes({
         else {
             getCategoriesByIdRedux(categorieType.SHOES_SANDAL)
         }
-        // console.log('check data: ', data)
         getLimitProductByOptionRedux(
             data, 
             params.get('page') ? params.get('page') : 1, 

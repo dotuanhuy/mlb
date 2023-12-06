@@ -10,6 +10,7 @@ import * as actions from '../../../store/actions'
 import { path } from '../../../utils';
 import jwt_decode from "jwt-decode";
 import { typeShoesSandanl, typeBagBalo, typeHat, typeClothes } from '../../../utils';
+import SearchProducts from '../../SearchProducts/SearchProducts';
 
 const initState = {
     firstName: '',
@@ -261,38 +262,8 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                         </ul>
                     </div>
                     <div className='infor'>
-                        <div className='search'>
-                            <FontAwesomeIcon className='icon-infor' icon={faMagnifyingGlass} />
-                            <div className='input-search'>
-                                <form className='form-search'>
-                                    <input placeholder='Tìm kiếm sản phẩm'/>
-                                    <button className='btn-search'>
-                                        <FontAwesomeIcon icon={faMagnifyingGlass} className='icon-search'/>
-                                    </button>
-                                </form>
-                                <div className='results-box'>
-                                    <div className='results-box_item'>
-                                        <a href='#'>
-                                            <img src={results.result1} className='results-box_item-img'/>
-                                            <div className='result-box_item-infor'>
-                                                <div className='results-box_item-name'>MLB Bikini Set Classic Monogram Boston Red Sox L.Lavender</div>
-                                                <div className='results-box_item-price'>3.990.000đ</div>
-                                            </div>
-                                        </a>
-                                        <a href='#'>
-                                            <img src={results.result1} className='results-box_item-img'/>
-                                            <div className='result-box_item-infor'>
-                                                <div className='results-box_item-name'>MLB Bikini Set Classic Monogram Boston Red Sox L.Lavender</div>
-                                                <div className='results-box_item-price'>3.990.000đ</div>
-                                            </div>
-                                        </a>
-                                        <a href='#'>
-                                            Xem tất cả
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <SearchProducts />
+
                         <div className='user'>
                             <Link to={userLogin && isLogin ? path.ACCOUNT : path.LOGIN} className='user-link'>
                                 <FontAwesomeIcon className='icon-infor' icon={faUser} />

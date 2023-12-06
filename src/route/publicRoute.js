@@ -9,6 +9,7 @@ import HatList from '../components/Products/HatList/HatList';
 import Clothes from '../components/Products/Clothes/Clothes';
 import AccountInfor from '../components/AccountPage/AccountInfor';
 import ChangePassword from '../components/AccountPage/ChangePassword';
+import ListProductSearchByName from '../components/SearchProducts/ListProductSearchByName/ListProductSearchByName';
 
 
 function PublicRoute({isLogin}) {
@@ -47,6 +48,8 @@ function PublicRoute({isLogin}) {
 
                 <Route path={path.ACCOUNT} element={<AccountInfor />}></Route>
                 <Route path={path.ACCOUNT_CHANGE_PASSWORD} element={<ChangePassword />}></Route>
+
+                <Route path={path.SEARCH_PRODUCT} element={<ListProductSearchByName />}></Route>
             </Routes>
         </>
     );

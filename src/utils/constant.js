@@ -59,7 +59,9 @@ export const path = {
     OUTFIT_MLB_SKIRT_DRESS: '/chan-vay-dam-mlb',
 
     ACCOUNT: '/account',
-    ACCOUNT_CHANGE_PASSWORD: '/account/changepassword'
+    ACCOUNT_CHANGE_PASSWORD: '/account/changepassword',
+
+    SEARCH_PRODUCT: '/search'
 }
 
 export const allCode = {
@@ -134,6 +136,7 @@ export const optionSortContant = {
 }
 
 export const limit_page = 5
+export const limit_list_search = 4
 
 export const typeShoesSandanl = {
     GIAY_MLB_BIGBALL_CHUNKY: 'BigBall Chunky',

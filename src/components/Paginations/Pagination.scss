@@ -8,19 +8,22 @@
 
         &.active {
             span {
-                background-color: #04AA6D !important;  
-                border-color: #04AA6D !important;
+                background-color: #420500 !important;  
+                border-color: #420500 !important;
+                color: #fff !important;
             }
         }
         span {
             background-color:#cccccc85 !important;  
             // border-color: #ccc !important;
             color: #333 !important;
+            font-weight: 600 !important;
             cursor: pointer;
 
             &:hover {
-                background-color: #04AA6D !important;  
-                border-color: #04AA6D !important;
+                background-color: #420500 !important;  
+                border-color: #420500 !important;
+                color: #fff !important;
             }
         }
     }
