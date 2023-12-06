@@ -6,11 +6,12 @@ import * as actions from '../../store/actions'
 import { useState } from 'react';
 import {Buffer} from 'buffer';
 import { formatVND, path, limit_list_search } from '../../utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, refreshProductSearchRedux }) {
     const [isOnchange, setIsOnchange] = useState(false)
     const [productName, setProductName] = useState('')
+    const navigate = useNavigate()
 
     useEffect(() => {
         refreshProductSearchRedux()
@@ -24,14 +25,16 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
 
     const handleSearch = (e) => {
         e.preventDefault()
-        searchProductByNameRedux(productName, 1)
+        // searchProductByNameRedux(productName, 1)
+        console.log('check: ', productName)
+        navigate(path.SEARCH_PRODUCT+`?pname=${productName}`)
     }
 
     return (    
         <div className='search'>
             <FontAwesomeIcon className='icon-infor' icon={faMagnifyingGlass} />
             <div className='input-search'>
-                <form className='form-search'>
+                <form className='form-search' onSubmit={handleSearch}>
                     <input 
                         placeholder='Tìm kiếm sản phẩm'
                         onChange={e => handleOnchange(e)}
@@ -40,6 +43,7 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
                     <button 
                         className='btn-search'
                         onClick={e => handleSearch(e)}
+                        type='submit'
                     >
                         <FontAwesomeIcon icon={faMagnifyingGlass} className='icon-search'/>
                     </button>
