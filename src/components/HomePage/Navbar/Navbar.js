@@ -36,20 +36,20 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
     }
 
     return (
-        <div className='header-top'>
+        <div className='header-top text-light'>
             <div className='nav-container'>
-                <div className='header-top-nav'>
+                <div className='header-top-nav d-flex justify-content-evenly align-items-center my-0 mx-100'>
                     <Link to={path.HOMEPAGE}>
                         <div className='nav-logo'>
 
                         </div>
                     </Link>
                     <div className='nav-menu'>
-                        <ul className='menu-list'>
+                        <ul className='menu-list w-100 d-flex justify-content-around align-items-center text-uppercase position-relative m-0'>
                             <li className='menu-list_item'>
-                                <Link to={path.GIAY_MLB} className='menu-list_item-name'>Giày-dép</Link>
+                                <Link to={path.GIAY_MLB} className='menu-list_item-name text-white pe-2'>Giày-dép</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item'>
+                                <div className='menu-item bg-white w-100 position-absolute'>
                                     <ul>
                                         <li>
                                             <Link to={path.GIAY_MLB}>
@@ -103,9 +103,9 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                                 </div>
                             </li>
                             <li className='menu-list_item' >
-                                <Link to={path.TUI_MLB} className='menu-list_item-name'>Túi-BaLo</Link>
+                                <Link to={path.TUI_MLB} className='menu-list_item-name text-white pe-2'>Túi-BaLo</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item'>
+                                <div className='menu-item bg-white w-100 position-absolute'>
                                     <ul>
                                         <li>
                                             <Link to={path.TUI_MLB}>
@@ -159,9 +159,9 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                                 </div>
                             </li>
                             <li className='menu-list_item' >
-                                <Link to={path.MU_NON_MLB} className='menu-list_item-name'>Mũ-nón</Link>
+                                <Link to={path.MU_NON_MLB} className='menu-list_item-name text-white pe-2'>Mũ-nón</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item'>
+                                <div className='menu-item bg-white w-100 position-absolute'>
                                     <ul>
                                         <li>
                                             <Link to={path.NON_MLB_BALL_CAP} state={{typeName: typeHat.NON_MLB_BALL_CAP}}>
@@ -185,9 +185,9 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                                 </div> 
                             </li>
                             <li className='menu-list_item' >
-                                <Link to={path.OUTFIT_MLB} className='menu-list_item-name'>Áo-quần</Link>
+                                <Link to={path.OUTFIT_MLB} className='menu-list_item-name text-white pe-2'>Áo-quần</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item'>
+                                <div className='menu-item bg-white w-100 position-absolute'>
                                     <ul>
                                         <li>
                                             <Link to={path.OUTFIT_MLB_TSHIRT} state={{typeName: typeClothes.OUTFIT_MLB_TSHIRT}}>
@@ -211,9 +211,9 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                                 </div>
                             </li>
                             <li className='menu-list_item' >
-                                <span className='menu-list_item-name'>Phụ-kiện</span>                               
+                                <span className='menu-list_item-name text-white pe-2'>Phụ-kiện</span>                               
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item'>
+                                <div className='menu-item bg-white w-100 position-absolute'>
                                     <ul>
                                         <li>
                                             <a href='#'>
@@ -231,9 +231,9 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                                 </div>
                             </li>
                             <li className='menu-list_item' >                              
-                                <span className='menu-list_item-name'>Logo</span>
+                                <span className='menu-list_item-name text-white pe-2'>Logo</span>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item'>
+                                <div className='menu-item bg-white w-100 position-absolute'>
                                     <ul>
                                         <li>
                                             <a href='#'>
@@ -257,17 +257,17 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                                 </div>
                             </li>
                             <li className='menu-list_item' >
-                                <span className='menu-list_item-name'>Tin mlb</span>                                                             
+                                <span className='menu-list_item-name text-white pe-2'>Tin mlb</span>                                                             
                             </li>
                         </ul>
                     </div>
-                    <div className='infor'>
+                    <div className='infor d-flex align-items-center justify-content-between'>
                         <SearchProducts />
 
                         <div className='user'>
-                            <Link to={userLogin && isLogin ? path.ACCOUNT : path.LOGIN} className='user-link'>
+                            <Link to={userLogin && isLogin ? path.ACCOUNT : path.LOGIN} className='user-link text-white'>
                                 <FontAwesomeIcon className='icon-infor' icon={faUser} />
-                                <div className='box-acc'>
+                                <div className='box-acc bg-white'>
                                     {
                                         userLogin && isLogin ? <Link to={path.ACCOUNT}>{`${userLogin.firstName} ${userLogin.lastName}`}</Link>
                                         : <Link to={path.LOGIN}>Đăng nhập</Link>
@@ -281,11 +281,11 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                         </div>
                         <div className='love'>
                             <FontAwesomeIcon icon={faHeart} className='icon-infor' />
-                            <span className='numberTym'>0</span>
+                            <span className='numberTym rounded-circle text-white text-center'>0</span>
                         </div>
                         <div className='cart'>
                             <FontAwesomeIcon className='icon-infor' icon={faCartShopping} />
-                            <span className='numberProduct'>0</span>
+                            <span className='numberProduct rounded-circle text-white text-center'>0</span>
                         </div>
                     </div>
                 </div>

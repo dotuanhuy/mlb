@@ -33,22 +33,23 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
     return (    
         <div className='search'>
             <FontAwesomeIcon className='icon-infor' icon={faMagnifyingGlass} />
-            <div className='input-search'>
+            <div className='input-search bg-white'>
                 <form className='form-search' onSubmit={handleSearch}>
                     <input 
+                        className='p-2'
                         placeholder='Tìm kiếm sản phẩm'
                         onChange={e => handleOnchange(e)}
                         value={productName}
                     />
                     <button 
-                        className='btn-search'
+                        className='btn-search bg-transparent'
                         onClick={e => handleSearch(e)}
                         type='submit'
                     >
                         <FontAwesomeIcon icon={faMagnifyingGlass} className='icon-search'/>
                     </button>
                 </form>
-                <div className='results-box'>
+                <div className='results-box w-100'>
                     {
                         (!productSearch || productSearch.length === 0) && isOnchange ?  <div className='results-box_item text-black'>Không có kết quả tìm kiếm</div>
                         :
@@ -67,7 +68,7 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
                                     }
                                     return (
                                         <>
-                                            <a href='#' key={index}>
+                                            <a className='p-2 text-dark' href='#' key={index}>
                                                 <div 
                                                     style={{ 
                                                         width: '250px',                                                        
@@ -89,6 +90,7 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
                             {
                                 !productSearch || productSearch.length === 0 ? '' : 
                                 <Link   
+                                    className='py-2'
                                     to={path.SEARCH_PRODUCT+`?pname=${productName}`}
                                     // state={{ 
                                     //     productName

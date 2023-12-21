@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Slider from "react-slick";
-import './SliderHomePage.scss'
 import { sliders } from '../../../utils/images';
 
 function SliderHomePage({settings}) {
@@ -12,17 +11,17 @@ function SliderHomePage({settings}) {
                 <Slider {...settings}>  
                     <div className='section-slider'>
                         <a href='#'>
-                            <img src={sliders.slider1}/>
+                            <img className='h-100 w-100' src={sliders.slider1}/>
                         </a>
                     </div>
                     <div className='section-slider'>
                         <a href='#'>
-                            <img src={sliders.slider2}/>
+                            <img className='h-100 w-100' src={sliders.slider2}/>
                         </a>
                     </div>
                     <div className='section-slider'>
                         <a href='#'>
-                            <img src={sliders.slider3}/>
+                            <img className='h-100 w-100' src={sliders.slider3}/>
                         </a>
                     </div>
                 </Slider>
