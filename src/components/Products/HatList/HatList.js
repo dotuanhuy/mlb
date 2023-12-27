@@ -136,7 +136,6 @@ function HatList({
         else {
             getCategoriesByIdRedux(categorieType.HAT)
         }
-        console.log('check data: ', data)
         getLimitProductByOptionRedux(
             data, 
             params.get('page') ? params.get('page') : 1, 

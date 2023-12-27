@@ -35,7 +35,6 @@ function Register({createNewUserRedux}) {
         setErrors(error)
         if (Object.keys(error).length === 0) {
             let newInfoUser = { ...inforUser, ...inforUserNotValue }
-            console.log('check data register: ', newInfoUser)
             createNewUserRedux(newInfoUser)
             navigate('/login')
         }

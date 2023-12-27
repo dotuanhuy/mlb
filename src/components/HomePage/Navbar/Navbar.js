@@ -31,12 +31,11 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
     }, [])
 
     const handleLogout = async () => {
-        // cookies.remove('userLogin', { path: '/' })
         fetLogoutRedux()
     }
 
     return (
-        <div className='header-top text-light'>
+        <div className='header-top text-light sticky-top'>
             <div className='nav-container'>
                 <div className='header-top-nav d-flex justify-content-evenly align-items-center my-0 mx-100'>
                     <Link to={path.HOMEPAGE}>

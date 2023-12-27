@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { refreshTokenService } from "./services/userService";
+import { refreshTokenService, handleLogoutAPI } from "./services/userService";
 
 export const createAxios = (accessToken) => {
     const instance = axios.create({
@@ -27,7 +27,7 @@ export const createAxios = (accessToken) => {
             const { data } = response
             return response.data 
         },
-        (error) => {
+        async (error) => {
             const status = error && error.response && error.response.status
             switch(status) {
                 case 401: {

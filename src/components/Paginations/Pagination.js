@@ -4,7 +4,7 @@ import './Pagination.scss'
 import { useNavigate, createSearchParams, useLocation } from 'react-router-dom';
 import { path, limit_page } from '../../utils';
 
-function Pagination({countProduct, countUser, pathPage, currentPage}) {
+function Pagination({countProduct, countUser, pathPage, currentPage, pname=pname||''}) {
     const navigate = useNavigate()
     const [arrPage, setArrPage] = useState([])
     const [currentPageP, setCurrentPageP] = useState(+currentPage)
@@ -54,7 +54,8 @@ function Pagination({countProduct, countUser, pathPage, currentPage}) {
         navigate({
             pathname: pathPage,
             search: createSearchParams({
-                page: e.target.getAttribute('data-page')
+                page: e.target.getAttribute('data-page'),
+                pname
             }).toString(),
         }, {state: location.state})
     }
@@ -64,7 +65,8 @@ function Pagination({countProduct, countUser, pathPage, currentPage}) {
         navigate({
             pathname: pathPage,
             search: createSearchParams({
-                page: 1
+                page: 1,
+                pname
             }).toString()
         }, {state: location.state})
     }   
@@ -75,7 +77,8 @@ function Pagination({countProduct, countUser, pathPage, currentPage}) {
         navigate({
             pathname: pathPage,
             search: createSearchParams({
-                page: end
+                page: end,
+                pname
             }).toString()
         }, {state: location.state})
     }

@@ -19,7 +19,6 @@ function NewShoes({products, images, isLoadingProduct}) {
             let arr = products.filter(item => item.dataCategory.type === categorieType.SHOES_SANDAL)
             setShoes(arr)
         }
-        // console.log('check product: ', products.dataDiscount.valuEn)
     }, [products])
     return (
         <div className='newShoes'>

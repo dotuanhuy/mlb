@@ -29,6 +29,8 @@ function ListProductSearchByName({
     const [params] = useSearchParams()
     const [searchParams] = useSearchParams();
     const productName = searchParams.get('pname')
+    const location = useLocation();
+
     useEffect(() => {
         refreshIsloadingStateProductRedux()
         fetchAllImageProductRedux(accessToken)
@@ -143,7 +145,7 @@ function ListProductSearchByName({
                                     }
                                 </div>
                             </div>
-                            <Pagination pathPage={path.SEARCH_PRODUCT} currentPage={params.get('page') || 1}/>
+                            <Pagination pathPage={path.SEARCH_PRODUCT} pname={productName} currentPage={params.get('page') || 1}/>
                         </div>
                     </div>
                     <HomeFooter />

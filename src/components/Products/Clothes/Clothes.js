@@ -110,7 +110,6 @@ function Clothes({
                 newArrOptionType.push(listClothes[item])
             }
         })
-        console.log('check: ',newArrOptionType)
         arrOptionLogo.forEach(item => {
             if (optionLogo[item]) 
                 newArrOptionLogo.push(item)
@@ -148,7 +147,6 @@ function Clothes({
         else {
             getCategoriesByIdRedux(categorieType.CLOTHES)
         }
-        console.log('check data: ', data)
         getLimitProductByOptionRedux(
             data, 
             params.get('page') ? params.get('page') : 1, 

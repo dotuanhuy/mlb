@@ -26,7 +26,6 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
     const handleSearch = (e) => {
         e.preventDefault()
         // searchProductByNameRedux(productName, 1)
-        console.log('check: ', productName)
         navigate(path.SEARCH_PRODUCT+`?pname=${productName}`)
     }
 

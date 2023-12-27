@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import './Loading.scss'
-import { MutatingDots } from 'react-loader-spinner'
+import { RotatingTriangles } from 'react-loader-spinner'
 
 function Loading() {
     
     return (    
         <div className='loading'>
-            <MutatingDots 
-                height="100"
-                width="100"
-                color="#420500"
-                secondaryColor= '#420500'
-                radius='12.5'
-                ariaLabel="mutating-dots-loading"
+            <RotatingTriangles
+                visible={true}
+                height="80"
+                width="80"
+                color="#4fa94d"
+                ariaLabel="rotating-triangles-loading"
                 wrapperStyle={{}}
                 wrapperClass=""
-                visible={true}
             />
-            <span>Loading...</span>
         </div>
     );
 }

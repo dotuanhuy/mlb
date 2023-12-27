@@ -1,22 +1,41 @@
-import React, { memo } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { memo, useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { MutatingDots } from 'react-loader-spinner'
-
+import axios from "../axios";
+import {createAxios} from '../axiosJWT'
+import Cookies from 'js-cookie';
 
 function PrivateRouter({users, isLogin, accessToken, Component}) {
-    
-    return ( 
-        // <>
-        //     <Route path={path.MANAGE} element={<component />}/>
-        // </>
-            isLogin ? <Component /> : <Navigate to='/' />
-    );
+    const [isAdmin, setIsAdmin] = useState(null)
+    const navigate = useNavigate()
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.post('/api/authentication', { accessToken });
+                setIsAdmin(res?.isAdmin)
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                console.error(':');
+                navigate('/')
+            }
+        };
+        fetchData()
+    }, [])
+    if (isAdmin !== null) {
+        console.log(isAdmin)
+        return ( 
+            isAdmin ? <Component /> : <Navigate to='/' />
+        );
+    }
+    return (
+        <>Loading.....</>
+    )
 }
 
 const mapStateToProps = state => {
     return {
-        users: state.user.users,
+        users: state.auth.users,
         isLogin: state.auth.isLogin,
         accessToken: state.auth.token,
     }
