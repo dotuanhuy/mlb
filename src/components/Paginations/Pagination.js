@@ -4,7 +4,7 @@ import './Pagination.scss'
 import { useNavigate, createSearchParams, useLocation } from 'react-router-dom';
 import { path, limit_page } from '../../utils';
 
-function Pagination({countProduct, countUser, pathPage, currentPage, pname=pname||''}) {
+function Pagination({countProduct, countUser, pathPage, currentPage, pname=null}) {
     const navigate = useNavigate()
     const [arrPage, setArrPage] = useState([])
     const [currentPageP, setCurrentPageP] = useState(+currentPage)
@@ -51,35 +51,44 @@ function Pagination({countProduct, countUser, pathPage, currentPage, pname=pname
 
     const handleChangePage = (e) => {
         setCurrentPageP(e.target.getAttribute('data-page'))
+        let object = pname ? {
+            page: e.target.getAttribute('data-page'),
+            pname
+        } : {
+            page: e.target.getAttribute('data-page'),
+        }
         navigate({
             pathname: pathPage,
-            search: createSearchParams({
-                page: e.target.getAttribute('data-page'),
-                pname
-            }).toString(),
+            search: createSearchParams(object).toString(),
         }, {state: location.state})
     }
 
     const handleToBegin = () => {
         setCurrentPageP(1)
+        let object = pname ? {
+            page: 1,
+            pname
+        } : {
+            page: 1,
+        }
         navigate({
             pathname: pathPage,
-            search: createSearchParams({
-                page: 1,
-                pname
-            }).toString()
+            search: createSearchParams(object).toString()
         }, {state: location.state})
     }   
 
     const handleToEnd = () => {
         let end = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE ?  countUser : countProduct) / +limit_page)
         setCurrentPageP(end)
+        let object = pname ? {
+            page: end,
+            pname
+        } : {
+            page: end,
+        }
         navigate({
             pathname: pathPage,
-            search: createSearchParams({
-                page: end,
-                pname
-            }).toString()
+            search: createSearchParams(object).toString()
         }, {state: location.state})
     }
 

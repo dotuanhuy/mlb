@@ -1,0 +1,119 @@
+.product {
+    border: 1px solid #ededed;
+    position: relative;
+
+    .discount {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #942319;
+        color: #fff;
+        font-size: 12px;
+        padding: 2px 4px;
+        z-index: 99;
+        cursor: default;
+
+        span {
+            padding: 0px 4px;
+        }
+    }
+
+    .actions {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        z-index: 99;
+
+        .tym {
+            cursor: pointer;
+            // color: #9e9999;
+            background: transparent;
+            position: relative;
+        }
+
+        .cart {
+            display: none;
+            animation: showBtnBuy ease-in-out .8s;
+            
+            .btn-buy {
+                height: 35px;
+                width: 35px;
+                line-height: 35px;
+                border: none;
+                border-radius: 100%;
+                color: #fff;
+                background: #696969;
+
+                &:hover {
+                    background: #333;
+                }
+            }
+        }
+    }
+
+    .product-img {
+        cursor: pointer;
+
+        img {
+            max-width: 100%;
+        }
+    }
+
+    .product-img-first {
+        display: block;
+        animation: showimage linear .5s;
+    }
+
+    .product-img-second {
+        display: none;
+        animation: showimage linear .5s;
+    }
+
+    .product-infor {
+        line-height: 12px;
+        padding: 25px 0;
+        
+        .brand {
+            color: #adadad;
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .product-name {
+            cursor: pointer;
+
+            a {
+                color: #333;
+                font-size: 16px;
+                font-weight: 400;
+                margin: 0;
+            }
+
+            &:hover {
+                a {
+                    color: #942319;
+                }
+            }
+        }
+
+        .product-price {
+            color: #942319;
+            font-weight: 600;
+        }
+    }
+
+    &:hover {
+        .product-img-second {
+            display: block;
+        }
+
+        .product-img-first {
+            display: none;
+        }
+
+        .cart {
+            display: block;
+        }
+    }
+}
