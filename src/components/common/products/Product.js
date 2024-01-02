@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import { formatVND } from "../../../utils";
@@ -7,7 +7,7 @@ import Toast from "../../Actions/Toast";
 import './Product.scss';
 
 
-function Product({products, images}) {
+function Product({accessToken, products, images, col='col-4', productFavourites}) {
     
     return (
         <>
@@ -27,8 +27,12 @@ function Product({products, images}) {
                     if (item.price) {
                         price = formatVND(item.price)
                     }
+                    let isFavourite = false
+                    if (productFavourites.length !== 0) {
+                        isFavourite = productFavourites.some(element => element.id === item.id)
+                    }
                     return (
-                        <div className='product col-4' key={index}>
+                        <div className={`product ${col}`} key={index}>
                             {
                                 item.dataDiscount.valueEn !== '0' ?
                                 <div className='discount'>
@@ -46,7 +50,7 @@ function Product({products, images}) {
                                     </button>
                                 </div>
                             </div> */}
-                            <Toast productId={item.id}/>
+                            <Toast productId={item.id} productFavourites={productFavourites} isFavourite={isFavourite}/>
                             <div className='product-img product-img-first'>
                                 <a href='#'>
                                     <div 
@@ -92,13 +96,13 @@ function Product({products, images}) {
 
 const mapStateToProps = state => {
     return {
-        
+        accessToken: state.auth.token,
+        productFavourites: state.product.productFavourtie,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-       
     }
 }
 

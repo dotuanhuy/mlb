@@ -20,7 +20,7 @@ const authConfig = {
 const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReducer),   // Lưu dưới storage
     user: userReducer,
-    product: productReducer
+    product: productReducer,
 })
 
 export default rootReducer

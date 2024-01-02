@@ -13,7 +13,9 @@ const initState = {
     isLoadingProduct: true,
     count: 0,
     productSearch: [],
-    productSearchLimit: []
+    productSearchLimit: [],
+    productFavourtie: [],
+    productFavouriteLimit: []
 }
 
 const productReducer = (state = initState, action) => {
@@ -219,6 +221,32 @@ const productReducer = (state = initState, action) => {
             }
         case 'SEARCH_PRODUCT_BY_NAME_LIMIT_FAILED':
             state.productSearchLimit = []
+            state.isLoadingProduct = true
+            state.count = 0
+            return {
+                ...state
+            }
+        case 'GET_ALL_PRODUCTS_FAVOURITE_SUCCESS': 
+            state.productFavourtie = action?.data
+            state.isLoadingProduct = false
+            return {
+                ...state
+            }
+        case 'GET_ALL_PRODUCTS_FAVOURITE_FAILED': 
+            state.productFavourtie = []
+            state.isLoadingProduct = true
+            return {
+                ...state
+            }
+        case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_SUCCESS':
+            state.productFavouriteLimit = action?.data
+            state.count = action?.count
+            state.isLoadingProduct = false
+            return {
+                ...state
+            }
+        case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_FAILED':
+            state.productFavouriteLimit = []
             state.isLoadingProduct = true
             state.count = 0
             return {

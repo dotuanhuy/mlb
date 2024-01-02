@@ -38,7 +38,7 @@ function ListProductSearchByName({
     }, [])
 
     useEffect(() => {
-        searchProductByNameLimitRedux(productName, params.get('page') || 1) 
+        searchProductByNameLimitRedux(productName, params.get('page') || 1, accessToken) 
     }, [params.get('page'), productName])
 
     return (       
@@ -169,7 +169,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        searchProductByNameLimitRedux: (productName, offset) => dispatch(actions.searchProductByNameLimit(productName, offset)),
+        searchProductByNameLimitRedux: (productName, offset, accessToken) => dispatch(actions.searchProductByNameLimit(productName, offset, accessToken)),
         fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken))
     }
 }

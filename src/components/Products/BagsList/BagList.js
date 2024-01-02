@@ -21,6 +21,7 @@ import OptionType from '../../common/options/OptionType';
 import OptionColor from '../../common/options/OptionColor';
 import OptionLogo from '../../common/options/OptionLogo';
 import HomeFooter from '../../HomePage/HomeFooter/HomeFooter';
+import jwt_decode from 'jwt-decode';
 
 const arrColor = ['White', 'Black', 'Gray', 'Brown', 'Blue', 'Green', 'Pink', 'LightPink', 'Red', 'Orange', 'Yellow']
 const arrOptionType = ['balo', 'bag']
@@ -61,6 +62,7 @@ function BagList({
     images,
     products,
     isLoading,
+    productFavourites,
     fetchAllColorsRedux, 
     getCategoriesByIdRedux, 
     fetchAllCodeByTypeRedux,
@@ -68,7 +70,8 @@ function BagList({
     getProductByCategoryRedux,
     getLimitProductsRedux,
     getLimitProductByOptionRedux,
-    refreshIsloadingStateProductRedux
+    refreshIsloadingStateProductRedux,
+    getAllProductsFavouriteRedux
 }) {
     const [optionSort, setOptionSort] = useState('default')
     const [optionType, setOptionType] = useState(initOptionType)
@@ -85,6 +88,14 @@ function BagList({
         fetchAllCodeByTypeRedux(allCode.LOGO)
         if (images.length === 0) {
             fetchAllImageProductRedux(accessToken)
+        }
+        let userId = ''
+        if (accessToken) {
+            let tokenDecoded = jwt_decode(accessToken)
+            userId = tokenDecoded?.id
+        }
+        if (userId) {
+            getAllProductsFavouriteRedux(accessToken, userId)
         }
         // getLimitProductsRedux(categorieType.BAG_BALO, params.get('page') ? params.get('page') : 1, accessToken)
     }, [])
@@ -195,7 +206,10 @@ function BagList({
                 <>
                     <div className='shoes'>
                         <Navbar />
-                        <Banner categoryProduct={categories[0].name}/>
+                        <Banner 
+                            categoryProduct={categories[0]?.name} 
+                            title={`mlb việt nam | ${categories[0]?.name} chính hãng tại việt nam`}
+                        />
                         
                         <div className='shoes-body pt-5'>
                             <div className='shoes-container'>
@@ -237,7 +251,8 @@ const mapStateToProps = state => {
         accessToken: state.auth.token,
         images: state.product.images,
         products: state.product.products,
-        isLoading: state.product.isLoadingProduct
+        isLoading: state.product.isLoadingProduct,
+        productFavourites: state.product.productFavourtie,
     }
 }
 
@@ -250,7 +265,8 @@ const mapDispatchToProps = dispatch => {
         getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),
         getLimitProductsRedux: (category, page, accessToken) => dispatch(actions.getLimitProducts(category, page, accessToken)),
         getLimitProductByOptionRedux: (optionData, page, option, accessToken, optionTypeName) => dispatch(actions.getLimitProductByOption(optionData, page, option, accessToken, optionTypeName)),
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct())
+        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
+        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId))
     }
 }
 

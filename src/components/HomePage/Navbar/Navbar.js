@@ -17,7 +17,7 @@ const initState = {
     lastName: '',
 }
 
-function Navbar({isLogin, user, token, fetLogoutRedux}) {
+function Navbar({isLogin, user, token, countFavourite, fetLogoutRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
     const navigate = useNavigate()
     useEffect(() => {
@@ -279,8 +279,10 @@ function Navbar({isLogin, user, token, fetLogoutRedux}) {
                             </Link>
                         </div>
                         <div className='love'>
-                            <FontAwesomeIcon icon={faHeart} className='icon-infor' />
-                            <span className='numberTym rounded-circle text-white text-center'>0</span>
+                            <Link to={path.FAVOURITE} className='text-white'>
+                                <FontAwesomeIcon icon={faHeart} className='icon-infor' />
+                                <span className='numberTym rounded-circle text-white text-center'>0</span>
+                            </Link>
                         </div>
                         <div className='cart'>
                             <FontAwesomeIcon className='icon-infor' icon={faCartShopping} />
@@ -298,6 +300,7 @@ const mapStateToProps = state => {
         user: state.auth.user,
         token: state.auth.token,
         isLogin: state.auth.isLogin,
+        countFavourite: state.product.count
     }
 }
 

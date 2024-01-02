@@ -12,12 +12,30 @@ import MLBOutfit from './MLBOutfit/MLBOutfit';
 import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
+import jwt_decode from 'jwt-decode';
 
-function HomePage({ accessToken, products, getAllProductsRedux, getAllProductPublicRedux, fetchAllImageProductRedux }) {
-  useEffect(() => {
-    getAllProductPublicRedux(accessToken)
-    fetchAllImageProductRedux(accessToken)
-  }, [])
+function HomePage({ 
+    accessToken, 
+    productFavourites,
+    getAllProductPublicRedux, 
+    fetchAllImageProductRedux,
+    getAllProductsFavouriteRedux
+}) {
+
+    useEffect(() => {
+        getAllProductPublicRedux(accessToken)
+        fetchAllImageProductRedux(accessToken)
+
+        let userId = ''
+        if (accessToken) {
+            let tokenDecoded = jwt_decode(accessToken)
+            userId = tokenDecoded?.id
+        }
+        if (userId) {
+            getAllProductsFavouriteRedux(accessToken, userId)
+        }
+    }, [])
+    
     const settings = {
         dots: true,
         infinite: false,
@@ -25,28 +43,28 @@ function HomePage({ accessToken, products, getAllProductsRedux, getAllProductPub
         slidesToShow: 1,
         slidesToScroll: 1,
         appendDots: dots => (
-            <div
-              style={{
-                borderRadius: "10px",
-                padding: "10px",
-                transform: "translateY(10px)"
-              }}
-            >
-              <ul style={{ margin: "0px" }}> {dots} </ul>
-            </div>
-          ),
+        <div
+            style={{
+            borderRadius: "10px",
+            padding: "10px",
+            transform: "translateY(10px)"
+            }}
+        >
+            <ul style={{ margin: "0px" }}> {dots} </ul>
+        </div>
+        ),
     }
 
     return (
         <div>
-            <Navbar />
-            <SliderHomePage settings={settings}/>
-            <Intro />
-            <NewShoes />
-            <MLBBag />
-            <MLBOutfit />
-            <MLBBackPack />
-            <HomeFooter />
+        <Navbar />
+        <SliderHomePage settings={settings} />
+        <Intro />
+        <NewShoes />
+        <MLBBag />
+        <MLBOutfit />
+        <MLBBackPack />
+        <HomeFooter />
         </div>
     );
 }
@@ -54,15 +72,16 @@ function HomePage({ accessToken, products, getAllProductsRedux, getAllProductPub
 const mapStateToProps = state => {
     return {
         accessToken: state.auth.token,
-        products: state.product.products
+        images: state.product.images,
+        productFavourites: state.product.productFavourtie,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-      getAllProductsRedux: (type, accessToken) => dispatch(actions.getAllProducts(type, accessToken)),
-      getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken)),
-      fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken))
+        getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken)),
+        fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
+        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId))
     }
 }
 

@@ -61,7 +61,9 @@ export const path = {
     ACCOUNT: '/account',
     ACCOUNT_CHANGE_PASSWORD: '/account/changepassword',
 
-    SEARCH_PRODUCT: '/search'
+    SEARCH_PRODUCT: '/search',
+    
+    FAVOURITE: '/favorite',
 }
 
 export const allCode = {

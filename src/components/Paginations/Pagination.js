@@ -12,7 +12,7 @@ function Pagination({countProduct, countUser, pathPage, currentPage, pname=null}
     const [isHidenEnd, setIsHidenEnd] = useState(false)
     const [isHidenPrev, setIsHidenPrev] = useState(true)
     const [isHidenBack, setIsHidenBack] = useState(false)
-    const location = useLocation()
+    const location = useLocation()  
     
     useEffect(() => {
         let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE  ? countUser : countProduct)  / +limit_page)

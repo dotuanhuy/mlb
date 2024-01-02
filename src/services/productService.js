@@ -121,8 +121,36 @@ const searchProductByNameService = (productName, offset) => {
     return axios.get(`/api/search-product-by-name?productName=${productName}&offset=${offset}`)
 }
 
-const searchProductByNameServiceLimit = (productName, offset) => {
+const searchProductByNameServiceLimit = (productName, offset, accessToken) => {
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get(`/api/search-product-by-name-limit?productName=${productName}&offset=${offset}`, { headers: {token: `Bearer ${accessToken}`}})
+    }
     return axios.get(`/api/search-product-by-name-limit?productName=${productName}&offset=${offset}`)
+}
+
+const getAllProductsFavouriteService = (accessToken, userId,) => {
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get(`/api/get-all-favourite-products?userId=${userId}`, { headers: { token: `Bearer ${accessToken}` }})
+    }
+    return axios.get(`/api/get-all-favourite-products?userId=${userId}`)
+}
+
+const getAllProductsFavouriteLimitService = (accessToken, userId, offset) => {
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get(`/api/get-all-favourite-products-limit?userId=${userId}&offset=${offset}`, { headers: { token: `Bearer ${accessToken}` }})
+    }
+    return axios.get(`/api/get-all-favourite-products-limit-limit?userId=${userId}&offset=${offset}`)
+}
+
+const addProductFavouriteService = (accessToken, data) => {
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.post(`/api/add-product-favourite`, data, { headers: { token: `Bearer ${accessToken}` }})
+    }
+    return axios.post(`/api/add-product-favourite`, data)
 }
 
 export {
@@ -143,5 +171,8 @@ export {
     getLimitProductService,
     getLimitProductByOptionSortService,
     searchProductByNameService,
-    searchProductByNameServiceLimit
+    searchProductByNameServiceLimit,
+    getAllProductsFavouriteLimitService,
+    getAllProductsFavouriteService,
+    addProductFavouriteService
 }

@@ -6,20 +6,35 @@ import {  faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import './Toast.scss';
+import * as actions from '../../store/actions'
+import jwt_decode from 'jwt-decode'
 
-function Action({productId}) {
-    const [state, setState] = useState()
-    const [isFavourite, setIsFavourite] = useState(false)
-
+function Action({
+    productId, 
+    accessToken,
+    isFavourite,
+    addProductFavouriteRedux,
+}) {
+    const [isSateFavourite, setIsSateFavourite] = useState(false)
+    const [userId, setUserId] = useState('')
+    
+    useEffect(() => {
+        if (accessToken) {
+            let tokenDecoded = jwt_decode(accessToken)
+            setUserId(tokenDecoded?.id)
+        }
+        setIsSateFavourite(isFavourite)
+    }, [isFavourite])
+    
     const hanleClickFavourite = () => {
-        setState(productId)
-        setIsFavourite(!isFavourite)
-        isFavourite ? toast.warn(CustomToast, { autoClose: 3000 }) : toast.info(CustomToast, { autoClose: 3000 })        
+        setIsSateFavourite(!isSateFavourite)
+        isSateFavourite ? toast.warn(CustomToast, { autoClose: 3000 }) : toast.info(CustomToast, { autoClose: 3000 }) 
+        addProductFavouriteRedux(accessToken, { productId, userId })       
     }
     const CustomToast = () => (
         <>
             {
-                isFavourite ? 
+                isSateFavourite ? 
                 <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
                     Bạn vừa bỏ sản phẩm ra khỏi mục yêu thích
                 </span>
@@ -32,15 +47,15 @@ function Action({productId}) {
             }
         </>
     )
+    
     return (
         <>
             <div className='actions text-center'>
-                <button className='tym mb-2 px-3'>
+                <button className='tym mb-2 px-3 text-black-50'>
                     <FontAwesomeIcon
-                        className={isFavourite ? 'icon-favourite text-danger' : 'icon-favourite'}
+                        className={isSateFavourite ? 'icon-favourite text-danger' : 'icon-favourite'}
                         icon={faHeart} 
                         onClick={hanleClickFavourite}
-                        values={state}
                     />
                 </button>
                 <div className='cart'>
@@ -48,21 +63,20 @@ function Action({productId}) {
                         <FontAwesomeIcon icon={faCartShopping} />
                     </button>
                 </div>
-            </div>
-            
+            </div> 
         </>
     )
 }
 
 const mapStateToProps = state => {
     return {
-        
+        accessToken: state.auth.token,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        addProductFavouriteRedux: (accessToken, data) => dispatch(actions.addProductFavourite(accessToken, data)),
     }
 }
 

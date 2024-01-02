@@ -19,7 +19,7 @@ function HomeFooter() {
                     <div className='row homefooter-menu pb-5'>
                         <div className='contact col-4'>
                             <div className='homeFooter-logo'>
-                                <Link href='/'>
+                                <Link to='/'>
                                     <img src={LOGO_MLB.logo_mlb}/>
                                 </Link>
                             </div>
