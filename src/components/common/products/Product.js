@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo } from "react";
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import { formatVND } from "../../../utils";
@@ -8,7 +8,7 @@ import './Product.scss';
 
 
 function Product({accessToken, products, images, col='col-4', productFavourites}) {
-    
+        
     return (
         <>
             {
@@ -50,7 +50,11 @@ function Product({accessToken, products, images, col='col-4', productFavourites}
                                     </button>
                                 </div>
                             </div> */}
-                            <Toast productId={item.id} productFavourites={productFavourites} isFavourite={isFavourite}/>
+                            <Toast 
+                                productId={item.id} 
+                                productFavourites={productFavourites} 
+                                isFavourite={isFavourite}
+                            />
                             <div className='product-img product-img-first'>
                                 <a href='#'>
                                     <div 

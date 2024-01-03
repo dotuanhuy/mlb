@@ -634,7 +634,7 @@ export const getAllProductsFavouriteLimit = (accessToken, userId, offset) => {
     }
 }
 
-export const addProductFavourite = (accessToken, data) => {
+export const addProductFavourite = (accessToken, data, offset=null) => {
     return async (dispatch, getState) => {
         try {
             let res = await addProductFavouriteService(accessToken, data)
@@ -643,6 +643,14 @@ export const addProductFavourite = (accessToken, data) => {
                     type: actionTypes.CREATE_PRODUCT_FAVOURITE_FAILED,
                     data: res.data
                 })
+                // Nếu là xóa
+                if (res.status === 1 && offset) {
+                    dispatch(getAllProductsFavouriteLimit(accessToken, data.userId, offset))
+                    dispatch(getAllProductsFavourite(accessToken, data.userId))
+                }
+                else {
+                    dispatch(getAllProductsFavourite(accessToken, data.userId))
+                }
             }
             else {
                 dispatch({

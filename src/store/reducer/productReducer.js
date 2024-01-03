@@ -12,6 +12,7 @@ const initState = {
     descriptions: [],
     isLoadingProduct: true,
     count: 0,
+    countFavouriteProduct: 0,
     productSearch: [],
     productSearchLimit: [],
     productFavourtie: [],
@@ -228,12 +229,14 @@ const productReducer = (state = initState, action) => {
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_SUCCESS': 
             state.productFavourtie = action?.data
+            state.countFavouriteProduct = state.productFavourtie.length
             state.isLoadingProduct = false
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_FAILED': 
             state.productFavourtie = []
+            state.countFavouriteProduct = 0
             state.isLoadingProduct = true
             return {
                 ...state
@@ -247,8 +250,8 @@ const productReducer = (state = initState, action) => {
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_FAILED':
             state.productFavouriteLimit = []
-            state.isLoadingProduct = true
             state.count = 0
+            state.isLoadingProduct = true
             return {
                 ...state
             }

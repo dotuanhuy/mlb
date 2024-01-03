@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import {Routes, Route, useSearchParams} from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from '../../utils';
 import Loading from '../Loading/Loading';
@@ -15,11 +15,13 @@ import Product from '../common/products/Product';
 function Favourite({
     isLoading,
     accessToken, 
-    products,
+    productsLimit,
     images,
+    productFavourites,
     refreshIsloadingStateProductRedux,
     fetchAllImageProductRedux,
-    getAllProductsFavouriteLimitRedux
+    getAllProductsFavouriteLimitRedux,
+    getAllProductsFavouriteRedux
 }) {
     const [params] = useSearchParams()
     
@@ -34,9 +36,12 @@ function Favourite({
             let tokenDecoded = jwt_decode(accessToken)
             userId = tokenDecoded?.id
         }
-        getAllProductsFavouriteLimitRedux(accessToken, userId, params.get('page') || 1)
+        if (userId) {
+            getAllProductsFavouriteRedux(accessToken, userId)
+            getAllProductsFavouriteLimitRedux(accessToken, userId, params.get('page') || 1)
+        }
     }, [params.get('page')])
-
+    
     return (
         <>
             {
@@ -54,7 +59,7 @@ function Favourite({
                             </div>
                             <div className='menu-box'>
                                 <div className='menu-product row row-cols-4'>
-                                    <Product products={products} images={images} col='col-3' />
+                                    <Product products={productsLimit} images={images} col='col-3' />
                                 </div>
                             </div>
                             <Pagination pathPage={path.FAVOURITE} currentPage={params.get('page') || 1}/>
@@ -72,7 +77,8 @@ const mapStateToProps = state => {
         isLoading: state.product.isLoadingProduct,
         accessToken: state.auth.token,
         images: state.product.images,
-        products: state.product.productFavouriteLimit,
+        productFavourites: state.product.productFavourtie,
+        productsLimit: state.product.productFavouriteLimit,
     }
 }
 
@@ -80,6 +86,7 @@ const mapDispatchToProps = dispatch => {
     return {
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
         fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
+        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
         getAllProductsFavouriteLimitRedux: (accessToken, userId, offset) => dispatch(actions.getAllProductsFavouriteLimit(accessToken, userId, offset))
     }
 }

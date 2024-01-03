@@ -13,16 +13,20 @@ import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
 import jwt_decode from 'jwt-decode';
+import Loading from '../Loading/Loading';
 
 function HomePage({ 
     accessToken, 
     productFavourites,
+    isLoading,
     getAllProductPublicRedux, 
     fetchAllImageProductRedux,
-    getAllProductsFavouriteRedux
+    getAllProductsFavouriteRedux, 
+    refreshIsloadingStateProductRedux
 }) {
 
     useEffect(() => {
+        refreshIsloadingStateProductRedux()
         getAllProductPublicRedux(accessToken)
         fetchAllImageProductRedux(accessToken)
 
@@ -43,29 +47,36 @@ function HomePage({
         slidesToShow: 1,
         slidesToScroll: 1,
         appendDots: dots => (
-        <div
-            style={{
-            borderRadius: "10px",
-            padding: "10px",
-            transform: "translateY(10px)"
-            }}
-        >
-            <ul style={{ margin: "0px" }}> {dots} </ul>
-        </div>
+            <div
+                style={{
+                borderRadius: "10px",
+                padding: "10px",
+                transform: "translateY(10px)"
+                }}
+            >
+                <ul style={{ margin: "0px" }}> {dots} </ul>
+            </div>
         ),
     }
 
     return (
-        <div>
-        <Navbar />
-        <SliderHomePage settings={settings} />
-        <Intro />
-        <NewShoes />
-        <MLBBag />
-        <MLBOutfit />
-        <MLBBackPack />
-        <HomeFooter />
-        </div>
+        <>
+            {
+                isLoading ? 
+                <Loading />
+                :
+                <div>
+                    <Navbar />
+                    <SliderHomePage settings={settings} />
+                    <Intro />
+                    <NewShoes />
+                    <MLBBag />
+                    <MLBOutfit />
+                    <MLBBackPack />
+                    <HomeFooter />
+                </div>
+            }
+        </>
     );
 }
 
@@ -74,6 +85,7 @@ const mapStateToProps = state => {
         accessToken: state.auth.token,
         images: state.product.images,
         productFavourites: state.product.productFavourtie,
+        isLoading: state.product.isLoadingProduct,
     }
 }
 
@@ -81,7 +93,8 @@ const mapDispatchToProps = dispatch => {
     return {
         getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken)),
         fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
-        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId))
+        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
+        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
     }
 }
 

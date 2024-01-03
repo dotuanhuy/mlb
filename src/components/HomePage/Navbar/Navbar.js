@@ -2,8 +2,8 @@ import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faMagnifyingGlass, faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import { shoes, bag, hat, shirts, PK, logo, results } from '../../../utils/images';
+import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
+import { shoes, bag, hat, shirts, PK, logo } from '../../../utils/images';
 import './Navbar.scss'
 import { Link, useNavigate } from 'react-router-dom';
 import * as actions from '../../../store/actions'
@@ -17,7 +17,7 @@ const initState = {
     lastName: '',
 }
 
-function Navbar({isLogin, user, token, countFavourite, fetLogoutRedux}) {
+function Navbar({isLogin, user, token, countFavourite, productFavourite, fetLogoutRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
     const navigate = useNavigate()
     useEffect(() => {
@@ -281,7 +281,7 @@ function Navbar({isLogin, user, token, countFavourite, fetLogoutRedux}) {
                         <div className='love'>
                             <Link to={path.FAVOURITE} className='text-white'>
                                 <FontAwesomeIcon icon={faHeart} className='icon-infor' />
-                                <span className='numberTym rounded-circle text-white text-center'>0</span>
+                                <span className='numberTym rounded-circle text-white text-center'>{countFavourite}</span>
                             </Link>
                         </div>
                         <div className='cart'>
@@ -300,7 +300,8 @@ const mapStateToProps = state => {
         user: state.auth.user,
         token: state.auth.token,
         isLogin: state.auth.isLogin,
-        countFavourite: state.product.count
+        countFavourite: state.product.countFavouriteProduct,
+        productFavourite: state.product.productFavourtie
     }
 }
 
