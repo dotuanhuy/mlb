@@ -16,7 +16,7 @@ import Pagination from '../../Paginations/Pagination'
 import { useRef } from 'react';
 import Loading from '../../Loading/Loading';
 import Banner from '../../common/Banners/Banner';
-import Product from '../../common/products/Product';
+import ListProducts from '../../common/listProducts/ListProducts';
 import OptionSort from '../../common/options/OptionSort';
 import OptionType from '../../common/options/OptionType';
 import OptionColor from '../../common/options/OptionColor';
@@ -229,7 +229,7 @@ function Shoes({
                                     <div ref={listRef} className='shoes-list col-9'>
                                         <div className='shoes-list-container'>
                                             <div className='menu-product row'>
-                                                <Product products={products} images={images} />
+                                                <ListProducts products={products} images={images} />
                                             </div>
                                         </div>
                                     </div>

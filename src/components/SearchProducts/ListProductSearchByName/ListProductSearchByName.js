@@ -1,19 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import './ListProductSearchByName.scss'
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
-import { path, categorieType } from '../../../utils';
-import {Buffer} from 'buffer';
-import { formatVND } from '../../../utils';
+import { path } from '../../../utils';
 import Navbar from '../../HomePage/Navbar/Navbar';
 import HomeFooter from '../../HomePage/HomeFooter/HomeFooter';
 import Loading from '../../Loading/Loading';
 import Pagination from '../../Paginations/Pagination';
-import Product from '../../common/products/Product';
+import ListProducts from '../../common/listProducts/ListProducts';
 
 function ListProductSearchByName({
     accessToken,
@@ -70,7 +65,7 @@ function ListProductSearchByName({
                             </div>
                             <div className='menu-box'>
                                 <div className='menu-product row row-cols-4'>
-                                    <Product products={productSearch} images={images} col='col-3'/>
+                                    <ListProducts products={productSearch} images={images} col='col-3'/>
                                 </div>
                             </div>
                             <Pagination pathPage={path.SEARCH_PRODUCT} pname={productName} currentPage={params.get('page') || 1}/>

@@ -9,7 +9,7 @@ import Navbar from '../HomePage/Navbar/Navbar';
 import Banner from '../common/Banners/Banner'
 import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 import jwt_decode from 'jwt-decode';
-import Product from '../common/products/Product';
+import ListProducts from '../common/listProducts/ListProducts';
 
 
 function Favourite({
@@ -17,7 +17,6 @@ function Favourite({
     accessToken, 
     productsLimit,
     images,
-    productFavourites,
     refreshIsloadingStateProductRedux,
     fetchAllImageProductRedux,
     getAllProductsFavouriteLimitRedux,
@@ -59,7 +58,7 @@ function Favourite({
                             </div>
                             <div className='menu-box'>
                                 <div className='menu-product row row-cols-4'>
-                                    <Product products={productsLimit} images={images} col='col-3' />
+                                    <ListProducts products={productsLimit} images={images} col='col-3' />
                                 </div>
                             </div>
                             <Pagination pathPage={path.FAVOURITE} currentPage={params.get('page') || 1}/>
@@ -77,7 +76,6 @@ const mapStateToProps = state => {
         isLoading: state.product.isLoadingProduct,
         accessToken: state.auth.token,
         images: state.product.images,
-        productFavourites: state.product.productFavourtie,
         productsLimit: state.product.productFavouriteLimit,
     }
 }

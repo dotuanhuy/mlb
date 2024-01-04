@@ -6,6 +6,8 @@ import Navbar from '../HomePage/Navbar/Navbar';
 import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 import jwt_decode from 'jwt-decode';
 import Account from './Account';
+import Banner from '../common/Banners/Banner';
+import * as actions from  '../../store/actions'
 
 const initState = {
     firstName: '',
@@ -13,8 +15,9 @@ const initState = {
     email: ''
 }
 
-function AccountInfor({token}) {
+function AccountInfor({token, productFavourites, getAllProductsFavouriteRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
+
     useEffect(() => {
         if (token) {
             let tokenDecoded = jwt_decode(token)
@@ -23,6 +26,15 @@ function AccountInfor({token}) {
                 lastName: tokenDecoded?.lastName,
                 email: tokenDecoded?.email
             })
+        }
+
+        let userId = ''
+        if (token) {
+            let tokenDecoded = jwt_decode(token)
+            userId = tokenDecoded?.id
+        }
+        if (userId) {
+            getAllProductsFavouriteRedux(token, userId)
         }
     }, [])
 
@@ -34,19 +46,7 @@ function AccountInfor({token}) {
                 : */}
                 <div className='account'>
                     <Navbar />
-                    <div className='account-header'>
-                        <div className='title'>
-                            TRANG KHÁCH HÀNG
-                        </div>
-                        <ul className='list-link'>
-                            <li className='item-link-home'>
-                                <Link to='/'>Trang chủ</Link>
-                            </li>
-                            <li>
-                                <span>Trang khách hàng</span>
-                            </li>
-                        </ul>
-                    </div>
+                    <Banner categoryProduct='Trang khách hàng' title='Trang khách hàng' />
                     <div className='account-body p-5'>
                         <div className='container'>
                             <div className='row'>
@@ -82,11 +82,13 @@ function AccountInfor({token}) {
 const mapStateToProps = state => {
     return {
         token: state.auth.token,
+        productFavourites: state.product.productFavourtie,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
+        getAllProductsFavouriteRedux: (token, userId) => dispatch(actions.getAllProductsFavourite(token, userId)),
     }
 }
 

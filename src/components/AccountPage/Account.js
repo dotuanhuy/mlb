@@ -6,12 +6,6 @@ import jwt_decode from 'jwt-decode';
 import { path } from '../../utils';
 import * as action from '../../store/actions'
 
-// const initState = {
-//     firstName: '',
-//     lastName: '',
-//     email: ''
-// }
-
 function Account({token, userLogin, activeType, fetLogoutRedux}) {
     const [active, setActive] = useState('infor')
     const navigate = useNavigate()
@@ -38,7 +32,7 @@ function Account({token, userLogin, activeType, fetLogoutRedux}) {
                 : */}
                 <h5>Trang tài khoản</h5>
                 <p>{`Xin chào, ${userLogin.firstName} ${userLogin.lastName} !`}</p>
-                <ul>
+                <ul className='p-0 m-0'>
                     <li>
                         <Link 
                             to={path.ACCOUNT} 

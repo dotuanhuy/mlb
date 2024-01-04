@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { categorieType } from '../../../../utils';
-import Product from '../../../common/products/Product';
+import ListProducts from '../../../common/listProducts/ListProducts';
 
 function SkirtDress({products, images}) {
     const [tShirt, settShirt] = useState([])
@@ -13,10 +13,11 @@ function SkirtDress({products, images}) {
             settShirt(newArr)
         }
     }, [products])
+    
     return (
         <div className='menu-product row'>
-            <Product products={tShirt} images={images} col='col-3'/>
-    </div>
+            <ListProducts products={tShirt} images={images} col='col-3'/>
+        </div>
     );
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { categorieType } from '../../../../utils';
-import Product from '../../../common/products/Product';
+import ListProducts from '../../../common/listProducts/ListProducts';
 
 function CrossBag({products, images}) {
     const [bagBalo, setbagBalo] = useState([])
@@ -16,7 +16,7 @@ function CrossBag({products, images}) {
 
     return (
         <div className='menu-product row'>
-            <Product products={bagBalo} images={images} col='col-3'/>
+            <ListProducts products={bagBalo} images={images} col='col-3'/>
         </div>
     );
 }

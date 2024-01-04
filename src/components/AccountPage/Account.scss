@@ -1,44 +1,5 @@
 .account {
     overflow-x: hidden;
-
-    .account-header {
-        min-height: 304px;
-        background: #ccc;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    
-        .title {
-            font-size: 30px;
-            font-weight: 600;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-        }
-    
-        .list-link {
-            display: flex;
-            gap: 20px;
-    
-            .item-link-home {
-                position: relative;
-    
-                &::after {
-                    content: "/";
-                    color: #fff;
-                    position: absolute;
-                    right: -14px;
-                    top: 0;
-                }
-    
-                a {
-                    color: #fff;
-                }
-            }
-        }
-    }
-
     .account-body {
 
         .list-option {
@@ -58,9 +19,6 @@
             }
 
             ul {
-                padding: 0;
-                margin: 0;
-
                 li {
                     margin-bottom: 6px;
 

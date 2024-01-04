@@ -4,10 +4,12 @@ import * as actions from '../../../store/actions'
 import { formatVND } from "../../../utils";
 import {Buffer} from 'buffer';
 import Toast from "../../Actions/Toast";
-import './Product.scss';
+import './ListProducts.scss';
+import { Link } from "react-router-dom";
+import { path } from "../../../utils";
 
 
-function Product({accessToken, products, images, col='col-4', productFavourites}) {
+function ListProducts({accessToken, products, images, col='col-4', productFavourites}) {
         
     return (
         <>
@@ -56,7 +58,13 @@ function Product({accessToken, products, images, col='col-4', productFavourites}
                                 isFavourite={isFavourite}
                             />
                             <div className='product-img product-img-first'>
-                                <a href='#'>
+                                <Link 
+                                    to={`${path.PRODUCT}/${item.name}`} 
+                                    state={{ 
+                                        productId: item.id,
+                                        productName: item.name
+                                     }}
+                                >
                                     <div 
                                         style={{ 
                                             maxWidth: '100%', 
@@ -67,10 +75,16 @@ function Product({accessToken, products, images, col='col-4', productFavourites}
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                     ></div>
-                                </a>
+                                </Link>
                             </div>        
                             <div className='product-img product-img-second'>
-                                <a href='#'>
+                                <Link 
+                                    to={`${path.PRODUCT}/${item.name}`} 
+                                    state={{ 
+                                        productId: item.id,
+                                        productName: item.name
+                                     }}
+                                >
                                     <div 
                                         style={{ 
                                             maxWidth: '100%', 
@@ -81,12 +95,18 @@ function Product({accessToken, products, images, col='col-4', productFavourites}
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                     ></div>
-                                </a>
+                                </Link>
                             </div>           
                             <div className='product-infor text-center'>
                                 <span className='brand'>{item.dataBrand.valueEn}</span>    
                                 <h4 className='product-name'>
-                                    <a href='#'>{item.name}</a>
+                                    <Link 
+                                        to={`${path.PRODUCT}/${item.name}`} 
+                                        state={{ 
+                                            productId: item.id,
+                                            productName: item.name
+                                         }}
+                                    >{item.name}</Link>
                                 </h4>
                                 <span className='product-price'>{price}</span>
                             </div>          
@@ -110,4 +130,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default memo(connect(mapStateToProps, mapDispatchToProps)(Product));
+export default memo(connect(mapStateToProps, mapDispatchToProps)(ListProducts));

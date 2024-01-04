@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './MLBBackPack.scss'
 import { Link } from 'react-router-dom';
-import * as actions from '../../../store/actions'
+// import * as actions from '../../../store/actions'
 import { path, typeBagBalo } from '../../../utils';
 import { categorieType } from '../../../utils';
-import Product from '../../common/products/Product';
+import ListProducts from '../../common/listProducts/ListProducts';
 
 
-function MLBBackPack({accessToken, products, images}) {
+function MLBBackPack({products, images}) {
     const [backPack, setbackPack] = useState([])
 
     useEffect(() => {
@@ -30,7 +30,7 @@ function MLBBackPack({accessToken, products, images}) {
                 </div>
                 <div className='menu-box'>
                     <div className='menu-product row'>
-                        <Product products={backPack} images={images} col='col-3'/>
+                        <ListProducts products={backPack} images={images} col='col-3'/>
                     </div>
                     <div className='view-all text-center'>
                         <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}}>Xem tất cả</Link>

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import {Routes, Route} from 'react-router-dom';
+import {Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from '.././utils'
 import HomePage from '../components/HomePage/HomePage';
@@ -11,9 +11,10 @@ import AccountInfor from '../components/AccountPage/AccountInfor';
 import ChangePassword from '../components/AccountPage/ChangePassword';
 import ListProductSearchByName from '../components/SearchProducts/ListProductSearchByName/ListProductSearchByName';
 import Favourite from '../components/Favourites/Favourite';
+import Product from '../components/common/product/Product';
 
 
-function PublicRoute({isLogin}) {
+function PublicRoute() {
 
     return (
         <>
@@ -53,6 +54,8 @@ function PublicRoute({isLogin}) {
                 <Route path={path.SEARCH_PRODUCT} element={<ListProductSearchByName />}></Route>
 
                 <Route path={path.FAVOURITE} element={<Favourite />}></Route>
+
+                <Route path={`${path.PRODUCT}/:productName`} element={<Product />}></Route>
             </Routes>
         </>
     );
@@ -60,7 +63,6 @@ function PublicRoute({isLogin}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
     }
 }
 

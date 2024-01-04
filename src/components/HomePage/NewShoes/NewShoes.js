@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import './NewShoes.scss'
 import { Link } from 'react-router-dom';
-import * as actions from '../../../store/actions'
 import { path, categorieType } from '../../../utils';
 import { useState } from 'react';
-import Product from '../../common/products/Product'
+import ListProducts from '../../common/listProducts/ListProducts'
 
-function NewShoes({products, images, isLoadingProduct}) {
+function NewShoes({products, images}) {
     const [shoes, setShoes] = useState([])
     
     useEffect(() => {
@@ -27,7 +26,7 @@ function NewShoes({products, images, isLoadingProduct}) {
                 </div>
                 <div className='menu-box'>  
                     <div className='menu-product row'>
-                        <Product products={shoes} images={images} col='col-3'/>
+                        <ListProducts products={shoes} images={images} col='col-3'/>
                     </div>
                     <div className='view-all text-center'>
                         <Link to={path.GIAY_MLB}>Xem tất cả</Link>
@@ -42,7 +41,6 @@ const mapStateToProps = state => {
     return {
         products: state.product.products,
         images: state.product.images,
-        isLoadingProduct: state.product.isLoadingProduct
     }
 }
 

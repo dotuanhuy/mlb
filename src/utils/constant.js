@@ -64,6 +64,8 @@ export const path = {
     SEARCH_PRODUCT: '/search',
     
     FAVOURITE: '/favorite',
+
+    PRODUCT: '/product'
 }
 
 export const allCode = {

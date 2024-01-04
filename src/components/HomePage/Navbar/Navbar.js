@@ -17,7 +17,7 @@ const initState = {
     lastName: '',
 }
 
-function Navbar({isLogin, user, token, countFavourite, productFavourite, fetLogoutRedux}) {
+function Navbar({isLogin, token, countFavourite, fetLogoutRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
     const navigate = useNavigate()
     useEffect(() => {
@@ -297,11 +297,9 @@ function Navbar({isLogin, user, token, countFavourite, productFavourite, fetLogo
 
 const mapStateToProps = state => {
     return {
-        user: state.auth.user,
         token: state.auth.token,
         isLogin: state.auth.isLogin,
         countFavourite: state.product.countFavouriteProduct,
-        productFavourite: state.product.productFavourtie
     }
 }
 
