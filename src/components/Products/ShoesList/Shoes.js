@@ -14,7 +14,7 @@ import {
 import Navbar from '../../HomePage/Navbar/Navbar';
 import Pagination from '../../Paginations/Pagination'
 import { useRef } from 'react';
-import Loading from '../../Loading/Loading';
+import Loading from '../../common/Loading/Loading';
 import Banner from '../../common/Banners/Banner';
 import ListProducts from '../../common/listProducts/ListProducts';
 import OptionSort from '../../common/options/OptionSort';

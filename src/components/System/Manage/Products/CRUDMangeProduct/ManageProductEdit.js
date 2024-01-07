@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import {Buffer} from 'buffer';
 import _ from 'lodash'
-import Loading from '../../../../Loading/Loading';
+import Loading from '../../../../common/Loading/Loading';
 
 const initState = {
     name: '',

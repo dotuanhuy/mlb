@@ -1,0 +1,12 @@
+.actions {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    z-index: 99;
+
+    .tym {
+        cursor: pointer;
+        background: transparent;
+        position: relative;
+    }
+}

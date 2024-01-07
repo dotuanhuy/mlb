@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import { formatVND } from "../../../utils";
 import {Buffer} from 'buffer';
-import Toast from "../../Actions/Toast";
+import Toast from "../Actions/Toast";
 import './ListProducts.scss';
 import { Link } from "react-router-dom";
 import { path } from "../../../utils";
@@ -34,7 +34,7 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                         isFavourite = productFavourites.some(element => element.id === item.id)
                     }
                     return (
-                        <div className={`product ${col}`} key={index}>
+                        <div className={`list-products ${col}`} key={index}>
                             {
                                 item.dataDiscount.valueEn !== '0' ?
                                 <div className='discount'>
@@ -62,8 +62,9 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                     to={`${path.PRODUCT}/${item.name}`} 
                                     state={{ 
                                         productId: item.id,
-                                        productName: item.name
-                                     }}
+                                        productName: item.name,
+                                        isFavourite
+                                    }}
                                 >
                                     <div 
                                         style={{ 
@@ -71,7 +72,7 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                             height: '340px',
                                             backgroundImage: `url(${imageBase64})`,
                                             backgroundPosition: '0% 0%',
-                                            backgroundSize: 'cover',
+                                            backgroundSize: 'contain',
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                     ></div>
@@ -82,8 +83,9 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                     to={`${path.PRODUCT}/${item.name}`} 
                                     state={{ 
                                         productId: item.id,
-                                        productName: item.name
-                                     }}
+                                        productName: item.name,
+                                        isFavourite
+                                    }}
                                 >
                                     <div 
                                         style={{ 
@@ -91,7 +93,7 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                             height: '340px',
                                             backgroundImage: `url(${imageHoverBase64})`,
                                             backgroundPosition: '0% 0%',
-                                            backgroundSize: 'cover',
+                                            backgroundSize: 'contain',
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                     ></div>
@@ -104,8 +106,9 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                         to={`${path.PRODUCT}/${item.name}`} 
                                         state={{ 
                                             productId: item.id,
-                                            productName: item.name
-                                         }}
+                                            productName: item.name,
+                                            isFavourite
+                                        }}
                                     >{item.name}</Link>
                                 </h4>
                                 <span className='product-price'>{price}</span>

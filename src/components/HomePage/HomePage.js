@@ -11,7 +11,7 @@ import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
 import jwt_decode from 'jwt-decode';
-import Loading from '../Loading/Loading';
+import Loading from '../common/Loading/Loading';
 
 function HomePage({ 
     accessToken, 

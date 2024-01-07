@@ -5,7 +5,7 @@ import { path, categorieType } from '../../../../../utils';
 import * as actions from '../../../../../store/actions'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {Buffer} from 'buffer';
-import Loading from '../../../../Loading/Loading';
+import Loading from '../../../../common/Loading/Loading';
 import Pagination from '../../../../Paginations/Pagination';
 import { useRef } from 'react';
 

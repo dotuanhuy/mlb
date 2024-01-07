@@ -5,7 +5,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { path } from '../../../utils'
 import * as actions from '../../../store/actions'
 import { useNavigate } from 'react-router-dom';
-import Loading from '../../../components/Loading/Loading'
+import Loading from '../../../components/common/Loading/Loading'
 import Pagination from '../../Paginations/Pagination';
 
 function TableUsers({

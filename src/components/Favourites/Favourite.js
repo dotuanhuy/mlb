@@ -2,7 +2,7 @@ import React, { memo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from '../../utils';
-import Loading from '../Loading/Loading';
+import Loading from '../common/Loading/Loading';
 import * as actions from '../../store/actions';
 import Pagination from '../Paginations/Pagination';
 import Navbar from '../HomePage/Navbar/Navbar';

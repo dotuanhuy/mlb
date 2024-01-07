@@ -6,14 +6,16 @@ import {  faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link, useLocation } from 'react-router-dom';
 import './Toast.scss';
-import * as actions from '../../store/actions'
+import * as actions from '../../../store/actions'
 import jwt_decode from 'jwt-decode'
-import { path } from '../../utils';
+import { path } from '../../../utils';
+import Cart from './Cart';
 
 function Action({
     productId, 
-    accessToken,
     isFavourite,
+    isCart=true,
+    accessToken,
     addProductFavouriteRedux,
 }) {
     const location = useLocation().search
@@ -64,13 +66,14 @@ function Action({
                         className={isSateFavourite ? 'icon-favourite text-danger' : 'icon-favourite'}
                         icon={faHeart} 
                         onClick={hanleClickFavourite}
+                        data-toggle="tooltip"
+                        title={isSateFavourite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}
                     />
                 </button>
-                <div className='cart'>
-                    <button className='btn-buy'>
-                        <FontAwesomeIcon icon={faCartShopping} />
-                    </button>
-                </div>
+                {
+                    isCart && 
+                    <Cart />
+                }
             </div> 
         </>
     )

@@ -6,7 +6,7 @@ import { useLocation, useNavigate, createSearchParams } from 'react-router-dom';
 import * as actions from '../../../../../store/actions'
 import {Buffer} from 'buffer';
 import CommonUtils from '../../../../../utils/CommonUtils';
-import Loading from '../../../../Loading/Loading';
+import Loading from '../../../../common/Loading/Loading';
 
 
 function AddImageProduct({

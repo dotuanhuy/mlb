@@ -6,7 +6,7 @@ import './UserManage.scss'
 import * as actions from '../../../store/actions'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { path, Role } from '../../../utils';
-import Loading from '../../Loading/Loading';
+import Loading from '../../common/Loading/Loading';
 
 function EditUser({
     accessToken, 

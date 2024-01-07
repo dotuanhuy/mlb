@@ -6,7 +6,7 @@ import * as actions from '../../../store/actions'
 import { path } from '../../../utils';
 import Navbar from '../../HomePage/Navbar/Navbar';
 import HomeFooter from '../../HomePage/HomeFooter/HomeFooter';
-import Loading from '../../Loading/Loading';
+import Loading from '../../common/Loading/Loading';
 import Pagination from '../../Paginations/Pagination';
 import ListProducts from '../../common/listProducts/ListProducts';
 

@@ -40,41 +40,36 @@ function AccountInfor({token, productFavourites, getAllProductsFavouriteRedux}) 
 
     return (
         <>
-            {/* {
-                isLoading ? 
-                <Loading />
-                : */}
-                <div className='account'>
-                    <Navbar />
-                    <Banner categoryProduct='Trang khách hàng' title='Trang khách hàng' />
-                    <div className='account-body p-5'>
-                        <div className='container'>
-                            <div className='row'>
-                                <div className='col-3'>
-                                    <div className='list-option'>
-                                        <Account userLogin={userLogin} activeType={'infor'}/>
-                                    </div>
+            <Navbar />
+            <Banner categoryProduct='Trang khách hàng' title='Trang khách hàng' />
+            <div className='account'>
+                <div className='account-body p-5'>
+                    <div className='container'>
+                        <div className='row'>
+                            <div className='col-3'>
+                                <div className='list-option'>
+                                    <Account userLogin={userLogin} activeType={'infor'}/>
                                 </div>
-                                <div className='col-9'>
-                                    <div className='list-option-select'>
-                                        <h5>Thông tin tài khoản</h5>
-                                        <p>
-                                            <strong>Họ tên: </strong>
-                                            {`${userLogin?.firstName} ${userLogin?.lastName}`}
-                                        </p>
-                                        <p>
-                                            <strong>Email: </strong>
-                                            {`${userLogin?.email}`}
-                                        </p>
-                                    </div>
+                            </div>
+                            <div className='col-9'>
+                                <div className='list-option-select'>
+                                    <h5>Thông tin tài khoản</h5>
+                                    <p>
+                                        <strong>Họ tên: </strong>
+                                        {`${userLogin?.firstName} ${userLogin?.lastName}`}
+                                    </p>
+                                    <p>
+                                        <strong>Email: </strong>
+                                        {`${userLogin?.email}`}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <HomeFooter />
-            {/* } */}
+            </div>
+            
+            <HomeFooter />
         </>
     );
 }

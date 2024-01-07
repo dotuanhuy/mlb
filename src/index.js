@@ -8,7 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import './styles/style.scss'
 import reduxStore from './redux';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import 'swiper/css';
