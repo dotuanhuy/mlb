@@ -15,7 +15,6 @@ import Loading from '../common/Loading/Loading';
 
 function HomePage({ 
     accessToken, 
-    productFavourites,
     isLoading,
     getAllProductPublicRedux, 
     fetchAllImageProductRedux,
@@ -82,7 +81,6 @@ const mapStateToProps = state => {
     return {
         accessToken: state.auth.token,
         images: state.product.images,
-        productFavourites: state.product.productFavourtie,
         isLoading: state.product.isLoadingProduct,
     }
 }

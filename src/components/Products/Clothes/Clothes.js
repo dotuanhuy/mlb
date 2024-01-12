@@ -65,7 +65,6 @@ function Clothes({
     images,
     products,
     isLoading,
-    productFavourites,
     fetchAllColorsRedux, 
     getCategoriesByIdRedux, 
     fetchAllCodeByTypeRedux,
@@ -89,10 +88,7 @@ function Clothes({
         fetchAllColorsRedux(allCode.COLOR)
         getCategoriesByIdRedux(categorieType.CLOTHES)
         fetchAllCodeByTypeRedux(allCode.LOGO)
-        if (images.length === 0) {
-            fetchAllImageProductRedux(accessToken)
-        }
-        
+        fetchAllImageProductRedux(accessToken)        
         let userId = ''
         if (accessToken) {
             let tokenDecoded = jwt_decode(accessToken)
@@ -273,7 +269,6 @@ const mapStateToProps = state => {
         images: state.product.images,
         products: state.product.products,
         isLoading: state.product.isLoadingProduct,
-        productFavourites: state.product.productFavourtie,
     }
 }
 

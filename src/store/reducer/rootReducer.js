@@ -1,6 +1,7 @@
 import authReducer from "./authReducer";
 import userReducer from './userReducer';
 import productReducer from "./productReducer";
+import fouriteProductReducer from './favouriteProductReducer'
 import { combineReducers } from "redux";
 import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReducer),   // Lưu dưới storage
     user: userReducer,
     product: productReducer,
+    fouriteProduct: fouriteProductReducer,
 })
 
 export default rootReducer

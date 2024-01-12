@@ -191,22 +191,21 @@ function ManageShoesCreate({
             valueListSize = ''
         }
         let product = {
-            categoresId: selectCategory.value,
-            name: selectObject.name,
-            productCode: selectObject.productCode,
-            price: +(selectObject.price),
-            discountId: selectDiscount ? selectDiscount.value : '',
-            image: selectImage.image,
-            productionSite: selectObject.productionSite,
+            categoresId: selectCategory?.value,
+            name: selectObject?.name,
+            productCode: selectObject?.productCode,
+            price: +(selectObject?.price),
+            discountId: selectDiscount ? selectDiscount?.value : '',
+            image: selectImage?.image,
+            productionSite: selectObject?.productionSite,
             releaseDate: moment(selectReleaseDate).format('MM/DD/YYYY'),
-            brandId: selectBrand.value,
+            brandId: selectBrand?.value,
             listColor: listColors.toString(),
-            logoId: selectLogo.value,
+            logoId: selectLogo?.value,
             listSize: valueListSize,
-            material: selectObject.material,
+            material: selectObject?.material,
             listGender: listGenders.toString(),
         }
-
         createNewProductRedux(product, location.state, accessToken, params.get('page') ? params.get('page') : 1)
         setSelectObject(initState)
         setSelectImage(initStateImage)
@@ -422,7 +421,8 @@ function ManageShoesCreate({
                                     <div className='row'>
                                         {   
                                             sizes && sizes.length > 0 &&
-                                            sizes.map((item, index) => {                                                return (
+                                            sizes.map((item, index) => {                                                
+                                                return (
                                                     <div className='col-4 pb-1' key={index}>
                                                         <input 
                                                             checked={

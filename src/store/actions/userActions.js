@@ -13,6 +13,21 @@ import {
     registerSevice
 } from "../../services/userService";
 
+export const refreshStoreUser = () => {
+    return (dispatch, getState) => {
+        try {
+            dispatch({
+                type: actionTypes.REFRESH_STORE_SUCCESS
+            })
+        } catch (e) {
+            console.log('refreshStore error: ', e)
+            dispatch({
+                type: actionTypes.REFRESH_STORE_FAILED
+            })
+        }
+    }
+}
+
 export const createNewUser = (data, accessToken, page) => {
     return async (dispatch, getSate) => {
         try {

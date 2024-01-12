@@ -1,3 +1,5 @@
+import userReducer from "./userReducer"
+
 const initState = {
     products: [],
     categorieById: [],
@@ -15,8 +17,6 @@ const initState = {
     countFavouriteProduct: 0,
     productSearch: [],
     productSearchLimit: [],
-    productFavourtie: [],
-    productFavouriteLimit: []
 }
 
 const productReducer = (state = initState, action) => {
@@ -25,6 +25,10 @@ const productReducer = (state = initState, action) => {
             state.isLoadingProduct = true
             return {
                 ...state
+            }
+        case 'REFRESH_STORE_SUCCESS':
+            return {
+                ...initState
             }
         case 'FETCH_ALL_CODE_BY_TYPE_FAILED':
             state.logos = []
@@ -124,6 +128,7 @@ const productReducer = (state = initState, action) => {
             }
         case 'FETCH_PRODUCT_BY_ID_SUCCESS':
             state.products = action.data
+            state.sizes = action?.data?.listSize?.split(',')
             state.isLoadingProduct = false
             return {
                 ...state
@@ -227,34 +232,7 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'GET_ALL_PRODUCTS_FAVOURITE_SUCCESS': 
-            state.productFavourtie = action?.data
-            state.countFavouriteProduct = state.productFavourtie.length
-            state.isLoadingProduct = false
-            return {
-                ...state
-            }
-        case 'GET_ALL_PRODUCTS_FAVOURITE_FAILED': 
-            state.productFavourtie = []
-            state.countFavouriteProduct = 0
-            state.isLoadingProduct = true
-            return {
-                ...state
-            }
-        case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_SUCCESS':
-            state.productFavouriteLimit = action?.data
-            state.count = action?.count
-            state.isLoadingProduct = false
-            return {
-                ...state
-            }
-        case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_FAILED':
-            state.productFavouriteLimit = []
-            state.count = 0
-            state.isLoadingProduct = true
-            return {
-                ...state
-            }
+        
         default:
             return state
     }

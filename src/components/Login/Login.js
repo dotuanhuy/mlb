@@ -10,8 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 
-const cookies = new Cookies();
-
 const initState = {
     email: '',
     password: ''

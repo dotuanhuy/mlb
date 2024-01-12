@@ -17,9 +17,9 @@ function Product({
     accessToken, 
     isLoading,
     product, 
-    productFavourites, 
     getAllProductsFavouriteRedux,
-    getProductByIdRedux
+    getProductByIdRedux,
+    fetchAllImageProductRedux
 }) {
     const {productId, productName, isFavourite} = useLocation().state 
 
@@ -31,10 +31,11 @@ function Product({
         }
         if (userId) {
             getAllProductsFavouriteRedux(accessToken, userId)
-            getProductByIdRedux(productId, accessToken)
         }
+        getProductByIdRedux(productId, accessToken)
+        fetchAllImageProductRedux(productId, accessToken)
     }, [])
-    console.log('check')
+
     return (
         <>
             {
@@ -68,7 +69,6 @@ const mapStateToProps = state => {
     return {
         accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct,
-        productFavourites: state.product.productFavourtie,
         product: state.product.products,
     }
 }
@@ -76,7 +76,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
-        getProductByIdRedux: (productId, accessToken) => dispatch(actions.getProductById(productId, accessToken))
+        getProductByIdRedux: (productId, accessToken) => dispatch(actions.getProductById(productId, accessToken)),
+        fetchAllImageProductRedux: (productId, accessToken) => dispatch(actions.fetchAllImageProduct(productId, accessToken)),
     }
 }
 

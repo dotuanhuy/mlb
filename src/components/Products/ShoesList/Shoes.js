@@ -64,7 +64,6 @@ function Shoes({
     images,
     products,
     isLoading,
-    productFavourites,
     fetchAllColorsRedux, 
     getCategoriesByIdRedux, 
     fetchAllCodeByTypeRedux,
@@ -88,9 +87,7 @@ function Shoes({
         fetchAllColorsRedux(allCode.COLOR)
         getCategoriesByIdRedux(categorieType.SHOES_SANDAL)
         fetchAllCodeByTypeRedux(allCode.LOGO)
-        if (images.length === 0) {
-            fetchAllImageProductRedux(accessToken)
-        }
+        fetchAllImageProductRedux(accessToken)
 
         let userId = ''
         if (accessToken) {
@@ -255,7 +252,6 @@ const mapStateToProps = state => {
         images: state.product.images,
         products: state.product.products,
         isLoading: state.product.isLoadingProduct,
-        productFavourites: state.product.productFavourtie
     }
 }
 

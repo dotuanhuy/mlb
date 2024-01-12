@@ -124,7 +124,8 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
 const mapStateToProps = state => {
     return {
         accessToken: state.auth.token,
-        productFavourites: state.product.productFavourtie,
+        // productFavourites: state.product.productFavourtie,
+        productFavourites: state.fouriteProduct.product
     }
 }
 

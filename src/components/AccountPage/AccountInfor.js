@@ -15,7 +15,7 @@ const initState = {
     email: ''
 }
 
-function AccountInfor({token, productFavourites, getAllProductsFavouriteRedux}) {
+function AccountInfor({token, getAllProductsFavouriteRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
 
     useEffect(() => {
@@ -77,7 +77,6 @@ function AccountInfor({token, productFavourites, getAllProductsFavouriteRedux}) 
 const mapStateToProps = state => {
     return {
         token: state.auth.token,
-        productFavourites: state.product.productFavourtie,
     }
 }
 

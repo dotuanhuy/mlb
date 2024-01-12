@@ -1,9 +1,15 @@
-import React, {memo} from 'react'
+import React, {memo, useEffect} from 'react'
+import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../utils';
+import * as actions from '../../store/actions'
 
-function Logout() {
+function Logout({refreshStoreProduct, refreshStoreUser}) {
     const navigate = useNavigate()
+    useEffect(() => {
+        refreshStoreProduct()
+        refreshStoreUser()
+    }, [])
     navigate(path.LOGIN)
     
     return (
@@ -11,4 +17,17 @@ function Logout() {
     )
 }
 
-export default memo(Logout);
+const mapStateToProps = state => {
+    return {
+        token: state.auth.token,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        refreshStoreProduct: () => dispatch(actions.refreshStoreProduct()),
+        refreshStoreUser: () => dispatch(actions.refreshStoreUser())
+    }
+}
+
+export default memo(connect(mapStateToProps, mapDispatchToProps)(Logout));

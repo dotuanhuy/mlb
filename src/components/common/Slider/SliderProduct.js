@@ -1,54 +1,66 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { sliders } from '../../../utils/images';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-import product1 from '../../../assets/Shoes/Shoes-NY/Chunky_Liner_Mid_New_York_Yankees_Green/mlb-c.jpg'
-import product2 from '../../../assets/Shoes/Shoes-NY/Chunky_Liner_Mid_New_York_Yankees_Green/mlb-3.jpg'
-import product3 from '../../../assets/Shoes/Shoes-NY/Chunky_Liner_Mid_New_York_Yankees_Green/mlb-4.jpg'
-import product4 from '../../../assets/Shoes/Shoes-NY/Chunky_Liner_Mid_New_York_Yankees_Green/mlb-5.jpg'
-import product5 from '../../../assets/Shoes/Shoes-NY/Chunky_Liner_Mid_New_York_Yankees_Green/mlb-6.jpg'
-import product6 from '../../../assets/Shoes/Shoes-NY/Chunky_Liner_Mid_New_York_Yankees_Green/mlb-7.jpg'
-import product7 from '../../../assets/Shoes/Shoes-NY/Chunky_Liner_Mid_New_York_Yankees_Green/mlb-8.jpg'
 import './SliderProduct.scss'
+import { Buffer } from 'buffer';
 
-function SliderProduct() {
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+function SliderProduct({product, images}) {
+    const [thumbsSwiper, setThumbsSwiper] = useState(null)
+    const [listImages, setListImages] = useState([])
+    const [active, setActive] = useState(0)
 
+
+    
+    useEffect(() => {
+        if (images.length > 0 && product?.image) {
+            let arr = images.map(item => Buffer.from(item.image.data, 'base64').toString('binary'))
+            let image = Buffer.from(product.image.data, 'base64').toString('binary')
+            setListImages([image, ...arr])
+        }
+    }, [images])
+    
+    const handleChangeSilder = e => {
+        setActive(+e.target.id)
+    }
+
+    console.log('products: ', images)
     return (
         <div className='row'>
             <div className='col-2 d-flex'>
                 <Swiper
                     direction='vertical'
                     onSwiper={setThumbsSwiper}
-                    spaceBetween={5}
-                    slidesPerView={8}
+                    spaceBetween={1}
+                    slidesPerView={11}
                     freeMode={true}
                     watchSlidesProgress={true}
                     modules={[FreeMode, Navigation, Thumbs]}
-                    className="mySwiper w-75"           
-                >
-                    <SwiperSlide className='mb-2'>
-                        <img className='h-100 w-100 object-fit-cover border border-secondary rounded' src={product1} />
-                    </SwiperSlide>
-                    <SwiperSlide className='mb-2'>
-                        <img className='h-100 w-100 object-fit-cover border border-secondary rounded' src={product2} />
-                    </SwiperSlide>
-                    <SwiperSlide className='mb-2'>
-                        <img className='h-100 w-100 object-fit-cover border border-secondary rounded' src={product3} />
-                    </SwiperSlide>
-                    <SwiperSlide className='mb-2'>
-                        <img className='h-100 w-100 object-fit-cover border border-secondary rounded' src={product4} />
-                    </SwiperSlide>
-                    <SwiperSlide className='mb-2'>
-                        <img className='h-100 w-100 object-fit-cover border border-secondary rounded' src={product5} />
-                    </SwiperSlide>
-                    <SwiperSlide className='mb-2'>
-                        <img className='h-100 w-100 object-fit-cover border border-secondary rounded' src={product6} />
-                    </SwiperSlide>
-                    <SwiperSlide className='mb-2'>
-                        <img className='h-100 w-100 object-fit-cover border border-secondary rounded' src={product7} />
-                    </SwiperSlide>
+                    className="mySwiper w-100"           
+                >   
+                    {
+                        listImages && listImages.length > 0 &&
+                        listImages.map((item, index) => {
+                            return (
+                                <SwiperSlide className='mb-1' key={index}>
+                                    <div 
+                                        className={active === index ? 'rounded slider-product active' : 'rounded slider-product'}
+                                        style={{ 
+                                            maxWidth: '100%', 
+                                            height: '100%',
+                                            backgroundImage: `url(${item})`,
+                                            backgroundPosition: '0% 0%',
+                                            backgroundSize: 'cover',
+                                            backgroundRepeat: 'no-repeat',
+                                            backgroundPosition: 'center'
+                                        }}
+                                        id={index}
+                                        onClick={e => handleChangeSilder(e)}
+                                    ></div>
+                                </SwiperSlide>
+                            )
+                        })
+                    }
                 </Swiper>
             </div>
             <div className='col-10'>
@@ -63,27 +75,25 @@ function SliderProduct() {
                     modules={[FreeMode, Navigation, Thumbs]}
                     className="mySwiper2"
                 >
-                    <SwiperSlide>
-                        <img className='w-100' src={product1} />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <img className='w-100' src={product2} />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <img className='w-100' src={product3} />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <img className='w-100' src={product4} />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <img className='w-100' src={product5} />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <img className='w-100' src={product6} />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <img className='w-100' src={product7} />
-                    </SwiperSlide>
+                    {
+                        listImages && listImages.length > 0 &&
+                        listImages.map((item, index) => {
+                            return (
+                                <SwiperSlide className='mb-1' key={index}>
+                                    <div 
+                                        style={{ 
+                                            maxWidth: '100%', 
+                                            height: '100vh',
+                                            backgroundImage: `url(${item})`,
+                                            backgroundPosition: '0% 0%',
+                                            backgroundSize: 'contain',
+                                            backgroundRepeat: 'no-repeat'
+                                        }}
+                                    ></div>
+                                </SwiperSlide>
+                            )
+                        })
+                    }
                 </Swiper>   
             </div>
         </div>
@@ -92,7 +102,8 @@ function SliderProduct() {
 
 const mapStateToProps = state => {
     return {
-      
+        product: state.product.products,
+        images: state.product.images
     }
 }
 

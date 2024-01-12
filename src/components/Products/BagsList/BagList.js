@@ -85,9 +85,7 @@ function BagList({
         fetchAllColorsRedux(allCode.COLOR)
         getCategoriesByIdRedux(categorieType.BAG_BALO)
         fetchAllCodeByTypeRedux(allCode.LOGO)
-        if (images.length === 0) {
-            fetchAllImageProductRedux(accessToken)
-        }
+        fetchAllImageProductRedux(accessToken)
         let userId = ''
         if (accessToken) {
             let tokenDecoded = jwt_decode(accessToken)

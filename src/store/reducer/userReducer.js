@@ -9,6 +9,10 @@ const initState = {
 
 const userReducer = (state = initState, action) => {
     switch (action.type) {
+        case 'REFRESH_STORE_SUCCESS': 
+            return {
+                ...initState
+            }
         case 'FETCH_ALL_USERS_SUCCESS':
             state.users = action.data
             state.isLoadingUser  = false

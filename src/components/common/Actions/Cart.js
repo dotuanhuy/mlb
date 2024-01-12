@@ -9,8 +9,22 @@ import * as actions from '../../../store/actions'
 import jwt_decode from 'jwt-decode'
 import { path } from '../../../utils';
 
-function Action() {
-    
+
+function Cart() {
+
+    const CustomToast = () => (
+        <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
+            Bạn vừa thêm 1 sản phẩm vào giỏ hàng. Bấm
+            <a href={path.CART} className='text-primary' > vào đây </a>
+            để tới giỏ hàng
+        </span>
+    )
+
+    const handleAddCart = () => {
+        toast.info(CustomToast, { autoClose: 3000 })
+        
+    }
+
     
     return (
         <>    
@@ -19,6 +33,7 @@ function Action() {
                     className='btn-buy' 
                     data-toggle="tooltip"
                     title='Thêm vào giỏ hàng'
+                    onClick={handleAddCart}
                 >
                     <FontAwesomeIcon icon={faCartShopping} />
                 </button>
@@ -39,4 +54,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default memo(connect(mapStateToProps, mapDispatchToProps)(Action));
+export default memo(connect(mapStateToProps, mapDispatchToProps)(Cart));

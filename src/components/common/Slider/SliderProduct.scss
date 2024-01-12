@@ -1,2 +1,15 @@
-.slider-image {
+.slider-product {
+    opacity: 0.5;
+    border: 1px solid #ccc;
+    transition: all 300ms linear;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+        border: 1px solid #333;
+    }
+}
+
+.active {
+    opacity: 1;
 }

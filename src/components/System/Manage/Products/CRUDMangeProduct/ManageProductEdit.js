@@ -238,7 +238,7 @@ function ManageShoesEdit({
     const handhandleOnchangeLogos = (selectLogo) => {
         setSelectLogo(selectLogo)
     }
-    
+
     const handleUpdateProduct = (e) => {
         e.preventDefault()
         let valueListSize = ''

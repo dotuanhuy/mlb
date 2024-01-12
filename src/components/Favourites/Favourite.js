@@ -76,7 +76,8 @@ const mapStateToProps = state => {
         isLoading: state.product.isLoadingProduct,
         accessToken: state.auth.token,
         images: state.product.images,
-        productsLimit: state.product.productFavouriteLimit,
+        // productsLimit: state.product.productFavouriteLimit,
+        productsLimit: state.fouriteProduct.productLimit
     }
 }
 

@@ -1,0 +1,27 @@
+.product-detail {
+    .active {
+        color: #942319;
+        border: 1px solid #942319;
+    }
+    
+    .label-select {
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+    
+    .btn-add-cart {
+        background: #420500 !important;
+    
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+    
+    .btn-add-buy {
+        background: #942319 !important;
+    
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}

@@ -299,7 +299,8 @@ const mapStateToProps = state => {
     return {
         token: state.auth.token,
         isLogin: state.auth.isLogin,
-        countFavourite: state.product.countFavouriteProduct,
+        // countFavourite: state.product.countFavouriteProduct,
+        countFavourite: state.fouriteProduct.countProducts
     }
 }
 
