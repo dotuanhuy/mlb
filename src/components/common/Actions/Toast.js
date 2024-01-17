@@ -15,6 +15,7 @@ function Action({
     productId, 
     isFavourite,
     isCart=true,
+    size,
     accessToken,
     addProductFavouriteRedux,
 }) {
@@ -72,7 +73,7 @@ function Action({
                 </button>
                 {
                     isCart && 
-                    <Cart />
+                    <Cart productId={productId} size={size}/>
                 }
             </div> 
         </>

@@ -1,7 +1,7 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
 
-const getAllProductsFavouriteService = (accessToken, userId,) => {
+const getAllProductsFavouriteService = (accessToken, userId) => {
     if (accessToken) {
         const axiosJWT = createAxios(accessToken)
         return axiosJWT.get(`/api/get-all-favourite-products?userId=${userId}`, { headers: { token: `Bearer ${accessToken}` }})

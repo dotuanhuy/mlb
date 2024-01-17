@@ -1,16 +1,26 @@
 import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import {  faCartShopping } from '@fortawesome/free-solid-svg-icons';
-import { ToastContainer, toast } from 'react-toastify';
-import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as actions from '../../../store/actions'
 import jwt_decode from 'jwt-decode'
 import { path } from '../../../utils';
 
 
-function Cart() {
+function Cart({
+    productId,
+    size,
+    accessToken, 
+    addProductToCartRedux
+}) {
+    const [userId, setUserId] = useState('')
+    useEffect(() => {
+        if (accessToken) {
+            let tokenDecoded = jwt_decode(accessToken)
+            setUserId(tokenDecoded?.id)
+        }
+    }, [])
 
     const CustomToast = () => (
         <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
@@ -22,7 +32,8 @@ function Cart() {
 
     const handleAddCart = () => {
         toast.info(CustomToast, { autoClose: 3000 })
-        
+        addProductToCartRedux(accessToken, { userId, productId, quantity:1, size})
+
     }
 
     
@@ -50,7 +61,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addProductFavouriteRedux: (accessToken, data, page) => dispatch(actions.addProductFavourite(accessToken, data, page)),
+        addProductToCartRedux: (accessToken, data) => dispatch(actions.addProductToCart(accessToken, data))        
     }
 }
 

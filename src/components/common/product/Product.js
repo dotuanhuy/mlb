@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../../HomePage/Navbar/Navbar';
 import * as actions from '../../../store/actions'
@@ -17,11 +17,13 @@ function Product({
     accessToken, 
     isLoading,
     product, 
+    fouriteProducts,
     getAllProductsFavouriteRedux,
     getProductByIdRedux,
     fetchAllImageProductRedux
 }) {
-    const {productId, productName, isFavourite} = useLocation().state 
+    const {productId, productName} = useLocation().state 
+    const [isFavourite, setIsFavourite] = useState(false)
 
     useEffect(() => {
         let userId = ''
@@ -34,7 +36,13 @@ function Product({
         }
         getProductByIdRedux(productId, accessToken)
         fetchAllImageProductRedux(productId, accessToken)
-    }, [])
+    }, [productId])
+    
+    useEffect(() => {
+        if (fouriteProducts.length > 0) {
+            setIsFavourite(fouriteProducts.some(element => element.id === productId))
+        }
+    }, [fouriteProducts])
 
     return (
         <>
@@ -70,6 +78,7 @@ const mapStateToProps = state => {
         accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct,
         product: state.product.products,
+        fouriteProducts: state.fouriteProduct.product
     }
 }
 

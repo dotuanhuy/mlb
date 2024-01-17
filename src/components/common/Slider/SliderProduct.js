@@ -24,7 +24,6 @@ function SliderProduct({product, images}) {
         setActive(+e.target.id)
     }
 
-    console.log('products: ', images)
     return (
         <div className='row'>
             <div className='col-2 d-flex'>

@@ -27,8 +27,24 @@ const productReducer = (state = initState, action) => {
                 ...state
             }
         case 'REFRESH_STORE_SUCCESS':
+            state.products = []
+            state.categorieById = []
+            state.colors = []
+            state.categories = []
+            state.logos = []
+            state.discounts = []
+            state.brands = []
+            state.sizes = []
+            state.genders = []
+            state.images = []
+            state.descriptions = []
+            state.isLoadingProduct = true
+            state.count = 0
+            state.countFavouriteProduct = 0
+            state.productSearch = []
+            state.productSearchLimit = []
             return {
-                ...initState
+                ...state
             }
         case 'FETCH_ALL_CODE_BY_TYPE_FAILED':
             state.logos = []

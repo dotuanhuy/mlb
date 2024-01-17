@@ -11,13 +11,14 @@ import { path } from '../../../utils';
 import jwt_decode from "jwt-decode";
 import { typeShoesSandanl, typeBagBalo, typeHat, typeClothes } from '../../../utils';
 import SearchProducts from '../../SearchProducts/SearchProducts';
+import ListCarts from '../../carts/ListCarts';
 
 const initState = {
     firstName: '',
     lastName: '',
 }
 
-function Navbar({isLogin, token, countFavourite, fetLogoutRedux}) {
+function Navbar({isLogin, token, countFavourite, countProductsCart, fetLogoutRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
     const navigate = useNavigate()
     useEffect(() => {
@@ -29,11 +30,10 @@ function Navbar({isLogin, token, countFavourite, fetLogoutRedux}) {
             })
         }
     }, [])
-
     const handleLogout = async () => {
         fetLogoutRedux()
     }
-
+    
     return (
         <div className='header-top text-light sticky-top'>
             <div className='nav-container'>
@@ -285,8 +285,11 @@ function Navbar({isLogin, token, countFavourite, fetLogoutRedux}) {
                             </Link>
                         </div>
                         <div className='cart'>
-                            <FontAwesomeIcon className='icon-infor' icon={faCartShopping} />
-                            <span className='numberProduct rounded-circle text-white text-center'>0</span>
+                            <Link to={path.CART} className='text-white'>
+                                <FontAwesomeIcon className='icon-infor' icon={faCartShopping} />
+                                <span className='numberProduct rounded-circle text-white text-center'>{countProductsCart}</span>
+                            </Link>
+                            <ListCarts />
                         </div>
                     </div>
                 </div>
@@ -300,7 +303,8 @@ const mapStateToProps = state => {
         token: state.auth.token,
         isLogin: state.auth.isLogin,
         // countFavourite: state.product.countFavouriteProduct,
-        countFavourite: state.fouriteProduct.countProducts
+        countFavourite: state.fouriteProduct.countProducts,
+        countProductsCart: state.cart.countProducts
     }
 }
 

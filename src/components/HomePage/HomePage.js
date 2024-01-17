@@ -19,7 +19,8 @@ function HomePage({
     getAllProductPublicRedux, 
     fetchAllImageProductRedux,
     getAllProductsFavouriteRedux, 
-    refreshIsloadingStateProductRedux
+    refreshIsloadingStateProductRedux,
+    getProductsInCartByUserRedux
 }) {
 
     useEffect(() => {
@@ -34,6 +35,7 @@ function HomePage({
         }
         if (userId) {
             getAllProductsFavouriteRedux(accessToken, userId)
+            // getProductsInCartByUserRedux(accessToken, userId)
         }
     }, [])
     
@@ -91,6 +93,7 @@ const mapDispatchToProps = dispatch => {
         fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
+        getProductsInCartByUserRedux: (accessToken, userId) => dispatch(actions.getProductsInCartByUser(accessToken, userId))
     }
 }
 

@@ -67,7 +67,15 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
                                     }
                                     return (
                                         <>
-                                            <a className='p-2 text-dark' href='#' key={index}>
+                                            <Link 
+                                                className='p-2 text-dark'
+                                                key={index}
+                                                to={`${path.PRODUCT}/${item.name}`} 
+                                                state={{ 
+                                                    productId: item.id,
+                                                    productName: item.name,
+                                                }}
+                                            >
                                                 <div 
                                                     style={{ 
                                                         width: '250px',                                                        
@@ -78,10 +86,12 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
                                                     }}
                                                 ></div>
                                                 <div className='result-box_item-infor'>
-                                                    <div className='results-box_item-name'>{item.name}</div>
-                                                    <div className='results-box_item-price'>{price}</div>
+                                                    <div className='results-box_item-name'>
+                                                        <span className='text-black mb-0 name-product-cart'>{item.name}</span>                                    
+                                                    </div>
+                                                    <div className='results-box_item-price text-danger'>{price}</div>
                                                 </div>
-                                            </a>                                            
+                                            </Link>                                            
                                         </>
                                     )
                                 })                                
@@ -117,6 +127,7 @@ const mapDispatchToProps = dispatch => {
     return {
         searchProductByNameRedux: (productName, offset) => dispatch(actions.searchProductByName(productName, offset)),
         refreshProductSearchRedux: () => dispatch(actions.refreshProductSearch())
+        
     }
 }
 

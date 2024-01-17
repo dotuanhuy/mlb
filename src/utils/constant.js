@@ -174,3 +174,8 @@ export const typeClothes = {
     OUTFIT_MLB_SHORTS: 'Quần',
     OUTFIT_MLB_SKIRT_DRESS: 'Đầm, Váy',
 }
+
+export const typeStep = {
+    DOWN: 'down',
+    UP: 'up'
+}

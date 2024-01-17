@@ -10,12 +10,12 @@ import { path } from "../../../utils";
 
 
 function ListProducts({accessToken, products, images, col='col-4', productFavourites}) {
-        
     return (
         <>
             {
                 products && products.length > 0 &&
                 products.map((item, index) => {
+                    let size = item?.listSize.split(',').at(0)
                     let imageBase64 = ''
                     let imageHoverBase64 = ''
                     let imageHover = images.find(image => image.productId === item.id)
@@ -56,6 +56,7 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                 productId={item.id} 
                                 productFavourites={productFavourites} 
                                 isFavourite={isFavourite}
+                                size = {size}
                             />
                             <div className='product-img product-img-first'>
                                 <Link 
@@ -63,7 +64,6 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                     state={{ 
                                         productId: item.id,
                                         productName: item.name,
-                                        isFavourite
                                     }}
                                 >
                                     <div 
@@ -84,7 +84,6 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                     state={{ 
                                         productId: item.id,
                                         productName: item.name,
-                                        isFavourite
                                     }}
                                 >
                                     <div 
@@ -107,7 +106,6 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                         state={{ 
                                             productId: item.id,
                                             productName: item.name,
-                                            isFavourite
                                         }}
                                     >{item.name}</Link>
                                 </h4>

@@ -4,15 +4,15 @@ import {
     getAllProductsFavouriteLimitService,
     addProductFavouriteService
 
-} from "../../services/favouriteProductAction";
+} from "../../services/favouriteProductService";
 
 export const getAllProductsFavourite = (accessToken, userId) => {
     return async (dispatch, getState) => {
         try {
             let res = await getAllProductsFavouriteService(accessToken, userId)
             let data = []
-            res.data.map(item => {
-                data.push(item.productFavourites)
+            res?.data?.map(item => {
+                data?.push(item.productFavourites)
             })
             if (res && res.errCode === 0) {
                 dispatch({

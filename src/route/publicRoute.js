@@ -12,6 +12,7 @@ import ChangePassword from '../components/AccountPage/ChangePassword';
 import ListProductSearchByName from '../components/SearchProducts/ListProductSearchByName/ListProductSearchByName';
 import Favourite from '../components/Favourites/Favourite';
 import Product from '../components/common/product/Product';
+import PageCart from '../components/carts/PageCart';
 
 
 function PublicRoute() {
@@ -56,6 +57,8 @@ function PublicRoute() {
                 <Route path={path.FAVOURITE} element={<Favourite />}></Route>
 
                 <Route path={`${path.PRODUCT}/:productName`} element={<Product />}></Route>
+
+                <Route path={path.CART} element={<PageCart />}></Route>
             </Routes>
         </>
     );
