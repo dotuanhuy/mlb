@@ -45,7 +45,11 @@ function ListCarts({
     const handleDeleteProductCart = (productId, size) => {
         deleteProductInCartRedux(accessToken, {productId, userId, size})
     }
-    
+
+    const handleOnchangeQuantity = e => {
+        console.log(+e.target.value)
+    }
+
     return (    
         <div className='list-items-cart'>
             <section class="h-100 h-custom">
@@ -115,7 +119,7 @@ function ListCarts({
                                                                     <span className='col-5 text-muted' style={{ fontSize: '14px', fontWeight: 500 }} >Số lượng:</span>
                                                                     <div className='col-md-6 d-flex'>
                                                                         <button 
-                                                                            className="btn py-0 px-2"
+                                                                            className="btn py-0 px-2 button-hover"
                                                                             onClick={() => handleStepDown(item?.Product?.id, item?.size, typeStep.DOWN)}
                                                                         >
                                                                             <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faMinus} />
@@ -128,10 +132,11 @@ function ListCarts({
                                                                             type="number"
                                                                             className="form-control form-control-sm py-0" 
                                                                             value={+item.quantity} 
+                                                                            onChange={e => handleOnchangeQuantity(e)}
                                                                         />
 
                                                                         <button 
-                                                                            className="btn py-0 px-2"
+                                                                            className="btn py-0 px-2 button-hover"
                                                                             onClick={() => handleStepUp(item?.Product?.id, item?.size, typeStep.UP)}
                                                                         >
                                                                             <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faPlus} />
@@ -140,7 +145,7 @@ function ListCarts({
                                                                 </div>
                                                                 <div className="d-flex align-items-center pt-1" style={{ cursor:'default', gap: '5rem' }} >
                                                                     <button 
-                                                                        className='bg-transparent' 
+                                                                        className='bg-transparent button-hover' 
                                                                         style={{ cursor: 'pointer' }} 
                                                                         data-toggle="tooltip" 
                                                                         title='Xóa'
@@ -166,7 +171,12 @@ function ListCarts({
                                             <span className='text-danger fw-bold float-end'>{formatVND(totalMoney)}</span>
                                         </div>
                                         <div className='mt-1'>
-                                            <button className='btn w-100 text-white' style={{ backgroundColor: '#420500' }}>Thanh toán</button>
+                                            <button 
+                                                className='btn w-100 text-white button-hover' 
+                                                style={{ backgroundColor: '#420500' }}
+                                            >
+                                                Thanh toán
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

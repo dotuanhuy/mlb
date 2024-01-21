@@ -18,7 +18,14 @@ const initState = {
     lastName: '',
 }
 
-function Navbar({isLogin, token, countFavourite, countProductsCart, fetLogoutRedux}) {
+function Navbar({
+    isLogin, 
+    token, 
+    countFavourite, 
+    countProductsCart, 
+    getAllProductsFavouriteRedux, 
+    fetLogoutRedux
+}) {
     const [userLogin, setUserLogin] = useState(initState)
     const navigate = useNavigate()
     useEffect(() => {
@@ -28,6 +35,7 @@ function Navbar({isLogin, token, countFavourite, countProductsCart, fetLogoutRed
                 firstName: tokenDecoded.firstName,
                 lastName: tokenDecoded.lastName,
             })
+            getAllProductsFavouriteRedux(token, tokenDecoded.id)
         }
     }, [])
     const handleLogout = async () => {
@@ -310,7 +318,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetLogoutRedux: () => dispatch(actions.fetLogout())
+        fetLogoutRedux: () => dispatch(actions.fetLogout()),
+        getAllProductsFavouriteRedux: (token, userId) => dispatch(actions.getAllProductsFavourite(token, userId)),
     }
 }
 

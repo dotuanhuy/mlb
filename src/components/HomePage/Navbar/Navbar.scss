@@ -198,6 +198,12 @@
                                         }
                                     }
                                 }
+
+                                .show-all-search-link {
+                                    &:hover {
+                                        color: #942319;
+                                    }
+                                }
                             }
                         }
                     }

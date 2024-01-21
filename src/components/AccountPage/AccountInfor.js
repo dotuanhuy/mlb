@@ -33,9 +33,9 @@ function AccountInfor({token, getAllProductsFavouriteRedux}) {
             let tokenDecoded = jwt_decode(token)
             userId = tokenDecoded?.id
         }
-        if (userId) {
-            getAllProductsFavouriteRedux(token, userId)
-        }
+        // if (userId) {
+        //     getAllProductsFavouriteRedux(token, userId)
+        // }
     }, [])
 
     return (

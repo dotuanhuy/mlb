@@ -27,13 +27,13 @@ const fouriteProductReducer = (state=initState, action) => {
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_SUCCESS':
             state.productLimit = action?.data
-            state.count = action?.count
+            state.countProducts = action?.count
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_FAILED':
             state.productLimit = []
-            state.count = 0
+            state.countProducts = 0
             return {
                 ...state
             }

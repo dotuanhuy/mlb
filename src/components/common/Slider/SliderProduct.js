@@ -49,7 +49,7 @@ function SliderProduct({product, images}) {
                                             height: '100%',
                                             backgroundImage: `url(${item})`,
                                             backgroundPosition: '0% 0%',
-                                            backgroundSize: 'cover',
+                                            backgroundSize: 'contain',
                                             backgroundRepeat: 'no-repeat',
                                             backgroundPosition: 'center'
                                         }}

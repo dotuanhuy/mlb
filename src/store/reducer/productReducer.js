@@ -144,7 +144,7 @@ const productReducer = (state = initState, action) => {
             }
         case 'FETCH_PRODUCT_BY_ID_SUCCESS':
             state.products = action.data
-            state.sizes = action?.data?.listSize?.split(',')
+            state.sizes = action?.data?.listSize ? action?.data?.listSize?.split(',') : []
             state.isLoadingProduct = false
             return {
                 ...state

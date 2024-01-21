@@ -99,7 +99,7 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
                             {
                                 !productSearch || productSearch.length === 0 ? '' : 
                                 <Link   
-                                    className='py-2'
+                                    className='py-2 show-all-search-link'
                                     to={path.SEARCH_PRODUCT+`?pname=${productName}`}
                                     // state={{ 
                                     //     productName

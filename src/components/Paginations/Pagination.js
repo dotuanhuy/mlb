@@ -4,7 +4,14 @@ import './Pagination.scss'
 import { useNavigate, createSearchParams, useLocation } from 'react-router-dom';
 import { path, limit_page } from '../../utils';
 
-function Pagination({countProduct, countUser, pathPage, currentPage, pname=null}) {
+function Pagination({
+    countProduct, 
+    countUser, 
+    pathPage, 
+    currentPage, 
+    pname=null,
+    countProductsFavourite
+}) {
     const navigate = useNavigate()
     const [arrPage, setArrPage] = useState([])
     const [currentPageP, setCurrentPageP] = useState(+currentPage)
@@ -14,8 +21,20 @@ function Pagination({countProduct, countUser, pathPage, currentPage, pname=null}
     const [isHidenBack, setIsHidenBack] = useState(false)
     const location = useLocation()  
     
+    console.log(countProduct)
+
     useEffect(() => {
-        let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE  ? countUser : countProduct)  / +limit_page)
+        // let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE  ? countUser : countProduct)  / +limit_page)
+        let maxPage = 0
+        if (pathPage === path.MANAGE) {
+            maxPage =  Math.ceil(countUser / +limit_page)
+        }
+        else if (pathPage === path.MANAGE_CREATE) {
+            maxPage =  Math.ceil(countProduct / +limit_page)
+        }
+        else if (pathPage === path.FAVOURITE) {
+            maxPage =  Math.ceil(countProductsFavourite / +limit_page)
+        }
         let end = (+currentPageP + 2) > maxPage ? maxPage : (+currentPageP + 2)
         let start = (+currentPageP - 2) <= 0 ? 1 : (+currentPageP - 2)
         let arr = []
@@ -159,7 +178,8 @@ const mapStateToProps = state => {
         accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct,
         countProduct: state.product.count,
-        countUser: state.user.count
+        countUser: state.user.count,
+        countProductsFavourite: state.fouriteProduct.countProducts
     }
 }
 
