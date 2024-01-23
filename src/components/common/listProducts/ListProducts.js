@@ -31,7 +31,7 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                     }
                     let isFavourite = false
                     if (productFavourites.length !== 0) {
-                        isFavourite = productFavourites.some(element => element.id === item.id)
+                        isFavourite = productFavourites.some(element => element.productId === item.id)
                     }
                     return (
                         <div className={`list-products ${col}`} key={index}>

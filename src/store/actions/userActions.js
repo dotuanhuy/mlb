@@ -162,13 +162,18 @@ export const deleteUser = (id, accessToken, page) => {
 export const updateUser = (data, accessToken, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleUpdateUser(data, accessToken ,page)
+            let res = await handleUpdateUser(data, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.EDIT_USER_SUCCESS
                 })
                 // dispatch(fetAllUsers(accessToken))
-                dispatch(getLimitUsers(page, accessToken, page))
+                if (page) {
+                    dispatch(getLimitUsers(page, accessToken, page))
+                }
+                else {
+                    dispatch(fetchUserAllcode(data?.id, accessToken))
+                }
             }
             else {
                 alert(res.errMessage)

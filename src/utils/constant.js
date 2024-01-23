@@ -6,8 +6,10 @@ export const path = {
     SYSTEM: '/system',
     
     MANAGE: '/system/manage',
-    MANAGE_CREATE: '/system/manage/create',
-    MANAGE_EDIT: '/system/manage/edit',
+    MANAGE_USER: '/system/manage/user',
+    MANAGE_USER_CREATE: '/system/manage/user/create',
+    MANAGE_USER_EDIT: '/system/manage/user/edit',
+    MANAGE_USER_DETAIL: '/system/manage/user/detail',
 
     MANAGE_PRODUCTS: '/system/manage/products',
 

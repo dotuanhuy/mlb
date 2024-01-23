@@ -82,7 +82,7 @@ function SliderProduct({product, images}) {
                                     <div 
                                         style={{ 
                                             maxWidth: '100%', 
-                                            height: '100vh',
+                                            height: '60vh',
                                             backgroundImage: `url(${item})`,
                                             backgroundPosition: '0% 0%',
                                             backgroundSize: 'contain',

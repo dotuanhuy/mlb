@@ -2,17 +2,26 @@ import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import jwt_decode from 'jwt-decode';
-import { formatVND } from '../../../utils';
+import { formatVND, listBag, listHat, path } from '../../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './Detail.scss'
+import { toast } from 'react-toastify';
 
 
 
-function Detail({product, sizes}) {
+function Detail({accessToken, product, sizes, addProductToCartRedux}) {
     const [discount, setDiscount] = useState('')
     const [size, setSize] = useState('')
     const [quantity, setQuantity] = useState(1)
+    const [userId, setUserId] = useState('')
+
+    useEffect(() => {
+        if (accessToken) {
+            let tokenDecoded = jwt_decode(accessToken)
+            setUserId(tokenDecoded?.id)
+        }
+    }, [])
 
     useEffect(() => {
         let dis = 0
@@ -32,6 +41,35 @@ function Detail({product, sizes}) {
         setQuantity(+e.target.value)
     }
     
+    const handleStepDown = e => {
+        e.preventDefault()
+        if (quantity === 1) {
+            setQuantity(1)
+        }
+        else {
+            setQuantity(prev => --prev)
+        }
+    }
+
+    const handleStepUp = e => {
+        e.preventDefault()
+        setQuantity(prev => ++prev)
+    }
+
+    const handleAddCart = e => {
+        e.preventDefault()
+        toast.info(() => (
+            <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
+                Bạn vừa thêm 1 sản phẩm vào giỏ hàng. Bấm
+                <a href={path.CART} className='text-primary' > vào đây </a>
+                để tới giỏ hàng
+            </span>
+        ), { autoClose: 3000 })
+        addProductToCartRedux(accessToken, { userId, productId: product?.id, quantity:quantity, size})
+    }
+   
+    console.log(product)
+
     return (
         <div className='product-detail'>
             <h3 className='fs-4'>{product?.name}</h3>
@@ -62,49 +100,53 @@ function Detail({product, sizes}) {
                 </span>
             </div>
             <form>
-                <div className='size'>
-                    <div className='title mb-2'>
-                        <span className='text-banner text-muted'>Size: </span>
-                        <span style={{ color: '#942319', fontWeight: '600'}}> {size}</span>
-                    </div>
-                    <div className='select-size mb-2'>
-                        <div className='row gap-2'>
-                            {   
-                                sizes && sizes.length > 0 &&
-                                sizes.map((item, index) => {
-                                    return (
-                                        <div 
-                                            className='col-2' 
-                                            key={index}
-                                        >
-                                            <input 
-                                                type="radio" 
-                                                checked={size === item ? true : false}
-                                                className="form-check-input" 
-                                                id={`checkItem${item}`}
-                                                value={item}
-                                                onChange={e => handleOnchangeRadio(e)}
-                                                hidden={true}
-                                            />
-                                            <label 
-                                                className={size === item ? 'form-check-label rounded p-2 px-4 active' : 'form-check-label rounded p-2 px-4 label-select'}
-                                                htmlFor={`checkItem${item}`}
-                                            >
-                                                {item}
-                                            </label>
-                                        </div>
-                                    )
-                                })
-                            }
+                {
+                    product?.categoresId === listBag.BALO || product?.categoresId === listBag.BAG || product?.categoresId === listHat.HAT1 || product?.categoresId === listHat.HAT2 ?
+                    '' : 
+                    <div className='size'>
+                        <div className='title mb-2'>
+                            <span className='text-banner text-muted'>Size: </span>
+                            <span style={{ color: '#942319', fontWeight: '600'}}> {size}</span>
                         </div>
-                    </div>  
-                </div>
+                        <div className='select-size mb-2'>
+                            <div className='row gap-2'>
+                                {   
+                                    sizes && sizes.length > 0 &&
+                                    sizes.map((item, index) => {
+                                        return (
+                                            <div 
+                                                className='col-2' 
+                                                key={index}
+                                            >
+                                                <input 
+                                                    type="radio" 
+                                                    checked={size === item ? true : false}
+                                                    className="form-check-input" 
+                                                    id={`checkItem${item}`}
+                                                    value={item}
+                                                    onChange={e => handleOnchangeRadio(e)}
+                                                    hidden={true}
+                                                />
+                                                <label 
+                                                    className={size === item ? 'form-check-label rounded p-2 px-4 active' : 'form-check-label rounded p-2 px-4 label-select'}
+                                                    htmlFor={`checkItem${item}`}
+                                                >
+                                                    {item}
+                                                </label>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>  
+                    </div>
+                }
                 <div className='d-flex align-items-center'>
                     <span className='text-banner text-muted'>Số lượng:</span>
                     <div className='col-md-4 ps-4 d-flex'>
                             <button 
-                                className="btn py-0 px-2"
-                                // onClick={() => handleStepDown(item?.Product?.id, item?.size, typeStep.DOWN)}
+                                className="btn py-0 px-2 button-hover"
+                                onClick={(e) => handleStepDown(e)}
                             >
                                 <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faMinus} />
                             </button>
@@ -118,8 +160,8 @@ function Detail({product, sizes}) {
                             onChange={e => handleOnchangeQuantity(e)}
                         />
                         <button 
-                            className="btn py-0 px-2"
-                            // onClick={() => handleStepUp(item?.Product?.id, item?.size, typeStep.UP)}
+                            className="btn py-0 px-2 button-hover"
+                            onClick={(e) => handleStepUp(e)}
                         >
                             <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faPlus} />
                         </button>
@@ -129,6 +171,7 @@ function Detail({product, sizes}) {
                     <div className='add-cart col-md-5'>
                         <button  
                             className='btn btn-add-cart text-white w-100'
+                            onClick={(e) => handleAddCart(e)}
                         >
                             Thêm vào giỏ hàng
                         </button>
@@ -148,6 +191,7 @@ function Detail({product, sizes}) {
 
 const mapStateToProps = state => {
     return {
+        accessToken: state.auth.token,
         product: state.product.products,
         sizes: state.product.sizes
     }
@@ -155,6 +199,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        addProductToCartRedux: (accessToken, data) => dispatch(actions.addProductToCart(accessToken, data))        
+
     }
 }
 

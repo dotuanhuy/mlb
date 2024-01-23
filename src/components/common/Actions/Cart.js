@@ -33,7 +33,6 @@ function Cart({
     const handleAddCart = () => {
         toast.info(CustomToast, { autoClose: 3000 })
         addProductToCartRedux(accessToken, { userId, productId, quantity:1, size})
-
     }
 
     
@@ -44,7 +43,7 @@ function Cart({
                     className='btn-buy' 
                     data-toggle="tooltip"
                     title='Thêm vào giỏ hàng'
-                    onClick={handleAddCart}
+                    onClick={() => handleAddCart}
                 >
                     <FontAwesomeIcon icon={faCartShopping} />
                 </button>

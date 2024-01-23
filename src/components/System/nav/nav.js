@@ -33,7 +33,7 @@ function Nav({isLogin, fetLogoutRedux}) {
                                         <li>
                                             <Link 
                                                 className="dropdown-item" 
-                                                to={path.MANAGE_CREATE}
+                                                to={path.MANAGE_USER_CREATE}
                                             >
                                                 Create New User
                                             </Link>

@@ -1,8 +1,9 @@
 import React from 'react';
 import {Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import EditUser from '../components/System/CRUD/EditUser';
-import UserManage from '../components/System/CRUD/UserManage'
+import UserManageEdit from '../components/System/users/UserManageEdit';
+import UserManageCreate from '../components/System/users/UserManageCreate';
+import UserManageDetail from '../components/System/users/UserManageDetail';
 import Manage from '../components/System/Manage/manage';
 import ManageProducts from '../components/System/Manage/Products/ManageProducts';
 import ManageShoes from '../components/System/Manage/Products/ManageShoes/ManageShoes';
@@ -15,6 +16,7 @@ import AddImageProduct from '../components/System/Manage/Products/HandleAddImage
 import AddDescriptionProduc from '../components/System/Manage/Products/HandleAddDescriptions/AddDescriptionProduc';
 import { path } from '../utils';
 import PrivateRouter from './PrivateRouter';
+import UserManage from '../components/System/users/UserManage';
 
 function System({isLogin}) {
     return (
@@ -22,8 +24,10 @@ function System({isLogin}) {
             <Routes>
                 <Route path={path.MANAGE} element={<PrivateRouter Component={Manage}/>}/> 
                 {/* <Route path={path.MANAGE} element={isLogin && <Manage /> }/> */}
-                <Route path={path.MANAGE_CREATE} element={<PrivateRouter Component={UserManage}/>}/>
-                <Route path={path.MANAGE_EDIT} element={<PrivateRouter Component={EditUser}/>} />
+                <Route path={path.MANAGE_USER}  element={<PrivateRouter Component={UserManage} />}/>
+                <Route path={path.MANAGE_USER_CREATE} element={<PrivateRouter Component={UserManageCreate}/>}/>
+                <Route path={path.MANAGE_USER_EDIT} element={<PrivateRouter Component={UserManageEdit}/>} />
+                <Route path={path.MANAGE_USER_DETAIL} element={<PrivateRouter Component={UserManageDetail} />}></Route>
 
                 <Route path={path.MANAGE_PRODUCTS} element={<PrivateRouter Component={ManageProducts}/>} />
                 

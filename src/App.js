@@ -36,8 +36,8 @@ function App({isLogin}) {
                     <Route path={path.HOMEPAGE} element={<HomePage />}/>
 
                     <Route path={path.MANAGE} element={isLogin && <Manage /> }/>
-                    <Route path={path.MANAGE_CREATE} element={isLogin && <UserManage />}/>
-                    <Route path={path.MANAGE_EDIT} element={isLogin && <EditUser />}/>
+                    <Route path={path.MANAGE_USER_CREATE} element={isLogin && <UserManage />}/>
+                    <Route path={path.MANAGE_USER_EDIT} element={isLogin && <EditUser />}/>
                     <Route path={path.MANAGE_PRODUCTS} element={isLogin && <ManageProducts />}/>
                     <Route path={path.MANAGE_PRODUCTS_SHOES} element={isLogin && <ManageShoes />}/>
                     <Route path={path.MANAGE_PRODUCTS_SHOES_CREATE} element={isLogin && <ManageShoesCreate />}/>

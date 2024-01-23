@@ -23,7 +23,6 @@ function PrivateRouter({users, isLogin, accessToken, Component}) {
         fetchData()
     }, [])
     if (isAdmin !== null) {
-        console.log(isAdmin)
         return ( 
             isAdmin ? <Component /> : <Navigate to='/' />
         );

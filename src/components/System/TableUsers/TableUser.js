@@ -7,6 +7,10 @@ import * as actions from '../../../store/actions'
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../components/common/Loading/Loading'
 import Pagination from '../../Paginations/Pagination';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { Modal } from 'react-bootstrap';
 
 function TableUsers({
     pathPage,
@@ -20,18 +24,22 @@ function TableUsers({
 }) {
     const navigate = useNavigate()   
     const [params] = useSearchParams()
-    
+    const [show, setShow] = useState({});
+
+    const handleClose = () => setShow({});
+    const handleShow = (id) => setShow({id})
+
+    console.log(show)
+
     useEffect(() => {
         refreshIsloadingStateRedux()
         // fetAllUsersRedux(accessToken)
-        getLimitUsersRedux(params.get('page') ? params.get('page') : 1, accessToken)
+        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1, accessToken)
     }, [])
 
     useEffect(() => {
-        if (params.get('page')) {
-            getLimitUsersRedux(params.get('page') ? params.get('page') : 1, accessToken)
-        }
-    }, [params.get('page')])
+        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1, accessToken)
+    }, [params?.get('page')])
 
     const handleDeleteUser = (id) => {
         deleteUserRedux(id, accessToken, params.get('page') ? params.get('page') : 1)
@@ -39,7 +47,7 @@ function TableUsers({
 
     const handleEdit = (user) => {
         navigate(
-            path.MANAGE_EDIT, 
+            path.MANAGE_USER_EDIT, 
             {
                 state: {
                     id: user.id, 
@@ -56,57 +64,84 @@ function TableUsers({
                 <Loading />
                 :
                 <div className='user-all-system'>
-                    <div className='user-all-container'>
-                        <div className='user-all-table'>
-                            <table id="customers">
+                    <div className='user-all-table'>
+                        <table className="customers table-light table">
+                            <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th scope='col'>Id</th>
                                     <th>Email</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
-                                    <th>Phone number</th>
-                                    <th>Address</th>
-                                    <th>Gender</th>
                                     <th>RoleId</th>
-                                    <th>Actions</th>
+                                    <th>Detail</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
                                 </tr>
-                                { users && users.length > 0 &&
+                            </thead>
+                            <tbody>
+                                { 
+                                    users && users.length > 0 &&
                                     users.map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td>{item.id}</td>
+                                                <td scope='row'>{item.id}</td>
                                                 <td>{item.email}</td>
                                                 <td>{item.firstName}</td>
                                                 <td>{item.lastName}</td>
-                                                <td>{item.phoneNumber}</td>
-                                                <td>{item.address}</td>
-                                                <td>{item.gender}</td>
                                                 <td>{item.roleId}</td>
                                                 <td>
-                                                    <div className='actions'>
-                                                        <button 
-                                                            className='btn btn-outline-primary btn-delete'
-                                                            onClick={() => handleDeleteUser(item.id)}
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                        <button 
-                                                            className='btn btn-outline-info btn-edit'
-                                                            onClick={() => handleEdit(item)}
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                    </div>
+                                                    <Link 
+                                                        className='btn text-info'
+                                                        to={path.MANAGE_USER_DETAIL}
+                                                        state={{ 
+                                                            userId: item.id
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faEye} />
+                                                    </Link>
+                                                </td>     
+                                                <td>
+                                                    <button 
+                                                        className='btn text-primary btn-edit'
+                                                        onClick={() => handleEdit(item)}
+                                                    >
+                                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                                    </button>
                                                 </td>
+                                                <td>
+                                                    <button 
+                                                        // className='btn btn-outline-dàner btn-delete'
+                                                        className='btn text-danger btn-delete'
+                                                        onClick={() => handleShow(item.id)}
+                                                    >
+                                                        <FontAwesomeIcon icon={faTrash} />
+                                                    </button>
+                                                    <Modal show={show?.id === item.id || false} onHide={handleClose}>
+                                                        <Modal.Header closeButton>
+                                                            <Modal.Title>Delete a user</Modal.Title>
+                                                        </Modal.Header>
+                                                        <Modal.Body>Are you sure delete user "{item.email}"</Modal.Body>
+                                                        <Modal.Footer>
+                                                            <button className='btn btn-secondary' onClick={handleClose}>
+                                                                Close
+                                                            </button>
+                                                            <button 
+                                                                className='btn btn-root' 
+                                                                onClick={() => handleDeleteUser(item.id)}
+                                                            >
+                                                                Yes
+                                                            </button>
+                                                        </Modal.Footer>
+                                                    </Modal> 
+                                                </td>                                                  
                                             </tr>
                                         )
                                     })
                                 }
-                            </table>
-                        </div>
-                        
-                        <Pagination pathPage={pathPage} currentPage={params.get('page') || 1} />
-                    </div>
+                            </tbody>
+                        </table>
+                    </div> 
+                    <Pagination pathPage={pathPage} currentPage={params.get('page') || 1} />
                 </div>
             }
         </>

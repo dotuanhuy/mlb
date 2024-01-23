@@ -15,7 +15,7 @@ const fouriteProductReducer = (state=initState, action) => {
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_SUCCESS': 
             state.product = action?.data
-            state.countProducts = state.product.length
+            state.countProducts = action?.data?.length
             return {
                 ...state
             }

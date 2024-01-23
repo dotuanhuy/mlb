@@ -58,3 +58,46 @@ button {
         opacity: 0.8;
     }
 }
+
+.opacity-7 {
+    opacity: 0.7;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.active_sm {
+    color: #420500 !important;
+    border-radius: 5px;
+    background: #ccc;
+}
+
+.btn-root {
+    background: #420500 !important;
+    color: #fff;
+    font-size: 14px;
+
+    &:hover {
+        opacity: 0.7 !important;
+        color: #fff;
+
+    }
+}
+
+.btn-root-2 {
+    background: #942319 !important;
+    color: #fff;
+    font-size: 14px;
+
+    &:hover {
+        opacity: 0.7 !important;
+        color: #fff;
+
+    }
+}
+
+.img-avatar {
+    height: 100px;
+    object-fit: cover;
+}

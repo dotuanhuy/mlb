@@ -21,15 +21,13 @@ function Pagination({
     const [isHidenBack, setIsHidenBack] = useState(false)
     const location = useLocation()  
     
-    console.log(countProduct)
-
     useEffect(() => {
-        // let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE  ? countUser : countProduct)  / +limit_page)
+        // let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_USER_CREATE  ? countUser : countProduct)  / +limit_page)
         let maxPage = 0
-        if (pathPage === path.MANAGE) {
+        if (pathPage === path.MANAGE_USER || path.MANAGE_USER_CREATE) {
             maxPage =  Math.ceil(countUser / +limit_page)
         }
-        else if (pathPage === path.MANAGE_CREATE) {
+        else if (pathPage === path.MANAGE_USER_CREATE) {
             maxPage =  Math.ceil(countProduct / +limit_page)
         }
         else if (pathPage === path.FAVOURITE) {
@@ -66,7 +64,7 @@ function Pagination({
         else {
             setIsHidenBack(false)
         }
-    }, [countProduct, countUser , currentPageP])
+    }, [countProduct, countUser, countProductsFavourite, currentPageP])
 
     const handleChangePage = (e) => {
         setCurrentPageP(e.target.getAttribute('data-page'))
@@ -97,7 +95,17 @@ function Pagination({
     }   
 
     const handleToEnd = () => {
-        let end = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_CREATE ?  countUser : countProduct) / +limit_page)
+        // let end = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_USER_CREATE ?  countUser : countProduct) / +limit_page)
+        let end = 0
+        if (pathPage === path.MANAGE_USER || path.MANAGE_USER_CREATE) {
+            end =  Math.ceil(countUser / +limit_page)
+        }
+        else if (pathPage === path.MANAGE_USER_CREATE) {
+            end =  Math.ceil(countProduct / +limit_page)
+        }
+        else if (pathPage === path.FAVOURITE) {
+            end =  Math.ceil(countProductsFavourite / +limit_page)
+        }
         setCurrentPageP(end)
         let object = pname ? {
             page: end,

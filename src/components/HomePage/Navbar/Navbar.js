@@ -41,14 +41,16 @@ function Navbar({
     const handleLogout = async () => {
         fetLogoutRedux()
     }
+
     
+
     return (
         <div className='header-top text-light sticky-top'>
             <div className='nav-container'>
                 <div className='header-top-nav d-flex justify-content-evenly align-items-center my-0 mx-100'>
                     <Link to={path.HOMEPAGE}>
                         <div className='nav-logo'>
-
+                            
                         </div>
                     </Link>
                     <div className='nav-menu'>

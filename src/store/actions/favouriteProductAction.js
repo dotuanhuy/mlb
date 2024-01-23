@@ -10,14 +10,14 @@ export const getAllProductsFavourite = (accessToken, userId) => {
     return async (dispatch, getState) => {
         try {
             let res = await getAllProductsFavouriteService(accessToken, userId)
-            let data = []
-            res?.data?.map(item => {
-                data?.push(item.productFavourites)
-            })
+            // let data = []
+            // res?.data?.map(item => {
+            //     data?.push(item.productFavourites)
+            // })
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_PRODUCTS_FAVOURITE_SUCCESS,
-                    data: data
+                    data: res.data
                 })
             }
             else {
