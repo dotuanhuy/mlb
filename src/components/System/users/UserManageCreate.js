@@ -4,21 +4,29 @@ import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
 import TableUser from '../TableUsers/TableUser';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { path, Role } from '../../../utils';
+import { useSearchParams } from 'react-router-dom';
+import { path } from '../../../utils';
 import { validate, validateSelect } from '../../../validate/valiedate';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
+import { BuildOptionSelectSame, BuildOptionSelect } from '../../../utils';
 
 const initState = {
     email: '',
     password: '',
     firstName: '',
     lastName: '',
-    phoneNumber: ''
+    phone: ''
 }
 
-function UserManageCreate({isLogin, accessToken, provinces, genders, roles, fetchAllProvincesRedux, fetchAllCodeByTypeRedux, createNewUserRedux}) {
+function UserManageCreate({
+    accessToken, 
+    provinces, 
+    roles, 
+    getAllAddressRedux, 
+    getAllRolesRedux, 
+    createNewUserRedux
+}) {
     const [dataInput, setDataInput] = useState(initState)
     const [selectProvine, setSelectProvince] = useState([])
     const [selectGender, setSelectGender] = useState([])
@@ -28,51 +36,37 @@ function UserManageCreate({isLogin, accessToken, provinces, genders, roles, fetc
     const [listRoles, setListRoles] = useState([])
     const [errors, setErrors] = useState({})
     const [errorSelect, setErrorSelect] = useState({})
-    const check = false
-    const navigate = useNavigate()
     const [params] = useSearchParams() 
-
-    const buildDataSelect = (inputData) => {
-        let reslut = []
-        if (inputData && inputData.length > 0) {
-            inputData.map((item, index) => {
-                let obj = {}
-                if (item.nameVi) {
-                    obj.label = item.nameVi
-                }
-                else {
-                    obj.label = item.valueVi
-                }
-                if (item.keyMap) {
-                    obj.value = item.keyMap
-                }
-                else {
-                    obj.value = item.id
-                }
-                reslut.push(obj)
-            })
-        }
-        return reslut
-    }
 
     // ComponentDidMount
     useEffect(() => {
-
-        fetchAllProvincesRedux(accessToken)
-        fetchAllCodeByTypeRedux('GENDER')
-        fetchAllCodeByTypeRedux('ROLE')
+        getAllAddressRedux(accessToken)
+        getAllRolesRedux(accessToken)
     }, [])
     
     
     // ComponentDidUpdate
     useEffect(() => {
-        let dataProvinces = buildDataSelect(provinces)
-        let dataGenders = buildDataSelect(genders)
-        let dataRole = buildDataSelect(roles)
+        let dataProvinces = BuildOptionSelectSame(provinces)
+        let dataGenders = [
+            {
+                value: 'Nam',
+                label: 'Nam'
+            },
+            {
+                value: 'Nữ',
+                label: 'Nữ'
+            },
+            {
+                value: 'Khác',
+                label: 'Khác'
+            }
+        ]
+        let dataRole = BuildOptionSelect(roles)
         setListProvinces(dataProvinces)
         setListGenders(dataGenders)
         setListRoles(dataRole)
-    }, [provinces, genders, roles])
+    }, [provinces, roles])
 
     const handleOnchangeAddress = (selectProvine) => {
         if (errorSelect && errorSelect.errorProvine) {
@@ -121,7 +115,7 @@ function UserManageCreate({isLogin, accessToken, provinces, genders, roles, fetc
             password: dataInput.password,
             firstName: dataInput.firstName,
             lastName: dataInput.lastName,
-            phoneNumber: dataInput.phoneNumber,
+            phone: dataInput.phone,
             address: selectProvine.label,
             gender: selectGender.value,
             roleId: selectRole.value,
@@ -227,20 +221,20 @@ function UserManageCreate({isLogin, accessToken, provinces, genders, roles, fetc
                                             }
                                         </div>
                                         <div className="mb-3 col-4">
-                                            <label htmlFor="exampleInputPhoneNumber" className="form-label">Phone number</label>
+                                            <label htmlFor="exampleInputphone" className="form-label">Phone number</label>
                                             <input 
                                                 type="text" 
                                                 className="form-control" 
-                                                id="exampleInputPhoneNumber" 
-                                                value={dataInput.phoneNumber}
+                                                id="exampleInputphone" 
+                                                value={dataInput.phone}
                                                 onChange={(e) => setDataInput({
                                                     ...dataInput,
-                                                    phoneNumber: e.target.value
+                                                    phone: e.target.value
                                                 })}
                                                 // onBlur={(e) => handleOnBlur(e)}
                                             />
                                             {
-                                                errors && errors.phoneNumber ? <span className='error'>{errors.phoneNumber}</span> : ''
+                                                errors && errors.phone ? <span className='error'>{errors.phone}</span> : ''
                                             }
                                         </div>
                                         <div className="mb-3 col-4">
@@ -279,7 +273,7 @@ function UserManageCreate({isLogin, accessToken, provinces, genders, roles, fetc
                                     </div>
                                     <button 
                                         type="submit" 
-                                        className="btn btn-root text-white"
+                                        className="btn btn-root text-white fw-500"
                                         onClick={(e) => handleCreateNewUser(e)}
                                     >
                                         Create
@@ -302,15 +296,14 @@ const mapStateToProps = state => {
         isLogin: state.auth.isLogin,
         accessToken: state.auth.token,
         provinces: state.user.provinces,
-        genders: state.user.genders,
         roles: state.user.roles
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllProvincesRedux: (accessToken) => dispatch(actions.fetchAllProvinces(accessToken)),
-        fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByType(type)),
+        getAllAddressRedux: (accessToken) => dispatch(actions.getAllAddress(accessToken)),
+        getAllRolesRedux: (accessToken) => dispatch(actions.getAllRoles(accessToken)),
         createNewUserRedux: (data, accessToken ,page) =>  dispatch(actions.createNewUser(data, accessToken, page))
     }
 }

@@ -17,6 +17,7 @@ const initState = {
     countFavouriteProduct: 0,
     productSearch: [],
     productSearchLimit: [],
+    quantityArr: []
 }
 
 const productReducer = (state = initState, action) => {
@@ -176,6 +177,18 @@ const productReducer = (state = initState, action) => {
         case 'FETCH_DESCRIPTION_PRODUCT_FAILED': 
             state.descriptions = []
             state.isLoadingProduct = false
+            return {
+                ...state
+            }
+        case 'GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_SUCCESS':
+            state.quantityArr = action.data
+            state.isLoadingProduct = false
+            return {
+                ...state
+            }
+        case 'GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_FAILED':
+            state.quantity = []
+            state.isLoadingProduct = true
             return {
                 ...state
             }

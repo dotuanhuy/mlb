@@ -5,10 +5,10 @@ import {
     handleCreateNewUer, 
     handleUpdateUser,
     getAllUsers,
-    getAllProvinces,
-    getAllCodeByType,
+    getAllAddressService,
+    getAllRolesService,
     handleDeleteUser,
-    getUserAllcode,
+    getUserByIdService,
     getLimitUserService,
     registerSevice
 } from "../../services/userService";
@@ -78,61 +78,55 @@ export const fetAllUsers = (accessToken) => {
     }
 }
 
-export const fetchAllProvinces = (accessToken) => {
+export const getAllAddress = (accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllProvinces(accessToken)
+            let res = await getAllAddressService(accessToken)
+            let data = res.data.map(item => item.name)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.FETCH_ALL_PROVINCES_SUCCESS,
-                    data: res.data
+                    type: actionTypes.GET_ALL_ADDRESS_SUCCESS,
+                    data
                 })
             }
             else {
                 dispatch({
-                    type: actionTypes.FETCH_ALL_PROVINCES_FAILED
+                    type: actionTypes.GET_ALL_ADDRESS_FAILED
                 })
             }
         } catch(e) {
-            console.log('fetchAllProvinces error: ', e)
+            console.log('getAllAddress error: ', e)
             dispatch({
-                type: actionTypes.FETCH_ALL_PROVINCES_FAILED
+                type: actionTypes.GET_ALL_ADDRESS_FAILED
             })
         }
     }   
 }
 
-export const fetchAllCodeByType = (type) => {
+export const getAllRoles = (accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllCodeByType(type)
+            let res = await getAllRolesService(accessToken)
             if (res && res.errCode === 0) {
-                if (type === allCode.GENDER) {
-                    dispatch({
-                        type: actionTypes.FETCH_ALL_GENDER_SUCCESS,
-                        data: res.data
-                    })
-                }
-                else if (type === allCode.ROLE) {
-                    dispatch({
-                        type: actionTypes.FETCH_ALL_ROLE_SUCCESS,
-                        data: res.data
-                    })
-                }
+                dispatch({
+                    type: actionTypes.GET_ALL_ROLES_SUCCESS,
+                    data: res.data
+                })
             }
             else {
                 dispatch({
-                    type: actionTypes.FETCH_ALL_CODE_BY_TYPE_FAILED
+                    type: actionTypes.GET_ALL_ROLES_FAILED
                 })
             }
         } catch(e) {
-            console.log('fetchAllGenders error: ', e)
+            console.log('getAllRoles error: ', e)
             dispatch({
-                type: actionTypes.FETCH_ALL_CODE_BY_TYPE_FAILED
+                type: actionTypes.GET_ALL_ROLES_FAILED
             })
         }
     }
 }
+
 
 export const deleteUser = (id, accessToken, page) => {
     return async (dispatch, getSate) => {
@@ -172,7 +166,7 @@ export const updateUser = (data, accessToken, page) => {
                     dispatch(getLimitUsers(page, accessToken, page))
                 }
                 else {
-                    dispatch(fetchUserAllcode(data?.id, accessToken))
+                    dispatch(getUserById(data?.id, accessToken))
                 }
             }
             else {
@@ -190,26 +184,26 @@ export const updateUser = (data, accessToken, page) => {
     }
 }
 
-export const fetchUserAllcode = (id, accessToken) => {
+export const getUserById = (id, accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getUserAllcode(id, accessToken)
+            let res = await getUserByIdService(id, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.FETCH_USER_ALLCODE_SUCCESS,
+                    type: actionTypes.GET_USER_BY_ID_SUCCESS,
                     data: res.data
                 })
             }
             else {  
                 alert(res.errMessage)
                 dispatch({
-                    type: actionTypes.FETCH_USER_ALLCODE_FAILED
+                    type: actionTypes.GET_USER_BY_ID_FAILED
                 })
             }
         } catch(e) {
-            console.log('fetchUserAllcode error: ', e)
+            console.log('getUserById error: ', e)
             dispatch({
-                type: actionTypes.FETCH_USER_ALLCODE_FAILED
+                type: actionTypes.GET_USER_BY_ID_FAILED
             })
         }
     }

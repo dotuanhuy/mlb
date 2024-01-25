@@ -2,6 +2,7 @@ import actionTypes from "./actionTypes";
 import { 
     getAllProductsService, 
     getAllProductPublicService,
+    getQuantityOfEachProductByCategoryService,
     getAllCategoriesService,
     getCategoriesByIdService,
     createNewProductService,
@@ -23,7 +24,7 @@ import {
     addProductFavouriteService
 
 } from "../../services/productService";
-import { getAllCodeByType } from "../../services/userService";
+// import { getAllCodeByType } from "../../services/userService";
 import { allCode } from "../../utils";
 
 export const refreshIsloadingStateProduct = () => {
@@ -104,76 +105,100 @@ export const getAllProductPublic = (accessToken) => {
     }
 }
 
-export const fetchAllCodeByTypeProduct = (type) => {
-    return async (dispatch, getSate) => {
-        try {
-            let res = await getAllCodeByType(type)
-            if (res && res.errCode === 0) {
-                if (type === allCode.LOGO) {
-                    dispatch({
-                        type: actionTypes.FETCH_ALL_LOGO_SUCCESS,
-                        data: res.data
-                    })
-                }
-                else if (type === allCode.DISCOUNT) {
-                    dispatch({
-                        type: actionTypes.FETCH_ALL_DISCOUNT_SUCCESS,
-                        data: res.data
-                    })
-                }
-                else if (type === allCode.BRAND) {
-                    dispatch({
-                        type: actionTypes.FETCH_ALL_BRAND_SUCCESS,
-                        data: res.data
-                    })
-                }
-                else if (type === allCode.SIZEGIAY) {
-                    dispatch({
-                        type: actionTypes.FETCH_ALL_SIZEGIAY_SUCCESS,
-                        data: res.data
-                    })
-                }
-                else if (type === allCode.GENDER) {
-                    dispatch({
-                        type: actionTypes.FETCH_GENDER_PRODUCT_SUCCESS,
-                        data: res.data
-                    })
-                }
-                else if (type === allCode.SIZEAO) {
-                    dispatch({
-                        type: actionTypes.FETCH_ALL_SIZEAO_SUCCESS,
-                        data: res.data
-                    })
-                }
-            }
-            else {
-                dispatch({
-                    type: actionTypes.FETCH_ALL_CODE_BY_TYPE_FAILED
-                })
-            }
-        } catch(e) {
-            console.log('fetchAllGenders error: ', e)
-            dispatch({
-                type: actionTypes.FETCH_ALL_CODE_BY_TYPE_FAILED
-            })
-        }
-    }
-}
+// export const fetchAllCodeByTypeProduct = (type) => {
+//     return async (dispatch, getSate) => {
+//         try {
+//             let res = await getAllCodeByType(type)
+//             if (res && res.errCode === 0) {
+//                 if (type === allCode.LOGO) {
+//                     dispatch({
+//                         type: actionTypes.FETCH_ALL_LOGO_SUCCESS,
+//                         data: res.data
+//                     })
+//                 }
+//                 else if (type === allCode.DISCOUNT) {
+//                     dispatch({
+//                         type: actionTypes.FETCH_ALL_DISCOUNT_SUCCESS,
+//                         data: res.data
+//                     })
+//                 }
+//                 else if (type === allCode.BRAND) {
+//                     dispatch({
+//                         type: actionTypes.FETCH_ALL_BRAND_SUCCESS,
+//                         data: res.data
+//                     })
+//                 }
+//                 else if (type === allCode.SIZEGIAY) {
+//                     dispatch({
+//                         type: actionTypes.FETCH_ALL_SIZEGIAY_SUCCESS,
+//                         data: res.data
+//                     })
+//                 }
+//                 else if (type === allCode.GENDER) {
+//                     dispatch({
+//                         type: actionTypes.FETCH_GENDER_PRODUCT_SUCCESS,
+//                         data: res.data
+//                     })
+//                 }
+//                 else if (type === allCode.SIZEAO) {
+//                     dispatch({
+//                         type: actionTypes.FETCH_ALL_SIZEAO_SUCCESS,
+//                         data: res.data
+//                     })
+//                 }
+//             }
+//             else {
+//                 dispatch({
+//                     type: actionTypes.FETCH_ALL_CODE_BY_TYPE_FAILED
+//                 })
+//             }
+//         } catch(e) {
+//             console.log('fetchAllGenders error: ', e)
+//             dispatch({
+//                 type: actionTypes.FETCH_ALL_CODE_BY_TYPE_FAILED
+//             })
+//         }
+//     }
+// }
 
 export const fetchAllColors = (type) => {
     return async (dispatch, getSate) => {
+        // try {
+        //     let res = await getAllCodeByType(type)
+        //     if (res && res.errCode === 0) {
+        //         dispatch({
+        //             type: actionTypes.FETCH_ALL_COLOR_SUCCSESS,
+        //             data: res.data
+        //         })
+        //     }
+        // } catch (e) {
+        //     console.log('fetchAllColors error: ', e)
+        //     dispatch({
+        //         type: actionTypes.FETCH_ALL_COLOR_FAILED
+        //     })
+        // }
+    }
+}
+
+export const getQuantityOfEechProductByCategory = (accessToken) => {
+    return async (dispatch, getSate) => {
         try {
-            let res = await getAllCodeByType(type)
+            let res = await getQuantityOfEachProductByCategoryService(accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.FETCH_ALL_COLOR_SUCCSESS,
+                    type: actionTypes.GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_SUCCESS,
                     data: res.data
                 })
             }
-        } catch (e) {
-            console.log('fetchAllColors error: ', e)
+            else {
+                dispatch({
+                    type: actionTypes.GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_FAILED
+                })
+            }
+        } catch(e) {
+            console.log('getQuantityOfEechProductByCategory error: ' ,e)
             dispatch({
-                type: actionTypes.FETCH_ALL_COLOR_FAILED
+                type: actionTypes.GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_FAILED
             })
         }
     }

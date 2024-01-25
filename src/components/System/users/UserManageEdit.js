@@ -8,18 +8,18 @@ import { path, Role } from '../../../utils';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
+import { BuildOptionSelectSame, BuildOptionSelect } from '../../../utils';
 
 function UserManageEdit({
     accessToken, 
     users, 
     provinces, 
-    genders, 
     roles, 
     isLoading, 
     refreshIsloadingStateRedux, 
-    fetchUserAllcodeRedux, 
-    fetchAllProvincesRedux, 
-    fetchAllCodeByTypeRedux, 
+    getUserByIdRedux, 
+    getAllAddressRedux, 
+    getAllRolesRedux,
     updateUserRedux
 }) {
     const { state } = useLocation()
@@ -32,61 +32,50 @@ function UserManageEdit({
     const [listRoles, setListRoles] = useState([])    
     const navigate = useNavigate()
     
-    const buildDataSelect = (inputData) => {
-        let reslut = []
-        if (inputData && inputData.length > 0) {
-            inputData.map((item, index) => {
-                let obj = {}
-                if (item.nameVi) {
-                    obj.label = item.nameVi
-                }
-                else {
-                    obj.label = item.valueVi
-                }
-                if (item.keyMap) {
-                    obj.value = item.keyMap
-                }
-                else {
-                    obj.value = item.id
-                }
-                reslut.push(obj)
-            })
-        }
-        return reslut
-    }
-
     // ComponentDidMount
     useEffect(() => {
         refreshIsloadingStateRedux()
-        fetchAllProvincesRedux(accessToken)
-        fetchAllCodeByTypeRedux('GENDER')
-        fetchAllCodeByTypeRedux('ROLE')
-        fetchUserAllcodeRedux(state.id, accessToken)
+        getAllAddressRedux(accessToken)
+        getAllRolesRedux(accessToken)
+        getUserByIdRedux(state.id, accessToken)
     }, [])
 
     // ComponentDidUpdate
     useEffect(() => {
-        let dataProvinces = buildDataSelect(provinces)
-        let dataGenders = buildDataSelect(genders)
-        let dataRole = buildDataSelect(roles)
+        let dataProvinces = BuildOptionSelectSame(provinces)
+        let dataGenders = [
+            {
+                value: 'Nam',
+                label: 'Nam'
+            },
+            {
+                value: 'Nữ',
+                label: 'Nữ'
+            },
+            {
+                value: 'Khác',
+                label: 'Khác'
+            }
+        ]
+        let dataRole = BuildOptionSelect(roles)
         setDataInput(users)
         setSelectProvince({
-            label: users.Province ? users.Province.nameVi : '',
-            value: users.Province ? users.Province.id : ''
+            label: users?.address ? users.address : '',
+            value: users?.address ? users.address : ''
         })
         setSelectGender({
-            label: users.dataGender ? users.dataGender.valueVi : '',
-            value: users.dataGender ? users.dataGender.keyMap : ''
+            label: users?.gender ? users.gender : '',
+            value: users?.gender ? users.gender : ''
         })
         setSelectRole({
-            label: users.dataRole ? users.dataRole.valueVi : '',
-            value: users.dataRole ? users.dataRole.keyMap : ''
+            label: users?.dataRole?.name ? users.dataRole?.name : '',
+            value: users?.dataRole?.id ? users.dataRole?.id : ''
         })
         setListProvinces(dataProvinces)
         setListGenders(dataGenders)
         setListRoles(dataRole)
-    }, [users, provinces, genders, roles])
-
+    }, [users, provinces, roles])
+    
     const handleOnchangeAddress = (selectProvine) => {
         setSelectProvince(selectProvine)
     }
@@ -106,7 +95,7 @@ function UserManageEdit({
             email: dataInput.email,
             firstName: dataInput.firstName,
             lastName: dataInput.lastName,
-            phoneNumber: dataInput.phoneNumber,
+            phone: dataInput.phone,
             address: selectProvine.label,
             gender: selectGender.value,
             roleId: selectRole.value,
@@ -121,6 +110,7 @@ function UserManageEdit({
             navigate(path.MANAGE_USER_DETAIL, { state: { userId: users?.id } })
         }
     }
+
 
     return (
         <>
@@ -196,15 +186,15 @@ function UserManageEdit({
                                                     />
                                                 </div>
                                                 <div className="mb-3 col-4">
-                                                    <label htmlFor="exampleInputPhoneNumber" className="form-label">Phone number</label>
+                                                    <label htmlFor="exampleInputphone" className="form-label">Phone number</label>
                                                     <input 
                                                         type="text" 
                                                         className="form-control" 
-                                                        id="exampleInputPhoneNumber" 
-                                                        value={dataInput.phoneNumber}
+                                                        id="exampleInputphone" 
+                                                        value={dataInput.phone}
                                                         onChange={(e) => setDataInput({
                                                             ...dataInput,
-                                                            phoneNumber: e.target.value
+                                                            phone: e.target.value
                                                         })}
                                                     />
                                                 </div>
@@ -235,7 +225,7 @@ function UserManageEdit({
                                             </div>
                                             <button 
                                                 type="submit" 
-                                                className="btn btn-root text-white"
+                                                className="btn btn-root text-white fw-500"
                                                 onClick={(e) => handleUpdateUser(e)}
                                             >
                                                 Save
@@ -258,7 +248,6 @@ const mapStateToProps = state => {
         accessToken: state.auth.token,
         users: state.user.users,
         provinces: state.user.provinces,
-        genders: state.user.genders,
         roles: state.user.roles,
         isLoading: state.user.isLoadingUser
     }
@@ -266,10 +255,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllProvincesRedux: (accessToken) => dispatch(actions.fetchAllProvinces(accessToken)),
-        fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByType(type)),
+        getAllAddressRedux: (accessToken) => dispatch(actions.getAllAddress(accessToken)),
+        getAllRolesRedux: (accessToken) => dispatch(actions.getAllRoles(accessToken)),
         updateUserRedux: (data, accessToken, page) =>  dispatch(actions.updateUser(data, accessToken, page)),
-        fetchUserAllcodeRedux: (id, accessToken) => dispatch(actions.fetchUserAllcode(id, accessToken)),
+        getUserByIdRedux: (id, accessToken) => dispatch(actions.getUserById(id, accessToken)),
         refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState())
     }
 }

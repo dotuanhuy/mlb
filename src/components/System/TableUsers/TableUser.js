@@ -29,8 +29,6 @@ function TableUsers({
     const handleClose = () => setShow({});
     const handleShow = (id) => setShow({id})
 
-    console.log(show)
-
     useEffect(() => {
         refreshIsloadingStateRedux()
         // fetAllUsersRedux(accessToken)
@@ -126,7 +124,7 @@ function TableUsers({
                                                                 Close
                                                             </button>
                                                             <button 
-                                                                className='btn btn-root' 
+                                                                className='btn btn-root fw-500' 
                                                                 onClick={() => handleDeleteUser(item.id)}
                                                             >
                                                                 Yes
@@ -153,7 +151,6 @@ const mapStateToProps = state => {
         users: state.user.users,
         accessToken: state.auth.token,
         isLoading: state.user.isLoadingUser
-
     }
 }
 

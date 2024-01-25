@@ -67,7 +67,7 @@ function Clothes({
     isLoading,
     fetchAllColorsRedux, 
     getCategoriesByIdRedux, 
-    fetchAllCodeByTypeRedux,
+    // fetchAllCodeByTypeRedux,
     fetchAllImageProductRedux,
     getProductByCategoryRedux,
     getLimitProductsRedux,
@@ -87,7 +87,7 @@ function Clothes({
         refreshIsloadingStateProductRedux()
         fetchAllColorsRedux(allCode.COLOR)
         getCategoriesByIdRedux(categorieType.CLOTHES)
-        fetchAllCodeByTypeRedux(allCode.LOGO)
+        // fetchAllCodeByTypeRedux(allCode.LOGO)
         fetchAllImageProductRedux(accessToken)        
         let userId = ''
         if (accessToken) {
@@ -276,7 +276,7 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
         getCategoriesByIdRedux: (id) => dispatch(actions.getCategoriesById(id)),
-        fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
+        // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
         fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
         getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),
         getLimitProductsRedux: (category, page, accessToken) => dispatch(actions.getLimitProducts(category, page, accessToken)),

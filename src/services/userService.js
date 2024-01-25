@@ -30,14 +30,14 @@ const getAllUsers = (accessToken) => {
     return axiosJWT.get('/api/get-all-users', { headers: {token: `Bearer ${accessToken}`}})
 }
 
-const getAllProvinces = (accessToken) => {
+const getAllAddressService = (accessToken) => {
     const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get('/api/getAllProvinces', { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.get('/api/getAllProvinces')
+    return axiosJWT.get('/api/get-all-address', { headers: {token: `Bearer ${accessToken}`}})
 }
 
-const getAllCodeByType = (type) => {
-    return axios.get(`/api/get-allcode-by-type?type=${type}`)
+const getAllRolesService = (accessToken) => {
+    const axiosJWT = createAxios(accessToken)
+    return axiosJWT.get('/api/get-all-roles', { headers: {token: `Bearer ${accessToken}`}})
 }
  
 const handleDeleteUser = (id, accessToken, page) => {
@@ -46,10 +46,9 @@ const handleDeleteUser = (id, accessToken, page) => {
     // return axios.post('/api/delete-user', {id})
 }
 
-const getUserAllcode = (id, accessToken) => {
+const getUserByIdService = (id, accessToken) => {
     const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get(`/api/get-user-allCode?id=${id}`, { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.get(`/api/get-user-allCode?id=${id}`)
+    return axiosJWT.get(`/api/get-user-by-id?id=${id}`, { headers: {token: `Bearer ${accessToken}`}})
 }
 
 const getLimitUserService = (page, accessToken) => {
@@ -72,10 +71,10 @@ export {
     handleCreateNewUer,
     handleUpdateUser,
     getAllUsers,
-    getAllProvinces,
-    getAllCodeByType,
+    getAllAddressService,
+    getAllRolesService,
     handleDeleteUser,
-    getUserAllcode,
+    getUserByIdService,
     getLimitUserService,
     registerSevice,
     resetPasswordService

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './Sidebar.css'
-import { faCartShopping, faChartSimple, faHouse, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCartShopping, faChartSimple, faHouse, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { path } from '../../../../utils';
@@ -22,6 +22,7 @@ function Sidebar({active='dashboard'}) {
     //     customer: false,
     //     user: false
     // })
+
 
     return (
         <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse">
@@ -53,13 +54,45 @@ function Sidebar({active='dashboard'}) {
                     <li 
                         class="nav-item"
                     >   
-                        <a 
+                        <Link 
                             className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
-                            href="#"
+                            to={path.MANAGE_PRODUCTS}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
                             Products
-                        </a>
+                            <FontAwesomeIcon className='ps-2' icon={faCaretDown} />
+                        </Link>
+                        {/* <button
+                            className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            onClick={handleShowProductItem}
+                        >
+                            <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
+                            Products
+                            <FontAwesomeIcon className='ps-2' icon={faCaretDown} />
+                        </button> */}
+
+                        <ul className={active === 'product' ? 'dbloc' : 'd-none'}>
+                            <li className='border-bottom pb-2'>
+                                <Link className='text-muted opacity-7 text-size-14 fw-500'>
+                                    Shoes
+                                </Link>
+                            </li>
+                            <li className='border-bottom pb-2'>
+                                <Link className='text-muted opacity-7 text-size-14 fw-500'>
+                                    Backpack-Bag
+                                </Link>
+                            </li>
+                            <li className='border-bottom pb-2'>
+                                <Link className='text-muted opacity-7 text-size-14 fw-500'>
+                                    Hat
+                                </Link>
+                            </li>
+                            <li className='border-bottom pb-2'>
+                                <Link className='text-muted opacity-7 text-size-14 fw-500'>
+                                    Clothes
+                                </Link>
+                            </li>
+                        </ul>
                     </li>
                     <li 
                         class="nav-item"

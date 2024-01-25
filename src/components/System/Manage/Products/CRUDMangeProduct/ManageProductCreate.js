@@ -40,7 +40,7 @@ function ManageShoesCreate({
     sizes,
     genders,
     getAllCategoriesRedux, 
-    fetchAllCodeByTypeRedux, 
+    // fetchAllCodeByTypeRedux, 
     fetchAllColorsRedux,
     createNewProductRedux
 }) {
@@ -65,17 +65,17 @@ function ManageShoesCreate({
     // ComponentDidMount
     useEffect(() => {
         getAllCategoriesRedux(accessToken)
-        fetchAllCodeByTypeRedux(allCode.DISCOUNT)
-        fetchAllCodeByTypeRedux(allCode.BRAND)
-        fetchAllColorsRedux(allCode.COLOR)
-        fetchAllCodeByTypeRedux(allCode.LOGO)
-        if (location.state === categorieType.SHOES_SANDAL ) {
-            fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
-        }
-        else if (location.state === categorieType.CLOTHES) {
-            fetchAllCodeByTypeRedux(allCode.SIZEAO)
-        }
-        fetchAllCodeByTypeRedux(allCode.GENDER)
+        // fetchAllCodeByTypeRedux(allCode.DISCOUNT)
+        // fetchAllCodeByTypeRedux(allCode.BRAND)
+        // fetchAllColorsRedux(allCode.COLOR)
+        // fetchAllCodeByTypeRedux(allCode.LOGO)
+        // if (location.state === categorieType.SHOES_SANDAL ) {
+        //     fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
+        // }
+        // else if (location.state === categorieType.CLOTHES) {
+        //     fetchAllCodeByTypeRedux(allCode.SIZEAO)
+        // }
+        // fetchAllCodeByTypeRedux(allCode.GENDER)
     }, [])
 
     const buildDataSelect = (inputData) => {
@@ -572,7 +572,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
-        fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
+        // fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
         createNewProductRedux: (data, type, accessToken, page) => dispatch(actions.createNewProduct(data, type, accessToken, page))
     }

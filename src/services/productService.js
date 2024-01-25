@@ -15,6 +15,11 @@ const getAllProductPublicService = (accessToken) => {
     else return axios.get('/api/get-all-product-public')
 }
 
+const getQuantityOfEachProductByCategoryService = (accessToken) => {
+    const axiosJWT = createAxios(accessToken)
+    return axiosJWT.get('/api/get-quantity-ofeach-product-by-category', { headers: {token: `Bearer ${accessToken}`}})
+}
+
 const getAllCategoriesService = (accessToken) => {
     const axiosJWT = createAxios(accessToken)
     return axiosJWT.get('/api/get-all-categories', { headers: {token: `Bearer ${accessToken}`}})
@@ -133,6 +138,7 @@ export {
     getAllProductsService,
     getAllProductPublicService,
     createNewProductService,
+    getQuantityOfEachProductByCategoryService,
     getAllCategoriesService,
     getCategoriesByIdService,
     deleteProductService,

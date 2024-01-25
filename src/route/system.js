@@ -30,7 +30,7 @@ function System({isLogin}) {
                 <Route path={path.MANAGE_USER_DETAIL} element={<PrivateRouter Component={UserManageDetail} />}></Route>
 
                 <Route path={path.MANAGE_PRODUCTS} element={<PrivateRouter Component={ManageProducts}/>} />
-                
+
                 <Route path={path.MANAGE_PRODUCTS_SHOES} element={<PrivateRouter Component={ManageShoes}/>} /> 
                 <Route path={path.MANAGE_PRODUCTS_SHOES_CREATE} element={<PrivateRouter Component={ManageProductCreate}/>} />
                 <Route path={path.MANAGE_PRODUCTS_SHOES_EDIT} element={<PrivateRouter Component={ManageProductEdit}/>} />

@@ -10,12 +10,12 @@ const authReducer = (state = initState, action) => {
         case 'LOGIN_SUCCESS': 
             state.isLogin = true
             state.token = action?.data?.data?.accessToken
-            let {email, firstName, lastName, phoneNumber, gender, address, roleId} = action?.data?.data
+            let {email, firstName, lastName, phone, gender, address, roleId} = action?.data?.data
             state.user = {
                 email,
                 firstName,
                 lastName,
-                phoneNumber,
+                phone,
                 gender, 
                 address,
                 roleId

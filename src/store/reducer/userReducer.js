@@ -1,7 +1,6 @@
 const initState = {
     users: [],
     provinces: [],
-    genders: [],
     roles: [],
     isLoadingUser: true,
     count: 0
@@ -12,7 +11,6 @@ const userReducer = (state = initState, action) => {
         case 'REFRESH_STORE_SUCCESS': 
             state.users = []
             state.provinces = []
-            state.genders = []
             state.roles = []
             state.isLoadingUser = true
             state.count = 0
@@ -31,38 +29,48 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'FETCH_ALL_PROVINCES_SUCCESS':
+        case 'GET_ALL_ADDRESS_SUCCESS':
             state.provinces = action.data
             return {
                 ...state
             }
-        case 'FETCH_ALL_PROVINCES_FAILED':
+        case 'GET_ALL_ADDRESS_FAILED':
             state.provinces = []
             return {
                 ...state
             }
-        case 'FETCH_ALL_GENDER_SUCCESS':
-            state.genders = action.data
+        case 'GET_ALL_ROLES_SUCCESS':
+            state.roles = action.data
             return {
                 ...state
             }
-        case 'FETCH_ALL_ROLE_SUCCESS': 
-            state.roles = action.data 
+        case 'GET_ALL_ROLES_FAILED': 
+            state.roles = []
             return {
                 ...state
             }
-        case 'FETCH_ALL_CODE_BY_TYPE_FAILED':
-            state.genders = []
-            return {
-                ...state
-            }
-        case 'FETCH_USER_ALLCODE_SUCCESS':
+        // case 'FETCH_ALL_GENDER_SUCCESS':
+        //     state.genders = action.data
+        //     return {
+        //         ...state
+        //     }
+        // case 'FETCH_ALL_ROLE_SUCCESS': 
+        //     state.roles = action.data 
+        //     return {
+        //         ...state
+        //     }
+        // case 'FETCH_ALL_CODE_BY_TYPE_FAILED':
+        //     state.genders = []
+        //     return {
+        //         ...state
+        //     }
+        case 'GET_USER_BY_ID_SUCCESS':
             state.users = action.data
             state.isLoadingUser = false
             return {
                 ...state
             }
-        case 'FETCH_USER_ALLCODE_FAILED':
+        case 'GET_USER_BY_ID_FAILED':
             state.users = []
             state.isLoadingUser = true
             return {

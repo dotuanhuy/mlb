@@ -13,7 +13,7 @@ export const validate = (obj, value) => {
         else if (item === 'email' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(obj[item]))) {
             errors[item] = `Email không hợp lệ`
         }
-        else if (item === 'phoneNumber' && !(/^0[0-9]{9}$/.test(obj[item]))) {
+        else if (item === 'phone' && !(/^0[0-9]{9}$/.test(obj[item]))) {
             errors[item] = `Số điện thoại không hợp lệ`
         }
         else if ((item === 'password' || item === 'newPassword' || item === 'rePassword') && (obj[item].length < passwordLength.minLength || obj[item] > passwordLength.maxLength)) {

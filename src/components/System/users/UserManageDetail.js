@@ -17,13 +17,13 @@ function UserManageDetail({
     accessToken,
     isLoading,
     user,
-    fetchUserAllcodeRedux
+    getUserByIdRedux
 }) {
     const {userId} = useLocation().state
     const navigate = useNavigate()   
 
     useEffect(() => {
-        fetchUserAllcodeRedux(userId, accessToken)
+        getUserByIdRedux(userId, accessToken)
     }, [])
     
     const handleEdit = (user) => {
@@ -36,8 +36,8 @@ function UserManageDetail({
             }
         )
     }
-
-    return (    
+    console.log(user)
+    return (      
         <>
             {
                 isLoading ?
@@ -70,16 +70,16 @@ function UserManageDetail({
                                         <span className='fs-6 fw-500 '>Email: <span className='text-black'>{user?.email}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Phone: <span className='text-black'>{user?.phoneNumber}</span></span>
+                                        <span className='fs-6 fw-500'>Phone: <span className='text-black'>{user?.phone}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Address: <span className='text-black'>{user?.Province?.nameEn}</span></span>
+                                        <span className='fs-6 fw-500'>Address: <span className='text-black'>{user?.address}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Gender: <span className='text-black'>{user?.dataGender?.valueEn}</span></span>
+                                        <span className='fs-6 fw-500'>Gender: <span className='text-black'>{user?.gender}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Role: <span className='text-black'>{user?.dataRole?.valueEn}</span></span>
+                                        <span className='fs-6 fw-500'>Role: <span className='text-black'>{user?.dataRole?.name}</span></span>
                                     </div>
                                     <div className='mb-2'>
                                         <span className='fs-6 fw-500'>Create at: <span className='text-black'>{formatDateVN(user?.createdAt)}</span></span>
@@ -89,7 +89,7 @@ function UserManageDetail({
                             <div className='mt-4'>
                                 <button className='btn btn-root btn-add me-2'>
                                     <Link 
-                                        className='text-white' 
+                                        className='text-white fw-500' 
                                         to={path.MANAGE_USER}
                                     >
                                         <FontAwesomeIcon className='pe-2' icon={faBackward} />
@@ -97,7 +97,7 @@ function UserManageDetail({
                                     </Link>
                                 </button>
                                 <button 
-                                    className='btn btn-root-2 btn-add'
+                                    className='btn btn-root-2 btn-add fw-500'
                                     onClick={() => handleEdit(user)}
                                 >
                                     <FontAwesomeIcon className='pe-2' icon={faPenToSquare} />
@@ -122,7 +122,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUserAllcodeRedux: (id, accessToken) => dispatch(actions.fetchUserAllcode(id, accessToken))
+        getUserByIdRedux: (id, accessToken) => dispatch(actions.getUserById(id, accessToken))
     }
 }
 

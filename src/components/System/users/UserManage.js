@@ -21,7 +21,7 @@ function UserManage() {
                     <div className='d-flex justify-content-between'>
                         <h2>User</h2>
                         <button className='btn btn-root btn-add py-1'>
-                            <Link className='text-white' to={path.MANAGE_USER_CREATE}>Add new</Link>
+                            <Link className='text-white fw-500' to={path.MANAGE_USER_CREATE}>Add new</Link>
                         </button>
                     </div>
                     <hr/>

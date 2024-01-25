@@ -12,7 +12,7 @@ import { validate } from '../../validate/valiedate';
 const inintState = {
     firstName: '',
     lastName: '',
-    phoneNumber: '',
+    phone: '',
     email: '',
     password: '',
     roleId: Role.USER,
@@ -112,23 +112,23 @@ function Register({createNewUserRedux}) {
                                         }  
                                     </div>  
                                     <div className="form-group pb-4">
-                                        <label className='label-input' htmlFor="exampleInputPhoneNumber">SỐ ĐIỆN THOẠI*</label>
+                                        <label className='label-input' htmlFor="exampleInputphone">SỐ ĐIỆN THOẠI*</label>
                                         <input 
                                             type="text" 
                                             className="form-control" 
-                                            id="exampleInputPhoneNumber" 
+                                            id="exampleInputphone" 
                                             placeholder="Nhập Số điện thoại" 
-                                            value={inforUser.phoneNumber}
+                                            value={inforUser.phone}
                                             onChange={(e) =>  {
                                                 setErrors({})
                                                 setInforUser({
                                                     ...inforUser,
-                                                    phoneNumber: e.target.value
+                                                    phone: e.target.value
                                                 })
                                             }}
                                         />
                                         {
-                                            errors && errors.phoneNumber ? <span className='error'>{errors.phoneNumber}</span> : ''
+                                            errors && errors.phone ? <span className='error'>{errors.phone}</span> : ''
                                         }  
                                     </div>
                                     <div className="form-group pb-4">

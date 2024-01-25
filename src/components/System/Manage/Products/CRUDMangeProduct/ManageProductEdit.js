@@ -45,7 +45,7 @@ function ManageShoesEdit({
     isLoading,
     getProductByIdRedux,
     getAllCategoriesRedux, 
-    fetchAllCodeByTypeRedux, 
+    // fetchAllCodeByTypeRedux, 
     fetchAllColorsRedux,
     updateProductRedux,
     refreshIsloadingStateProductRedux
@@ -71,17 +71,17 @@ function ManageShoesEdit({
     useEffect(() => {
         refreshIsloadingStateProductRedux()
         getAllCategoriesRedux(accessToken)
-        fetchAllCodeByTypeRedux(allCode.DISCOUNT)
-        fetchAllCodeByTypeRedux(allCode.BRAND)
-        fetchAllColorsRedux(allCode.COLOR)
-        fetchAllCodeByTypeRedux(allCode.LOGO)
-        if (location.state.typeCategore === categorieType.SHOES_SANDAL) {
-            fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
-        } 
-        else if (location.state.typeCategore === categorieType.CLOTHES) {
-            fetchAllCodeByTypeRedux(allCode.SIZEAO)
-        }
-        fetchAllCodeByTypeRedux(allCode.GENDER)
+        // fetchAllCodeByTypeRedux(allCode.DISCOUNT)
+        // fetchAllCodeByTypeRedux(allCode.BRAND)
+        // fetchAllColorsRedux(allCode.COLOR)
+        // fetchAllCodeByTypeRedux(allCode.LOGO)
+        // if (location.state.typeCategore === categorieType.SHOES_SANDAL) {
+        //     fetchAllCodeByTypeRedux(allCode.SIZEGIAY)
+        // } 
+        // else if (location.state.typeCategore === categorieType.CLOTHES) {
+        //     fetchAllCodeByTypeRedux(allCode.SIZEAO)
+        // }
+        // fetchAllCodeByTypeRedux(allCode.GENDER)
         getProductByIdRedux(location.state.id, accessToken)
     }, [])
 
@@ -636,7 +636,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getProductByIdRedux: (id, accessToken) => dispatch(actions.getProductById(id, accessToken)),
         getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
-        fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
+        // fetchAllCodeByTypeRedux: (discount) => dispatch(actions.fetchAllCodeByTypeProduct(discount)),
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
         updateProductRedux: (data, categorieType, accessToken, page) => dispatch(actions.updateProduct(data, categorieType, accessToken, page)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct())
