@@ -20,12 +20,6 @@ const getQuantityOfEachProductByCategoryService = (accessToken) => {
     return axiosJWT.get('/api/get-quantity-ofeach-product-by-category', { headers: {token: `Bearer ${accessToken}`}})
 }
 
-const getAllCategoriesService = (accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get('/api/get-all-categories', { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.get('/api/get-all-categories')
-}
-
 const getCategoriesByIdService = (id) => {
     return axios.get(`/api/get-categories-by-id?id=${id}`)
 }
@@ -38,7 +32,7 @@ const createNewProductService = (data, accessToken) => {
 
 const deleteProductService = (id, accessToken) => {
     const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/delete-product', { id }, { headers: {token: `Bearer ${accessToken}`}})
+    return axiosJWT.post('/api/delete-product-by-id', { id }, { headers: {token: `Bearer ${accessToken}`}})
     // return axios.post('/api/delete-product', { id })
 }
 
@@ -88,8 +82,12 @@ const addDescriptionProductService = (data, accessToken) => {
     // return axios.post('/api/add-description-product', data)
 }
 
-const getProductByCategoryService = (category) => {
-    return axios.get(`/api/get-product-by-category?category=${category}`)
+const getProductByCategoryService = (type) => {
+    return axios.get(`/api/get-product-by-category?type=${type}`)
+}
+
+const getProductByCategoryLimitService = (type, offset) => {
+    return axios.get(`/api/get-product-by-category-limit?type=${type}&offset=${offset}`)
 }
 
 const getLimitProductService = (categore, page, accessToken) => {
@@ -139,7 +137,6 @@ export {
     getAllProductPublicService,
     createNewProductService,
     getQuantityOfEachProductByCategoryService,
-    getAllCategoriesService,
     getCategoriesByIdService,
     deleteProductService,
     getProductByIdService,
@@ -150,6 +147,7 @@ export {
     addDescriptionProductService,
     fetchDescriptionProductService,
     getProductByCategoryService,
+    getProductByCategoryLimitService,
     getLimitProductService,
     getLimitProductByOptionSortService,
     searchProductByNameService,

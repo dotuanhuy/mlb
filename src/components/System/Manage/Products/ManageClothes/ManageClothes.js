@@ -4,7 +4,7 @@ import './ManageClothes.scss'
 import Nav from '../../../nav/nav';
 import { Link } from 'react-router-dom';
 import { path, categorieType } from '../../../../../utils';
-import TableProducts from '../TableProducts/TableProducts';
+import TableProducts from '../../../common/tableProducts/TableProducts';
 
 
 function ManageClothes({isLogin}) {

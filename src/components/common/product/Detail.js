@@ -68,8 +68,6 @@ function Detail({accessToken, product, sizes, addProductToCartRedux}) {
         addProductToCartRedux(accessToken, { userId, productId: product?.id, quantity:quantity, size})
     }
    
-    console.log(product)
-
     return (
         <div className='product-detail'>
             <h3 className='fs-4'>{product?.name}</h3>

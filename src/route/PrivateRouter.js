@@ -6,7 +6,7 @@ import axios from "../axios";
 import {createAxios} from '../axiosJWT'
 import Cookies from 'js-cookie';
 
-function PrivateRouter({users, isLogin, accessToken, Component}) {
+function PrivateRouter({categoryType=null, active=null, users, isLogin, accessToken, Component}) {
     const [isAdmin, setIsAdmin] = useState(null)
     const navigate = useNavigate()
     useEffect(() => {
@@ -24,7 +24,7 @@ function PrivateRouter({users, isLogin, accessToken, Component}) {
     }, [])
     if (isAdmin !== null) {
         return ( 
-            isAdmin ? <Component /> : <Navigate to='/' />
+            isAdmin ? <Component active={active} categoryType={categoryType}/> : <Navigate to='/' />
         );
     }
     return (

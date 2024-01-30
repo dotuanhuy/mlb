@@ -4,7 +4,7 @@ import './ManageHat.scss'
 import Nav from '../../../nav/nav';
 import { Link, useNavigate } from 'react-router-dom';
 import { path, categorieType } from '../../../../../utils';
-import TableProducts from '../TableProducts/TableProducts';
+import TableProducts from '../../../common/tableProducts/TableProducts';
 
 
 function ManageHat({isLogin}) {

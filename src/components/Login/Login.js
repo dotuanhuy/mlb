@@ -26,10 +26,10 @@ function Login({user, isLogin, fetLoginRedux}) {
     }, [])
 
     useEffect(() => {
-        if (isLogin && user.roleId === 'R1') {
+        if (isLogin && user.roleId === 1) {
             navigate(path.MANAGE)
         }
-        else if (isLogin && user.roleId === 'R2') {
+        else if (isLogin && user.roleId === 2) {
             navigate(path.HOMEPAGE)
         }
     }, [isLogin])

@@ -15,6 +15,7 @@ import {
     addDescriptionProductService,
     fetchDescriptionProductService,
     getProductByCategoryService,
+    getProductByCategoryLimitService,
     getLimitProductService,
     getLimitProductByOptionSortService,
     searchProductByNameService,
@@ -105,62 +106,6 @@ export const getAllProductPublic = (accessToken) => {
     }
 }
 
-// export const fetchAllCodeByTypeProduct = (type) => {
-//     return async (dispatch, getSate) => {
-//         try {
-//             let res = await getAllCodeByType(type)
-//             if (res && res.errCode === 0) {
-//                 if (type === allCode.LOGO) {
-//                     dispatch({
-//                         type: actionTypes.FETCH_ALL_LOGO_SUCCESS,
-//                         data: res.data
-//                     })
-//                 }
-//                 else if (type === allCode.DISCOUNT) {
-//                     dispatch({
-//                         type: actionTypes.FETCH_ALL_DISCOUNT_SUCCESS,
-//                         data: res.data
-//                     })
-//                 }
-//                 else if (type === allCode.BRAND) {
-//                     dispatch({
-//                         type: actionTypes.FETCH_ALL_BRAND_SUCCESS,
-//                         data: res.data
-//                     })
-//                 }
-//                 else if (type === allCode.SIZEGIAY) {
-//                     dispatch({
-//                         type: actionTypes.FETCH_ALL_SIZEGIAY_SUCCESS,
-//                         data: res.data
-//                     })
-//                 }
-//                 else if (type === allCode.GENDER) {
-//                     dispatch({
-//                         type: actionTypes.FETCH_GENDER_PRODUCT_SUCCESS,
-//                         data: res.data
-//                     })
-//                 }
-//                 else if (type === allCode.SIZEAO) {
-//                     dispatch({
-//                         type: actionTypes.FETCH_ALL_SIZEAO_SUCCESS,
-//                         data: res.data
-//                     })
-//                 }
-//             }
-//             else {
-//                 dispatch({
-//                     type: actionTypes.FETCH_ALL_CODE_BY_TYPE_FAILED
-//                 })
-//             }
-//         } catch(e) {
-//             console.log('fetchAllGenders error: ', e)
-//             dispatch({
-//                 type: actionTypes.FETCH_ALL_CODE_BY_TYPE_FAILED
-//             })
-//         }
-//     }
-// }
-
 export const fetchAllColors = (type) => {
     return async (dispatch, getSate) => {
         // try {
@@ -180,6 +125,7 @@ export const fetchAllColors = (type) => {
     }
 }
 
+//*
 export const getQuantityOfEechProductByCategory = (accessToken) => {
     return async (dispatch, getSate) => {
         try {
@@ -205,53 +151,30 @@ export const getQuantityOfEechProductByCategory = (accessToken) => {
 }
 
 export const getCategoriesById = (id) => {
-    return async (dispatch, getSate) => {
-        try {
-            let res = await getCategoriesByIdService(id)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.GET_CATEGORIES_BY_ID_SUCCESS,
-                    data: res.data
-                })
-            }
-            else {
-                dispatch({
-                    type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
-                })
-            }
-        } catch(e) {
-            console.log('getCategoriesById error: ' ,e)
-            dispatch({
-                type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
-            })
-        }
-    }
+    // return async (dispatch, getSate) => {
+    //     try {
+    //         let res = await getCategoriesByIdService(id)
+    //         if (res && res.errCode === 0) {
+    //             dispatch({
+    //                 type: actionTypes.GET_CATEGORIES_BY_ID_SUCCESS,
+    //                 data: res.data
+    //             })
+    //         }
+    //         else {
+    //             dispatch({
+    //                 type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
+    //             })
+    //         }
+    //     } catch(e) {
+    //         console.log('getCategoriesById error: ' ,e)
+    //         dispatch({
+    //             type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
+    //         })
+    //     }
+    // }
 }
 
-export const getAllCategories = (accessToken) => {
-    return async (dispatch, getSate) => {
-        try {
-            let res = await getAllCategoriesService(accessToken)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.FETCH_ALL_CATEGORIES_SUCCESS,
-                    data: res.data
-                })
-            }
-            else {
-                dispatch({
-                    type: actionTypes.FETCH_ALL_CATEGORIES_FAILED
-                })
-            }
-        } catch (e) {
-            console.log('getAllCategories error: ', e)
-            dispatch({
-                type: actionTypes.FETCH_ALL_CATEGORIES_FAILED
-            })
-        }
-    }
-}
-
+//*
 export const createNewProduct = (product, type, accessToken, page) => {
     return async (dispatch, getState) => {
         try {
@@ -260,8 +183,7 @@ export const createNewProduct = (product, type, accessToken, page) => {
                 dispatch({
                     type: actionTypes.CREATE_NEW_PRODUCT_SUCCESS
                 })
-                // dispatch(getAllProducts(type, accessToken))
-                dispatch(getLimitProducts(type, page, accessToken))
+                dispatch(getProductByCategoryLimit(type, page))
             }
             else if (res && res.errCode === 1) {
                 alert('Sản phẩm đã tồn tại')
@@ -291,8 +213,7 @@ export const deleteProduct = (id, type, accessToken, page) => {
                 dispatch({
                     type: actionTypes.DELETE_PRODUCT_SUCCESS
                 })
-                // dispatch(getAllProducts(type, accessToken))
-                dispatch(getLimitProducts(type, page, accessToken))
+                dispatch(getProductByCategoryLimit(type, page))
             }
             else {
                 dispatch({
@@ -314,19 +235,19 @@ export const getProductById = (id, accessToken) => {
             let res = await getProductByIdService(id, accessToken) 
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.FETCH_PRODUCT_BY_ID_SUCCESS,
+                    type: actionTypes.GET_PRODUCT_BY_ID_SUCCESS,
                     data: res.data
                 })
             }
             else {
                 dispatch({
-                    type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
+                    type: actionTypes.GET_PRODUCT_BY_ID_FAILED
                 })
             }
         } catch(e) {
             console.log('getProductById error: ', e) 
             dispatch({
-                type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
+                type: actionTypes.GET_PRODUCT_BY_ID_FAILED
             })
         }
     }
@@ -341,7 +262,7 @@ export const updateProduct = (data, type, accessToken, page) => {
                     type: actionTypes.EDIT_PRODUCT_SUCCESS
                 })
                 // dispatch(getAllProducts(type, accessToken))
-                dispatch(getLimitProducts(type, page, accessToken))
+                dispatch(getProductByCategoryLimit(type, page))
             }
             else {
                 dispatch({
@@ -477,10 +398,10 @@ export const addDescriptionProduct = (data, accessToken) => {
     }
 }
 
-export const getProductByCategory = (category) => {
+export const getProductByCategory = (type) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getProductByCategoryService(category) 
+            let res = await getProductByCategoryService(type) 
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_PRODUCT_BY_CATEGORY_SUCCESS,
@@ -496,6 +417,31 @@ export const getProductByCategory = (category) => {
             console.log('getProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_BY_CATEGORY_FAILED
+            })
+        }
+    }
+}
+
+export const getProductByCategoryLimit = (type, offset) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getProductByCategoryLimitService(type, +offset - 1) 
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_PRODUCT_BY_CATEGORY_LIMIT_SUCCESS,
+                    data: res.data.rows,
+                    count: res.data.count
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_PRODUCT_BY_CATEGORY_LIMIT_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getProductByCategory error: ', e)
+            dispatch({
+                type: actionTypes.GET_PRODUCT_BY_CATEGORY_LIMIT_FAILED
             })
         }
     }

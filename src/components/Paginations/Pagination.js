@@ -24,14 +24,14 @@ function Pagination({
     useEffect(() => {
         // let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_USER_CREATE  ? countUser : countProduct)  / +limit_page)
         let maxPage = 0
-        if (pathPage === path.MANAGE_USER || path.MANAGE_USER_CREATE) {
+        if (pathPage === path.MANAGE_USER || pathPage === path.MANAGE_USER_CREATE) {
             maxPage =  Math.ceil(countUser / +limit_page)
-        }
-        else if (pathPage === path.MANAGE_USER_CREATE) {
-            maxPage =  Math.ceil(countProduct / +limit_page)
         }
         else if (pathPage === path.FAVOURITE) {
             maxPage =  Math.ceil(countProductsFavourite / +limit_page)
+        }
+        else {
+            maxPage =  Math.ceil(countProduct / +limit_page)
         }
         let end = (+currentPageP + 2) > maxPage ? maxPage : (+currentPageP + 2)
         let start = (+currentPageP - 2) <= 0 ? 1 : (+currentPageP - 2)

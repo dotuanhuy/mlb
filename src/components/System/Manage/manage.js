@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './manage.scss'
-import TableUser from '../TableUsers/TableUser';
-import Nav from '../nav/nav';
 import { Link, useNavigate } from 'react-router-dom';
 import { path, Role } from '../../../utils';
 import * as actions from '../../../store/actions'

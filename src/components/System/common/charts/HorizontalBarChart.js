@@ -30,15 +30,10 @@ function HorizontalBarChart({labels, titleText, label, data}) {
         }
         if (data.length > 0) {
             setStateData(labels.map(item => {
-               const temp = data.find(element => element.dataCategory.categoryId === item.categoryId)
-               return temp
+               return data.find(element => element.dataCategoryDetail?.type === item.type)
             }))
         }
     }, [labels, data])
-
-    console.log('check labels', labels)
-    console.log('check data', data)
-    console.log('check new data: ', stateData)
 
     return (    
         <Bar 

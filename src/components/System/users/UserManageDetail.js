@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { path } from '../../../utils';
 import avatart_male_none from '../../../assets/avatar/avatar_male_none.jpg'
 import * as actions from '../../../store/actions'
@@ -19,24 +19,25 @@ function UserManageDetail({
     user,
     getUserByIdRedux
 }) {
-    const {userId} = useLocation().state
     const navigate = useNavigate()   
+    const [params] = useSearchParams()
 
     useEffect(() => {
-        getUserByIdRedux(userId, accessToken)
+        getUserByIdRedux(params.get('id'), accessToken)
     }, [])
     
     const handleEdit = (user) => {
         navigate(
-            path.MANAGE_USER_EDIT, 
             {
-                state: {
-                    id: user.id
-                }
-            }
+                pathname: path.MANAGE_USER_EDIT, 
+                search: createSearchParams({
+                    id: user.id,
+                    page: params.get('page')
+                }).toString()
+            }   
         )
     }
-    console.log(user)
+    
     return (      
         <>
             {

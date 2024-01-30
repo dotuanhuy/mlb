@@ -2,18 +2,10 @@ import userReducer from "./userReducer"
 
 const initState = {
     products: [],
-    categorieById: [],
-    colors: [],
-    categories: [],
-    logos: [],
-    discounts: [],
-    brands: [],
-    sizes: [],
-    genders: [],
+    count: 0,
     images: [],
     descriptions: [],
     isLoadingProduct: true,
-    count: 0,
     countFavouriteProduct: 0,
     productSearch: [],
     productSearchLimit: [],
@@ -29,14 +21,6 @@ const productReducer = (state = initState, action) => {
             }
         case 'REFRESH_STORE_SUCCESS':
             state.products = []
-            state.categorieById = []
-            state.colors = []
-            state.categories = []
-            state.logos = []
-            state.discounts = []
-            state.brands = []
-            state.sizes = []
-            state.genders = []
             state.images = []
             state.descriptions = []
             state.isLoadingProduct = true
@@ -44,15 +28,6 @@ const productReducer = (state = initState, action) => {
             state.countFavouriteProduct = 0
             state.productSearch = []
             state.productSearchLimit = []
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_CODE_BY_TYPE_FAILED':
-            state.logos = []
-            state.discounts = []
-            state.brands = []
-            state.sizes = []
-            state.genders = []
             return {
                 ...state
             }
@@ -78,79 +53,18 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'FETCH_ALL_COLOR_SUCCSESS': 
-            state.colors = action.data
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_COLOR_FAILED': 
-            state.colors = []
-            return {
-                ...state
-            }
-        case 'GET_CATEGORIES_BY_ID_SUCCESS':
-            state.categorieById = action.data
-            return {
-                ...state
-            }
-        case 'GET_categorieById_BY_ID_FAILED':
-            state.categorieById = []
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_LOGO_SUCCESS':
-            state.logos = action.data 
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_SIZEGIAY_SUCCESS': 
-            state.sizes = action.data 
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_SIZEAO_SUCCESS': 
-            state.sizes = action.data
-            return {
-                ...state
-            }
-        case 'FETCH_GENDER_PRODUCT_SUCCESS':
-            state.genders = action.data
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_CATEGORIES_SUCCESS': 
-            state.categories = action.data
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_CATEGORIES_FAILED':
-            state.categories = []
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_DISCOUNT_SUCCESS': 
-            state.discounts = action.data
-            return  {
-                ...state
-            }
-        case 'FETCH_ALL_BRAND_SUCCESS': 
-            state.brands = action.data
-            return {
-                ...state
-            }
         case 'FETCH_ALL_PRODUCTS_FAILED':
             state.products = []
             return {
                 ...state
             }
-        case 'FETCH_PRODUCT_BY_ID_SUCCESS':
+        case 'GET_PRODUCT_BY_ID_SUCCESS':
             state.products = action.data
-            state.sizes = action?.data?.listSize ? action?.data?.listSize?.split(',') : []
             state.isLoadingProduct = false
             return {
                 ...state
             }
-        case 'FETCH_PRODUCT_BY_ID_FAILED':
+        case 'GET_PRODUCT_BY_ID_FAILED':
             state.products = []
             state.isLoadingProduct = true
             return {
@@ -199,6 +113,20 @@ const productReducer = (state = initState, action) => {
             }
         case 'GET_PRODUCT_BY_CATEGORY_FAILED':
             state.products = []
+            return {
+                ...state
+            }
+        case 'GET_PRODUCT_BY_CATEGORY_LIMIT_SUCCESS':
+            state.products = action.data
+            state.isLoadingProduct = false
+            state.count = action.count
+            return {
+                ...state
+            }
+        case 'GET_PRODUCT_BY_CATEGORY_LIMIT_FAILED':
+            state.products = []
+            state.isLoadingProduct = true
+            state.count = 0
             return {
                 ...state
             }

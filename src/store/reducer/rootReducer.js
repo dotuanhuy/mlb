@@ -1,5 +1,11 @@
 import authReducer from "./authReducer";
 import userReducer from './userReducer';
+import categoryReducer from './categoryReducer';
+import discountReducer from './discountReducer';
+import brandReducer from "./brandReducer";
+import sizeReducer from "./sizeReducer";
+import colorReducer from './colorReducer'
+import logoReducer from "./logoReducer";
 import productReducer from "./productReducer";
 import fouriteProductReducer from './favouriteProductReducer'
 import cartReducer from "./cartReducer";
@@ -22,9 +28,15 @@ const authConfig = {
 const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReducer),   // Lưu dưới storage
     user: userReducer,
+    category: categoryReducer,
+    discount: discountReducer,
+    brand: brandReducer,
+    size: sizeReducer,
+    color: colorReducer,
+    logo: logoReducer,
     product: productReducer,
     fouriteProduct: fouriteProductReducer,
-    cart: cartReducer
+    cart: cartReducer,
 })
 
 export default rootReducer

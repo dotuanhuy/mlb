@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { path, Role } from '../../../utils';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
@@ -31,13 +31,14 @@ function UserManageEdit({
     const [listGenders, setListGenders] = useState([])
     const [listRoles, setListRoles] = useState([])    
     const navigate = useNavigate()
-    
+    const [params] = useSearchParams()
+
     // ComponentDidMount
     useEffect(() => {
         refreshIsloadingStateRedux()
         getAllAddressRedux(accessToken)
         getAllRolesRedux(accessToken)
-        getUserByIdRedux(state.id, accessToken)
+        getUserByIdRedux(params.get('id'), accessToken)
     }, [])
 
     // ComponentDidUpdate
@@ -92,7 +93,6 @@ function UserManageEdit({
         e.preventDefault()
         let newUser = {
             id: dataInput.id,
-            email: dataInput.email,
             firstName: dataInput.firstName,
             lastName: dataInput.lastName,
             phone: dataInput.phone,
@@ -101,13 +101,21 @@ function UserManageEdit({
             roleId: selectRole.value,
             avatar: ''
         }
-        if (state?.pageCurrent) {
-            updateUserRedux(newUser, accessToken, state?.pageCurrent)
-            navigate(path.MANAGE_USER)
+        if (params.get('page')) {
+            updateUserRedux(newUser, accessToken, params.get('page'))
+            navigate(
+                {
+                    pathname: path.MANAGE_USER, 
+                    search: createSearchParams({page: params.get('page') ? params.get('page') : 1}).toString(),
+                }
+            )
         }
         else {
             updateUserRedux(newUser, accessToken)
-            navigate(path.MANAGE_USER_DETAIL, { state: { userId: users?.id } })
+            navigate({
+                pathname: path.MANAGE_USER_DETAIL,
+                search: createSearchParams({ id: users?.id }).toString()
+            })
         }
     }
 
@@ -143,10 +151,7 @@ function UserManageEdit({
                                                         id="exampleInputEmail1" 
                                                         aria-describedby="emailHelp" 
                                                         value={dataInput.email}
-                                                        onChange={(e) => setDataInput({
-                                                            ...dataInput,
-                                                            email: e.target.value
-                                                        })}
+                                                        disabled
                                                     />
                                                 </div>
                                                 <div className="mb-3 col-4">

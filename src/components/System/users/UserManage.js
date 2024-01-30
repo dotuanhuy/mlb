@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
-import TableUser from '../TableUsers/TableUser';
+import TableUser from '../common/tableUsers/TableUser';
 import { path } from '../../../utils';
 import { Link } from 'react-router-dom';
 

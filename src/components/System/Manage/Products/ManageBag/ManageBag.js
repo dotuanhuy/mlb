@@ -4,7 +4,7 @@ import './ManageBag.scss'
 import Nav from '../../../nav/nav';
 import { Link } from 'react-router-dom';
 import { path, Role, categorieType } from '../../../../../utils';
-import TableProducts from '../TableProducts/TableProducts';
+import TableProducts from '../../../common/tableProducts/TableProducts';
 
 
 function ManageBag({isLogin}) {

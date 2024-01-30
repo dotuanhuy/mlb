@@ -49,21 +49,6 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        // case 'FETCH_ALL_GENDER_SUCCESS':
-        //     state.genders = action.data
-        //     return {
-        //         ...state
-        //     }
-        // case 'FETCH_ALL_ROLE_SUCCESS': 
-        //     state.roles = action.data 
-        //     return {
-        //         ...state
-        //     }
-        // case 'FETCH_ALL_CODE_BY_TYPE_FAILED':
-        //     state.genders = []
-        //     return {
-        //         ...state
-        //     }
         case 'GET_USER_BY_ID_SUCCESS':
             state.users = action.data
             state.isLoadingUser = false

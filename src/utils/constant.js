@@ -16,6 +16,7 @@ export const path = {
     MANAGE_PRODUCTS_SHOES: '/system/manage/products/shoes',
     MANAGE_PRODUCTS_SHOES_CREATE: '/system/manage/products/shoes/create',
     MANAGE_PRODUCTS_SHOES_EDIT: '/system/manage/products/shoes/edit',
+    MANAGE_PRODUCTS_SHOES_DETAIL: '/system/manage/products/shoes/detail',
 
     MANAGE_PRODUCTS_BAG_BALO: '/system/manage/products/bag-balo',
     MANAGE_PRODUCTS_BAG_BALO_CREATE: '/system/manage/products/bag-balo/create',
@@ -82,6 +83,20 @@ export const allCode = {
     SIZEAO: 'SIZEAO'
 }
 
+export const Active = {
+    SHOSE: 'Shoes',
+    BAG_BALO: 'Bag-balo',
+    HAT: 'Hat',
+    CLOTHES: 'Clothes'
+}
+
+export const TitleProduct = {
+    GS: 'Shoe',
+    TB: 'Balo',
+    MN: 'Hat',
+    AQ: 'Clothes'
+}
+
 export const Role = {
     ADMIN: 'R1',
     USER: 'R2'
@@ -116,18 +131,18 @@ export const listClothes = {
     DRESS2: 'A4'
 }
 
-export const listColor = {
-    WHITE: 'White',
-    BLACK: 'Black',
-    GRAY: 'Gray',
-    BROWN: 'Brown',
-    BLUE: 'Blue',
-    GREEN: 'Green',
-    PINK: 'Pink',
-    LPINK: 'LightPink',
-    RED: 'Red',
-    ORANGE: 'Orange',
-    YELLOW: 'Yellow'
+export const ListColorsProduct = {
+    'Trắng': 'White',
+    'Đen': 'Black',
+    'Xám': 'Gray',
+    'Nâu': 'Brown',
+    'Xanh lam': 'Blue',
+    'Xanh lục': 'Green',
+    'Hồng': 'Pink',
+    'Hồng nhạt': 'LightPink',
+    'Đỏ': 'Red',
+    'Cam': 'Orange',
+    'Vàng': 'Yellow'
 }
 
 export const passwordLength = {

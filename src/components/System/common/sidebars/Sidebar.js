@@ -4,7 +4,7 @@ import './Sidebar.css'
 import { faCaretDown, faCartShopping, faChartSimple, faHouse, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { path } from '../../../../utils';
+import { Active, categorieType, path } from '../../../../utils';
 
 const initActive = {
     dashboard: false,
@@ -14,7 +14,7 @@ const initActive = {
     user: false
 }
 
-function Sidebar({active='dashboard'}) {
+function Sidebar({active='dashboard', activeChild = ''}) {
     // const [active, setActive] = useState({
     //     dashboard: true,
     //     report: false,
@@ -73,22 +73,35 @@ function Sidebar({active='dashboard'}) {
 
                         <ul className={active === 'product' ? 'dbloc' : 'd-none'}>
                             <li className='border-bottom pb-2'>
-                                <Link className='text-muted opacity-7 text-size-14 fw-500'>
+                                <Link 
+                                    className={activeChild === Active.SHOSE ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    to={path.MANAGE_PRODUCTS_SHOES}
+                                    // state={{ categoryType: categorieType.SHOES_SANDAL }}
+                                >
                                     Shoes
                                 </Link>
                             </li>
                             <li className='border-bottom pb-2'>
-                                <Link className='text-muted opacity-7 text-size-14 fw-500'>
+                                <Link 
+                                    className={activeChild === Active.BAG_BALO ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    to={path.MANAGE_PRODUCTS_BAG_BALO}
+                                >
                                     Backpack-Bag
                                 </Link>
                             </li>
                             <li className='border-bottom pb-2'>
-                                <Link className='text-muted opacity-7 text-size-14 fw-500'>
+                                <Link 
+                                    className={activeChild === Active.HAT ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    to={path.MANAGE_PRODUCTS_HAT}
+                                >
                                     Hat
                                 </Link>
                             </li>
                             <li className='border-bottom pb-2'>
-                                <Link className='text-muted opacity-7 text-size-14 fw-500'>
+                                <Link 
+                                    className={activeChild === Active.CLOTHES ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    to={path.MANAGE_PRODUCTS_CLOTHES}
+                                >
                                     Clothes
                                 </Link>
                             </li>
