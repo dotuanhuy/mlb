@@ -48,9 +48,9 @@ const updateProductService = (data, accessToken) => {
     // return axios.post('/api/update-product', data)
 }
 
-const deleteImageProductService = (id, accessToken) => {
+const changeImageProductByIdService = (data, accessToken) => {
     const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/delete-image-product', { id }, { headers: {token: `Bearer ${accessToken}`}})
+    return axiosJWT.post('/api/change-image-product-by-id', { data }, { headers: {token: `Bearer ${accessToken}`}})
     // return axios.post('/api/delete-image-product', { id })
 }
 
@@ -125,7 +125,7 @@ export {
     deleteProductService,
     getProductByIdService,
     updateProductService,
-    deleteImageProductService,
+    changeImageProductByIdService,
     addDescriptionProductService,
     fetchDescriptionProductService,
     getProductByCategoryService,

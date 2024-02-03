@@ -34,7 +34,6 @@ function ProductManageDetail({
         getAllImagesByProductIdRedux(params.get('id'), accessToken)
     }, [])
     
-    
     const handleEdit = (id) => {
         navigate({
             pathname: actives?.pathToEdit,

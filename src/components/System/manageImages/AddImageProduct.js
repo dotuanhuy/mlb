@@ -202,7 +202,7 @@ const mapDispatchToProps = dispatch => {
         refreshIsLoadingImagesRedux: () => dispatch(actions.refreshIsLoadingImages()),
         getAllImagesByProductIdRedux: (id, accessToken) => dispatch(actions.getAllImagesByProductId(id, accessToken)),
         addImageProductRedux: (data, accessToken) => dispatch(actions.addImageProduct(data, accessToken)),
-        deleteImageProductRedux: (id, type, accessToken) => dispatch(actions.deleteImageProduct(id, type, accessToken)),
+        // deleteImageProductRedux: (id, type, accessToken) => dispatch(actions.deleteImageProduct(id, type, accessToken)),
     }
 }
 

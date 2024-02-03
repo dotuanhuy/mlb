@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate, createSearchParams } from 'react-router-dom';
+import { useNavigate, createSearchParams, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { Buffer } from 'buffer';
 import CommonUtils from '../../../utils/CommonUtils';
@@ -8,38 +8,34 @@ import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
 import { Modal } from 'react-bootstrap';
-import { faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 function ProductManageImage({
-    actives,
     images,
     accessToken,
-    isLoading,
     product,
-    getAllImagesByProductIdRedux,
     addImageProductRedux,
+    changeImageProductByIdRedux,
     deleteImageProductRedux,
     refreshIsLoadingImagesRedux
 }) {
+    const [params] = useSearchParams()
     const [show, setShow] = useState(false);
-    const [imageMain, setImageMain] = useState(product?.image?.data ? Buffer.from(product?.image?.data, 'base64').toString('binary') : '')
+    const [imageMain, setImageMain] = useState()
     const [listImageItems, setListImageItems] = useState([])
     const [listImageItemDeleted, setListImageItemDeleted] = useState([])
-
     const [isChangeImageMain, setIsCheckImageMain] = useState(false)
 
     useEffect(() => {
         setImageMain(product?.image?.data ? Buffer.from(product?.image?.data, 'base64').toString('binary') : '')
+        setImageMain(product?.image?.data ? Buffer.from(product?.image?.data, 'base64').toString('binary') : '')
         if (images.length > 0) {
             setListImageItems(images.map(item => Buffer.from(item.image.data, 'base64').toString('binary')))
         }
-    }, [])
-
-    useEffect(() => {
-        getAllImagesByProductIdRedux(product?.id, accessToken)
     }, [images])
+
 
     const handleClose = () => {
         setShow(false)
@@ -62,6 +58,12 @@ function ProductManageImage({
             //convert file to base64
             let base64 = await CommonUtils.getBase64(file)
             let objectUrl = URL.createObjectURL(file)
+            if (Buffer.from(product?.image?.data, 'base64').toString('binary') !== base64) {
+                setIsCheckImageMain(true)            
+            }
+            else {
+                setIsCheckImageMain(false)
+            }
             setImageMain(base64)
         }
     }
@@ -88,8 +90,12 @@ function ProductManageImage({
     }
 
     const handleSaveImage = () => {
-        console.log('list add: ', listImageItems)
-        console.log('list deleted: ', listImageItemDeleted)
+        if (isChangeImageMain) {
+            changeImageProductByIdRedux({ id: product?.id, image: imageMain }, accessToken)
+        }
+        if (listImageItemDeleted.length > 0) {
+            deleteImageProductRedux({ listImagesDeleted: listImageItemDeleted, productId: product?.id }, accessToken)
+        }
         addImageProductRedux({ listImages: listImageItems, listImagesDeleted: listImageItemDeleted, productId: product.id }, accessToken)
         setShow(false)
     }
@@ -101,7 +107,8 @@ function ProductManageImage({
                 variant="primary" 
                 onClick={handleShow}
             >
-                Manage image
+                <FontAwesomeIcon className='pe-1' icon={faImage} />
+                Change image
             </button>
 
             <Modal
@@ -211,10 +218,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshIsLoadingImagesRedux: () => dispatch(actions.refreshIsLoadingImages()),
-        getAllImagesByProductIdRedux: (id, accessToken) => dispatch(actions.getAllImagesByProductId(id, accessToken)),
         addImageProductRedux: (data, accessToken) => dispatch(actions.addImageProduct(data, accessToken)),
-        deleteImageProductRedux: (id, type, accessToken) => dispatch(actions.deleteImageProduct(id, type, accessToken)),
-        
+        changeImageProductByIdRedux: (data, accessToken) => dispatch(actions.changeImageProductById(data, accessToken)),
+        deleteImageProductRedux: (data, accessToken) => dispatch(actions.deleteImageProduct(data, accessToken)),
     }
 }
 

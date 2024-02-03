@@ -9,7 +9,7 @@ import {
     deleteProductService,
     getProductByIdService,
     updateProductService,
-    deleteImageProductService,
+    changeImageProductByIdService,
     addDescriptionProductService,
     fetchDescriptionProductService,
     getProductByCategoryService,
@@ -277,28 +277,17 @@ export const updateProduct = (data, type, accessToken, page) => {
 }
 
 
-export const deleteImageProduct = (id, type, accessToken) => {
-    // return async (dispatch, getState) => {
-    //     try {
-    //         let res = await deleteImageProductService(id, accessToken)
-    //         if (res && res.errCode === 0) {
-    //             dispatch({
-    //                 type: actionTypes.DELETE_IMAGE_PRODUCT_SUCCESS
-    //             })
-    //             dispatch(getAllImagesByProductId(type, accessToken))
-    //         }
-    //         else {
-    //             dispatch({
-    //                 type: actionTypes.DELETE_IMAGE_PRODUCT_FAILED
-    //             })
-    //         }
-    //     } catch (e) {
-    //         console.log('deleteImageProduct error: ', e)
-    //         dispatch({
-    //             type: actionTypes.DELETE_IMAGE_PRODUCT_FAILED
-    //         })
-    //     }
-    // }
+export const changeImageProductById = (data, accessToken) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await changeImageProductByIdService(data, accessToken)
+            if (res && res.errCode === 0) {
+                dispatch(getProductById(data.id, accessToken))
+            }
+        } catch (e) {
+            console.log('deleteImageProduct error: ', e)
+        }
+    }
 }
 
 export const fetchDescriptionProduct = (productId, accessToken) => {

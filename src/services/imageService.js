@@ -17,7 +17,14 @@ const addImageProductService = (data, accessToken) => {
     // return axios.post('/api/add-image-product', data)
 }
 
+const deleteImageProductService = (data, accessToken) => {
+    const axiosJWT = createAxios(accessToken)
+    return axiosJWT.post('/api/delete-image-product', data, { headers: {token: `Bearer ${accessToken}`}})
+    // return axios.post('/api/add-image-product', data)
+}
+
 export {
     getAllImagesByProductIdService,
-    addImageProductService
+    addImageProductService,
+    deleteImageProductService,
 }

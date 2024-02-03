@@ -1,7 +1,8 @@
 import actionTypes from "./actionTypes";
 import { 
     getAllImagesByProductIdService,
-    addImageProductService
+    addImageProductService,
+    deleteImageProductService
 } from "../../services/imageService";
 
 export const refreshStoreImages = () => {
@@ -75,6 +76,22 @@ export const addImageProduct = (data, accessToken) => {
             }
         } catch (e) {
             console.log('addImageProduct error: ', e)
+            dispatch({
+                type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
+export const deleteImageProduct = (data, accessToken) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await deleteImageProductService(data, accessToken)
+            if (res && res.errCode === 0) {
+                dispatch(getAllImagesByProductId(data.productId, accessToken))
+            }
+        } catch (e) {
+            console.log('deleteImageProduct error: ', e)
             dispatch({
                 type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
             })
