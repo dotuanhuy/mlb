@@ -7,6 +7,7 @@ import sizeReducer from "./sizeReducer";
 import colorReducer from './colorReducer'
 import logoReducer from "./logoReducer";
 import productReducer from "./productReducer";
+import imageReducer from "./imageReducer";
 import fouriteProductReducer from './favouriteProductReducer'
 import cartReducer from "./cartReducer";
 import { combineReducers } from "redux";
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
     color: colorReducer,
     logo: logoReducer,
     product: productReducer,
+    image: imageReducer,
     fouriteProduct: fouriteProductReducer,
     cart: cartReducer,
 })

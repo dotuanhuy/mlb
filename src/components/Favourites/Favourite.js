@@ -18,7 +18,7 @@ function Favourite({
     productsLimit,
     images,
     refreshIsloadingStateProductRedux,
-    fetchAllImageProductRedux,
+    getAllImagesByProductIdRedux,
     getAllProductsFavouriteLimitRedux,
     getAllProductsFavouriteRedux
 }) {
@@ -26,7 +26,7 @@ function Favourite({
     
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        fetchAllImageProductRedux(accessToken)
+        getAllImagesByProductIdRedux(accessToken)
     }, [])
     
     useEffect(() => {
@@ -84,7 +84,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
+        getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
         getAllProductsFavouriteLimitRedux: (accessToken, userId, offset) => dispatch(actions.getAllProductsFavouriteLimit(accessToken, userId, offset))
     }

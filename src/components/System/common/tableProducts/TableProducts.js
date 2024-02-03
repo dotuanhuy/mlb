@@ -26,7 +26,7 @@ function TableProducts({
     const {pathname} = useLocation()
     const listRef = useRef()
     const [show, setShow] = useState({})
-    const [pathTo, setPathTo] = useState('')
+    const [pathTo, setPathTo] = useState({})
 
     const handleClose = () => setShow({});
     const handleShow = (id) => setShow({id})
@@ -40,16 +40,28 @@ function TableProducts({
 
     useEffect(() => {
         if(pathname === path.MANAGE_PRODUCTS_SHOES) {
-            setPathTo(path.MANAGE_PRODUCTS_SHOES_EDIT)
+            setPathTo({
+                pathToEdit: path.MANAGE_PRODUCTS_SHOES_EDIT,
+                pathToDetail: path.MANAGE_PRODUCTS_SHOES_DETAIL
+            })
         }
         else if (pathname === path.MANAGE_PRODUCTS_BAG_BALO) {
-            setPathTo(path.MANAGE_PRODUCTS_BAG_BALO_EDIT)
+            setPathTo({
+                pathToEdit: path.MANAGE_PRODUCTS_BAG_BALO_EDIT,
+                pathToDetail: path.MANAGE_PRODUCTS_BAG_BALO_DETAIL
+            })
         } 
         else if (pathname === path.MANAGE_PRODUCTS_HAT) {
-            setPathTo(path.MANAGE_PRODUCTS_HAT_EDIT) 
+            setPathTo({
+                pathToEdit: path.MANAGE_PRODUCTS_HAT_EDIT,
+                pathToDetail: path.MANAGE_PRODUCTS_HAT_DETAIL
+            }) 
         }
         else if (pathname === path.MANAGE_PRODUCTS_CLOTHES) {
-            setPathTo(path.MANAGE_PRODUCTS_CLOTHES_EDIT)
+            setPathTo({
+                pathToEdit: path.MANAGE_PRODUCTS_CLOTHES_EDIT,
+                pathToDetail: path.MANAGE_PRODUCTS_CLOTHES_DETAIL
+            })
         }
         refreshIsloadingStateProductRedux()
         getProductByCategoryLimitRedux(categoryType, params?.get('page') ? params?.get('page') : 1)
@@ -76,53 +88,13 @@ function TableProducts({
 
     const handleEdit = (id) => {
         navigate({
-            pathname: pathTo,
+            pathname: pathTo?.pathToEdit,
             search: createSearchParams({
                 id,
                 page: params.get('page') ? params.get('page') : 1
             }).toString()
         })
     }
-
-    // const handleAddImage = (product) => {
-    //     // navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, { state: product})
-    //     if (typeCategore === categorieType.SHOES_SANDAL) {
-    //         navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
-    //             state: { 
-    //                 product, 
-    //                 path:  path.MANAGE_PRODUCTS_SHOES,
-    //                 pageCurrent: params.get('page') ? params.get('page') : 1
-    //             }
-    //         })
-    //     }
-    //     else if (typeCategore === categorieType.BAG_BALO) {
-    //         navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
-    //             state: {  
-    //                 product, 
-    //                 path: path.MANAGE_PRODUCTS_BAG_BALO,
-    //                 pageCurrent: params.get('page') ? params.get('page') : 1
-    //             }
-    //         })
-    //     }
-    //     else if (typeCategore === categorieType.HAT) {
-    //         navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
-    //             state: {  
-    //                 product, 
-    //                 path: path.MANAGE_PRODUCTS_HAT,
-    //                 pageCurrent: params.get('page') ? params.get('page') : 1 
-    //             }
-    //         })
-    //     }
-    //     else if (typeCategore === categorieType.CLOTHES) {
-    //         navigate(path.MANAGE_PRODUCTS_IMAGE_ADD, {
-    //             state: {  
-    //                 product, 
-    //                 path: path.MANAGE_PRODUCTS_CLOTHES,
-    //                 pageCurrent: params.get('page') ? params.get('page') : 1 
-    //             }
-    //         })
-    //     }
-    // }
 
     // const handleAddDescription = (id) => {
     //     // navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, { state: id })
@@ -221,7 +193,7 @@ function TableProducts({
                                                 <td>
                                                     <Link 
                                                         className='btn text-info'
-                                                        to={`${path.MANAGE_PRODUCTS_SHOES_DETAIL}?id=${item.id}&page=${page}`}
+                                                        to={`${pathTo?.pathToDetail}?id=${item.id}&page=${page}`}
                                                     >
                                                         <FontAwesomeIcon icon={faEye} />
                                                     </Link>

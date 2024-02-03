@@ -3,7 +3,6 @@ import userReducer from "./userReducer"
 const initState = {
     products: [],
     count: 0,
-    images: [],
     descriptions: [],
     isLoadingProduct: true,
     countFavouriteProduct: 0,
@@ -21,7 +20,6 @@ const productReducer = (state = initState, action) => {
             }
         case 'REFRESH_STORE_SUCCESS':
             state.products = []
-            state.images = []
             state.descriptions = []
             state.isLoadingProduct = true
             state.count = 0
@@ -66,18 +64,6 @@ const productReducer = (state = initState, action) => {
             }
         case 'GET_PRODUCT_BY_ID_FAILED':
             state.products = []
-            state.isLoadingProduct = true
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_IMAGE_PRODUCT_SUCCESS':
-            state.images = action.data
-            state.isLoadingProduct = false
-            return {
-                ...state
-            }
-        case 'FETCH_ALL_IMAGE_PRODUCT_FAILED':
-            state.images = []
             state.isLoadingProduct = true
             return {
                 ...state

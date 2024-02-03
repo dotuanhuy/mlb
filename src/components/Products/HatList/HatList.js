@@ -65,7 +65,7 @@ function HatList({
     fetchAllColorsRedux, 
     getCategoriesByIdRedux, 
     // fetchAllCodeByTypeRedux,
-    fetchAllImageProductRedux,
+    getAllImagesByProductIdRedux,
     getProductByCategoryRedux,
     getLimitProductsRedux,
     getLimitProductByOptionRedux,
@@ -85,7 +85,7 @@ function HatList({
         fetchAllColorsRedux(allCode.COLOR)
         getCategoriesByIdRedux(categorieType.HAT)
         // fetchAllCodeByTypeRedux(allCode.LOGO)
-        fetchAllImageProductRedux(accessToken)
+        getAllImagesByProductIdRedux(accessToken)
 
         let userId = ''
         if (accessToken) {
@@ -253,7 +253,7 @@ const mapDispatchToProps = dispatch => {
         fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
         getCategoriesByIdRedux: (id) => dispatch(actions.getCategoriesById(id)),
         // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
-        fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
+        getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
         getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),
         getLimitProductsRedux: (category, page, accessToken) => dispatch(actions.getLimitProducts(category, page, accessToken)),
         getLimitProductByOptionRedux: (optionData, page, option, accessToken, optionTypeName) => dispatch(actions.getLimitProductByOption(optionData, page, option, accessToken, optionTypeName)),

@@ -48,22 +48,6 @@ const updateProductService = (data, accessToken) => {
     // return axios.post('/api/update-product', data)
 }
 
-const getAllImageProductService = (id, accessToken) => {
-    if (id) {
-        const axiosJWT = createAxios(accessToken)
-        return axiosJWT.get(`/api/get-all-image-product?id=${id}`, { headers: {token: `Bearer ${accessToken}`}})
-    }
-    else {
-        return axios.get(`/api/get-all-image-product?id=${id}`)
-    }
-}
-
-const addImageProductService = (data, accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/add-image-product', data, { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.post('/api/add-image-product', data)
-}
-
 const deleteImageProductService = (id, accessToken) => {
     const axiosJWT = createAxios(accessToken)
     return axiosJWT.post('/api/delete-image-product', { id }, { headers: {token: `Bearer ${accessToken}`}})
@@ -141,8 +125,6 @@ export {
     deleteProductService,
     getProductByIdService,
     updateProductService,
-    getAllImageProductService,
-    addImageProductService,
     deleteImageProductService,
     addDescriptionProductService,
     fetchDescriptionProductService,

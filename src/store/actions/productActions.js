@@ -9,8 +9,6 @@ import {
     deleteProductService,
     getProductByIdService,
     updateProductService,
-    getAllImageProductService,
-    addImageProductService,
     deleteImageProductService,
     addDescriptionProductService,
     fetchDescriptionProductService,
@@ -278,76 +276,29 @@ export const updateProduct = (data, type, accessToken, page) => {
     }
 }
 
-export const fetchAllImageProduct = (id, accessToken) => {
-    return async (dispatch, getSate) => {
-        try {
-            let res = await getAllImageProductService(id, accessToken)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.FETCH_ALL_IMAGE_PRODUCT_SUCCESS,
-                    data: res.data
-                })
-            }
-            else {
-                dispatch({
-                    type: actionTypes.FETCH_ALL_IMAGE_PRODUCT_FAILED
-                })
-            }
-        } catch (e) {
-            console.log('fetchAllImageProduct error: ', e)
-            dispatch({
-                type: actionTypes.FETCH_ALL_IMAGE_PRODUCT_FAILED
-            })
-        }
-    }
-}
-
-export const addImageProduct = (data, accessToken) => {
-    return async (dispatch, getSate) => {
-        try {
-            let res = await addImageProductService(data, accessToken)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.ADD_IMAGE_PRODUCT_SUCCESS
-                })
-                dispatch(fetchAllImageProduct(data.productId, accessToken))
-            }
-            else {
-                dispatch({
-                    type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
-                })
-            }
-        } catch (e) {
-            console.log('addImageProduct error: ', e)
-            dispatch({
-                type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
-            })
-        }
-    }
-}
 
 export const deleteImageProduct = (id, type, accessToken) => {
-    return async (dispatch, getState) => {
-        try {
-            let res = await deleteImageProductService(id, accessToken)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.DELETE_IMAGE_PRODUCT_SUCCESS
-                })
-                dispatch(fetchAllImageProduct(type, accessToken))
-            }
-            else {
-                dispatch({
-                    type: actionTypes.DELETE_IMAGE_PRODUCT_FAILED
-                })
-            }
-        } catch (e) {
-            console.log('deleteImageProduct error: ', e)
-            dispatch({
-                type: actionTypes.DELETE_IMAGE_PRODUCT_FAILED
-            })
-        }
-    }
+    // return async (dispatch, getState) => {
+    //     try {
+    //         let res = await deleteImageProductService(id, accessToken)
+    //         if (res && res.errCode === 0) {
+    //             dispatch({
+    //                 type: actionTypes.DELETE_IMAGE_PRODUCT_SUCCESS
+    //             })
+    //             dispatch(getAllImagesByProductId(type, accessToken))
+    //         }
+    //         else {
+    //             dispatch({
+    //                 type: actionTypes.DELETE_IMAGE_PRODUCT_FAILED
+    //             })
+    //         }
+    //     } catch (e) {
+    //         console.log('deleteImageProduct error: ', e)
+    //         dispatch({
+    //             type: actionTypes.DELETE_IMAGE_PRODUCT_FAILED
+    //         })
+    //     }
+    // }
 }
 
 export const fetchDescriptionProduct = (productId, accessToken) => {

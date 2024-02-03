@@ -13,7 +13,7 @@ import ProductManageDetail from '../components/System/products/ProductManageDeta
 import ManageBag from '../components/System/Manage/Products/ManageBag/ManageBag';
 import ManageHat from '../components/System/Manage/Products/ManageHat/ManageHat';
 import ManageClothes from '../components/System/Manage/Products/ManageClothes/ManageClothes';
-import AddImageProduct from '../components/System/Manage/Products/HandleAddImages/AddImageProduct';
+import AddImageProduct from '../components/System/manageImages/AddImageProduct';
 import AddDescriptionProduc from '../components/System/Manage/Products/HandleAddDescriptions/AddDescriptionProduc';
 import { Active, categorieType, path } from '../utils';
 import PrivateRouter from './PrivateRouter';
@@ -44,9 +44,9 @@ function System({isLogin}) {
                 <Route 
                     path={path.MANAGE_PRODUCTS}
                     element={<PrivateRouter Component={ProductManage}/>} 
-                />
+                />  
 
-                <Route 
+                <Route  
                     path={path.MANAGE_PRODUCTS_SHOES}
                     element={<PrivateRouter active={Active.SHOSE} categoryType={categorieType.SHOES_SANDAL} Component={HomeProduct}/>} 
                 /> 
@@ -63,6 +63,11 @@ function System({isLogin}) {
                     element={<PrivateRouter active={Active.SHOSE} Component={ProductManageDetail}/>} 
                 />
                 <Route 
+                    path={path.MANAGE_PRODUCTS_SHOES_IMAGES}
+                    element={<PrivateRouter active={Active.SHOSE} Component={AddImageProduct}/>} 
+                />
+
+                <Route 
                     path={path.MANAGE_PRODUCTS_BAG_BALO}
                     element={<PrivateRouter active={Active.BAG_BALO} categoryType={categorieType.BAG_BALO} Component={HomeProduct}/>} 
                 /> 
@@ -74,7 +79,15 @@ function System({isLogin}) {
                     path={path.MANAGE_PRODUCTS_BAG_BALO_EDIT}
                     element={<PrivateRouter active={Active.BAG_BALO} categoryType={categorieType.BAG_BALO} Component={ManageProductEdit}/>} 
                 />
-
+                <Route 
+                    path={path.MANAGE_PRODUCTS_BAG_BALO_DETAIL}
+                    element={<PrivateRouter active={Active.BAG_BALO} Component={ProductManageDetail}/>} 
+                />
+                <Route 
+                    path={path.MANAGE_PRODUCTS_BAG_BALO_IMAGES}
+                    element={<PrivateRouter active={Active.BAG_BALO} Component={AddImageProduct}/>} 
+                />
+                
                 <Route 
                     path={path.MANAGE_PRODUCTS_HAT}
                     element={<PrivateRouter active={Active.HAT} categoryType={categorieType.HAT} Component={HomeProduct}/>} 
@@ -86,6 +99,14 @@ function System({isLogin}) {
                 <Route 
                     path={path.MANAGE_PRODUCTS_HAT_EDIT}
                     element={<PrivateRouter active={Active.HAT} categoryType={categorieType.HAT} Component={ManageProductEdit}/>} 
+                />
+                <Route 
+                    path={path.MANAGE_PRODUCTS_HAT_DETAIL}
+                    element={<PrivateRouter active={Active.HAT} Component={ProductManageDetail}/>} 
+                />
+                <Route 
+                    path={path.MANAGE_PRODUCTS_HAT_IMAGES}
+                    element={<PrivateRouter active={Active.HAT} Component={AddImageProduct}/>} 
                 />
                 
                 <Route 
@@ -100,15 +121,23 @@ function System({isLogin}) {
                     path={path.MANAGE_PRODUCTS_CLOTHES_EDIT}
                     element={<PrivateRouter active={Active.CLOTHES} categoryType={categorieType.CLOTHES} Component={ManageProductEdit}/>} 
                 />
-
                 <Route 
+                    path={path.MANAGE_PRODUCTS_CLOTHES_DETAIL}
+                    element={<PrivateRouter active={Active.CLOTHES} Component={ProductManageDetail}/>} 
+                />
+                <Route 
+                    path={path.MANAGE_PRODUCTS_CLOTHES_IMAGES}
+                    element={<PrivateRouter active={Active.CLOTHES} Component={AddImageProduct}/>} 
+                />
+        
+                {/* <Route 
                     path={path.MANAGE_PRODUCTS_IMAGE_ADD}
                     element={<PrivateRouter Component={AddImageProduct}/>} 
-                />
-                <Route 
+                /> */}
+                {/* <Route 
                     path={path.MANAGE_PRODUCTS_DESCRIPTION_ADD}
                     element={<PrivateRouter Component={AddDescriptionProduc}/>} 
-                />
+                /> */}
             </Routes>
        </>
     );

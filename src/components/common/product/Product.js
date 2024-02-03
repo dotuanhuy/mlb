@@ -20,7 +20,7 @@ function Product({
     fouriteProducts,
     getAllProductsFavouriteRedux,
     getProductByIdRedux,
-    fetchAllImageProductRedux
+    getAllImagesByProductIdRedux
 }) {
     const {productId, productName} = useLocation().state 
     const [isFavourite, setIsFavourite] = useState(false)
@@ -35,7 +35,7 @@ function Product({
             getAllProductsFavouriteRedux(accessToken, userId)
         }
         getProductByIdRedux(productId, accessToken)
-        fetchAllImageProductRedux(productId, accessToken)
+        getAllImagesByProductIdRedux(productId, accessToken)
     }, [productId])
     
     useEffect(() => {
@@ -86,7 +86,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
         getProductByIdRedux: (productId, accessToken) => dispatch(actions.getProductById(productId, accessToken)),
-        fetchAllImageProductRedux: (productId, accessToken) => dispatch(actions.fetchAllImageProduct(productId, accessToken)),
+        getAllImagesByProductIdRedux: (productId, accessToken) => dispatch(actions.getAllImagesByProductId(productId, accessToken)),
     }
 }
 

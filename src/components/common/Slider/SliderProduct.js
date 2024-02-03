@@ -10,19 +10,21 @@ function SliderProduct({product, images}) {
     const [listImages, setListImages] = useState([])
     const [active, setActive] = useState(0)
 
-
-    
     useEffect(() => {
-        if (images.length > 0 && product?.image) {
-            let arr = images.map(item => Buffer.from(item.image.data, 'base64').toString('binary'))
-            let image = Buffer.from(product.image.data, 'base64').toString('binary')
-            setListImages([image, ...arr])
+        let image, arr = []
+        if ( product?.image) {
+            image = Buffer.from(product.image.data, 'base64').toString('binary')
         }
-    }, [images])
+        if (images.length > 0) {
+            arr = images.map(item => Buffer.from(item.image.data, 'base64').toString('binary'))
+        }
+        setListImages([image, ...arr])
+    }, [images, product])
     
+
     const handleChangeSilder = e => {
         setActive(+e.target.id)
-    }
+    }    
 
     return (
         <div className='row'>
@@ -102,7 +104,7 @@ function SliderProduct({product, images}) {
 const mapStateToProps = state => {
     return {
         product: state.product.products,
-        images: state.product.images
+        images: state.image.images,
     }
 }
 

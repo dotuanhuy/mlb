@@ -11,40 +11,22 @@ import * as actions from '../../../store/actions'
 function HomeProduct({
     // getProductByCategoryLimitRedux
     categoryType,
-    active
+    actives
 }) {
-    const navigate = useNavigate()
-    const [pathTo, setPathTo] = useState('')
-    const pathName = useLocation().pathname
-
-    useEffect(() => {
-        if(pathName === path.MANAGE_PRODUCTS_SHOES) {
-            setPathTo(path.MANAGE_PRODUCTS_SHOES_CREATE)
-        }
-        else if (pathName === path.MANAGE_PRODUCTS_BAG_BALO) {
-            setPathTo(path.MANAGE_PRODUCTS_BAG_BALO_CREATE)
-        }
-        else if (pathName === path.MANAGE_PRODUCTS_HAT) {
-            setPathTo(path.MANAGE_PRODUCTS_HAT_CREATE)
-        }
-        else if (pathName === path.MANAGE_PRODUCTS_CLOTHES) {
-            setPathTo(path.MANAGE_PRODUCTS_CLOTHES_CREATE)
-        }
-    }, [active])
 
     return (    
         <div className='manage-product'>
             <Navbar />
             <div className='row gx-0'>
                <div className='col-2'>
-                    <Sidebar active='product' activeChild={active}/>
+                    <Sidebar active='product' activeChild={actives?.active}/>
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>
-                        <h2>{active}</h2>
+                        <h2>{actives?.active}</h2>
                         <Link 
                             className='text-white fw-500 btn btn-root text-center' 
-                            to={pathTo}
+                            to={actives?.pathToCreate}
                         >
                             Add new
                         </Link>

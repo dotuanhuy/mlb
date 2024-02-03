@@ -17,7 +17,7 @@ function HomePage({
     accessToken, 
     isLoading,
     getAllProductPublicRedux, 
-    fetchAllImageProductRedux,
+    getAllImagesByProductIdRedux,
     getAllProductsFavouriteRedux, 
     refreshIsloadingStateProductRedux,
     getProductsInCartByUserRedux
@@ -26,7 +26,7 @@ function HomePage({
     useEffect(() => {
         refreshIsloadingStateProductRedux()
         getAllProductPublicRedux(accessToken)
-        fetchAllImageProductRedux(accessToken)
+        getAllImagesByProductIdRedux(accessToken)
 
         let userId = ''
         if (accessToken) {
@@ -60,10 +60,10 @@ function HomePage({
 
     return (
         <>
-            {
-                isLoading ? 
-                <Loading />
-                :
+            {/* { */}
+                // isLoading ? 
+                // <Loading />
+                // :
                 <div>
                     <Navbar />
                     <SliderHomePage settings={settings} />
@@ -74,7 +74,7 @@ function HomePage({
                     <MLBBackPack />
                     <HomeFooter />
                 </div>
-            }
+            {/* } */}
         </>
     );
 }
@@ -90,7 +90,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken)),
-        fetchAllImageProductRedux: (accessToken) => dispatch(actions.fetchAllImageProduct('', accessToken)),
+        getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
         getProductsInCartByUserRedux: (accessToken, userId) => dispatch(actions.getProductsInCartByUser(accessToken, userId))

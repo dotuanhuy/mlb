@@ -5,8 +5,8 @@ import TableProducts from '../common/tableProducts/TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { BuildOptionSelectDiscount, BuildOptionSelectSame, TitleProduct, allCode, categorieType, ListColorsProduct, path } from '../../../utils';
+import { useSearchParams } from 'react-router-dom';
+import { BuildOptionSelectDiscount, TitleProduct, categorieType, ListColorsProduct } from '../../../utils';
 import CommonUtils from '../../../utils/CommonUtils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -29,15 +29,10 @@ const initStateImage = {
     previewImgURL: null
 }
 
-// const initSize = {
-//     sizeHeight: '',
-//     sizeWidth: '',
-//     sizeD: ''
-// }
 
 function ManageShoesCreate({
     categoryType,
-    active,
+    actives,
     accessToken,
     categoriesDetail, 
     discounts, 
@@ -53,7 +48,6 @@ function ManageShoesCreate({
     getAllLogosRedux,
     createNewProductRedux
 }) {
-    const navigate = useNavigate()
     const [selectCategory, setSelectCategory] = useState('')
     const [selectObject, setSelectObject] = useState(initState)
     const [selectDiscount, setSelectDiscount] = useState('')
@@ -64,13 +58,11 @@ function ManageShoesCreate({
     const [selectGender, setSelectGender] = useState('')
     const [listCategories, setListCategories] = useState([]) 
     const [listDiscount, setListDiscount] = useState([])
-    // const [listSizes, setListSizes] = useState(location.state === categorieType.SHOES_SANDAL || location.state === categorieType.CLOTHES ? [] : initSize)
     const [listSizes, setListSizes] = useState([])
     const [listBrands, setListBrands] = useState([])
     const [listColors, setListColors] = useState([])
     const [listLogos, setListLogos] = useState([])
     const [params] = useSearchParams() 
-    // const { categoryType } = useLocation().state
 
     // ComponentDidMount
     useEffect(() => {
@@ -187,7 +179,7 @@ function ManageShoesCreate({
             <Navbar />
             <div className='row gx-0'>
                <div className='col-2'>
-                    <Sidebar active='product' activeChild={active}/>
+                    <Sidebar active='product' activeChild={actives?.active}/>
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>
