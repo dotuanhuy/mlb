@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import Navbar from '../common/navbar/Navbar'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { path, Role, TitleProduct } from '../../../utils';
-import TableProduct from '../common/tableProducts/TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
 import * as actions from '../../../store/actions'
+import TableProductType from '../common/tableCategories/TableProductType';
+import ProductManageCreate from './ProductManageCreate';
 
-function HomeProduct({
+function ProductTypeManage({
     // getProductByCategoryLimitRedux
     categoryType,
     actives
@@ -19,20 +20,15 @@ function HomeProduct({
             <Navbar />
             <div className='row gx-0'>
                <div className='col-2'>
-                    <Sidebar active='product' activeChild={actives?.active}/>
+                    <Sidebar active='product-type' activeChild={actives?.active}/>
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>
                         <h2>{actives?.active}</h2>
-                        <Link 
-                            className='text-white fw-500 btn btn-root text-center' 
-                            to={actives?.pathToCreate}
-                        >
-                            Add new
-                        </Link>
+                        <ProductManageCreate />
                     </div>
                     <hr/>
-                    <TableProduct categoryType={categoryType} actives={actives}/>
+                    <TableProductType categoryType={categoryType} actives={actives}/>
                 </div>
             </div>
         </div>
@@ -51,4 +47,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductTypeManage);

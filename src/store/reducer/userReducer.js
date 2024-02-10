@@ -61,7 +61,18 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state
             }
-
+        case 'GET_COUNT_USERS_SUCCESS':
+            state.count = action.data.count
+            state.isLoadingUser = false
+            return {
+                ...state
+            }
+        case 'GET_COUNT_USERS_FAILED':
+                state.count = 0
+                state.isLoadingUser = true
+                return {
+                    ...state
+                }
         case 'LOADING_SUCCESS': 
             state.isLoadingUser = true
             return {

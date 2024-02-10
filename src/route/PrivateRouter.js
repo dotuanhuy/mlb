@@ -70,6 +70,11 @@ function PrivateRouter({categoryType=null, active=null, users, isLogin, accessTo
                 pathToImage: path.MANAGE_PRODUCTS_CLOTHES_IMAGES
             })
         }
+        else {
+            setActives({
+                active: active
+            })
+        }
     }, [active])
 
     if (isAdmin !== null) {

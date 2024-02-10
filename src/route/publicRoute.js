@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import {Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { path } from '.././utils'
+import { categorieType, listShoesSandals, path, typeShoesSandanl } from '.././utils'
 import HomePage from '../components/HomePage/HomePage';
 import Shoes from '../components/Products/ShoesList/Shoes';
 import BagList from '../components/Products/BagsList/BagList';
@@ -21,8 +21,8 @@ function PublicRoute() {
         <>
             <Routes>
                 <Route path={path.HOMEPAGE} element={<HomePage />}/> 
-                <Route path={path.GIAY_MLB} element={<Shoes />} />
-                <Route path={path.GIAY_MLB_BIGBALL_CHUNKY} element={<Shoes />} />
+                <Route path={path.GIAY_MLB} element={<Shoes categoryActive={categorieType.SHOES_SANDAL}/>} />
+                <Route path={path.GIAY_MLB_BIGBALL_CHUNKY} element={<Shoes categoryActive={listShoesSandals.SHOES} typeName={typeShoesSandanl.GIAY_MLB_BIGBALL_CHUNKY} />} />
                 <Route path={path.GIAY_MLB_MULE} element={<Shoes />} />
                 <Route path={path.GIAY_MLB_CHUNKY_LINER} element={<Shoes />} />
                 <Route path={path.GIAY_MLB_PLAYBALL} element={<Shoes />} />

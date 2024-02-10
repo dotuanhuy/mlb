@@ -15,3 +15,9 @@ export const BuildOptionSelectDiscount = (data) => {
         return{ value: item.id, label: item.value*100+'%' }
     })
 } 
+
+export const BuildOptionSelectType = (data) => {
+    return data?.map(item => {
+        return{ value: item.type, label: item.name }
+    })
+} 

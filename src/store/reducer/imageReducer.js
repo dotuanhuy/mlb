@@ -16,6 +16,18 @@ const imageReducer = (state=initState, action) => {
             return {
                 ...state
             }
+        case 'GET_ALL_IMAGES_PRODUCT_SUCCESS':
+            state.images = action.data
+            state.isLoadingImage = false
+            return {
+                ...state
+            }
+        case 'GET_ALL_IMAGES_PRODUCT_FAILED':
+            state.images = []
+            state.isLoadingImage = true
+            return {
+                ...state
+            }
         case 'GET_ALL_IMAGES_BY_PRODUCTID_SUCCESS':
             state.images = action.data
             state.isLoadingImage = false
@@ -23,6 +35,18 @@ const imageReducer = (state=initState, action) => {
                 ...state
             }
         case 'GET_ALL_IMAGES_BY_PRODUCTID_FAILED':
+            state.images = []
+            state.isLoadingImage = true
+            return {
+                ...state
+            }
+        case 'GET_IMAGES_PRODUCT_BY_CATEGORY_SUCCESS':
+            state.images = action.data
+            state.isLoadingImage = false
+            return {
+                ...state
+            }
+        case 'GET_IMAGES_PRODUCT_BY_CATEGORY_FAILED':
             state.images = []
             state.isLoadingImage = true
             return {

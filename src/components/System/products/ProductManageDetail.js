@@ -115,6 +115,11 @@ function ProductManageDetail({
                                         </span> : ''
                                     }
                                 </div>
+                                <div className='mb-1'>
+                                        <span className='text-banner text-muted'>Product type: 
+                                            <span className='text-black fs-6'> {product?.dataProductType?.name}</span>
+                                        </span>
+                                </div>
                                 <div className='d-flex gap-3 mb-1'>
                                     <div className='release-date'>
                                         <span className='text-banner text-muted'>Release date: 

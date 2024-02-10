@@ -28,13 +28,13 @@ function OptionLogo({handleOnchangeLogo, logos, optionType}) {
                             return (
                                 <li key={index}>
                                     <a>
-                                        <input id={item.keyMap} type='checkbox' className={ optionType ? 'optionSelect' : ''}/>
+                                        <input id={item.type} type='checkbox' className={ optionType ? 'optionSelect' : ''}/>
                                         <label 
                                             className='checkSS' 
-                                            htmlFor={item.keyMap}
-                                            onClick={(e) => handleOnchangeLogo(e)}
+                                            htmlFor={item.type}
+                                            onClick={(e) => handleOnchangeLogo(item.id)}
                                         >
-                                            {item.valueEn}
+                                            {item.name}
                                         </label>
                                     </a>
                                 </li>
@@ -49,7 +49,7 @@ function OptionLogo({handleOnchangeLogo, logos, optionType}) {
 
 const mapStateToProps = state => {
     return {
-        
+        logos: state.logo.logos,
     }
 }
 

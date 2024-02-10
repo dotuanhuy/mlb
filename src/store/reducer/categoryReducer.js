@@ -1,6 +1,7 @@
 const initState = {
     categories: [],
-    categoriesDetail: []
+    categoriesDetail: [],
+    categoryType: []
 }
 
 const categoryReducer = (state=initState, action) => {
@@ -38,6 +39,16 @@ const categoryReducer = (state=initState, action) => {
             }
         case 'GET_ALL_CATEGORIES_DETAIL_BY_TYPE_FAILED':
             state.categoriesDetail = []
+            return {
+                ...state
+            }
+        case 'GET_CATEGORIES_BY_TYPE_SUCCESS':
+            state.categoryType = action.data
+            return {
+                ...state
+            }
+        case 'GET_CATEGORIES_BY_TYPE_FAILED':
+            state.categoryType = []
             return {
                 ...state
             }

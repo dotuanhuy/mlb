@@ -8,7 +8,7 @@ import TableProduct from '../common/tableProducts/TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
 import * as actions from '../../../store/actions'
 
-function HomeProduct({
+function CategoryManage({
     // getProductByCategoryLimitRedux
     categoryType,
     actives
@@ -19,20 +19,20 @@ function HomeProduct({
             <Navbar />
             <div className='row gx-0'>
                <div className='col-2'>
-                    <Sidebar active='product' activeChild={actives?.active}/>
+                    <Sidebar active='category' activeChild={actives?.active}/>
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>
-                        <h2>{actives?.active}</h2>
-                        <Link 
+                        {/* <h2>{actives?.active}</h2> */}
+                        {/* <Link 
                             className='text-white fw-500 btn btn-root text-center' 
                             to={actives?.pathToCreate}
                         >
                             Add new
-                        </Link>
+                        </Link> */}
                     </div>
                     <hr/>
-                    <TableProduct categoryType={categoryType} actives={actives}/>
+                    {/* <TableProduct categoryType={categoryType} actives={actives}/> */}
                 </div>
             </div>
         </div>
@@ -51,4 +51,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryManage);

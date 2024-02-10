@@ -2,9 +2,11 @@ import axios from "../axios";
 import {createAxios} from '../axiosJWT'
 
 const getAllCategoriesService = (accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get('/api/get-all-categories', { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.get('/api/get-all-categories')
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get('/api/get-all-categories', { headers: {token: `Bearer ${accessToken}`}})
+    }
+    return axios.get('/api/get-all-categories')
 }
 
 const getAllCategoriesDetailService = (accessToken) => {
@@ -20,8 +22,14 @@ const getAllCategoriesDetailByTypeService = (accessToken, type) => {
     }
     return axios.get(`/api/get-all-categories-detail-by-type?type=${type}`)
 }
+
+const getCategoriesByTypeService = (type) => {
+    return axios.get(`/api/get-categories-by-type?type=${type}`)
+}
+
 export {
     getAllCategoriesService,
     getAllCategoriesDetailService,
-    getAllCategoriesDetailByTypeService
+    getAllCategoriesDetailByTypeService,
+    getCategoriesByTypeService,
 }

@@ -20,10 +20,6 @@ const getQuantityOfEachProductByCategoryService = (accessToken) => {
     return axiosJWT.get('/api/get-quantity-ofeach-product-by-category', { headers: {token: `Bearer ${accessToken}`}})
 }
 
-const getCategoriesByIdService = (id) => {
-    return axios.get(`/api/get-categories-by-id?id=${id}`)
-}
-
 const createNewProductService = (data, accessToken) => {
     const axiosJWT = createAxios(accessToken)
     return axiosJWT.post('/api/create-new-product', data, { headers: {token: `Bearer ${accessToken}`}})
@@ -37,10 +33,21 @@ const deleteProductService = (id, accessToken) => {
 }
 
 const getProductByIdService = (id, accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get(`/api/get-product-by-id?id=${id}`, { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.get(`/api/get-product-by-id?id=${id}`)
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get(`/api/get-product-by-id?id=${id}`, { headers: {token: `Bearer ${accessToken}`}})
+    }
+    else {
+        return axios.get(`/api/get-product-by-id?id=${id}`)
+    }
 }
+
+const getCountProductsService = (accessToken) => {
+    const axiosJWT = createAxios(accessToken)
+    return axiosJWT.get('/api/get-count-products', { headers: {token: `Bearer ${accessToken}`}})
+    // return axios.get(`/api/get-product-by-id?id=${id}`)
+} 
+
 
 const updateProductService = (data, accessToken) => {
     const axiosJWT = createAxios(accessToken)
@@ -83,7 +90,7 @@ const getLimitProductService = (categore, page, accessToken) => {
         return axios.get(`/api/get-limit-products?categore=${categore}&page=${page}`)
 }
 
-const getLimitProductByOptionSortService = (optionData, page, option, accessToken, optionTypeName) => {
+const getLimitProductByOptionSortService = (optionData, page, option, accessToken) => {
     // if (accessToken) {
     //     const axiosJWT = createAxios(accessToken)
     //     return axiosJWT.get(`/api/get-limit-product-by-option-sort?categore=${categore}&page=${page}&option=${option}`, { headers: {token: `Bearer ${accessToken}`}})
@@ -95,7 +102,7 @@ const getLimitProductByOptionSortService = (optionData, page, option, accessToke
     url = optionData?.optionType ? url + `&type=${optionData?.optionType}` : url
     url = optionData?.colors? url + `&colors=${optionData?.colors}` : url
     url = optionData?.logos? url + `&logos=${optionData?.logos}` : url
-    url = optionTypeName ? url + `&optionTypeName=${optionTypeName}` : url
+    url = optionData?.typeName ? url + `&optionTypeName=${optionData?.typeName}` : url
     if (accessToken) {
         const axiosJWT = createAxios(accessToken)
         return axiosJWT.get(url, { headers: {token: `Bearer ${accessToken}`}})
@@ -121,10 +128,10 @@ export {
     getAllProductPublicService,
     createNewProductService,
     getQuantityOfEachProductByCategoryService,
-    getCategoriesByIdService,
     deleteProductService,
     getProductByIdService,
     updateProductService,
+    getCountProductsService,
     changeImageProductByIdService,
     addDescriptionProductService,
     fetchDescriptionProductService,

@@ -10,21 +10,22 @@ import { path } from "../../../utils";
 
 
 function ListProducts({accessToken, products, images, col='col-4', productFavourites}) {
+    // console.log('check product: ', products)
     return (
         <>
             {
-                products && products.length > 0 &&
-                products.map((item, index) => {
-                    let size = item?.listSize.split(',').at(0)
+                products && products?.length > 0 &&
+                products?.map((item, index) => {
+                    let size = item?.dataSizeDetail?.at(0)?.id
                     let imageBase64 = ''
                     let imageHoverBase64 = ''
-                    let imageHover = images.find(image => image.productId === item.id)
                     let price = ''
-                    if (item.image) {
-                        imageBase64 = Buffer.from(item.image.data, 'base64').toString('binary')
+                    let imageHover = images?.find(image => image?.productId === item?.id)
+                    if (item?.image) {
+                        imageBase64 = Buffer.from(item?.image?.data, 'base64').toString('binary')
                     }
                     if (imageHover) {
-                        imageHoverBase64 = Buffer.from(imageHover.image.data, 'base64').toString('binary')
+                        imageHoverBase64 = Buffer.from(imageHover?.image?.data, 'base64').toString('binary')
                     }
                     if (item.price) {
                         price = formatVND(item.price)
@@ -36,9 +37,9 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                     return (
                         <div className={`list-products ${col}`} key={index}>
                             {
-                                item.dataDiscount.valueEn !== '0' ?
+                                +item.dataDiscounts.value !== 0 ?
                                 <div className='discount'>
-                                    <span>-{item.dataDiscount.valueEn}</span>
+                                    <span>-{+item.dataDiscounts.value*100}%</span>
                                 </div>
                                 : ''
                             }
@@ -99,7 +100,7 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                 </Link>
                             </div>           
                             <div className='product-infor text-center'>
-                                <span className='brand'>{item.dataBrand.valueEn}</span>    
+                                <span className='brand'>{item.dataBrands.name}</span>    
                                 <h4 className='product-name'>
                                     <Link 
                                         to={`${path.PRODUCT}/${item.name}`} 
@@ -123,7 +124,8 @@ const mapStateToProps = state => {
     return {
         accessToken: state.auth.token,
         // productFavourites: state.product.productFavourtie,
-        productFavourites: state.fouriteProduct.product
+        productFavourites: state.fouriteProduct.product,
+        images: state.image.images
     }
 }
 

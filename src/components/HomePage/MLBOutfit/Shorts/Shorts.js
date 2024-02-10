@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { categorieType } from '../../../../utils';
 import ListProducts from '../../../common/listProducts/ListProducts';
 
-function Shorts({products, images}) {
+function Shorts({products}) {
     const [tShirt, settShirt] = useState([])
 
     useEffect(() => {
         if (products && products.length > 0) {
-            let arr = products.filter(item => item.dataCategory.type === categorieType.CLOTHES)
+            let arr = products.filter(item => item?.dataCategoryDetail?.dataCategory?.type === categorieType.CLOTHES)
             let newArr = arr.filter(item => item.name.includes('Quần Shorts'))
             settShirt(newArr)
         }
@@ -16,7 +16,7 @@ function Shorts({products, images}) {
     
     return (
         <div className='menu-product row'>
-            <ListProducts products={tShirt} images={images} col='col-3'/>
+            <ListProducts products={tShirt} col='col-3'/>
         </div>
     );
 }

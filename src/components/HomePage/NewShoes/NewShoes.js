@@ -6,12 +6,12 @@ import { path, categorieType } from '../../../utils';
 import { useState } from 'react';
 import ListProducts from '../../common/listProducts/ListProducts'
 
-function NewShoes({products, images}) {
+function NewShoes({products}) {
     const [shoes, setShoes] = useState([])
     
     useEffect(() => {
         if (products && products.length > 0) {
-            let arr = products.filter(item => item.dataCategory.type === categorieType.SHOES_SANDAL)
+            let arr = products.filter(item => item?.dataCategoryDetail?.dataCategory?.type === categorieType.SHOES_SANDAL)
             setShoes(arr)
         }
     }, [products])
@@ -26,7 +26,7 @@ function NewShoes({products, images}) {
                 </div>
                 <div className='menu-box'>  
                     <div className='menu-product row'>
-                        <ListProducts products={shoes} images={images} col='col-3'/>
+                        <ListProducts products={shoes} col='col-3'/>
                     </div>
                     <div className='view-all text-center'>
                         <Link to={path.GIAY_MLB}>Xem tất cả</Link>

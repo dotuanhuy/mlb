@@ -65,7 +65,7 @@ function ListProductSearchByName({
                             </div>
                             <div className='menu-box'>
                                 <div className='menu-product row row-cols-4'>
-                                    <ListProducts products={productSearch} images={images} col='col-3'/>
+                                    <ListProducts products={productSearch} col='col-3'/>
                                 </div>
                             </div>
                             <Pagination pathPage={path.SEARCH_PRODUCT} pname={productName} currentPage={params.get('page') || 1}/>

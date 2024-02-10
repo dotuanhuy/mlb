@@ -7,7 +7,7 @@ import './Option.scss';
 
 function OptionType({handleOnchangeTypeType, categories, optionType}) {
     const [typeType, setTypeType] = useState(true)
-    
+
     return (
         <div className='option-together options-type'>
             <div className='option-together-title mb-2'>
@@ -23,16 +23,16 @@ function OptionType({handleOnchangeTypeType, categories, optionType}) {
             <div className={typeType ? 'option-together-group' : 'option-together-group hiden-option'}>
                 <ul>
                     {
-                        categories && categories.length > 0 &&
-                        categories.map((item, index) => {
+                        categories && categories?.dataCategory?.length > 0 &&
+                        categories?.dataCategory?.map((item, index) => {
                             return (
                                 <li key={index}>
                                     <a>
-                                        <input id={item.categoryId} type='checkbox' className={optionType ? 'optionSelect' : ''}/>
+                                        <input id={item.id} type='checkbox' className={optionType ? 'optionSelect' : ''}/>
                                         <label 
                                             className='checkSS' 
-                                            htmlFor={item.categoryId}
-                                            onClick={(e) => handleOnchangeTypeType(e)}
+                                            htmlFor={item.id}
+                                            onClick={(e) => handleOnchangeTypeType(e, item.id)}
                                         >
                                             {item.name}
                                         </label>
@@ -49,7 +49,7 @@ function OptionType({handleOnchangeTypeType, categories, optionType}) {
 
 const mapStateToProps = state => {
     return {
-        
+        categories: state.category.categoryType,
     }
 }
 

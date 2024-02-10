@@ -65,8 +65,8 @@ function Clothes({
     images,
     products,
     isLoading,
-    fetchAllColorsRedux, 
-    getCategoriesByIdRedux, 
+    getAllColorsRedux, 
+    getCategoriesByTypeRedux, 
     // fetchAllCodeByTypeRedux,
     getAllImagesByProductIdRedux,
     getProductByCategoryRedux,
@@ -85,8 +85,8 @@ function Clothes({
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        fetchAllColorsRedux(allCode.COLOR)
-        getCategoriesByIdRedux(categorieType.CLOTHES)
+        getAllColorsRedux(allCode.COLOR)
+        getCategoriesByTypeRedux(categorieType.CLOTHES)
         // fetchAllCodeByTypeRedux(allCode.LOGO)
         getAllImagesByProductIdRedux(accessToken)        
         let userId = ''
@@ -138,20 +138,20 @@ function Clothes({
         const optionTypeName = state?.typeName ? state?.typeName : ''
 
         if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_SHORTS) {
-            getCategoriesByIdRedux(listClothes.SHORTS)
+            getCategoriesByTypeRedux(listClothes.SHORTS)
             data['optionType'] = listClothes.SHORTS
         }
         else if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_TSHIRT) {
-            getCategoriesByIdRedux(listClothes.SHIRT)
+            getCategoriesByTypeRedux(listClothes.SHIRT)
             data['optionType'] = listClothes.SHIRT
         }
         else if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_SKIRT_DRESS) {
             let str = `${listClothes.DRESS1},${listClothes.DRESS2}`
-            getCategoriesByIdRedux(str)
+            getCategoriesByTypeRedux(str)
             data['optionType'] = str
         }
         else {
-            getCategoriesByIdRedux(categorieType.CLOTHES)
+            getCategoriesByTypeRedux(categorieType.CLOTHES)
         }
         getLimitProductByOptionRedux(
             data, 
@@ -274,8 +274,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        getCategoriesByIdRedux: (id) => dispatch(actions.getCategoriesById(id)),
+        getAllColorsRedux: (type) => dispatch(actions.getAllColors(type)),
+        getCategoriesByTypeRedux: (id) => dispatch(actions.getCategoriesByType(id)),
         // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
         getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
         getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),

@@ -62,8 +62,8 @@ function HatList({
     images,
     products,
     isLoading,
-    fetchAllColorsRedux, 
-    getCategoriesByIdRedux, 
+    getAllColorsRedux, 
+    getCategoriesByTypeRedux, 
     // fetchAllCodeByTypeRedux,
     getAllImagesByProductIdRedux,
     getProductByCategoryRedux,
@@ -82,8 +82,8 @@ function HatList({
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        fetchAllColorsRedux(allCode.COLOR)
-        getCategoriesByIdRedux(categorieType.HAT)
+        getAllColorsRedux(allCode.COLOR)
+        getCategoriesByTypeRedux(categorieType.HAT)
         // fetchAllCodeByTypeRedux(allCode.LOGO)
         getAllImagesByProductIdRedux(accessToken)
 
@@ -136,11 +136,11 @@ function HatList({
         const optionTypeName = state?.typeName ? state?.typeName : ''
 
         if (optionTypeName) {
-            getCategoriesByIdRedux(listHat.HAT2)
+            getCategoriesByTypeRedux(listHat.HAT2)
             data['optionType'] = listHat.HAT2
         }
         else {
-            getCategoriesByIdRedux(categorieType.HAT)
+            getCategoriesByTypeRedux(categorieType.HAT)
         }
         getLimitProductByOptionRedux(
             data, 
@@ -250,8 +250,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        getCategoriesByIdRedux: (id) => dispatch(actions.getCategoriesById(id)),
+        getAllColorsRedux: (type) => dispatch(actions.getAllColors(type)),
+        getCategoriesByTypeRedux: (id) => dispatch(actions.getCategoriesByType(id)),
         // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
         getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
         getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),

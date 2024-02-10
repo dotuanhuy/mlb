@@ -9,6 +9,7 @@ function Pagination({
     countUser, 
     pathPage, 
     currentPage, 
+    countProductType,
     pname=null,
     countProductsFavourite
 }) {
@@ -29,6 +30,9 @@ function Pagination({
         }
         else if (pathPage === path.FAVOURITE) {
             maxPage =  Math.ceil(countProductsFavourite / +limit_page)
+        }
+        else if (pathPage === path.MANAGE_PRODUCT_TYPE) {
+            maxPage =  Math.ceil(countProductType / +limit_page)
         }
         else {
             maxPage =  Math.ceil(countProduct / +limit_page)
@@ -97,15 +101,19 @@ function Pagination({
     const handleToEnd = () => {
         // let end = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_USER_CREATE ?  countUser : countProduct) / +limit_page)
         let end = 0
-        if (pathPage === path.MANAGE_USER || path.MANAGE_USER_CREATE) {
+        if (pathPage === path.MANAGE_USER || pathPage === path.MANAGE_USER_CREATE) {
             end =  Math.ceil(countUser / +limit_page)
-        }
-        else if (pathPage === path.MANAGE_USER_CREATE) {
-            end =  Math.ceil(countProduct / +limit_page)
         }
         else if (pathPage === path.FAVOURITE) {
             end =  Math.ceil(countProductsFavourite / +limit_page)
         }
+        else if (pathPage === path.MANAGE_PRODUCT_TYPE) {
+            end =  Math.ceil(countProductType / +limit_page)
+        }
+        else {
+            end =  Math.ceil(countProduct / +limit_page)
+        }
+        
         setCurrentPageP(end)
         let object = pname ? {
             page: end,
@@ -187,7 +195,8 @@ const mapStateToProps = state => {
         isLoading: state.product.isLoadingProduct,
         countProduct: state.product.count,
         countUser: state.user.count,
-        countProductsFavourite: state.fouriteProduct.countProducts
+        countProductsFavourite: state.fouriteProduct.countProducts,
+        countProductType: state.productType.count
     }
 }
 

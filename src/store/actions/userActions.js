@@ -4,6 +4,7 @@ import { allCode } from "../../utils";
 import { 
     handleCreateNewUer, 
     handleUpdateUser,
+    getCountUsersService,
     getAllUsers,
     getAllAddressService,
     getAllRolesService,
@@ -183,6 +184,31 @@ export const updateUser = (data, accessToken, page) => {
         }
     }
 }
+
+export const getCountUsers = (accessToken) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await getCountUsersService(accessToken)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_COUNT_USERS_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {  
+                dispatch({
+                    type: actionTypes.GET_COUNT_USERS_FAILED
+                })
+            }
+        } catch(e) {
+            console.log('getUserById error: ', e)
+            dispatch({
+                type: actionTypes.GET_COUNT_USERS_FAILED
+            })
+        }
+    }
+}
+
 
 export const getUserById = (id, accessToken) => {
     return async (dispatch, getSate) => {

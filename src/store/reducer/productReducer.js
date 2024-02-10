@@ -41,12 +41,12 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'FETCH_ALL_PRODUCTS_PUBLIC_SUCCESS':
+        case 'GET_ALL_PRODUCTS_PUBLIC_SUCCESS':
             state.products = action.data
             return {
                 ...state
             }
-        case 'FETCH_ALL_PRODUCTS_PUBLIC_FAILED':
+        case 'GET_ALL_PRODUCTS_PUBLIC_FAILED':
             state.products = []
             return {
                 ...state
@@ -80,6 +80,18 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
+        case 'GET_COUNT_PRODUCTS_SUCCESS':
+            state.count = action.data.count
+            state.isLoadingProduct = false
+            return {
+                ...state
+            }
+        case 'GET_COUNT_PRODUCTS_FAILED':
+                state.count = 0
+                state.isLoadingProduct = true
+                return {
+                    ...state
+                }
         case 'GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_SUCCESS':
             state.quantityArr = action.data
             state.isLoadingProduct = false

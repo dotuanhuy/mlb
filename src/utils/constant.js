@@ -11,31 +11,31 @@ export const path = {
     MANAGE_USER_EDIT: '/system/manage/user/edit',
     MANAGE_USER_DETAIL: '/system/manage/user/detail',
 
-    MANAGE_PRODUCTS: '/system/manage/products',
+    MANAGE_CATEGORY_PRODUCT: '/system/manage/category',
+    MANAGE_PRODUCT_TYPE: '/system/manage/product-type',
+    MANAGE_PRODUCT_TYPE_UPDATE: '/system/manage/product-type/update',
 
+    MANAGE_PRODUCTS: '/system/manage/products',
     MANAGE_PRODUCTS_SHOES: '/system/manage/products/shoes',
     MANAGE_PRODUCTS_SHOES_CREATE: '/system/manage/products/shoes/create',
     MANAGE_PRODUCTS_SHOES_EDIT: '/system/manage/products/shoes/edit',
     MANAGE_PRODUCTS_SHOES_DETAIL: '/system/manage/products/shoes/detail',
-    MANAGE_PRODUCTS_SHOES_IMAGES: '/system/manage/products/shoes/images',
 
     MANAGE_PRODUCTS_BAG_BALO: '/system/manage/products/bag-balo',
     MANAGE_PRODUCTS_BAG_BALO_CREATE: '/system/manage/products/bag-balo/create',
     MANAGE_PRODUCTS_BAG_BALO_EDIT: '/system/manage/products/bag-balo/edit',
     MANAGE_PRODUCTS_BAG_BALO_DETAIL: '/system/manage/products/bag-balo/detail',
-    MANAGE_PRODUCTS_BAG_BALO_IMAGES: '/system/manage/products/bag-balo/image',
 
     MANAGE_PRODUCTS_HAT: '/system/manage/products/hat',
     MANAGE_PRODUCTS_HAT_CREATE: '/system/manage/products/hat/create',
     MANAGE_PRODUCTS_HAT_EDIT: '/system/manage/products/hat/edit',
     MANAGE_PRODUCTS_HAT_DETAIL: '/system/manage/products/hat/detail',
-    MANAGE_PRODUCTS_HAT_IMAGES: '/system/manage/products/hat/images',
 
     MANAGE_PRODUCTS_CLOTHES: '/system/manage/products/clothes',
     MANAGE_PRODUCTS_CLOTHES_CREATE: '/system/manage/products/clothes/create',
     MANAGE_PRODUCTS_CLOTHES_EDIT: '/system/manage/products/clothes/edit',
     MANAGE_PRODUCTS_CLOTHES_DETAIL: '/system/manage/products/clothes/detail',
-    MANAGE_PRODUCTS_CLOTHES_IMAGES: '/system/manage/products/clothes/images',
+
     
     // MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     // MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
@@ -94,7 +94,9 @@ export const Active = {
     SHOSE: 'Shoes',
     BAG_BALO: 'Bag-balo',
     HAT: 'Hat',
-    CLOTHES: 'Clothes'
+    CLOTHES: 'Clothes',
+    CATEGORY: 'Category',
+    PRODUCT_TYPE: 'Product type',
 }
 
 export const TitleProduct = {
@@ -116,6 +118,7 @@ export const categorieType = {
     CLOTHES: 'AQ'
 }
 
+    
 export const listShoesSandals = {
     SHOES: 'G1',
     SANDAL: 'G2'

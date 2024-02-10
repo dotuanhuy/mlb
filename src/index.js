@@ -16,7 +16,6 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
-
 const { store, persistor } = reduxStore()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

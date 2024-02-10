@@ -3,12 +3,11 @@ import {
     getAllProductsService, 
     getAllProductPublicService,
     getQuantityOfEachProductByCategoryService,
-    getAllCategoriesService,
-    getCategoriesByIdService,
     createNewProductService,
     deleteProductService,
     getProductByIdService,
     updateProductService,
+    getCountProductsService,
     changeImageProductByIdService,
     addDescriptionProductService,
     fetchDescriptionProductService,
@@ -86,40 +85,21 @@ export const getAllProductPublic = (accessToken) => {
             let res = await getAllProductPublicService(accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.FETCH_ALL_PRODUCTS_PUBLIC_SUCCESS,
+                    type: actionTypes.GET_ALL_PRODUCTS_PUBLIC_SUCCESS,
                     data: res.data
                 })
             }
             else {
                 dispatch({
-                    type: actionTypes.FETCH_ALL_PRODUCTS_PUBLIC_FAILED
+                    type: actionTypes.GET_ALL_PRODUCTS_PUBLIC_FAILED
                 })
             }
         } catch (e) {
             console.log('getAllProductPublic error: ', e)
             dispatch({
-                type: actionTypes.FETCH_ALL_PRODUCTS_PUBLIC_FAILED
+                type: actionTypes.GET_ALL_PRODUCTS_PUBLIC_FAILED
             })
         }
-    }
-}
-
-export const fetchAllColors = (type) => {
-    return async (dispatch, getSate) => {
-        // try {
-        //     let res = await getAllCodeByType(type)
-        //     if (res && res.errCode === 0) {
-        //         dispatch({
-        //             type: actionTypes.FETCH_ALL_COLOR_SUCCSESS,
-        //             data: res.data
-        //         })
-        //     }
-        // } catch (e) {
-        //     console.log('fetchAllColors error: ', e)
-        //     dispatch({
-        //         type: actionTypes.FETCH_ALL_COLOR_FAILED
-        //     })
-        // }
     }
 }
 
@@ -146,30 +126,6 @@ export const getQuantityOfEechProductByCategory = (accessToken) => {
             })
         }
     }
-}
-
-export const getCategoriesById = (id) => {
-    // return async (dispatch, getSate) => {
-    //     try {
-    //         let res = await getCategoriesByIdService(id)
-    //         if (res && res.errCode === 0) {
-    //             dispatch({
-    //                 type: actionTypes.GET_CATEGORIES_BY_ID_SUCCESS,
-    //                 data: res.data
-    //             })
-    //         }
-    //         else {
-    //             dispatch({
-    //                 type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
-    //             })
-    //         }
-    //     } catch(e) {
-    //         console.log('getCategoriesById error: ' ,e)
-    //         dispatch({
-    //             type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
-    //         })
-    //     }
-    // }
 }
 
 //*
@@ -276,6 +232,29 @@ export const updateProduct = (data, type, accessToken, page) => {
     }
 }
 
+export const getCountProducts = (accessToken) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getCountProductsService(accessToken)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_COUNT_PRODUCTS_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_COUNT_PRODUCTS_FAILED,
+                })
+            }
+        } catch (e) {
+            console.log('getCountProducts error: ', e)
+            dispatch({
+                type: actionTypes.GET_COUNT_PRODUCTS_FAILED,
+            })
+        }
+    }
+}
 
 export const changeImageProductById = (data, accessToken) => {
     return async (dispatch, getState) => {
@@ -412,11 +391,11 @@ export const getLimitProducts = (categore, page, accessToken) => {
     }
 }
 
-export const getLimitProductByOption = (optionData, page, option, accessToken, optionTypeName) => {
+export const getLimitProductByOption = (optionData, page, option, accessToken) => {
     return async (dispatch, getState) => {
         try {
             const newPage = +page - 1 
-            let res = await getLimitProductByOptionSortService(optionData, newPage, option, accessToken, optionTypeName)
+            let res = await getLimitProductByOptionSortService(optionData, newPage, option, accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_SUCCESS,

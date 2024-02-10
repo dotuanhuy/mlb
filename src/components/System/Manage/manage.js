@@ -9,26 +9,18 @@ import Dashboard from '../dashboards/Dashboard';
 import Navbar from '../common/navbar/Navbar';
 
 
-function Manage({isLogin, accessToken, fetAllUsersRedux}) {
+function Manage({accessToken, fetAllUsersRedux}) {
     const navigate = useNavigate()   
     return (    
-        // <div className='manage-system'>
-        //     <div className='manage-container'>
-        //         <Nav />
-        //         <div className='create'>
-        //             <button className='btn btn-success my-4 btn-add'>
-        //                 <Link to={path.MANAGE_USER_CREATE}>Add</Link>
-        //             </button>
-        //         </div>
-        //         <TableUser pathPage={path.MANAGE}/>
-        //     </div>
-        // </div>     
-        
         <>
             <Navbar />
-            <div className='row'>
-                <Sidebar />
-                <Dashboard />
+            <div className='row gx-0'>
+                <div className='col-2'>
+                    <Sidebar />
+                </div>
+                <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
+                    <Dashboard />
+                </div>
             </div>
         </>
     );

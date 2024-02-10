@@ -40,12 +40,14 @@ function ManageShoesCreate({
     colors, 
     logos, 
     sizes,
+    productTypes,
     getAllCategoriesDetailByTypeRedux,
     getAllDiscountsRedux,
     getAllBrandsRedux,
     getAllSizesByTypeRedux,
     getAllColorsRedux,
     getAllLogosRedux,
+    getProductTypeByCategoryIdRedux,
     createNewProductRedux
 }) {
     const [selectCategory, setSelectCategory] = useState('')
@@ -56,12 +58,14 @@ function ManageShoesCreate({
     const [selectBrand, setSelectBrand] = useState('')    
     const [selectLogo, setSelectLogo] = useState('')
     const [selectGender, setSelectGender] = useState('')
+    const [selectProductType, setSelectProductType] = useState('')
     const [listCategories, setListCategories] = useState([]) 
     const [listDiscount, setListDiscount] = useState([])
     const [listSizes, setListSizes] = useState([])
     const [listBrands, setListBrands] = useState([])
     const [listColors, setListColors] = useState([])
     const [listLogos, setListLogos] = useState([])
+    const [listProductTypes, setListProductTypes] = useState([])
     const [params] = useSearchParams() 
 
     // ComponentDidMount
@@ -72,6 +76,7 @@ function ManageShoesCreate({
         getAllSizesByTypeRedux(accessToken, categoryType)
         getAllColorsRedux(accessToken)
         getAllLogosRedux(accessToken)
+        getProductTypeByCategoryIdRedux(accessToken, categoryType)
     }, [])
 
     useEffect(() => {
@@ -79,15 +84,21 @@ function ManageShoesCreate({
         let dataDiscount = BuildOptionSelectDiscount(discounts)
         let dataBrand = BuildOptionSelect(brands)
         let dataLogo = BuildOptionSelect(logos)
+        let dataProductTypes = BuildOptionSelect(productTypes)
 
         setListCategories(dataCategory)
         setListDiscount(dataDiscount)
         setListBrands(dataBrand)
         setListLogos(dataLogo)
-    }, [categoriesDetail, discounts, brands, logos])
+        setListProductTypes(dataProductTypes)
+    }, [categoriesDetail, discounts, brands, logos, productTypes])
 
     const handleOnchangeCategories = (selectCategory) => {
         setSelectCategory(selectCategory)
+    }
+
+    const handleOnchangeProductType = (selectProductType) => {
+        setSelectProductType(selectProductType)
     }
     
     const handleOnchangeDiscount = (selectDiscount) => {
@@ -149,6 +160,7 @@ function ManageShoesCreate({
             code: selectObject?.code,
             price: +(selectObject?.price),
             categoryDetailId: +selectCategory?.value,
+            productTypeId: +selectProductType?.value,
             discountId: +selectDiscount?.value,
             image: selectImage?.image,
             productionSite: selectObject?.productionSite,
@@ -157,9 +169,9 @@ function ManageShoesCreate({
             material: selectObject?.material,
             quantity: +selectObject?.quantity,
             logoId: +selectLogo?.value,
-            gender: selectGender,
-            listSizes,
-            listColors,
+            gender: selectGender?.value,
+            listSizesAdded: listSizes,
+            listColorsAdded: listColors
         }
         createNewProductRedux(product, categoryType, accessToken, params.get('page') ? params.get('page') : 1)
         setSelectObject(initState)
@@ -208,6 +220,14 @@ function ManageShoesCreate({
                                         value={selectCategory}
                                         onChange={handleOnchangeCategories}
                                         options={listCategories}
+                                    />
+                                </div>
+                                <div className="mb-3 col-4">
+                                    <label className="form-label">Product type</label>
+                                    <Select
+                                        value={selectProductType}
+                                        onChange={handleOnchangeProductType}
+                                        options={listProductTypes}
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
@@ -299,81 +319,32 @@ function ManageShoesCreate({
                                     sizes && sizes.length > 0 ? 
                                     <div className="mb-3 col-4">
                                         <label htmlFor="exampleInputSize" className="form-label">Size</label>
-                                        {
-                                            categoryType === categorieType.SHOES_SANDAL ? 
-                                            <div className='row'>
-                                                {   
-                                                    sizes.map((item, index) => {
-                                                        return (
-                                                            <div className='col-5 mb-3' key={index}>
-                                                                <input 
-                                                                    checked={
-                                                                        listSizes.some(size => size === item.id) ? true : false
-                                                                    }
-                                                                    type="checkbox" 
-                                                                    className="form-check-input" 
-                                                                    id={`checkItem${item.name}`}
-                                                                    value={item.id}
-                                                                    onChange={(e) => handleOnchangeSize(e)}
-                                                                />
-                                                                <label 
-                                                                    className="form-check-label ps-2" 
-                                                                    htmlFor={`checkItem${item.name}`}
-                                                                >
-                                                                    {item.name}
-                                                                </label>
-                                                            </div>
-                                                        )
-                                                    })
-                                                }
-                                            </div>
-                                            : ''
-                                        }
-                            
-                                        {
-                                            categoryType === categorieType.BAG_BALO ?
-                                            <div>
-                                                <div className='row'>
-                                                    <div className='col-4'>
-                                                        <label htmlFor='inputSizeWidth' className='form-label'>Chiều rộng</label>
-                                                        <input 
-                                                            className='form-control' 
-                                                            id='inputSizeWidth'
-                                                            value={listSizes.sizeWidth}
-                                                            onChange={(e) => setListSizes({
-                                                                ...listSizes,
-                                                                sizeWidth: e.target.value
-                                                            })}
-                                                        />
-                                                    </div>
-                                                    <div className='col-4'>
-                                                        <label htmlFor='inputSizeHeight' className='form-label'>Chiều dài</label>
-                                                        <input 
-                                                            className='form-control' 
-                                                            id='inputSizeHeight'
-                                                            value={listSizes.sizeHeight}
-                                                            onChange={(e) => setListSizes({
-                                                                ...listSizes,
-                                                                sizeHeight: e.target.value
-                                                            })}
-                                                        />
-                                                    </div>
-                                                    <div className='col-4'>
-                                                        <label htmlFor='inputSizeD' className='form-label'>Chiều dày</label>
-                                                        <input 
-                                                            className='form-control' 
-                                                            id='inputSizeD'
-                                                            value={listSizes.sizeD}
-                                                            onChange={(e) => setListSizes({
-                                                                ...listSizes,
-                                                                sizeD: e.target.value
-                                                            })}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            : ''
-                                        }
+                                        <div className='row'>
+                                            {   
+                                                sizes.map((item, index) => {
+                                                    return (
+                                                        <div className='col-5 mb-3' key={index}>
+                                                            <input 
+                                                                checked={
+                                                                    listSizes.some(size => size === item.id) ? true : false
+                                                                }
+                                                                type="checkbox" 
+                                                                className="form-check-input" 
+                                                                id={`checkItem${item.name}`}
+                                                                value={item.id}
+                                                                onChange={(e) => handleOnchangeSize(e)}
+                                                            />
+                                                            <label 
+                                                                className="form-check-label ps-2" 
+                                                                htmlFor={`checkItem${item.name}`}
+                                                            >
+                                                                {item.name}
+                                                            </label>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </div>
                                     </div>
                                     : ''
                                 }
@@ -493,7 +464,7 @@ function ManageShoesCreate({
                         </form>
                     </div>
                     <div className='mt-4'>
-                        <TableProducts categoryType={categoryType}/>
+                        <TableProducts categoryType={categoryType} actives={actives}/>
                     </div>
                 </div>
             </div>
@@ -510,6 +481,7 @@ const mapStateToProps = state => {
         colors: state.color.colors,
         logos: state.logo.logos,
         sizes: state.size.sizes,
+        productTypes: state.productType.productTypes
     }
 }
 
@@ -521,6 +493,7 @@ const mapDispatchToProps = dispatch => {
         getAllSizesByTypeRedux: (accessToken, type) => dispatch(actions.getAllSizesByType(accessToken, type)),
         getAllColorsRedux: (accessToken) => dispatch(actions.getAllColors(accessToken)),
         getAllLogosRedux: (accessToken) => dispatch(actions.getAllLogos(accessToken)),
+        getProductTypeByCategoryIdRedux: (accessToken, categoryId) => dispatch(actions.getProductTypeByCategoryId(accessToken, categoryId)),
         createNewProductRedux: (data, type, accessToken, page) => dispatch(actions.createNewProduct(data, type, accessToken, page))
     }
 }

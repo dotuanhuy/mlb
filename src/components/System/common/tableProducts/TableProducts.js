@@ -14,6 +14,7 @@ import { faEye, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons
 
 function TableProducts({
     categoryType, 
+    actives,
     products, 
     accessToken, 
     isLoading, 
@@ -37,6 +38,10 @@ function TableProducts({
         // getAllProductsRedux(typeCategore, accessToken)
         // getLimitProductsRedux(typeCategore, params.get('page') ? params.get('page') : 1, accessToken)
     }, [])
+
+    useEffect(() => {
+        getProductByCategoryLimitRedux(categoryType, params?.get('page') ? params?.get('page') : 1)
+    }, [params?.get('page')])
 
     useEffect(() => {
         if(pathname === path.MANAGE_PRODUCTS_SHOES) {
@@ -69,7 +74,6 @@ function TableProducts({
         // getLimitProductsRedux(typeCategore, params.get('page') ? params.get('page') : 1, accessToken)
     }, [categoryType])
 
-
     // useEffect(() => {
     //     if (params.get('page')) {
     //         getLimitProductsRedux(typeCategore, params.get('page') ? params.get('page') : 1, accessToken)
@@ -88,13 +92,14 @@ function TableProducts({
 
     const handleEdit = (id) => {
         navigate({
-            pathname: pathTo?.pathToEdit,
+            pathname: actives.pathToEdit,
             search: createSearchParams({
                 id,
                 page: params.get('page') ? params.get('page') : 1
             }).toString()
         })
     }
+
 
     // const handleAddDescription = (id) => {
     //     // navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, { state: id })
@@ -147,7 +152,7 @@ function TableProducts({
                         <table className="table table-light">
                             <thead>
                                 <tr>
-                                    <th>STT</th>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Category name</th>
                                     <th>Code</th>
@@ -171,7 +176,7 @@ function TableProducts({
                                         }
                                         return (
                                             <tr key={index}>
-                                                <td>{index}</td>
+                                                <td>{item.id}</td>
                                                 <td>{item.name}</td>
                                                 <td>{item.dataCategoryDetail?.dataCategory?.name}</td>
                                                 <td>{item.code}</td>
@@ -193,7 +198,8 @@ function TableProducts({
                                                 <td>
                                                     <Link 
                                                         className='btn text-info'
-                                                        to={`${pathTo?.pathToDetail}?id=${item.id}&page=${page}`}
+                                                        to={`${actives.pathToDetail}?id=${item.id}&page=${page}`}
+                                                        // to={`${pathTo?.pathToDetail}?id=${item.id}&page=${page}`}
                                                     >
                                                         <FontAwesomeIcon icon={faEye} />
                                                     </Link>

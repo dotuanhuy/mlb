@@ -8,12 +8,12 @@ import { categorieType } from '../../../utils';
 import ListProducts from '../../common/listProducts/ListProducts';
 
 
-function MLBBackPack({products, images}) {
+function MLBBackPack({products}) {
     const [backPack, setbackPack] = useState([])
 
     useEffect(() => {
         if (products && products.length > 0) {
-            let arr = products.filter(item => item.dataCategory.type === categorieType.BAG_BALO)
+            let arr = products.filter(item => item?.dataCategoryDetail?.dataCategory?.type === categorieType.BAG_BALO)
             let newArr = arr.filter(item => item.name.includes('Balo'))
             setbackPack(newArr)
         }
@@ -30,7 +30,7 @@ function MLBBackPack({products, images}) {
                 </div>
                 <div className='menu-box'>
                     <div className='menu-product row'>
-                        <ListProducts products={backPack} images={images} col='col-3'/>
+                        <ListProducts products={backPack} col='col-3'/>
                     </div>
                     <div className='view-all text-center'>
                         <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}}>Xem tất cả</Link>

@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { categorieType } from '../../../../utils';
 import ListProducts from '../../../common/listProducts/ListProducts';
 
-function PhonePouch({products, images}) {
+function PhonePouch({products}) {
     const [bagBalo, setbagBalo] = useState([])
 
     useEffect(() => {
         if (products && products.length > 0) {
-            let arr = products.filter(item => item.dataCategory.type === categorieType.BAG_BALO)
+            let arr = products.filter(item => item?.dataCategoryDetail?.dataCategory?.type === categorieType.BAG_BALO)
             let newArr = arr.filter(item => item.name.includes('Phone Pouch'))
             setbagBalo(newArr)
         }
@@ -16,7 +16,7 @@ function PhonePouch({products, images}) {
 
     return (
         <div className='menu-product row'>
-            <ListProducts products={bagBalo} images={images} col='col-3'/>           
+            <ListProducts products={bagBalo} col='col-3'/>           
         </div>
     );
 }

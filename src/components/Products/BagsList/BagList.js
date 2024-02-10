@@ -62,8 +62,8 @@ function BagList({
     images,
     products,
     isLoading,
-    fetchAllColorsRedux, 
-    getCategoriesByIdRedux, 
+    getAllColorsRedux, 
+    getCategoriesByTypeRedux, 
     // fetchAllCodeByTypeRedux,
     getAllImagesByProductIdRedux,
     getProductByCategoryRedux,
@@ -82,8 +82,8 @@ function BagList({
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        fetchAllColorsRedux(allCode.COLOR)
-        getCategoriesByIdRedux(categorieType.BAG_BALO)
+        getAllColorsRedux(allCode.COLOR)
+        getCategoriesByTypeRedux(categorieType.BAG_BALO)
         // fetchAllCodeByTypeRedux(allCode.LOGO)
         getAllImagesByProductIdRedux(accessToken)
         let userId = ''
@@ -135,15 +135,15 @@ function BagList({
         const optionTypeName = state?.typeName ? state?.typeName : ''
 
         if (optionTypeName && optionTypeName !== typeBagBalo.BALO_MLB) {
-            getCategoriesByIdRedux(listBag.BAG)
+            getCategoriesByTypeRedux(listBag.BAG)
             data['optionType'] = listBag.BAG
         }
         else if (optionTypeName && optionTypeName === typeBagBalo.BALO_MLB) {
-            getCategoriesByIdRedux(listBag.BALO)
+            getCategoriesByTypeRedux(listBag.BALO)
             data['optionType'] = listBag.BALO
         }
         else {
-            getCategoriesByIdRedux(categorieType.BAG_BALO)
+            getCategoriesByTypeRedux(categorieType.BAG_BALO)
         }
 
         getLimitProductByOptionRedux(
@@ -254,8 +254,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllColorsRedux: (type) => dispatch(actions.fetchAllColors(type)),
-        getCategoriesByIdRedux: (id) => dispatch(actions.getCategoriesById(id)),
+        getAllColorsRedux: (type) => dispatch(actions.getAllColors(type)),
+        getCategoriesByTypeRedux: (id) => dispatch(actions.getCategoriesByType(id)),
         // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
         getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
         getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),

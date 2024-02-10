@@ -1,6 +1,7 @@
 import authReducer from "./authReducer";
 import userReducer from './userReducer';
 import categoryReducer from './categoryReducer';
+import productTypeReducer from "./productTypeReducer";
 import discountReducer from './discountReducer';
 import brandReducer from "./brandReducer";
 import sizeReducer from "./sizeReducer";
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReducer),   // Lưu dưới storage
     user: userReducer,
     category: categoryReducer,
+    productType: productTypeReducer,
     discount: discountReducer,
     brand: brandReducer,
     size: sizeReducer,

@@ -1,6 +1,7 @@
 export * from './userActions'
 export * from './authActions'
 export * from './categoryActions'
+export * from './productTypeAction'
 export * from './discountAction'
 export * from './brandAction'
 export * from './sizeAction'

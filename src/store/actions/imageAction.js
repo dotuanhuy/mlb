@@ -1,8 +1,10 @@
 import actionTypes from "./actionTypes";
 import { 
+    getAllImageProductService,
     getAllImagesByProductIdService,
     addImageProductService,
-    deleteImageProductService
+    deleteImageProductService,
+    getmageProductByCategoryService,
 } from "../../services/imageService";
 
 export const refreshStoreImages = () => {
@@ -30,6 +32,30 @@ export const refreshIsLoadingImages = () => {
             console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
+            })
+        }
+    }
+}
+
+export const getAllImagesProduct = (accessToken) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await getAllImageProductService(accessToken)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_ALL_IMAGES_PRODUCT_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_ALL_IMAGES_PRODUCT_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getAllImagesProduct error: ', e)
+            dispatch({
+                type: actionTypes.GET_ALL_IMAGES_PRODUCT_FAILED
             })
         }
     }
@@ -94,6 +120,30 @@ export const deleteImageProduct = (data, accessToken) => {
             console.log('deleteImageProduct error: ', e)
             dispatch({
                 type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
+            })
+        }
+    }
+}
+
+export const getmageProductByCategory = (accessToken, category) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await getmageProductByCategoryService(accessToken, category)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_IMAGES_PRODUCT_BY_CATEGORY_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_IMAGES_PRODUCT_BY_CATEGORY_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getmageProductByCategory error: ', e)
+            dispatch({
+                type: actionTypes.GET_IMAGES_PRODUCT_BY_CATEGORY_FAILED
             })
         }
     }

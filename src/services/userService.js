@@ -25,6 +25,11 @@ const handleUpdateUser = (data, accessToken, page) => {
     // return axios.post('/api/update-user', data)
 }   
 
+const getCountUsersService = (accessToken) => {
+    const axiosJWT = createAxios(accessToken)
+    return axiosJWT.get('/api/get-count-users', { headers: {token: `Bearer ${accessToken}`}})
+}
+
 const getAllUsers = (accessToken) => {
     const axiosJWT = createAxios(accessToken)
     return axiosJWT.get('/api/get-all-users', { headers: {token: `Bearer ${accessToken}`}})
@@ -70,6 +75,7 @@ export {
     handleLogoutAPI,
     handleCreateNewUer,
     handleUpdateUser,
+    getCountUsersService,
     getAllUsers,
     getAllAddressService,
     getAllRolesService,

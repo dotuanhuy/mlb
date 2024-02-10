@@ -41,6 +41,7 @@ function ManageShoesEdit({
     colors, 
     logos, 
     sizes,
+    productTypes,
     isLoading,
     getProductByIdRedux,
     getAllCategoriesDetailByTypeRedux,
@@ -49,19 +50,21 @@ function ManageShoesEdit({
     getAllSizesByTypeRedux,
     getAllColorsRedux,
     getAllLogosRedux,
+    getProductTypeByCategoryIdRedux,
     updateProductRedux,
     refreshIsloadingStateProductRedux
 }) {
     const navigate = useNavigate()
-    const [selectCategory, setSelectCategory] = useState()
+    const [selectCategory, setSelectCategory] = useState('')
+    const [selectProductType, setSelectProductType] = useState('')
     const [selectObject, setSelectObject] = useState(initState)
-    const [selectDiscount, setSelectDiscount] = useState()
+    const [selectDiscount, setSelectDiscount] = useState('')
     const [selectImage, setSelectImage] = useState(initStateImage)
-    const [selectReleaseDate, setSelectReleaseDate] = useState()
-    const [selectBrand, setSelectBrand] = useState()    
-    const [selectLogo, setSelectLogo] = useState()
-    const [selectGender, setSelectGender] = useState()
-    const [selectStatus, setSelectStatus] = useState()
+    const [selectReleaseDate, setSelectReleaseDate] = useState('')
+    const [selectBrand, setSelectBrand] = useState('')    
+    const [selectLogo, setSelectLogo] = useState('')
+    const [selectGender, setSelectGender] = useState('')
+    const [selectStatus, setSelectStatus] = useState('')
     const [listCategories, setListCategories] = useState([]) 
     const [listDiscount, setListDiscount] = useState([])
     const [listBrands, setListBrands] = useState([])
@@ -70,6 +73,7 @@ function ManageShoesEdit({
     const [listSizes, setListSizes] = useState([])
     const [listGenders, setListGenders] = useState([])
     const [listStatus, setListStatus] = useState([])
+    const [listProductTypes, setListProductTypes] = useState([])
     const [params] = useSearchParams()
 
     // ComponentDidMount
@@ -81,6 +85,7 @@ function ManageShoesEdit({
         getAllSizesByTypeRedux(accessToken, categoryType)
         getAllColorsRedux(accessToken)
         getAllLogosRedux(accessToken)
+        getProductTypeByCategoryIdRedux(accessToken, categoryType)
         getProductByIdRedux(params.get('id'), accessToken)
     }, [])
 
@@ -97,6 +102,10 @@ function ManageShoesEdit({
             setSelectCategory({
                 label: products?.dataCategoryDetail?.name ? products.dataCategoryDetail.name : '', 
                 value: products?.dataCategoryDetail?.id ? products.dataCategoryDetail.id: ''
+            })
+            setSelectProductType({
+                label: products?.dataProductType?.name ? products?.dataProductType?.name : '',
+                value: products?.dataProductType?.id ? products.dataProductType.id: ''
             })
             setSelectDiscount({
                 label: products?.dataDiscounts ? +products.dataDiscounts.value * 100 + '%' : '', 
@@ -140,11 +149,13 @@ function ManageShoesEdit({
 
     useEffect(() => {
         let dataCategory = BuildOptionSelect(categoriesDetail?.at(0)?.dataCategory)
+        let dataProductTypes = BuildOptionSelect(productTypes)
         let dataDiscount = BuildOptionSelectDiscount(discounts)
         let dataBrand = BuildOptionSelect(brands)
         let dataLogo = BuildOptionSelect(logos)
 
         setListCategories(dataCategory)
+        setListProductTypes(dataProductTypes)
         setListDiscount(dataDiscount)
         setListBrands(dataBrand)
         setListLogos(dataLogo)
@@ -172,12 +183,16 @@ function ManageShoesEdit({
                 label: 'inactive'
             }
         ])
-    }, [categoriesDetail, discounts, brands, logos])
+    }, [categoriesDetail, discounts, brands, logos, productTypes])
 
     const handleOnchangeCategories = (selectCategory) => {
         setSelectCategory(selectCategory)
     }
     
+    const handleOnchangeProductType = (selectProductType) => {
+        setSelectProductType(selectProductType)
+    }
+
     const handleOnchangeDiscount = (selectDiscount) => {
         setSelectDiscount(selectDiscount)
     }
@@ -221,7 +236,7 @@ function ManageShoesEdit({
         }
         setListColors(arr)
     }
-
+    
     const handhandleOnchangeLogos = (selectLogo) => {
         setSelectLogo(selectLogo)
     }
@@ -233,15 +248,43 @@ function ManageShoesEdit({
     const handhandleOnchangeStatus = (selectStatus) => {
         setSelectGender(selectStatus)
     }
-
     const handleUpdateProduct = (e) => {
         e.preventDefault()
+        let listSizesDeleted = []
+        let listSizesAdded = []
+        let listColorsDeleted = []
+        let listColorsAdded = [] 
+
+        products?.dataSizeDetail?.forEach(item => {
+            if (listSizes.every(element => element !== item.sizeId)) {
+                listSizesDeleted.push(item.sizeId);
+            }
+        })
+        listSizes.forEach(item => {
+            if (products?.dataSizeDetail?.every(element => element.sizeId !== item)) {
+                listSizesAdded.push(item);
+            }
+        })
+        
+        products?.dataColorDetail?.forEach(item => {
+            if (listColors.every(element => element !== item.colorId)) {
+                listColorsDeleted.push(item.colorId);
+            }
+        })
+        listColors.forEach(item => {
+            if (products?.dataColorDetail?.every(element => element.colorId !== item)) {
+                listColorsAdded.push(item);
+            }
+        })
+
+
         let product = {
             id: params.get('id'),
             name: selectObject?.name,
             code: selectObject?.code,
             price: +(selectObject?.price),
             categoryDetailId: +selectCategory?.value,
+            productTypeId: +selectProductType?.value,
             discountId: +selectDiscount?.value,
             image: selectImage?.image,
             productionSite: selectObject?.productionSite,
@@ -250,10 +293,12 @@ function ManageShoesEdit({
             material: selectObject?.material,
             quantity: +selectObject?.quantity,
             logoId: +selectLogo?.value,
-            gender: selectGender,
+            gender: selectGender?.value,
             status: +selectStatus?.value,
-            listSizes,
-            listColors,
+            listSizesDeleted,
+            listSizesAdded,
+            listColorsDeleted,
+            listColorsAdded
         }
         updateProductRedux(product, categoryType, accessToken, params.get('page'))
         navigate({
@@ -302,6 +347,14 @@ function ManageShoesEdit({
                                             value={selectCategory}
                                             onChange={handleOnchangeCategories}
                                             options={listCategories}
+                                        />
+                                    </div>
+                                    <div className="mb-3 col-4">
+                                        <label className="form-label">Product type</label>
+                                        <Select
+                                            value={selectProductType}
+                                            onChange={handleOnchangeProductType}
+                                            options={listProductTypes}
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
@@ -394,81 +447,32 @@ function ManageShoesEdit({
                                         sizes && sizes.length > 0 ? 
                                         <div className="mb-3 col-4">
                                             <label htmlFor="exampleInputSize" className="form-label">Size</label>
-                                            {
-                                                categoryType === categorieType.SHOES_SANDAL ? 
-                                                <div className='row'>
-                                                    {   
-                                                        sizes.map((item, index) => {
-                                                            return (
-                                                                <div className='col-5 mb-3' key={index}>
-                                                                    <input 
-                                                                        checked={
-                                                                            listSizes.some(size => size === item.id) ? true : false
-                                                                        }
-                                                                        type="checkbox" 
-                                                                        className="form-check-input" 
-                                                                        id={`checkItem${item.name}`}
-                                                                        value={item.id}
-                                                                        onChange={(e) => handleOnchangeSize(e)}
-                                                                    />
-                                                                    <label 
-                                                                        className="form-check-label ps-2" 
-                                                                        htmlFor={`checkItem${item.name}`}
-                                                                    >
-                                                                        {item.name}
-                                                                    </label>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-                                                : ''
-                                            }
-                                
-                                            {
-                                                categoryType === categorieType.BAG_BALO ?
-                                                <div>
-                                                    <div className='row'>
-                                                        <div className='col-4'>
-                                                            <label htmlFor='inputSizeWidth' className='form-label'>Chiều rộng</label>
-                                                            <input 
-                                                                className='form-control' 
-                                                                id='inputSizeWidth'
-                                                                value={listSizes.sizeWidth}
-                                                                onChange={(e) => setListSizes({
-                                                                    ...listSizes,
-                                                                    sizeWidth: e.target.value
-                                                                })}
-                                                            />
-                                                        </div>
-                                                        <div className='col-4'>
-                                                            <label htmlFor='inputSizeHeight' className='form-label'>Chiều dài</label>
-                                                            <input 
-                                                                className='form-control' 
-                                                                id='inputSizeHeight'
-                                                                value={listSizes.sizeHeight}
-                                                                onChange={(e) => setListSizes({
-                                                                    ...listSizes,
-                                                                    sizeHeight: e.target.value
-                                                                })}
-                                                            />
-                                                        </div>
-                                                        <div className='col-4'>
-                                                            <label htmlFor='inputSizeD' className='form-label'>Chiều dày</label>
-                                                            <input 
-                                                                className='form-control' 
-                                                                id='inputSizeD'
-                                                                value={listSizes.sizeD}
-                                                                onChange={(e) => setListSizes({
-                                                                    ...listSizes,
-                                                                    sizeD: e.target.value
-                                                                })}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                : ''
-                                            }
+                                            <div className='row'>
+                                                {   
+                                                    sizes.map((item, index) => {
+                                                        return (
+                                                            <div className='col-5 mb-3' key={index}>
+                                                                <input 
+                                                                    checked={
+                                                                        listSizes.some(size => size === item.id) ? true : false
+                                                                    }
+                                                                    type="checkbox" 
+                                                                    className="form-check-input" 
+                                                                    id={`checkItem${item.name}`}
+                                                                    value={item.id}
+                                                                    onChange={(e) => handleOnchangeSize(e)}
+                                                                />
+                                                                <label 
+                                                                    className="form-check-label ps-2" 
+                                                                    htmlFor={`checkItem${item.name}`}
+                                                                >
+                                                                    {item.name}
+                                                                </label>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
                                         </div>
                                         : ''
                                     }
@@ -599,6 +603,7 @@ const mapStateToProps = state => {
         colors: state.color.colors,
         logos: state.logo.logos,
         sizes: state.size.sizes,
+        productTypes: state.productType.productTypes,
         isLoading: state.product.isLoadingProduct
     }
 }
@@ -611,6 +616,7 @@ const mapDispatchToProps = dispatch => {
         getAllSizesByTypeRedux: (accessToken, type) => dispatch(actions.getAllSizesByType(accessToken, type)),
         getAllColorsRedux: (accessToken) => dispatch(actions.getAllColors(accessToken)),
         getAllLogosRedux: (accessToken) => dispatch(actions.getAllLogos(accessToken)),
+        getProductTypeByCategoryIdRedux: (accessToken, categoryId) => dispatch(actions.getProductTypeByCategoryId(accessToken, categoryId)),
         getProductByIdRedux: (id, accessToken) => dispatch(actions.getProductById(id, accessToken)),
         updateProductRedux: (data, categorieType, accessToken, page) => dispatch(actions.updateProduct(data, categorieType, accessToken, page)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct())

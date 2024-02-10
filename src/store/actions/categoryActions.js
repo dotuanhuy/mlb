@@ -2,8 +2,8 @@ import actionTypes from "./actionTypes";
 import { 
     getAllCategoriesService,
     getAllCategoriesDetailService,
-    getCategoriesByIdService,
-    getAllCategoriesDetailByTypeService
+    getCategoriesByTypeService,
+    getAllCategoriesDetailByTypeService,
 } from "../../services/categoryService";
 
 export const refreshStoreCategory = () => {
@@ -93,26 +93,26 @@ export const getAllCategoriesDetailByType = (accessToken, categoryType) => {
     }
 }
 
-// export const getCategoriesById = (id) => {
-//     return async (dispatch, getSate) => {
-//         try {
-//             let res = await getCategoriesByIdService(id)
-//             if (res && res.errCode === 0) {
-//                 dispatch({
-//                     type: actionTypes.GET_CATEGORIES_BY_ID_SUCCESS,
-//                     data: res.data
-//                 })
-//             }
-//             else {
-//                 dispatch({
-//                     type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
-//                 })
-//             }
-//         } catch(e) {
-//             console.log('getCategoriesById error: ' ,e)
-//             dispatch({
-//                 type: actionTypes.GET_CATEGORIES_BY_ID_FAILED
-//             })
-//         }
-//     }
-// }
+export const getCategoriesByType = (type) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await getCategoriesByTypeService(type)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_CATEGORIES_BY_TYPE_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_CATEGORIES_BY_TYPE_FAILED
+                })
+            }
+        } catch(e) {
+            console.log('getCategoriesByType error: ' ,e)
+            dispatch({
+                type: actionTypes.GET_CATEGORIES_BY_TYPE_FAILED
+            })
+        }
+    }
+}

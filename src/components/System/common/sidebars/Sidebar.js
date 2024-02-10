@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './Sidebar.css'
-import { faCaretDown, faCartShopping, faChartSimple, faHouse, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCartShopping, faChartSimple, faHouse, faLayerGroup, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { Active, categorieType, path } from '../../../../utils';
@@ -22,7 +22,16 @@ function Sidebar({active='dashboard', activeChild = ''}) {
     //     customer: false,
     //     user: false
     // })
+    const [state ,setState] = useState(false)
+    const handleClickCategories = () => {
+        setState(!state)
+    }
 
+    useEffect(() => {
+        if (active === 'category' || active === 'product-type') {
+            setState(true)
+        }
+    }, active)
 
     return (
         <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse">
@@ -34,7 +43,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         <Link 
                             className={active === 'dashboard' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
                             aria-current="page" 
-                            href="#"
+                            to={path.MANAGE}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faHouse} />
                             Dashboard
@@ -54,13 +63,44 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                     <li 
                         class="nav-item"
                     >   
+                        <div 
+                            className={state === true ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            onClick={handleClickCategories} 
+                            style={{ cursor: 'pointer' }}                           
+                        >
+                            <FontAwesomeIcon className='pe-2' icon={faLayerGroup} />
+                            Categoies
+                            <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
+                        </div>
+                        <ul className={state === true ? 'd-block' : 'd-none'}>
+                            <li className='border-bottom py-2'>
+                                <Link 
+                                    className={activeChild === Active.CATEGORY ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    to={path.MANAGE_CATEGORY_PRODUCT}
+                                >
+                                    Category product
+                                </Link>
+                            </li>
+                            <li className='border-bottom py-2'>
+                                <Link 
+                                    className={activeChild === Active.PRODUCT_TYPE ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    to={path.MANAGE_PRODUCT_TYPE}
+                                >
+                                    Product type
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                    <li 
+                        class="nav-item"
+                    >   
                         <Link 
                             className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
                             to={path.MANAGE_PRODUCTS}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
                             Products
-                            <FontAwesomeIcon className='ps-2' icon={faCaretDown} />
+                            <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
                         </Link>
                         {/* <button
                             className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
