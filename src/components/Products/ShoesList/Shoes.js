@@ -26,18 +26,15 @@ import HomeFooter from '../../HomePage/HomeFooter/HomeFooter';
 import jwt_decode from 'jwt-decode';
 
 function Shoes({
-    typeName,
+    type,
     categoryActive,
-    colors, 
     categories, 
-    logos, 
     accessToken, 
     images,
     products,
     isLoading,
     getAllColorsRedux, 
     getAllLogosRedux,
-    getCategoriesByTypeRedux, 
     getImageProductByCategoryRedux,
     getLimitProductByOptionRedux,
     refreshIsloadingStateProductRedux,
@@ -54,7 +51,6 @@ function Shoes({
     useEffect(() => {
         refreshIsloadingStateProductRedux()
         getAllColorsRedux(accessToken)
-        getCategoriesByTypeRedux(categoryActive)
         getAllLogosRedux(accessToken)
         getImageProductByCategoryRedux(accessToken, categoryActive)
 
@@ -64,31 +60,18 @@ function Shoes({
             userId = tokenDecoded?.id
         }
         if (userId) {
-            getAllProductsFavouriteRedux(accessToken, userId)
+            // getAllProductsFavouriteRedux(accessToken, userId)
         }
     }, [])
 
     useEffect(() => {
-        
         const data = {
             optionType: optionType?.toString(',').length === 0 ? categoryActive : optionType?.toString(','),
             colors: optionColor?.toString(','),
             logos: optionLogo?.toString(','),
-            typeName
+            typeName: state?.id ? state?.id : ''
         }
-        // const optionTypeName = state?.typeName ? state?.typeName : ''
 
-        // if (optionTypeName && optionTypeName !== typeShoesSandanl.DEP_MLB) {
-        //     getCategoriesByTypeRedux(listShoesSandals.SHOES)
-        //     data['optionType'] = listShoesSandals.SHOES
-        // }
-        // else if (optionTypeName && optionTypeName === typeShoesSandanl.DEP_MLB) {
-        //     getCategoriesByTypeRedux(listShoesSandals.SANDAL)
-        //     data['optionType'] = listShoesSandals.SANDAL
-        // }
-        // else {
-        //     getCategoriesByTypeRedux(categorieType.SHOES_SANDAL)
-        // }
         getLimitProductByOptionRedux(
             data, 
             params.get('page') ? params.get('page') : 1, 
@@ -102,8 +85,29 @@ function Shoes({
             });
         }
 
-    }, [params.get('page'), optionSort, optionType, optionColor, optionLogo, typeName])
+    }, [params.get('page'), optionSort, optionType, optionColor, optionLogo, state?.id])
 
+    useEffect(() => {
+        setOptionSort('default')
+        setOptionType([])
+        setOptionColor([])
+        setOptionLogo([])
+        refreshIsloadingStateProductRedux()
+        getImageProductByCategoryRedux(accessToken, categoryActive)
+        const data = {
+            optionType: optionType?.toString(',').length === 0 ? categoryActive : optionType?.toString(','),
+            colors: optionColor?.toString(','),
+            logos: optionLogo?.toString(','),
+            typeName: state?.id ? state?.id : ''
+        }
+
+        getLimitProductByOptionRedux(
+            data, 
+            params.get('page') ? params.get('page') : 1, 
+            optionSort, 
+            accessToken,
+        )
+    }, [categoryActive])
 
     const handleOnchangeTypeType = (e, typeId) => {
         let arr = [...optionType]
@@ -148,8 +152,8 @@ function Shoes({
                     <div className='shoes'>
                         <Navbar />
                         <Banner 
-                            categoryProduct={categories?.name}
-                            title={`mlb việt nam | ${categories?.name} chính hãng tại việt nam`}
+                            categoryProduct={categories?.at(0)?.name}
+                            title={`mlb việt nam | ${categories?.at(0)?.name} chính hãng tại việt nam`}
                         />
 
                         <div className='shoes-body pt-5'>
@@ -158,7 +162,7 @@ function Shoes({
                                     <div className='options col-3'>
                                         <div className='options-list ps-3'>
                                             <OptionSort handleSetOptionSort={setOptionSort} optionSort={optionSort} />
-                                            <OptionType optionType={optionType} handleOnchangeTypeType={handleOnchangeTypeType} />
+                                            <OptionType type={type} optionType={optionType} handleOnchangeTypeType={handleOnchangeTypeType} />
                                             <OptionColor handleOnchangeColor={handleOnchangeColor} optionColor={optionColor} />
                                             <OptionLogo handleOnchangeLogo={handleOnchangeLogo} optionType={optionType} />
                                         </div>
@@ -187,9 +191,7 @@ function Shoes({
 const mapStateToProps = state => {
     return {
         accessToken: state.auth.token,
-        colors: state.color.colors,
         categories: state.category.categoryType,
-        logos: state.logo.logos,
         images: state.image.images,
         products: state.product.products,
         isLoading: state.product.isLoadingProduct,
@@ -199,7 +201,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getAllColorsRedux: (accessToken) => dispatch(actions.getAllColors(accessToken)),
-        getCategoriesByTypeRedux: (type) => dispatch(actions.getCategoriesByType(type)),
         getAllLogosRedux: (accessToken) => dispatch(actions.getAllLogos(accessToken)),
         getImageProductByCategoryRedux: (category, accessToken) => dispatch(actions.getmageProductByCategory(category, accessToken)),
         // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),

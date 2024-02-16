@@ -1,13 +1,23 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
 
-const getAllProductTypesService = (accessToken, page) => {
+const getAllProductTypesService = (accessToken) => {
     if (accessToken) {
         const axiosJWT = createAxios(accessToken)
-        return axiosJWT.get(`/api/get-all-product-type-limit?page=${page}`, { headers: {token: `Bearer ${accessToken}`}})
+        return axiosJWT.get('/api/get-all-product-type', { headers: {token: `Bearer ${accessToken}`}})
     }
     else {
-        return axios.get(`/api/get-all-product-type-limit?page=${page}`)
+        return axios.get('/api/get-all-product-type')
+    }
+}
+
+const getLimitProductTypesService = (accessToken, page) => {
+    if (accessToken) {
+        const axiosJWT = createAxios(accessToken)
+        return axiosJWT.get(`/api/get-product-type-limit?page=${page}`, { headers: {token: `Bearer ${accessToken}`}})
+    }
+    else {
+        return axios.get(`/api/get-product-type-limit?page=${page}`)
     }
 }
 
@@ -51,6 +61,7 @@ const updateProductTypeService = (accessToken, data) => {
 
 export {
     getAllProductTypesService,
+    getLimitProductTypesService,
     getProductTypeByCategoryIdService,
     getProductTypeByIdService,
     createProductTypeService,

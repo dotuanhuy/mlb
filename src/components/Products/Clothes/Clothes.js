@@ -137,15 +137,15 @@ function Clothes({
         }
         const optionTypeName = state?.typeName ? state?.typeName : ''
 
-        if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_SHORTS) {
+        if (optionTypeName && optionTypeName === typeClothes.SHORTS) {
             getCategoriesByTypeRedux(listClothes.SHORTS)
             data['optionType'] = listClothes.SHORTS
         }
-        else if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_TSHIRT) {
+        else if (optionTypeName && optionTypeName === typeClothes.TSHIRT) {
             getCategoriesByTypeRedux(listClothes.SHIRT)
             data['optionType'] = listClothes.SHIRT
         }
-        else if (optionTypeName && optionTypeName === typeClothes.OUTFIT_MLB_SKIRT_DRESS) {
+        else if (optionTypeName && optionTypeName === typeClothes.SKIRT_DRESS) {
             let str = `${listClothes.DRESS1},${listClothes.DRESS2}`
             getCategoriesByTypeRedux(str)
             data['optionType'] = str

@@ -126,8 +126,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         searchProductByNameRedux: (productName, offset) => dispatch(actions.searchProductByName(productName, offset)),
-        refreshProductSearchRedux: () => dispatch(actions.refreshProductSearch())
-        
+        refreshProductSearchRedux: () => dispatch(actions.refreshProductSearch()),
     }
 }
 

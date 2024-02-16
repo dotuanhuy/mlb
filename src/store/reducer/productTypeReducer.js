@@ -14,13 +14,25 @@ const productTypeReducer = (state=initState, action) => {
                 ...state
             }
         case 'GET_ALL_PRODUCT_TYPES_SUCCESS': 
+            state.productTypes = action.data
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case 'GET_ALL_PRODUCT_TYPES_FAILED':
+            state.productTypes = []
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case 'GET_LIMIT_PRODUCT_TYPES_SUCCESS': 
             state.productTypes = action.data.rows
             state.count = action.data.count
             state.isLoading = false
             return {
                 ...state
             }
-        case 'GET_ALL_PRODUCT_TYPES_FAILED':
+        case 'GET_LIMIT_PRODUCT_TYPES_FAILED':
             state.productTypes = []
             state.count = 0
             state.isLoading = true

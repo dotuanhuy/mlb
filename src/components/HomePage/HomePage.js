@@ -14,29 +14,28 @@ import jwt_decode from 'jwt-decode';
 import Loading from '../common/Loading/Loading';
 
 function HomePage({ 
+    images,
     accessToken, 
     isLoading,
     refreshStoreImagesRedux,
     getAllProductPublicRedux, 
     getAllImagesProductRedux,
     getAllProductsFavouriteRedux, 
-    refreshIsloadingStateProductRedux,
     getProductsInCartByUserRedux
 }) {
 
     useEffect(() => {
         refreshStoreImagesRedux()
-        refreshIsloadingStateProductRedux()
         getAllProductPublicRedux(accessToken)
         getAllImagesProductRedux(accessToken)
-
+        
         let userId = ''
         if (accessToken) {
             let tokenDecoded = jwt_decode(accessToken)
             userId = tokenDecoded?.id
         }
         if (userId) {
-            getAllProductsFavouriteRedux(accessToken, userId)
+            // getAllProductsFavouriteRedux(accessToken, userId)
             // getProductsInCartByUserRedux(accessToken, userId)
         }
     }, [])
@@ -84,8 +83,8 @@ function HomePage({
 const mapStateToProps = state => {
     return {
         accessToken: state.auth.token,
-        images: state.product.images,
         isLoading: state.image.isLoadingImage,
+        images: state.image.images
     }
 }
 
@@ -95,7 +94,6 @@ const mapDispatchToProps = dispatch => {
         getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken)),
         getAllImagesProductRedux: (accessToken) => dispatch(actions.getAllImagesProduct(accessToken)),
         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
         getProductsInCartByUserRedux: (accessToken, userId) => dispatch(actions.getProductsInCartByUser(accessToken, userId))
     }
 }

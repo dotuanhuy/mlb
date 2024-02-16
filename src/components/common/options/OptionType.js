@@ -1,12 +1,16 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import './Option.scss';
 
-function OptionType({handleOnchangeTypeType, categories, optionType}) {
+function OptionType({handleOnchangeTypeType, categories, optionType, type, getCategoriesByTypeRedux}) {
     const [typeType, setTypeType] = useState(true)
+
+    useEffect(() => {
+        getCategoriesByTypeRedux(type)
+    }, [type])
 
     return (
         <div className='option-together options-type'>
@@ -22,7 +26,7 @@ function OptionType({handleOnchangeTypeType, categories, optionType}) {
             </div>
             <div className={typeType ? 'option-together-group' : 'option-together-group hiden-option'}>
                 <ul>
-                    {
+                    {/* {
                         categories && categories?.dataCategory?.length > 0 &&
                         categories?.dataCategory?.map((item, index) => {
                             return (
@@ -40,7 +44,27 @@ function OptionType({handleOnchangeTypeType, categories, optionType}) {
                                 </li>
                             )
                         })
-                    } 
+                    }  */}
+
+                    {
+                        categories && categories?.length > 0 &&
+                        categories?.map((item, index) => {
+                            return (
+                                <li key={index}>
+                                    <a>
+                                        <input id={item.id} type='checkbox' className={optionType ? 'optionSelect' : ''}/>
+                                        <label 
+                                            className='checkSS' 
+                                            htmlFor={item.id}
+                                            onClick={(e) => handleOnchangeTypeType(e, item.id)}
+                                        >
+                                            {item.name}
+                                        </label>
+                                    </a>
+                                </li>
+                            )
+                        })
+                    }
                 </ul>
             </div>
         </div>
@@ -55,7 +79,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-       
+        getCategoriesByTypeRedux: (type) => dispatch(actions.getCategoriesByType(type)),
     }
 }
 

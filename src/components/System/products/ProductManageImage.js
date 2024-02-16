@@ -217,7 +217,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshIsLoadingImagesRedux: () => dispatch(actions.refreshIsLoadingImages()),
+        refreshIsLoadingImagesRedux: () => dispatch(actions.refreshStoreImages()),
         addImageProductRedux: (data, accessToken) => dispatch(actions.addImageProduct(data, accessToken)),
         changeImageProductByIdRedux: (data, accessToken) => dispatch(actions.changeImageProductById(data, accessToken)),
         deleteImageProductRedux: (data, accessToken) => dispatch(actions.deleteImageProduct(data, accessToken)),

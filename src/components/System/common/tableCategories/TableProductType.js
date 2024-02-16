@@ -10,13 +10,14 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { Modal } from 'react-bootstrap';
+import { Buffer } from 'buffer';
 
 function TableProductType({
     productTypes, 
     accessToken, 
     isLoading, 
     refreshStoreProductTypeRedux, 
-    getAllProductTypesRedux,
+    getLimitProductTypesRedux,
     deleteProductTypeRedux
 }) {
     const navigate = useNavigate()   
@@ -29,11 +30,11 @@ function TableProductType({
 
     useEffect(() => {
         refreshStoreProductTypeRedux()
-        getAllProductTypesRedux(accessToken, params?.get('page') ? params?.get('page') : 1)
+        getLimitProductTypesRedux(accessToken, params?.get('page') ? params?.get('page') : 1)
     }, [])
 
     useEffect(() => {
-        getAllProductTypesRedux(accessToken, params?.get('page') ? params?.get('page') : 1)
+        getLimitProductTypesRedux(accessToken, params?.get('page') ? params?.get('page') : 1)
     }, [params?.get('page')])
 
     const handleDeleteProductType = (id) => {
@@ -49,6 +50,8 @@ function TableProductType({
         )
     }
 
+    console.log(productTypes)
+
     return (
         <>
             {
@@ -63,6 +66,7 @@ function TableProductType({
                                     <th scope='col'>ID</th>
                                     <th>Name</th>
                                     <th>Category name</th>
+                                    <th>Image</th>
                                     <th>Status</th>
                                     <th>Date created</th>
                                     <th>Edit</th>
@@ -74,11 +78,24 @@ function TableProductType({
                                     productTypes && productTypes.length > 0 &&
                                     productTypes.map((item, index) => {
                                         let page = params?.get('page') ? params?.get('page') : 1
+                                        let imageBase64 = item.imageRoot ? Buffer.from(item.imageRoot.data, 'base64').toString('binary') : ''
                                         return (
                                             <tr key={index}>
                                                 <td scope='row'>{item.id}</td>
                                                 <td>{item.name}</td>
                                                 <td>{item?.dataProductTypeCategory?.name}</td>
+                                                <td>
+                                                    <div 
+                                                        style={{ 
+                                                            width: '100%', 
+                                                            height: '100px',
+                                                            backgroundImage: `url(${imageBase64})`,
+                                                            backgroundPosition: '0% 0%',
+                                                            backgroundSize: 'contain',
+                                                            backgroundRepeat: 'no-repeat'
+                                                        }}
+                                                    ></div>
+                                                </td>
                                                 <td>{item.status ? 'Active' : 'Not active'}</td>
                                                 <td>{formatDateVN(item.createdAt)}</td>
                                                 <td>
@@ -140,7 +157,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshStoreProductTypeRedux: () => dispatch(actions.refreshStoreProductType()),
-        getAllProductTypesRedux: (accessToken, page) => dispatch(actions.getAllProductTypes(accessToken, page)),
+        getLimitProductTypesRedux: (accessToken, page) => dispatch(actions.getLimitProductTypes(accessToken, page)),
         deleteProductTypeRedux: (accessToken, id, page) => dispatch(actions.deleteProductType(accessToken, id, page)),
     }
 }

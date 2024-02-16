@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import {Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { categorieType, listShoesSandals, path, typeShoesSandanl } from '.././utils'
+import { categorieType, listBag, listClothes, listHat, listShoesSandals, path, typeShoesSandanl } from '.././utils'
 import HomePage from '../components/HomePage/HomePage';
 import Shoes from '../components/Products/ShoesList/Shoes';
 import BagList from '../components/Products/BagsList/BagList';
@@ -21,33 +21,34 @@ function PublicRoute() {
         <>
             <Routes>
                 <Route path={path.HOMEPAGE} element={<HomePage />}/> 
-                <Route path={path.GIAY_MLB} element={<Shoes categoryActive={categorieType.SHOES_SANDAL}/>} />
-                <Route path={path.GIAY_MLB_BIGBALL_CHUNKY} element={<Shoes categoryActive={listShoesSandals.SHOES} typeName={typeShoesSandanl.GIAY_MLB_BIGBALL_CHUNKY} />} />
-                <Route path={path.GIAY_MLB_MULE} element={<Shoes />} />
-                <Route path={path.GIAY_MLB_CHUNKY_LINER} element={<Shoes />} />
-                <Route path={path.GIAY_MLB_PLAYBALL} element={<Shoes />} />
-                <Route path={path.GIAY_MLB_CHUNKY_CLASSIC} element={<Shoes />} />
-                <Route path={path.GIAY_MLB_CHUNKY_RUNNER} element={<Shoes />} />
-                <Route path={path.DEP_MLB} element={<Shoes />} />
 
-                <Route path={path.TUI_MLB} element={<BagList />} />
-                <Route path={path.TUI_MLB_BUCKET_BAG} element={<BagList />} />
-                <Route path={path.TUI_MLB_HIP_SACK} element={<BagList />} />
-                <Route path={path.TUI_MLB_HOBO_BAG} element={<BagList />} />
-                <Route path={path.TUI_MLB_CROSS_BAG} element={<BagList />} />
-                <Route path={path.TUI_MLB_TOTE_BAG} element={<BagList />} />
-                <Route path={path.TUI_MLB_PHONE_POUCH} element={<BagList />} />
-                <Route path={path.BALO_MLB} element={<BagList />} />
+                <Route path={path.GIAY_MLB} element={<Shoes categoryActive={categorieType.SHOES_SANDAL} type={[listShoesSandals.SANDAL, listShoesSandals.SHOES]}/>} />
+                <Route path={path.BIGBALL_CHUNKY} element={<Shoes categoryActive={categorieType.SHOES_SANDAL} type={listShoesSandals.SHOES}/>} />
+                <Route path={path.MULE} element={<Shoes categoryActive={categorieType.SHOES_SANDAL}/>} type={listShoesSandals.SHOES}/>
+                <Route path={path.CHUNKY_LINER} element={<Shoes categoryActive={categorieType.SHOES_SANDAL} type={listShoesSandals.SHOES}/>} />
+                <Route path={path.GIAY_MLB_PLAYBALL} element={<Shoes categoryActive={categorieType.SHOES_SANDAL} type={listShoesSandals.SHOES}/>} />
+                <Route path={path.CHUNKY_CLASSIC} element={<Shoes categoryActive={categorieType.SHOES_SANDAL} type={listShoesSandals.SHOES}/>} />
+                <Route path={path.CHUNKY_RUNNER} element={<Shoes categoryActive={categorieType.SHOES_SANDAL} type={listShoesSandals.SHOES}/>} />
+                <Route path={path.SANDALS} element={<Shoes categoryActive={categorieType.SHOES_SANDAL} type={listShoesSandals.SANDAL}/>} />
 
-                <Route path={path.MU_NON_MLB} element={<HatList />} />
-                <Route path={path.NON_MLB_BALL_CAP} element={<HatList />} />
-                <Route path={path.NON_MLB_BUCKET_HAT} element={<HatList />} />
-                <Route path={path.NON_MLB_SUN_CAP} element={<HatList />} />
+                <Route path={path.TUI_MLB} element={<Shoes categoryActive={categorieType.BAG_BALO} type={[listBag.BALO, listBag.BAG]}/>} />
+                <Route path={path.BUCKET_BAG} element={<Shoes categoryActive={categorieType.BAG_BALO} type={listBag.BAG} />} />
+                <Route path={path.HIP_SACK} element={<Shoes categoryActive={categorieType.BAG_BALO} type={listBag.BAG} />} />
+                <Route path={path.HOBO_BAG} element={<Shoes categoryActive={categorieType.BAG_BALO} type={listBag.BAG} />} />
+                <Route path={path.CROSS_BAG} element={<Shoes categoryActive={categorieType.BAG_BALO} type={listBag.BAG} />} />
+                <Route path={path.TOTE_BAG} element={<Shoes categoryActive={categorieType.BAG_BALO} type={listBag.BAG} />} />
+                <Route path={path.PHONE_POUCH} element={<Shoes categoryActive={categorieType.BAG_BALO} type={listBag.BAG} />} />
+                <Route path={path.BACKPACK} element={<Shoes categoryActive={categorieType.BAG_BALO} type={listBag.BALO} />} />
 
-                <Route path={path.OUTFIT_MLB} element={<Clothes />} />
-                <Route path={path.OUTFIT_MLB_TSHIRT} element={<Clothes />} />
-                <Route path={path.OUTFIT_MLB_SHORTS} element={<Clothes />} />
-                <Route path={path.OUTFIT_MLB_SKIRT_DRESS} element={<Clothes />} />
+                <Route path={path.MU_NON_MLB} element={<Shoes categoryActive={categorieType.HAT} type={[listHat.HAT1, listHat.HAT2]} />} />
+                <Route path={path.BALL_CAP} element={<Shoes categoryActive={categorieType.HAT} type={listHat.HAT1} />} />
+                <Route path={path.BUCKET_HAT} element={<Shoes categoryActive={categorieType.HAT} type={listHat.HAT2} />} />
+                <Route path={path.SUN_CAP} element={<Shoes categoryActive={categorieType.HAT} type={listHat.HAT1} />} />
+
+                <Route path={path.OUTFIT_MLB} element={<Shoes categoryActive={categorieType.CLOTHES} type={[listClothes.SHIRT, listClothes.SHORTS, listClothes.DRESS1, listClothes.DRESS2]} />} />
+                <Route path={path.TSHIRT} element={<Shoes categoryActive={categorieType.CLOTHES} type={listClothes.SHIRT} />} />
+                <Route path={path.SHORTS} element={<Shoes categoryActive={categorieType.CLOTHES} type={listClothes.SHORTS} />} />
+                <Route path={path.SKIRT_DRESS} element={<Shoes categoryActive={categorieType.CLOTHES} type={[listClothes.DRESS1, listClothes.DRESS2]} />} />
 
                 <Route path={path.ACCOUNT} element={<AccountInfor />}></Route>
                 <Route path={path.ACCOUNT_CHANGE_PASSWORD} element={<ChangePassword />}></Route>

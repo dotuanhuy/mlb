@@ -8,6 +8,7 @@ import jwt_decode from 'jwt-decode';
 import Account from './Account';
 import * as action from '../../store/actions'
 import { validate } from '../../validate/valiedate';
+import Banner from '../common/Banners/Banner';
 
 const initState = {
     firstName: '',
@@ -64,7 +65,7 @@ function ChangePassword({token, isResetPassword, resetPasswordRedux, fetLogoutRe
         <>
             <div className='account'>
                 <Navbar />
-                <div className='account-header'>
+                {/* <div className='account-header'>
                     <div className='title'>
                         Thay đổi mật khẩu
                     </div>
@@ -76,7 +77,8 @@ function ChangePassword({token, isResetPassword, resetPasswordRedux, fetLogoutRe
                             <span>Thay đổi mật khẩu</span>
                         </li>
                     </ul>
-                </div>
+                </div> */}
+                <Banner categoryProduct='Thay đổi mật khẩu' title='Trang thay đổi mật khẩu'/>
                 <div className='account-body p-5'>
                     <div className='container'>
                         <div className='row'>

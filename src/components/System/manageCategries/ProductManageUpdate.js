@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
-import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { path, Role } from '../../../utils';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
-import { BuildOptionSelectSame, BuildOptionSelect } from '../../../utils';
+import { BuildOptionSelect } from '../../../utils';
+import CommonUtils from '../../../utils/CommonUtils';
+import { Buffer } from 'buffer';
 
 function ProductManageUpdate({
     actives,
@@ -18,11 +20,12 @@ function ProductManageUpdate({
     refreshStoreProductTypeRedux,
     getProductTypeByIdRedux,
     getAllCategoriesRedux,
-    updateUserRedux
+    updateProductTypeRedux
 }) {
     const [name, setName] = useState('')
     const [selectCategory, setSelectCategory] = useState({})
     const [selectStatus, setSelectStatus] = useState({})
+    const [selectImage, setSelectImage] = useState('')
     const [listCategories, setListCategories] = useState([])
     const [listStatus, setListStatus] = useState([])
     const navigate = useNavigate()
@@ -36,6 +39,22 @@ function ProductManageUpdate({
     }, [])
 
     useEffect(() => {
+        setName(productType?.name)
+        if (productType?.imageRoot) {
+            let imageBase64 = Buffer.from(productType?.imageRoot?.data, 'base64').toString('binary')
+            setSelectImage(imageBase64)
+        }
+        setSelectCategory({
+            label: productType?.dataProductTypeCategory?.name ? productType?.dataProductTypeCategory?.name : '',
+            value: productType?.dataProductTypeCategory?.id ? productType?.dataProductTypeCategory?.id : ''
+        })
+        setSelectStatus({
+            label: productType?.status ? 'Active' : 'Not active',
+            value: productType?.status ? true : false,
+        })
+    }, [productType])
+
+    useEffect(() => {
         let dataCategories = BuildOptionSelect(categories)
         let dataStatus = [
             {
@@ -44,15 +63,13 @@ function ProductManageUpdate({
             },
             {
                 label: 'Not active',
-                value: true
+                value: false
             }
         ]
 
         setListCategories(dataCategories)
         setListStatus(dataStatus)
-    }, [productType])
-
-    console.log(productType)
+    }, [categories])
 
     // ComponentDidUpdate
     useEffect(() => {
@@ -74,29 +91,32 @@ function ProductManageUpdate({
         setSelectStatus(selectStatus)
     }
 
+    const handleOnchangeImage = async (e) => {
+        let files = e.target.files
+        let file = files[0]
+        if (file) {
+            //convert file to base64
+            let base64 = await CommonUtils.getBase64(file)
+            setSelectImage(base64)
+        }
+    }
+
     const handleUpdateUser = (e) => {
         e.preventDefault()
-        let newUser = {
-            id: params.get('id'),
+        let data = {
+            id: +params.get('id'),
+            name,
             categoryId: selectCategory?.value,
+            imageRoot: selectImage,
             status: selectStatus?.value,
         }
-        // if (params.get('page')) {
-        //     updateUserRedux(newUser, accessToken, params.get('page'))
-        //     navigate(
-        //         {
-        //             pathname: path.MANAGE_USER,
-        //             search: createSearchParams({ page: params.get('page') ? params.get('page') : 1 }).toString(),
-        //         }
-        //     )
-        // }
-        // else {
-        //     updateUserRedux(newUser, accessToken)
-        //     navigate({
-        //         pathname: path.MANAGE_USER_DETAIL,
-        //         search: createSearchParams({ id: users?.id }).toString()
-        //     })
-        // }
+        updateProductTypeRedux(accessToken, data, params.get('page'))
+        navigate({
+            pathname: path.MANAGE_PRODUCT_TYPE,
+            search: createSearchParams({
+                page: params.get('page') ? params.get('page') : 1
+            }).toString()
+        })
     }
 
 
@@ -148,6 +168,27 @@ function ProductManageUpdate({
                                                     options={listStatus}
                                                 />
                                             </div>
+                                            <div className="mb-3 col-4">
+                                                <label htmlFor="exampleInputImage" className="form-label">Image root</label>
+                                                <input 
+                                                    type="file" 
+                                                    className="form-control mb-2" 
+                                                    id="exampleInputImage" 
+                                                    onChange={(e) => handleOnchangeImage(e)}
+                                                />
+                                                {
+                                                    selectImage ? 
+                                                    <div 
+                                                        className='mt-2'
+                                                        style={{
+                                                            width: '80%', 
+                                                            height: '100px', 
+                                                            background: `url(${selectImage}) 0% 0% / contain no-repeat`, 
+                                                        }}
+                                                    ></div> 
+                                                    : ''
+                                                }
+                                            </div>
                                         </div>
                                         <button
                                             type="submit"
@@ -180,7 +221,7 @@ const mapDispatchToProps = dispatch => {
         refreshStoreProductTypeRedux: () => dispatch(actions.refreshStoreProductType()),
         getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
         getProductTypeByIdRedux: (accessToken, id) => dispatch(actions.getProductTypeById(accessToken, id)),
-        updateUserRedux: (data, accessToken, page) => dispatch(actions.updateUser(data, accessToken, page)),
+        updateProductTypeRedux: (accessToken, data, page) => dispatch(actions.updateProductType(accessToken, data, page)),
     }
 }
 

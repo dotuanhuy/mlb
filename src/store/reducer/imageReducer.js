@@ -11,11 +11,6 @@ const imageReducer = (state=initState, action) => {
             return {
                 ...state
             }
-        case 'REFRESH_ISLOADING_IMAGES_SUCCESS':
-            state.isLoadingImage = true
-            return {
-                ...state
-            }
         case 'GET_ALL_IMAGES_PRODUCT_SUCCESS':
             state.images = action.data
             state.isLoadingImage = false

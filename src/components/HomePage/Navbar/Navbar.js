@@ -5,13 +5,14 @@ import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { shoes, bag, hat, shirts, PK, logo } from '../../../utils/images';
 import './Navbar.scss'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
-import { path } from '../../../utils';
+import { categorieType, path } from '../../../utils';
 import jwt_decode from "jwt-decode";
 import { typeShoesSandanl, typeBagBalo, typeHat, typeClothes } from '../../../utils';
 import SearchProducts from '../../SearchProducts/SearchProducts';
 import ListCarts from '../../carts/ListCarts';
+import { Buffer } from 'buffer';
 
 const initState = {
     firstName: '',
@@ -23,26 +24,32 @@ function Navbar({
     token, 
     countFavourite, 
     countProductsCart, 
+    productTypes,
+    refreshStoreProductType,
     getAllProductsFavouriteRedux, 
-    fetLogoutRedux
+    fetLogoutRedux,
+    getAllProductTypesRedux
 }) {
     const [userLogin, setUserLogin] = useState(initState)
     const navigate = useNavigate()
+    const [params] = useSearchParams()
+
     useEffect(() => {
+        // refreshStoreProductType()
         if (token) {
             let tokenDecoded = jwt_decode(token)
             setUserLogin({
                 firstName: tokenDecoded.firstName,
                 lastName: tokenDecoded.lastName,
             })
-            getAllProductsFavouriteRedux(token, tokenDecoded.id)
+            // getAllProductsFavouriteRedux(token, tokenDecoded.id)
         }
+        getAllProductTypesRedux(token)
     }, [])
+    
     const handleLogout = async () => {
         fetLogoutRedux()
     }
-
-    
 
     return (
         <div className='header-top text-light sticky-top'>
@@ -66,48 +73,30 @@ function Navbar({
                                             </Link>
                                             <Link to={path.GIAY_MLB} className='name-shoes' >all shoes</Link>
                                         </li>
-                                        <li>
-                                            <Link to={path.GIAY_MLB_BIGBALL_CHUNKY} state={{typeName: typeShoesSandanl.GIAY_MLB_BIGBALL_CHUNKY}}>
-                                                <img src={shoes.BIGBALL_CHUNKY}/>
-                                            </Link>
-                                            <Link to={path.GIAY_MLB_BIGBALL_CHUNKY} state={{typeName: typeShoesSandanl.GIAY_MLB_BIGBALL_CHUNKY}} className='name-shoes'>BIGBALL CHUNKY</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.GIAY_MLB_MULE} state={{typeName: typeShoesSandanl.GIAY_MLB_MULE}}>
-                                                <img src={shoes.MULE}/>
-                                            </Link>
-                                            <Link to={path.GIAY_MLB_MULE} state={{typeName: typeShoesSandanl.GIAY_MLB_MULE}} className='name-shoes'>MULE</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.GIAY_MLB_CHUNKY_LINER} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_LINER}}>
-                                                <img src={shoes.CHUNKY_LINER}/>
-                                            </Link>
-                                            <Link path={path.GIAY_MLB_CHUNKY_LINER} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_LINER}} className='name-shoes'>CHUNKY LINER</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.GIAY_MLB_PLAYBALL} state={{typeName: typeShoesSandanl.GIAY_MLB_PLAYBALL}}>
-                                                <img src={shoes.PLAYBALL}/>
-                                            </Link>
-                                            <Link path={path.GIAY_MLB_PLAYBALL} state={{typeName: typeShoesSandanl.GIAY_MLB_PLAYBALL}} className='name-shoes'>PLAYBALL</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.GIAY_MLB_CHUNKY_CLASSIC} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_CLASSIC}}>
-                                                <img src={shoes.CHUNKY_CLASSIC}/>
-                                            </Link>
-                                            <Link to={path.GIAY_MLB_CHUNKY_CLASSIC} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_CLASSIC}} className='name-shoes'>CHUNKY CLASSIC</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.GIAY_MLB_CHUNKY_RUNNER} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_RUNNRE}}>
-                                                <img src={shoes.CHUNKY_JOGGER_RUNNER}/>
-                                            </Link>
-                                            <Link to={path.GIAY_MLB_CHUNKY_RUNNER} state={{typeName: typeShoesSandanl.GIAY_MLB_CHUNKY_RUNNRE}} className='name-shoes'>CHUNKY JOGGER/RUNNER</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.DEP_MLB} state={{typeName: typeShoesSandanl.DEP_MLB}}>
-                                                <img src={shoes.SLIDERS_SANDALS}/>
-                                            </Link>
-                                            <Link to={path.DEP_MLB} state={{typeName: typeShoesSandanl.DEP_MLB}} className='name-shoes'>SLIDERS/SANDALS</Link>
-                                        </li>
+                                        {
+                                            productTypes && productTypes.length > 0 &&
+                                            productTypes.map((item, index) => {
+                                                if (item.dataProductTypeCategory.type === categorieType.SHOES_SANDAL) {
+                                                    return (
+                                                        <li key={index}>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
+                                                                <div 
+                                                                    style={{ 
+                                                                        width: '100%', 
+                                                                        height: '130px',
+                                                                        backgroundImage: `url(${Buffer.from(item.imageRoot.data, 'base64').toString('binary')})`,
+                                                                        backgroundPosition: 'center',
+                                                                        backgroundSize: 'contain',
+                                                                        backgroundRepeat: 'no-repeat'
+                                                                    }}
+                                                                ></div>
+                                                            </Link>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }} className='name-shoes'>{item.name}</Link>
+                                                        </li>
+                                                    )
+                                                }
+                                            })
+                                        }
                                     </ul>
                                 </div>
                             </li>
@@ -122,48 +111,30 @@ function Navbar({
                                             </Link>
                                             <Link to={path.TUI_MLB} className='name-shoes' >All bag</Link>
                                         </li>
-                                        <li>
-                                            <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}} >
-                                                <img src={bag.BACKPACK}/>
-                                            </Link>
-                                            <Link to={path.BALO_MLB} state={{typeName: typeBagBalo.BALO_MLB}} className='name-shoes'>BACKPACK</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.TUI_MLB_BUCKET_BAG} state={{typeName: typeBagBalo.TUI_MLB_BUCKET_BAG}}>
-                                                <img src={bag.BUCKET_BAG}/>
-                                            </Link>
-                                            <Link to={path.TUI_MLB_BUCKET_BAG} state={{typeName: typeBagBalo.TUI_MLB_BUCKET_BAG}} className='name-shoes'>BUCKET BAG</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.TUI_MLB_HIP_SACK} state={{typeName: typeBagBalo.TUI_MLB_HIP_SACK}}>
-                                                <img src={bag.HIP_SACK}/>
-                                            </Link>
-                                            <Link to={path.TUI_MLB_HIP_SACK} state={{typeName: typeBagBalo.TUI_MLB_HIP_SACK}} className='name-shoes'>HIP SACK</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.TUI_MLB_HOBO_BAG} state={{typeName: typeBagBalo.TUI_MLB_HOBO_BAG}}>
-                                                <img src={bag.HOBO_BAG}/>
-                                            </Link>
-                                            <Link to={path.TUI_MLB_HOBO_BAG} state={{typeName: typeBagBalo.TUI_MLB_HOBO_BAG}} className='name-shoes'>HOBO BAG</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.TUI_MLB_CROSS_BAG} state={{typeName: typeBagBalo.TUI_MLB_CROSS_BAG}}>
-                                                <img src={bag.CROSS_BAG}/>
-                                            </Link>
-                                            <Link to={path.TUI_MLB_CROSS_BAG} state={{typeName: typeBagBalo.TUI_MLB_CROSS_BAG}} className='name-shoes'>CROSS BAG</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.TUI_MLB_TOTE_BAG} state={{typeName: typeBagBalo.TUI_MLB_TOTE_BAG}}>
-                                                <img src={bag.TOTE_BAG}/>
-                                            </Link>
-                                            <Link to={path.TUI_MLB_TOTE_BAG} state={{typeName: typeBagBalo.TUI_MLB_TOTE_BAG}} className='name-shoes'>TOTE BAG</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.TUI_MLB_PHONE_POUCH} state={{typeName: typeBagBalo.TUI_MLB_PHONE_POUCH}}>
-                                                <img src={bag.PHONE_POUCH}/>
-                                            </Link>
-                                            <Link to={path.TUI_MLB_PHONE_POUCH} state={{typeName: typeBagBalo.TUI_MLB_PHONE_POUCH}} className='name-shoes'>PHONE POUCH</Link>
-                                        </li>
+                                        {
+                                            productTypes && productTypes.length > 0 &&
+                                            productTypes.map((item, index) => {
+                                                if (item.dataProductTypeCategory.type === categorieType.BAG_BALO) {
+                                                    return (
+                                                        <li key={index}>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
+                                                            <div 
+                                                                style={{ 
+                                                                    width: '100%', 
+                                                                    height: '130px',
+                                                                    backgroundImage: `url(${Buffer.from(item.imageRoot.data, 'base64').toString('binary')})`,
+                                                                    backgroundPosition: 'center',
+                                                                    backgroundSize: 'contain',
+                                                                    backgroundRepeat: 'no-repeat'
+                                                                }}
+                                                            ></div>
+                                                            </Link>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} className='name-shoes' state={{ id: item.id }}>{item.name}</Link>
+                                                        </li>
+                                                    )
+                                                }
+                                            })
+                                        }
                                     </ul>
                                 </div>
                             </li>
@@ -172,24 +143,30 @@ function Navbar({
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item bg-white w-100 position-absolute'>
                                     <ul>
-                                        <li>
-                                            <Link to={path.NON_MLB_BALL_CAP} state={{typeName: typeHat.NON_MLB_BALL_CAP}}>
-                                                <img src={hat.BALL_CAP}/>
-                                            </Link>
-                                            <Link to={path.NON_MLB_BALL_CAP} state={{typeName: typeHat.NON_MLB_BALL_CAP}} className='name-shoes' >ball cap</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.NON_MLB_BUCKET_HAT} state={{typeName: typeHat.NON_MLB_BUCKET_HAT}}>
-                                                <img src={hat.BUCKET_HAT}/>
-                                            </Link>
-                                            <Link to={path.NON_MLB_BUCKET_HAT} state={{typeName: typeHat.NON_MLB_BUCKET_HAT}} className='name-shoes'>BUCKET HAT</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.NON_MLB_SUN_CAP} state={{typeName: typeHat.NON_MLB_SUN_CAP}}>
-                                                <img src={hat.SUN_CAP}/>
-                                            </Link>
-                                            <Link to={path.NON_MLB_SUN_CAP} state={{typeName: typeHat.NON_MLB_SUN_CAP}} className='name-shoes'>SUN CAP</Link>
-                                        </li>
+                                    {
+                                            productTypes && productTypes.length > 0 &&
+                                            productTypes.map((item, index) => {
+                                                if (item.dataProductTypeCategory.type === categorieType.HAT) {
+                                                    return (
+                                                        <li key={index}>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
+                                                                <div 
+                                                                    style={{ 
+                                                                        width: '100%', 
+                                                                        height: '130px',
+                                                                        backgroundImage: `url(${Buffer.from(item.imageRoot.data, 'base64').toString('binary')})`,
+                                                                        backgroundPosition: 'center',
+                                                                        backgroundSize: 'contain',
+                                                                        backgroundRepeat: 'no-repeat'
+                                                                    }}
+                                                                ></div>
+                                                            </Link>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }} className='name-shoes'>{item.name}</Link>
+                                                        </li>
+                                                    )
+                                                }
+                                            })
+                                        }
                                     </ul>
                                 </div> 
                             </li>
@@ -198,28 +175,34 @@ function Navbar({
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item bg-white w-100 position-absolute'>
                                     <ul>
-                                        <li>
-                                            <Link to={path.OUTFIT_MLB_TSHIRT} state={{typeName: typeClothes.OUTFIT_MLB_TSHIRT}}>
-                                                <img src={shirts.T_SHIRT}/>
-                                            </Link>
-                                            <Link to={path.OUTFIT_MLB_TSHIRT} state={{typeName: typeClothes.OUTFIT_MLB_TSHIRT}} className='name-shoes' >T-SHIRT</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.OUTFIT_MLB_SHORTS} state={{typeName: typeClothes.OUTFIT_MLB_SHORTS}}>
-                                                <img src={shirts.SHORTS}/>
-                                            </Link>
-                                            <Link to={path.OUTFIT_MLB_SHORTS} state={{typeName: typeClothes.OUTFIT_MLB_SHORTS}} className='name-shoes'>SHORTS</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={path.OUTFIT_MLB_SKIRT_DRESS} state={{typeName: typeClothes.OUTFIT_MLB_SKIRT_DRESS}}>
-                                                <img src={shirts.SKIRT_DRESS}/>
-                                            </Link>
-                                            <Link to={path.OUTFIT_MLB_SKIRT_DRESS} state={{typeName: typeClothes.OUTFIT_MLB_SKIRT_DRESS}} className='name-shoes'>SKIRT-DRESS</Link>
-                                        </li>
+                                    {
+                                            productTypes && productTypes.length > 0 &&
+                                            productTypes.map((item, index) => {
+                                                if (item.dataProductTypeCategory.type === categorieType.CLOTHES) {
+                                                    return (
+                                                        <li key={index}>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
+                                                                <div 
+                                                                    style={{ 
+                                                                        width: '100%', 
+                                                                        height: '130px',
+                                                                        backgroundImage: `url(${Buffer.from(item.imageRoot.data, 'base64').toString('binary')})`,
+                                                                        backgroundPosition: 'center',
+                                                                        backgroundSize: 'contain',
+                                                                        backgroundRepeat: 'no-repeat'
+                                                                    }}
+                                                                ></div>
+                                                            </Link>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }} className='name-shoes'>{item.name}</Link>
+                                                        </li>
+                                                    )
+                                                }
+                                            })
+                                        }
                                     </ul>
                                 </div>
                             </li>
-                            <li className='menu-list_item' >
+                            {/* <li className='menu-list_item' >
                                 <span className='menu-list_item-name text-white pe-2'>Phụ-kiện</span>                               
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item bg-white w-100 position-absolute'>
@@ -238,7 +221,7 @@ function Navbar({
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
+                            </li> */}
                             <li className='menu-list_item' >                              
                                 <span className='menu-list_item-name text-white pe-2'>Logo</span>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
@@ -299,7 +282,7 @@ function Navbar({
                                 <FontAwesomeIcon className='icon-infor' icon={faCartShopping} />
                                 <span className='numberProduct rounded-circle text-white text-center'>{countProductsCart}</span>
                             </Link>
-                            <ListCarts />
+                            <ListCarts />   
                         </div>
                     </div>
                 </div>
@@ -312,7 +295,7 @@ const mapStateToProps = state => {
     return {
         token: state.auth.token,
         isLogin: state.auth.isLogin,
-        // countFavourite: state.product.countFavouriteProduct,
+        productTypes: state.productType.productTypes,
         countFavourite: state.fouriteProduct.countProducts,
         countProductsCart: state.cart.countProducts
     }
@@ -320,8 +303,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        refreshStoreProductType: () => dispatch(actions.refreshStoreProductType()),
         fetLogoutRedux: () => dispatch(actions.fetLogout()),
         getAllProductsFavouriteRedux: (token, userId) => dispatch(actions.getAllProductsFavourite(token, userId)),
+        getAllProductTypesRedux: (accessToken) => dispatch(actions.getAllProductTypes(accessToken))
     }
 }
 

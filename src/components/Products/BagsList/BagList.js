@@ -134,11 +134,11 @@ function BagList({
         
         const optionTypeName = state?.typeName ? state?.typeName : ''
 
-        if (optionTypeName && optionTypeName !== typeBagBalo.BALO_MLB) {
+        if (optionTypeName && optionTypeName !== typeBagBalo.BACKPACK) {
             getCategoriesByTypeRedux(listBag.BAG)
             data['optionType'] = listBag.BAG
         }
-        else if (optionTypeName && optionTypeName === typeBagBalo.BALO_MLB) {
+        else if (optionTypeName && optionTypeName === typeBagBalo.BACKPACK) {
             getCategoriesByTypeRedux(listBag.BALO)
             data['optionType'] = listBag.BALO
         }

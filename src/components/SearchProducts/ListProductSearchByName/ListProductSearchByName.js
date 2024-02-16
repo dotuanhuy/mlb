@@ -18,8 +18,8 @@ function ListProductSearchByName({
     images, 
     isLoading, 
     refreshIsloadingStateProductRedux, 
-    getAllImagesByProductIdRedux,
-    searchProductByNameLimitRedux
+    searchProductByNameLimitRedux,
+    getAllImagesProductRedux
 }) {
     // const {productName} = useLocation().state
     const [params] = useSearchParams()
@@ -29,7 +29,7 @@ function ListProductSearchByName({
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        getAllImagesByProductIdRedux(accessToken)
+        getAllImagesProductRedux(accessToken)
         
     }, [])
 
@@ -93,7 +93,7 @@ const mapDispatchToProps = dispatch => {
     return {
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
         searchProductByNameLimitRedux: (productName, offset, accessToken) => dispatch(actions.searchProductByNameLimit(productName, offset, accessToken)),
-        getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken))
+        getAllImagesProductRedux: (accessToken) => dispatch(actions.getAllImagesProduct(accessToken)),       
     }
 }
 

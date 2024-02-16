@@ -41,7 +41,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         class="nav-item"
                     >   
                         <Link 
-                            className={active === 'dashboard' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            className={active === 'dashboard' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             aria-current="page" 
                             to={path.MANAGE}
                         >
@@ -53,7 +53,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         class="nav-item"
                     >   
                         <a 
-                            className={active === 'report' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            className={active === 'report' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             href="#"
                         >
                             <FontAwesomeIcon className='pe-2' icon={faChartSimple} />
@@ -64,7 +64,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         class="nav-item"
                     >   
                         <div 
-                            className={state === true ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            className={state === true ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             onClick={handleClickCategories} 
                             style={{ cursor: 'pointer' }}                           
                         >
@@ -75,7 +75,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         <ul className={state === true ? 'd-block' : 'd-none'}>
                             <li className='border-bottom py-2'>
                                 <Link 
-                                    className={activeChild === Active.CATEGORY ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    className={activeChild === Active.CATEGORY ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
                                     to={path.MANAGE_CATEGORY_PRODUCT}
                                 >
                                     Category product
@@ -83,7 +83,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             </li>
                             <li className='border-bottom py-2'>
                                 <Link 
-                                    className={activeChild === Active.PRODUCT_TYPE ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    className={activeChild === Active.PRODUCT_TYPE ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
                                     to={path.MANAGE_PRODUCT_TYPE}
                                 >
                                     Product type
@@ -95,7 +95,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         class="nav-item"
                     >   
                         <Link 
-                            className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             to={path.MANAGE_PRODUCTS}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
@@ -103,7 +103,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
                         </Link>
                         {/* <button
-                            className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             onClick={handleShowProductItem}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
@@ -114,7 +114,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         <ul className={active === 'product' ? 'dbloc' : 'd-none'}>
                             <li className='border-bottom pb-2'>
                                 <Link 
-                                    className={activeChild === Active.SHOSE ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    className={activeChild === Active.SHOSE ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
                                     to={path.MANAGE_PRODUCTS_SHOES}
                                     // state={{ categoryType: categorieType.SHOES_SANDAL }}
                                 >
@@ -123,7 +123,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             </li>
                             <li className='border-bottom pb-2'>
                                 <Link 
-                                    className={activeChild === Active.BAG_BALO ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    className={activeChild === Active.BAG_BALO ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
                                     to={path.MANAGE_PRODUCTS_BAG_BALO}
                                 >
                                     Backpack-Bag
@@ -131,7 +131,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             </li>
                             <li className='border-bottom pb-2'>
                                 <Link 
-                                    className={activeChild === Active.HAT ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    className={activeChild === Active.HAT ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
                                     to={path.MANAGE_PRODUCTS_HAT}
                                 >
                                     Hat
@@ -139,7 +139,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             </li>
                             <li className='border-bottom pb-2'>
                                 <Link 
-                                    className={activeChild === Active.CLOTHES ? 'text-muted opacity-7 text-size-14 fw-500 active-text' : 'text-muted opacity-7 text-size-14 fw-500'}
+                                    className={activeChild === Active.CLOTHES ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
                                     to={path.MANAGE_PRODUCTS_CLOTHES}
                                 >
                                     Clothes
@@ -151,7 +151,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         class="nav-item"
                     >   
                         <a 
-                            className={active === 'customer' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            className={active === 'customer' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             href="#"
                         >
                             <FontAwesomeIcon className='pe-2' icon={faUsers} />
@@ -162,7 +162,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         class="nav-item"
                     >   
                         <Link
-                            className={active === 'user' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 text-size-14 fw-500"}
+                            className={active === 'user' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             to={path.MANAGE_USER}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faUser} />

@@ -43,7 +43,7 @@ function Cart({
                     className='btn-buy' 
                     data-toggle="tooltip"
                     title='Thêm vào giỏ hàng'
-                    onClick={() => handleAddCart}
+                    onClick={() => handleAddCart()}
                 >
                     <FontAwesomeIcon icon={faCartShopping} />
                 </button>

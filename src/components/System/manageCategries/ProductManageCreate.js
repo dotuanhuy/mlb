@@ -12,6 +12,7 @@ import { BuildOptionSelectSame, BuildOptionSelect } from '../../../utils';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CommonUtils from '../../../utils/CommonUtils';
 
 function ProductManageCreate({
     accessToken,
@@ -23,6 +24,7 @@ function ProductManageCreate({
     const [name, setName] = useState('')
     const [selectType, setSelectType] = useState([])
     const [dataSelect, setDataSelect] = useState('')
+    const [selectImage, setSelectImage] = useState('')
     const [params] = useSearchParams()
 
     
@@ -41,16 +43,28 @@ function ProductManageCreate({
         setShow(false)
         setName('')
         setDataSelect('')
+        setSelectImage('')
     }
 
     const handhandleOnchangeType = (selectType) => {
         setDataSelect(selectType)
     }
 
+    const handleOnchangeImage = async (e) => {
+        let files = e.target.files
+        let file = files[0]
+        if (file) {
+            //convert file to base64
+            let base64 = await CommonUtils.getBase64(file)
+            setSelectImage(base64)
+        }
+    }
+
     const handleAdd = () => {
         let data = {
             name,
-            categoryId: +dataSelect?.value
+            categoryId: +dataSelect?.value,
+            imageRoot: selectImage
         }
         createProductTypeRedux(accessToken, data, params.get('page') ? params.get('page') : 1)
         handleClose()
@@ -105,6 +119,27 @@ function ProductManageCreate({
                                 options={selectType}
                             />
                         </div>
+                        <div className="mb-3">
+                            <label htmlFor="exampleInputImage" className="form-label">Image root</label>
+                            <input 
+                                type="file" 
+                                className="form-control" 
+                                id="exampleInputImage" 
+                                onChange={(e) => handleOnchangeImage(e)}
+                            />
+                            {
+                                selectImage ? 
+                                <div 
+                                    className='mt-2'
+                                    style={{
+                                        width: '80%', 
+                                        height: '100px', 
+                                        background: `url(${selectImage}) 0% 0% / contain no-repeat`, 
+                                    }}
+                                ></div> 
+                                : ''
+                            }
+                        </div> 
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

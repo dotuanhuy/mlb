@@ -10,16 +10,17 @@ import { path } from "../../../utils";
 
 
 function ListProducts({accessToken, products, images, col='col-4', productFavourites}) {
-    // console.log('check product: ', products)
+
     return (
         <>
             {
                 products && products?.length > 0 &&
                 products?.map((item, index) => {
-                    let size = item?.dataSizeDetail?.at(0)?.id
+                    let size = item?.dataSizeDetail?.at(0)?.name
                     let imageBase64 = ''
                     let imageHoverBase64 = ''
                     let price = ''
+                    let newPrice = ''
                     let imageHover = images?.find(image => image?.productId === item?.id)
                     if (item?.image) {
                         imageBase64 = Buffer.from(item?.image?.data, 'base64').toString('binary')
@@ -29,6 +30,9 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                     }
                     if (item.price) {
                         price = formatVND(item.price)
+                    }
+                    if (item.dataDiscounts.value !== 0) {
+                        newPrice = formatVND(item.price - item.price*item.dataDiscounts.value)
                     }
                     let isFavourite = false
                     if (productFavourites.length !== 0) {
@@ -110,7 +114,12 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                                         }}
                                     >{item.name}</Link>
                                 </h4>
-                                <span className='product-price'>{price}</span>
+                                {
+                                    newPrice ? 
+                                    <span className='product-price pe-2'>{newPrice}</span>
+                                    : ''
+                                }
+                                <span className={newPrice ? 'product-price text-decoration-line-through text-muted fs-14' : 'product-price'}>{price}</span>
                             </div>          
                         </div>
                     )

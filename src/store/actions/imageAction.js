@@ -22,20 +22,6 @@ export const refreshStoreImages = () => {
     }
 }
 
-export const refreshIsLoadingImages = () => {
-    return (dispatch, getState) => {
-        try {
-            dispatch({
-                type: 'REFRESH_ISLOADING_IMAGES_SUCCESS'
-            })
-        } catch (e) {
-            console.log('refreshStore error: ', e)
-            dispatch({
-                type: actionTypes.REFRESH_STORE_FAILED
-            })
-        }
-    }
-}
 
 export const getAllImagesProduct = (accessToken) => {
     return async (dispatch, getSate) => {

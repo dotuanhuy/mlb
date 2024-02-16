@@ -41,32 +41,32 @@ export const path = {
     // MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
     
     GIAY_MLB: '/giay-mlb',
-    GIAY_MLB_BIGBALL_CHUNKY: '/giay-mlb-bigball-chunky',
-    GIAY_MLB_MULE: '/giay-mlb-mule',
-    GIAY_MLB_CHUNKY_LINER: '/giay-mlb-chunky-liner',
+    BIGBALL_CHUNKY: '/giay-mlb-bigball-chunky',
+    MULE: '/giay-mlb-mule',
+    CHUNKY_LINER: '/giay-mlb-chunky-liner',
     GIAY_MLB_PLAYBALL: '/giay-mlb-playball',
-    GIAY_MLB_CHUNKY_CLASSIC: '/giay-mlb-chunky-classic',
-    GIAY_MLB_CHUNKY_RUNNER: '/giay-mlb-chunky-runner',
-    DEP_MLB: '/dep-mlb',
+    CHUNKY_CLASSIC: '/giay-mlb-chunky-classic',
+    CHUNKY_RUNNER: '/giay-mlb-chunky-runner',
+    SANDALS: '/dep-mlb',
 
+    BACKPACK: '/balo-mlb',
     TUI_MLB: '/tui-mlb',
-    TUI_MLB_BUCKET_BAG: '/tui-mlb-bucket-bag',
-    TUI_MLB_HIP_SACK: '/tui-mlb-hip-stack',
-    TUI_MLB_HOBO_BAG: '/tui-mlb-hobo-bag',
-    TUI_MLB_CROSS_BAG: '/tui-mlb-cross-bag',
-    TUI_MLB_TOTE_BAG: '/tui-mlb-tote-bag',
-    TUI_MLB_PHONE_POUCH: '/tui-mlb-phone-pouch',
-    BALO_MLB: '/balo-mlb',
+    BUCKET_BAG: '/tui-mlb-bucket-bag',
+    HIP_SACK: '/tui-mlb-hip-stack',
+    HOBO_BAG: '/tui-mlb-hobo-bag',
+    CROSS_BAG: '/tui-mlb-cross-bag',
+    TOTE_BAG: '/tui-mlb-tote-bag',
+    PHONE_POUCH: '/tui-mlb-phone-pouch',
 
     MU_NON_MLB: '/mu-non-mlb',
-    NON_MLB_BALL_CAP: '/non-mlb-ball-cap',
-    NON_MLB_BUCKET_HAT: '/non-mlb-bucket-hat',
-    NON_MLB_SUN_CAP: '/non-mlb-sun-cap',
+    BALL_CAP: '/non-mlb-ball-cap',
+    BUCKET_HAT: '/non-mlb-bucket-hat',
+    SUN_CAP: '/non-mlb-sun-cap',
 
     OUTFIT_MLB: '/outfit-mlb',
-    OUTFIT_MLB_TSHIRT: '/ao-thun-mlb',
-    OUTFIT_MLB_SHORTS: '/quan-short-mlb',
-    OUTFIT_MLB_SKIRT_DRESS: '/chan-vay-dam-mlb',
+    TSHIRT: '/ao-thun-mlb',
+    SHORTS: '/quan-short-mlb',
+    SKIRT_DRESS: '/chan-vay-dam-mlb',
 
     ACCOUNT: '/account',
     ACCOUNT_CHANGE_PASSWORD: '/account/changepassword',
@@ -171,35 +171,35 @@ export const limit_page = 5
 export const limit_list_search = 4
 
 export const typeShoesSandanl = {
-    GIAY_MLB_BIGBALL_CHUNKY: 'BigBall Chunky',
-    GIAY_MLB_MULE: 'Mule',
-    GIAY_MLB_CHUNKY_LINER: 'Chunky Liner',
+    BIGBALL_CHUNKY: 'BigBall Chunky',
+    MULE: 'Mule',
+    CHUNKY_LINER: 'Chunky Liner',
     GIAY_MLB_PLAYBALL: 'Playball',
-    GIAY_MLB_CHUNKY_CLASSIC: 'Chunky Classic',
+    CHUNKY_CLASSIC: 'Chunky Classic',
     GIAY_MLB_CHUNKY_RUNNRE: 'Chunky Runner',
-    DEP_MLB: 'Sandal'
+    SANDALS: 'Sandal'
 }
 
 export const typeBagBalo = {
-    BALO_MLB: 'Balo',
-    TUI_MLB_BUCKET_BAG: 'Bucket Bag',
-    TUI_MLB_HIP_SACK: 'Hip Sack',
-    TUI_MLB_HOBO_BAG: 'Hobo Bag',
-    TUI_MLB_CROSS_BAG: 'Cross Bag',
-    TUI_MLB_TOTE_BAG: 'Tote Bag',
-    TUI_MLB_PHONE_POUCH: 'Phone Pouch'
+    BACKPACK: 'Balo',
+    BUCKET_BAG: 'Bucket Bag',
+    HIP_SACK: 'Hip Sack',
+    HOBO_BAG: 'Hobo Bag',
+    CROSS_BAG: 'Cross Bag',
+    TOTE_BAG: 'Tote Bag',
+    PHONE_POUCH: 'Phone Pouch'
 }
 
 export const typeHat = {
-    NON_MLB_BALL_CAP: 'Ball Cap',
-    NON_MLB_BUCKET_HAT: 'Bucket Hat',
-    NON_MLB_SUN_CAP: 'Sun Cap'
+    BALL_CAP: 'Ball Cap',
+    BUCKET_HAT: 'Bucket Hat',
+    SUN_CAP: 'Sun Cap'
 }
 
 export const typeClothes = {
-    OUTFIT_MLB_TSHIRT: 'Áo',
-    OUTFIT_MLB_SHORTS: 'Quần',
-    OUTFIT_MLB_SKIRT_DRESS: 'Đầm, Váy',
+    TSHIRT: 'Áo',
+    SHORTS: 'Quần',
+    SKIRT_DRESS: 'Đầm, Váy',
 }
 
 export const typeStep = {

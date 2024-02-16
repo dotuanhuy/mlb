@@ -10,6 +10,7 @@ import './ListCarts.scss'
 import { Link } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import { typeStep } from '../../utils';
+import { Modal } from 'react-bootstrap';
 
 function ListCarts({ 
     accessToken,
@@ -21,6 +22,11 @@ function ListCarts({
     deleteAProductInCartRedux
 }) {
     const [userId, setUserId] = useState('')
+    const [show, setShow] = useState({})
+
+    const handleClose = () => setShow({});
+    const handleShow = (id) => setShow({id})
+
     useEffect(() => {
         if (accessToken) {
             let tokenDecoded = jwtDecode(accessToken)
@@ -34,16 +40,16 @@ function ListCarts({
         }
     }, [userId])
 
-    const handleStepDown = (productId, size, down) => {
-        deleteAProductInCartRedux(accessToken, { productId, userId, size, typeStep: down })
+    const handleStepDown = (productId, size, cartId, down) => {
+        deleteAProductInCartRedux(accessToken, { productId, cartId, userId, size, typeStep: down })
     }
 
-    const handleStepUp = (productId, size, up) => {
-        deleteAProductInCartRedux(accessToken, { productId, userId, size, typeStep: up })
+    const handleStepUp = (productId, size, cartId, up) => {
+        deleteAProductInCartRedux(accessToken, { productId, cartId, userId, size, typeStep: up })
     }
     
-    const handleDeleteProductCart = (productId, size) => {
-        deleteProductInCartRedux(accessToken, {productId, userId, size})
+    const handleDeleteProductCart = (productId, size, cartId) => {
+        deleteProductInCartRedux(accessToken, { productId, userId, cartId, size })
     }
 
     const handleOnchangeQuantity = e => {
@@ -69,23 +75,35 @@ function ListCarts({
                                             productsCart.map((item, index) => {
                                                 let imageBase64 = ''
                                                 let price = ''
-                                                if (item?.Product?.image) {
-                                                    imageBase64 = Buffer.from(item.Product.image.data, 'base64').toString('binary')
+                                                if (item?.dataCartProduct?.image) {
+                                                    imageBase64 = Buffer.from(item.dataCartProduct.image.data, 'base64').toString('binary')
                                                 }
-                                                if (item?.Product?.price) {
-                                                    price = formatVND(+item.Product.price*+item.quantity)
+                                                if (item?.dataCartProduct?.price) {
+                                                    price = formatVND((+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.totalQuantity)
                                                 }
                                                 return (
                                                     <div class="px-3 pt-2">
                                                         <div class="row mb-4 mt-2">
-                                                            <div class="col-md-3 col-lg-3 col-xl-3">
+                                                            <div class="col-md-3 col-lg-3 col-xl-3 position-relative">
+                                                                {
+                                                                    item?.dataCartProduct?.dataDiscounts?.value === 0 ? ''
+                                                                    :
+                                                                    <div 
+                                                                        className='position-absolute'
+                                                                        style={{ 
+                                                                            right: '10px'
+                                                                        }}
+                                                                    >
+                                                                        <span className='text-danger fw-500 fs-14'>-{+item?.dataCartProduct?.dataDiscounts?.value*100}%</span>
+                                                                    </div>
+                                                                }
                                                                 <Link 
                                                                     className='text-dark col-4' 
                                                                     key={index}
-                                                                    to={`${path.PRODUCT}/${item.Product.name}`} 
+                                                                    to={`${path.PRODUCT}/${item.dataCartProduct.name}`} 
                                                                     state={{ 
-                                                                        productId: item.Product.id,
-                                                                        productName: item.Product.name,
+                                                                        productId: item.dataCartProduct.id,
+                                                                        productName: item.dataCartProduct.name,
                                                                     }}
                                                                 >
                                                                     <div 
@@ -105,22 +123,22 @@ function ListCarts({
                                                                     <Link 
                                                                         class="text-black name-product-cart" 
                                                                         style={{ cursor: 'pointer' }}
-                                                                        to={`${path.PRODUCT}/${item.Product.name}`} 
+                                                                        to={`${path.PRODUCT}/${item.dataCartProduct.name}`} 
                                                                         state={{ 
-                                                                            productId: item.Product.id,
-                                                                            productName: item.Product.name,
+                                                                            productId: item.dataCartProduct.id,
+                                                                            productName: item.dataCartProduct.name,
                                                                         }}
                                                                     >
-                                                                        {item.Product.name}
+                                                                        {item.dataCartProduct.name}
                                                                     </Link>
-                                                                    <span className="text-muted" style={{ fontSize: '14px', fontWeight: 500 }}>Size: {item.size}</span>
+                                                                    <span className="text-muted" style={{ fontSize: '14px', fontWeight: 500 }}>Size: {item?.CartDetail?.size}</span>
                                                                 </div>
                                                                 <div className="row d-flex align-items-center">
                                                                     <span className='col-5 text-muted' style={{ fontSize: '14px', fontWeight: 500 }} >Số lượng:</span>
                                                                     <div className='col-md-6 d-flex'>
                                                                         <button 
                                                                             className="btn py-0 px-2 button-hover"
-                                                                            onClick={() => handleStepDown(item?.Product?.id, item?.size, typeStep.DOWN)}
+                                                                            onClick={() => handleStepDown(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId, typeStep.DOWN)}
                                                                         >
                                                                             <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faMinus} />
                                                                         </button>
@@ -131,13 +149,13 @@ function ListCarts({
                                                                             name="quantity" 
                                                                             type="number"
                                                                             className="form-control form-control-sm py-0" 
-                                                                            value={+item.quantity} 
+                                                                            value={+item.dataCartProduct.totalQuantity} 
                                                                             onChange={e => handleOnchangeQuantity(e)}
                                                                         />
 
                                                                         <button 
                                                                             className="btn py-0 px-2 button-hover"
-                                                                            onClick={() => handleStepUp(item?.Product?.id, item?.size, typeStep.UP)}
+                                                                            onClick={() => handleStepUp(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId, typeStep.UP)}
                                                                         >
                                                                             <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faPlus} />
                                                                         </button>
@@ -149,10 +167,27 @@ function ListCarts({
                                                                         style={{ cursor: 'pointer' }} 
                                                                         data-toggle="tooltip" 
                                                                         title='Xóa'
-                                                                        onClick={() => handleDeleteProductCart(item?.Product?.id, item?.size)}
+                                                                        onClick={() => handleShow(item?.dataCartProduct?.CartDetail?.productId)}
                                                                     >
                                                                         <FontAwesomeIcon icon={faTrash} style={{ color: '#942319' }}/>
                                                                     </button>
+                                                                    <Modal show={show?.id === item?.dataCartProduct?.CartDetail?.productId || false} onHide={handleClose}>
+                                                                        <Modal.Header closeButton>
+                                                                            <Modal.Title>Delete a product</Modal.Title>
+                                                                        </Modal.Header>
+                                                                        <Modal.Body>Are you sure delete product "{item?.dataCartProduct?.name}"</Modal.Body>
+                                                                        <Modal.Footer>
+                                                                            <button className='btn btn-secondary' onClick={handleClose}>
+                                                                                Close
+                                                                            </button>
+                                                                            <button 
+                                                                                className='btn btn-root fw-500' 
+                                                                                onClick={() => handleDeleteProductCart(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId)}
+                                                                            >
+                                                                                Yes
+                                                                            </button>
+                                                                        </Modal.Footer>
+                                                                    </Modal> 
                                                                     <div>
                                                                         <span className='float-end text-danger' style={{ fontWeight: 600 }}>{price}</span>
                                                                     </div>

@@ -1,6 +1,7 @@
 import actionTypes from "./actionTypes";
 import { 
     getAllProductTypesService,
+    getLimitProductTypesService,
     getProductTypeByCategoryIdService,
     getProductTypeByIdService,
     createProductTypeService,
@@ -15,7 +16,7 @@ export const refreshStoreProductType= () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
+            console.log('refreshStoreProductType error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -23,10 +24,10 @@ export const refreshStoreProductType= () => {
     }
 }
 
-export const getAllProductTypes = (accessToken, page) => {
+export const getAllProductTypes = (accessToken) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllProductTypesService(accessToken, +page-1)
+            let res = await getAllProductTypesService(accessToken)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_PRODUCT_TYPES_SUCCESS,
@@ -42,6 +43,30 @@ export const getAllProductTypes = (accessToken, page) => {
             console.log('getAllProductTypes error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_PRODUCT_TYPES_FAILED
+            })
+        }
+    }
+}
+
+export const getLimitProductTypes = (accessToken, page) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await getLimitProductTypesService(accessToken, +page-1)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_LIMIT_PRODUCT_TYPES_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_LIMIT_PRODUCT_TYPES_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getLimitProductTypes error: ', e)
+            dispatch({
+                type: actionTypes.GET_LIMIT_PRODUCT_TYPES_FAILED
             })
         }
     }
@@ -100,7 +125,7 @@ export const createProductType = (accessToken, data, page) => {
         try {
             let res = await createProductTypeService(accessToken, data)
             if (res && res.errCode === 0) {
-                dispatch(getAllProductTypes(accessToken, page))
+                dispatch(getLimitProductTypes(accessToken, page))
             }
         } catch (e) {
             console.log('createProductType error: ', e)
@@ -113,7 +138,7 @@ export const deleteProductType = (accessToken, id, page) => {
         try {
             let res = await deleteProductTypeService(accessToken, id)
             if (res && res.errCode === 0) {
-                dispatch(getAllProductTypes(accessToken, page))
+                dispatch(getLimitProductTypes(accessToken, page))
             }
         } catch (e) {
             console.log('deleteProductType error: ', e)
@@ -126,7 +151,7 @@ export const updateProductType = (accessToken, data, page) => {
         try {
             let res = await updateProductTypeService(accessToken, data)
             if (res && res.errCode === 0) {
-                dispatch(getAllProductTypes(accessToken, page))
+                dispatch(getLimitProductTypes(accessToken, page))
             }
         } catch (e) {
             console.log('updateProductType error: ', e)
