@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import { shoes, bag, hat, shirts, PK, logo } from '../../../utils/images';
+import { shoes, bag, logo } from '../../../utils/images';
 import './Navbar.scss'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { categorieType, path } from '../../../utils';
 import jwt_decode from "jwt-decode";
-import { typeShoesSandanl, typeBagBalo, typeHat, typeClothes } from '../../../utils';
-import SearchProducts from '../../SearchProducts/SearchProducts';
+import SearchProducts from '../../SearchProducts/listProductsSearchInput/SearchProducts';
 import ListCarts from '../../carts/ListCarts';
 import { Buffer } from 'buffer';
 
@@ -33,6 +32,7 @@ function Navbar({
     const [userLogin, setUserLogin] = useState(initState)
     const navigate = useNavigate()
     const [params] = useSearchParams()
+    const [currentActive, setCurrentActive] = useState()
 
     useEffect(() => {
         // refreshStoreProductType()
@@ -42,7 +42,7 @@ function Navbar({
                 firstName: tokenDecoded.firstName,
                 lastName: tokenDecoded.lastName,
             })
-            // getAllProductsFavouriteRedux(token, tokenDecoded.id)
+            getAllProductsFavouriteRedux(token, tokenDecoded.id)
         }
         getAllProductTypesRedux(token)
     }, [])
@@ -65,7 +65,7 @@ function Navbar({
                             <li className='menu-list_item'>
                                 <Link to={path.GIAY_MLB} className='menu-list_item-name text-white pe-2'>Giày-dép</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item bg-white w-100 position-absolute'>
+                                <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
                                         <li>
                                             <Link to={path.GIAY_MLB}>
@@ -84,7 +84,7 @@ function Navbar({
                                                                     style={{ 
                                                                         width: '100%', 
                                                                         height: '130px',
-                                                                        backgroundImage: `url(${Buffer.from(item.imageRoot.data, 'base64').toString('binary')})`,
+                                                                        backgroundImage: `url(${item?.imageRoot?.data ? Buffer.from(item?.imageRoot?.data, 'base64').toString('binary') : ''})`,
                                                                         backgroundPosition: 'center',
                                                                         backgroundSize: 'contain',
                                                                         backgroundRepeat: 'no-repeat'
@@ -103,7 +103,7 @@ function Navbar({
                             <li className='menu-list_item' >
                                 <Link to={path.TUI_MLB} className='menu-list_item-name text-white pe-2'>Túi-BaLo</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item bg-white w-100 position-absolute'>
+                                <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
                                         <li>
                                             <Link to={path.TUI_MLB}>
@@ -141,7 +141,7 @@ function Navbar({
                             <li className='menu-list_item' >
                                 <Link to={path.MU_NON_MLB} className='menu-list_item-name text-white pe-2'>Mũ-nón</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item bg-white w-100 position-absolute'>
+                                <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
                                     {
                                             productTypes && productTypes.length > 0 &&
@@ -173,7 +173,7 @@ function Navbar({
                             <li className='menu-list_item' >
                                 <Link to={path.OUTFIT_MLB} className='menu-list_item-name text-white pe-2'>Áo-quần</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item bg-white w-100 position-absolute'>
+                                <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
                                     {
                                             productTypes && productTypes.length > 0 &&
@@ -225,7 +225,7 @@ function Navbar({
                             <li className='menu-list_item' >                              
                                 <span className='menu-list_item-name text-white pe-2'>Logo</span>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item bg-white w-100 position-absolute'>
+                                <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
                                         <li>
                                             <a href='#'>
@@ -256,10 +256,10 @@ function Navbar({
                     <div className='infor d-flex align-items-center justify-content-between'>
                         <SearchProducts />
 
-                        <div className='user'>
+                        <div className='user position-relative'>
                             <Link to={userLogin && isLogin ? path.ACCOUNT : path.LOGIN} className='user-link text-white'>
-                                <FontAwesomeIcon className='icon-infor' icon={faUser} />
-                                <div className='box-acc bg-white'>
+                                <FontAwesomeIcon className='fz-18' icon={faUser} />
+                                <div className='box-acc text-center rounded position-absolute bg-white'>
                                     {
                                         userLogin && isLogin ? <Link to={path.ACCOUNT}>{`${userLogin.firstName} ${userLogin.lastName}`}</Link>
                                         : <Link to={path.LOGIN}>Đăng nhập</Link>
@@ -271,16 +271,16 @@ function Navbar({
                                 </div>
                             </Link>
                         </div>
-                        <div className='love'>
+                        <div className='love position-relative'>
                             <Link to={path.FAVOURITE} className='text-white'>
-                                <FontAwesomeIcon icon={faHeart} className='icon-infor' />
-                                <span className='numberTym rounded-circle text-white text-center'>{countFavourite}</span>
+                                <FontAwesomeIcon icon={faHeart} className='fz-18' />
+                                <span className='numberTym position-absolute rounded-circle text-white text-center'>{countFavourite}</span>
                             </Link>
                         </div>
-                        <div className='cart'>
+                        <div className='cart position-relative'>
                             <Link to={path.CART} className='text-white'>
-                                <FontAwesomeIcon className='icon-infor' icon={faCartShopping} />
-                                <span className='numberProduct rounded-circle text-white text-center'>{countProductsCart}</span>
+                                <FontAwesomeIcon className='fz-18' icon={faCartShopping} />
+                                <span className='numberProduct position-absolute rounded-circle text-white text-center'>{countProductsCart}</span>
                             </Link>
                             <ListCarts />   
                         </div>

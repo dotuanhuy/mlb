@@ -39,10 +39,11 @@ export const getAllProductsFavouriteLimit = (accessToken, userId, offset) => {
         try {
             let newOffset = +offset - 1
             let res = await getAllProductsFavouriteLimitService(accessToken, userId, newOffset)
+            console.log(res)
             let data = []
-            res.data.rows.map(item => {
-                data.push(item.Product)
-            })
+            // res.data.rows.map(item => {
+            //     data.push(item.Product)
+            // })
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_PRODUCTS_FAVOURITE_LIMIT_SUCCESS,

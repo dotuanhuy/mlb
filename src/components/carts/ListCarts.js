@@ -79,7 +79,7 @@ function ListCarts({
                                                     imageBase64 = Buffer.from(item.dataCartProduct.image.data, 'base64').toString('binary')
                                                 }
                                                 if (item?.dataCartProduct?.price) {
-                                                    price = formatVND((+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.totalQuantity)
+                                                    price = formatVND((+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.CartDetail.quantity)
                                                 }
                                                 return (
                                                     <div class="px-3 pt-2">
@@ -131,7 +131,9 @@ function ListCarts({
                                                                     >
                                                                         {item.dataCartProduct.name}
                                                                     </Link>
-                                                                    <span className="text-muted" style={{ fontSize: '14px', fontWeight: 500 }}>Size: {item?.CartDetail?.size}</span>
+                                                                    {
+                                                                        item?.dataCartProduct.CartDetail?.size ? <span className="text-muted" style={{ fontSize: '14px', fontWeight: 500 }}>Size: {item?.dataCartProduct.CartDetail?.size}</span> : ''
+                                                                    }
                                                                 </div>
                                                                 <div className="row d-flex align-items-center">
                                                                     <span className='col-5 text-muted' style={{ fontSize: '14px', fontWeight: 500 }} >Số lượng:</span>
@@ -149,7 +151,7 @@ function ListCarts({
                                                                             name="quantity" 
                                                                             type="number"
                                                                             className="form-control form-control-sm py-0" 
-                                                                            value={+item.dataCartProduct.totalQuantity} 
+                                                                            value={+item.dataCartProduct.CartDetail.quantity} 
                                                                             onChange={e => handleOnchangeQuantity(e)}
                                                                         />
 
@@ -173,18 +175,18 @@ function ListCarts({
                                                                     </button>
                                                                     <Modal show={show?.id === item?.dataCartProduct?.CartDetail?.productId || false} onHide={handleClose}>
                                                                         <Modal.Header closeButton>
-                                                                            <Modal.Title>Delete a product</Modal.Title>
+                                                                            <Modal.Title>Xóa sản phẩm trong giỏ hàng</Modal.Title>
                                                                         </Modal.Header>
-                                                                        <Modal.Body>Are you sure delete product "{item?.dataCartProduct?.name}"</Modal.Body>
+                                                                        <Modal.Body>Bạn có chắc xóa "{item?.dataCartProduct?.name}"</Modal.Body>
                                                                         <Modal.Footer>
                                                                             <button className='btn btn-secondary' onClick={handleClose}>
-                                                                                Close
+                                                                                Hủy
                                                                             </button>
                                                                             <button 
                                                                                 className='btn btn-root fw-500' 
                                                                                 onClick={() => handleDeleteProductCart(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId)}
                                                                             >
-                                                                                Yes
+                                                                                Xóa
                                                                             </button>
                                                                         </Modal.Footer>
                                                                     </Modal> 

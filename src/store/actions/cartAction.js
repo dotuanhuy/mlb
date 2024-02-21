@@ -18,8 +18,8 @@ export const getProductsInCartByUser = (accessToken, userId) => {
                     let data = []
                     res?.data?.map(item => {
                         data.push(item)
-                        totalMoney += (+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.totalQuantity
-                        count += +item.dataCartProduct.totalQuantity
+                        totalMoney += (+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.CartDetail.quantity
+                        count += +item.dataCartProduct.CartDetail.quantity
                     })
                     dispatch({
                         type: actionTypes.GET_ALL_PRODUCTs_IN_CART_BY_USER_SUCCESS,

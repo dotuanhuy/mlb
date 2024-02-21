@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faCartShopping, faMinus, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -15,8 +15,6 @@ import { Buffer } from 'buffer';
 import './PageCart.scss'
 import { Modal } from 'react-bootstrap';
 
-
-
 function PageCart({
     accessToken,
     isLoading,
@@ -30,6 +28,8 @@ function PageCart({
     
     const [userId, setUserId] = useState('')
     const [show, setShow] = useState({})
+    const body = useRef()
+    const initialRender  = useRef(true)
 
     const handleClose = () => setShow({});
     const handleShow = (id) => setShow({id})
@@ -40,6 +40,20 @@ function PageCart({
             setUserId(tokenDecoded?.id)
         }
     }, [])
+    
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop - 100
+                });
+            }
+        }
+    }, [body.current])
     
     useEffect(() => {
         if (userId) {
@@ -74,7 +88,7 @@ function PageCart({
                     <div>
                         <Banner categoryProduct={'Giỏ hàng'} title={'Giỏ hàng'}/>
                     </div>
-                    <div className='container mt-5'>
+                    <div ref={body} className='container mt-5'>
                         <h4 className='fs-5 text-uppercase my-4 text-center'>Giỏ hàng của bạn tại mlb việt nam</h4>
                         <div className='page-cart'>
                             <table class="table">
@@ -95,7 +109,7 @@ function PageCart({
                                                 imageBase64 = Buffer.from(item?.dataCartProduct?.image?.data, 'base64').toString('binary')
                                             }
                                             if (item?.dataCartProduct?.price) {
-                                                price = formatVND((+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.totalQuantity)
+                                                price = formatVND((+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.CartDetail.quantity)
                                             }
                                             return (
                                                 <tr key={index}>
@@ -201,7 +215,7 @@ function PageCart({
                                                                 name="quantity" 
                                                                 type="number"
                                                                 className="form-control form-control-sm py-0" 
-                                                                value={+item.dataCartProduct.totalQuantity} 
+                                                                value={+item.dataCartProduct.CartDetail.quantity} 
                                                                 onChange={e => handleOnchangeQuantity(e)}
                                                             />
 

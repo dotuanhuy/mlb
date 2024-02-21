@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo, useRef } from 'react';
 import { connect } from 'react-redux';
 import './Account.scss'
 import { Link } from 'react-router-dom';
@@ -17,6 +17,8 @@ const initState = {
 
 function AccountInfor({token, getAllProductsFavouriteRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
+    const body  = useRef()
+    const initialRender  = useRef(true)
 
     useEffect(() => {
         if (token) {
@@ -38,11 +40,25 @@ function AccountInfor({token, getAllProductsFavouriteRedux}) {
         // }
     }, [])
 
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop - 100
+                });
+            }
+        }
+    }, [body.current])
+
     return (
         <>
             <Navbar />
             <Banner categoryProduct='Trang khách hàng' title='Trang khách hàng' />
-            <div className='account'>
+            <div ref={body} className='account'>
                 <div className='account-body p-5'>
                     <div className='container'>
                         <div className='row'>

@@ -148,7 +148,7 @@ function ProductManageDetail({
                                                                 className='col-2 rounded px-1 py-2 text-center active' 
                                                                 key={index}
                                                             >
-                                                                <span className='text-banner'>{item?.dataSize?.name}</span>
+                                                                <span className='text-banner'>{item?.name}</span>
                                                             </div>
                                                         )
                                                     })

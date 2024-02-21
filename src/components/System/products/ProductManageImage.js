@@ -23,19 +23,19 @@ function ProductManageImage({
 }) {
     const [params] = useSearchParams()
     const [show, setShow] = useState(false);
-    const [imageMain, setImageMain] = useState()
+    const [imageMain, setImageMain] = useState('')
     const [listImageItems, setListImageItems] = useState([])
     const [listImageItemDeleted, setListImageItemDeleted] = useState([])
     const [isChangeImageMain, setIsCheckImageMain] = useState(false)
 
     useEffect(() => {
-        setImageMain(product?.image?.data ? Buffer.from(product?.image?.data, 'base64').toString('binary') : '')
-        setImageMain(product?.image?.data ? Buffer.from(product?.image?.data, 'base64').toString('binary') : '')
+        if (product?.image?.data) {
+            setImageMain(Buffer.from(product?.image?.data, 'base64').toString('binary'))
+        }
         if (images.length > 0) {
             setListImageItems(images.map(item => Buffer.from(item.image.data, 'base64').toString('binary')))
         }
-    }, [images])
-
+    }, [images, product])
 
     const handleClose = () => {
         setShow(false)

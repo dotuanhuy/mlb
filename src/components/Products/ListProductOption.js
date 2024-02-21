@@ -1,28 +1,22 @@
 import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'react-redux';
-import './Shoes.scss'
+import './ListProductOption.scss'
 import { useLocation, useSearchParams } from 'react-router-dom';
-import * as actions from '../../../store/actions'
+import * as actions from '../../store/actions'
 import { 
     path, 
-    categorieType, 
-    listShoesSandals, 
-    listColor, 
-    allCode, 
-    typeShoesSandanl,
-    ListColorsProduct,
-} from '../../../utils';
-import Navbar from '../../HomePage/Navbar/Navbar';
-import Pagination from '../../Paginations/Pagination'
+} from '../../utils';
+import Navbar from '../HomePage/Navbar/Navbar';
+import Pagination from '../Paginations/Pagination'
 import { useRef } from 'react';
-import Loading from '../../common/Loading/Loading';
-import Banner from '../../common/Banners/Banner';
-import ListProducts from '../../common/listProducts/ListProducts';
-import OptionSort from '../../common/options/OptionSort';
-import OptionType from '../../common/options/OptionType';
-import OptionColor from '../../common/options/OptionColor';
-import OptionLogo from '../../common/options/OptionLogo';
-import HomeFooter from '../../HomePage/HomeFooter/HomeFooter';
+import Loading from '../common/Loading/Loading';
+import Banner from '../common/Banners/Banner';
+import ListProducts from '../common/listProducts/ListProducts';
+import OptionSort from '../common/options/OptionSort';
+import OptionType from '../common/options/OptionType';
+import OptionColor from '../common/options/OptionColor';
+import OptionLogo from '../common/options/OptionLogo';
+import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 import jwt_decode from 'jwt-decode';
 
 function Shoes({
@@ -46,6 +40,7 @@ function Shoes({
     const [optionLogo, setOptionLogo] = useState([])
     const [params] = useSearchParams()
     const listRef = useRef()
+    const initialRender = useRef(true)
     const { state } = useLocation();
 
     useEffect(() => {
@@ -65,6 +60,20 @@ function Shoes({
     }, [])
 
     useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (listRef.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: listRef.current.offsetTop - 70
+                });
+            }
+        }
+    }, [listRef.current])
+
+    useEffect(() => {
         const data = {
             optionType: optionType?.toString(',').length === 0 ? categoryActive : optionType?.toString(','),
             colors: optionColor?.toString(','),
@@ -81,10 +90,9 @@ function Shoes({
         if (listRef.current) {
             window.scrollTo({
                 behavior: "smooth",
-                top: listRef.current.offsetTop
+                top: listRef.current.offsetTop - 70
             });
         }
-
     }, [params.get('page'), optionSort, optionType, optionColor, optionLogo, state?.id])
 
     useEffect(() => {
@@ -156,7 +164,7 @@ function Shoes({
                             title={`mlb việt nam | ${categories?.at(0)?.name} chính hãng tại việt nam`}
                         />
 
-                        <div className='shoes-body pt-5'>
+                        <div ref={listRef} className='shoes-body pt-5'>
                             <div className='shoes-container'>
                                 <div className='row'>
                                     <div className='options col-3'>
@@ -168,7 +176,7 @@ function Shoes({
                                         </div>
                                     </div>
                                     
-                                    <div ref={listRef} className='shoes-list col-9'>
+                                    <div className='shoes-list col-9'>
                                         <div className='shoes-list-container'>
                                             <div className='menu-product row'>
                                                 <ListProducts products={products} images={images} />

@@ -1,11 +1,12 @@
 import React, { useEffect, memo } from 'react';
 import { connect } from 'react-redux';
+import './SearchProducts.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import * as actions from '../../store/actions'
+import * as actions from '../../../store/actions'
 import { useState } from 'react';
 import {Buffer} from 'buffer';
-import { formatVND, path, limit_list_search } from '../../utils';
+import { formatVND, path, limit_list_search } from '../../../utils';
 import { Link, useNavigate } from 'react-router-dom';
 
 function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, refreshProductSearchRedux }) {
@@ -30,9 +31,9 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
     }
 
     return (    
-        <div className='search'>
+        <div className='search position-relative'>
             <FontAwesomeIcon className='icon-infor' icon={faMagnifyingGlass} />
-            <div className='input-search bg-white'>
+            <div className='input-search rounded position-absolute bg-white'>
                 <form className='form-search' onSubmit={handleSearch}>
                     <input 
                         className='p-2'

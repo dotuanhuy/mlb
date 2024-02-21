@@ -46,7 +46,7 @@ export const path = {
     CHUNKY_LINER: '/giay-mlb-chunky-liner',
     GIAY_MLB_PLAYBALL: '/giay-mlb-playball',
     CHUNKY_CLASSIC: '/giay-mlb-chunky-classic',
-    CHUNKY_RUNNER: '/giay-mlb-chunky-runner',
+    CHUNKY_JOGGER: '/giay-mlb-chunky-jogger',
     SANDALS: '/dep-mlb',
 
     BACKPACK: '/balo-mlb',
@@ -60,7 +60,7 @@ export const path = {
 
     MU_NON_MLB: '/mu-non-mlb',
     BALL_CAP: '/non-mlb-ball-cap',
-    BUCKET_HAT: '/non-mlb-bucket-hat',
+    BUCKET: '/non-mlb-bucket-hat',
     SUN_CAP: '/non-mlb-sun-cap',
 
     OUTFIT_MLB: '/outfit-mlb',

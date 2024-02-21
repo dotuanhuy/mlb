@@ -142,7 +142,7 @@ function ManageShoesEdit({
                 setSelectReleaseDate(new Date(products.releaseDate))
             }
             if (products?.dataSizeDetail?.length > 0) {
-               setListSizes(products.dataSizeDetail.map(item => item.sizeId))
+               setListSizes(products.dataSizeDetail.map(item => item.id))
             }
         }
     }, [products])

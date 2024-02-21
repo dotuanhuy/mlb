@@ -14,10 +14,11 @@ import moment from 'moment';
 import { BuildOptionSelect } from '../../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { generateRandomString } from '../../../utils/funcRandom';
 
 const initState = {
     name: '',
-    code: '',
+    code: generateRandomString(15),
     price: '',
     productionSite: '',
     material: '',
@@ -174,13 +175,17 @@ function ManageShoesCreate({
             listColorsAdded: listColors
         }
         createNewProductRedux(product, categoryType, accessToken, params.get('page') ? params.get('page') : 1)
-        setSelectObject(initState)
+        setSelectObject({
+            ...initState,
+            code: generateRandomString(15)
+        })
         setSelectImage(initStateImage)
         setSelectCategory('')
         setSelectDiscount('')
         setSelectBrand('')
         setSelectLogo('')
         setSelectReleaseDate('')
+        setSelectProductType('')
         setListColors([])
         setListSizes([])
     }
@@ -237,10 +242,11 @@ function ManageShoesCreate({
                                         className="form-control" 
                                         id="exampleInputCode" 
                                         value={selectObject.code}
-                                        onChange={(e) => setSelectObject({
-                                            ...selectObject,
-                                            code: e.target.value
-                                        })}
+                                        // onChange={(e) => setSelectObject({
+                                        //     ...selectObject,
+                                        //     code: e.target.value
+                                        // })}
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3 col-4">

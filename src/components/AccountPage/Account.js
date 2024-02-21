@@ -9,6 +9,7 @@ import * as action from '../../store/actions'
 function Account({token, userLogin, activeType, fetLogoutRedux}) {
     const [active, setActive] = useState('infor')
     const navigate = useNavigate()
+    
 
     useEffect(() => {
        if (!token) {

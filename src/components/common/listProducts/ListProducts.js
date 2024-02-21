@@ -31,8 +31,8 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                     if (item.price) {
                         price = formatVND(item.price)
                     }
-                    if (item.dataDiscounts.value !== 0) {
-                        newPrice = formatVND(item.price - item.price*item.dataDiscounts.value)
+                    if (item?.dataDiscounts?.value !== 0) {
+                        newPrice = formatVND(item.price - item.price*item?.dataDiscounts?.value)
                     }
                     let isFavourite = false
                     if (productFavourites.length !== 0) {
@@ -41,9 +41,9 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                     return (
                         <div className={`list-products ${col}`} key={index}>
                             {
-                                +item.dataDiscounts.value !== 0 ?
+                                +item?.dataDiscounts?.value !== 0 ?
                                 <div className='discount'>
-                                    <span>-{+item.dataDiscounts.value*100}%</span>
+                                    <span>-{+item?.dataDiscounts?.value*100}%</span>
                                 </div>
                                 : ''
                             }
