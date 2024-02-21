@@ -21,7 +21,8 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
                     let imageHoverBase64 = ''
                     let price = ''
                     let newPrice = ''
-                    let imageHover = images?.find(image => image?.productId === item?.id)
+                    // let imageHover = images?.find(image => image?.productId === item?.id)
+                    let imageHover = item?.dataImageProducts?.at(0)
                     if (item?.image) {
                         imageBase64 = Buffer.from(item?.image?.data, 'base64').toString('binary')
                     }

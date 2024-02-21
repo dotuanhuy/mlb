@@ -17,7 +17,7 @@ const getAllProductsFavouriteLimitService = (accessToken, userId, offset) => {
     return axios.get(`/api/get-all-favourite-products-limit-limit?userId=${userId}&offset=${offset}`)
 }
 
-const addProductFavouriteService = (accessToken, data) => {
+const changeProductFavouriteService = (accessToken, data) => {
     if (accessToken) {
         const axiosJWT = createAxios(accessToken)
         return axiosJWT.post(`/api/add-product-favourite`, data, { headers: { token: `Bearer ${accessToken}` }})
@@ -28,5 +28,5 @@ const addProductFavouriteService = (accessToken, data) => {
 export {
     getAllProductsFavouriteLimitService,
     getAllProductsFavouriteService,
-    addProductFavouriteService
+    changeProductFavouriteService
 }

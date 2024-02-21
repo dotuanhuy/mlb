@@ -17,9 +17,6 @@ import {
     getLimitProductByOptionSortService,
     searchProductByNameService,
     searchProductByNameServiceLimit,
-    getAllProductsFavouriteService,
-    getAllProductsFavouriteLimitService,
-    addProductFavouriteService
 
 } from "../../services/productService";
 // import { getAllCodeByType } from "../../services/userService";

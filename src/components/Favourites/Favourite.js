@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from '../../utils';
@@ -17,17 +17,34 @@ function Favourite({
     accessToken, 
     productsLimit,
     images,
-    refreshIsloadingStateProductRedux,
+    refreshIStateFavouriteProductRedux,
     getAllImagesByProductIdRedux,
     getAllProductsFavouriteLimitRedux,
     getAllProductsFavouriteRedux
 }) {
     const [params] = useSearchParams()
+    const body = useRef()
+    const initialRender  = useRef(true)
     
     useEffect(() => {
-        refreshIsloadingStateProductRedux()
-        getAllImagesByProductIdRedux(accessToken)
+        console.log('check')
+        refreshIStateFavouriteProductRedux()
+        // getAllImagesByProductIdRedux(accessToken)
     }, [])
+
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop - 80
+                });
+            }
+        }
+    }, [body.current])
     
     useEffect(() => {
         let userId = ''
@@ -36,8 +53,14 @@ function Favourite({
             userId = tokenDecoded?.id
         }
         if (userId) {
-            getAllProductsFavouriteRedux(accessToken, userId)
+            // getAllProductsFavouriteRedux(accessToken, userId)
             getAllProductsFavouriteLimitRedux(accessToken, userId, params.get('page') || 1)
+        }
+        if (body.current) {
+            window.scrollTo({
+                behavior: "smooth",
+                top: body.current.offsetTop - 80
+            });
         }
     }, [params.get('page')])
     
@@ -51,7 +74,7 @@ function Favourite({
                     <Navbar />
                     <Banner categoryProduct='Yêu thích' title='Yêu thích' />
                    
-                    <div className='product-search-by-name-container px-4'>
+                    <div ref={body} className='product-search-by-name-container px-4'>
                         <div className='container'>
                             <div className='product-count pt-5 pb-5 text-center h4 fw-normal'>
                                 Danh sách yêu thích của tôi
@@ -73,8 +96,8 @@ function Favourite({
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.product.isLoadingProduct,
         accessToken: state.auth.token,
+        isLoading: state.fouriteProduct.isLoading,
         images: state.product.images,
         // productsLimit: state.product.productFavouriteLimit,
         productsLimit: state.fouriteProduct.productLimit
@@ -83,7 +106,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
+        refreshIStateFavouriteProductRedux: () => dispatch(actions.refreshIStateFavouriteProduct()),
         getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
         getAllProductsFavouriteLimitRedux: (accessToken, userId, offset) => dispatch(actions.getAllProductsFavouriteLimit(accessToken, userId, offset))

@@ -1,7 +1,8 @@
 const initState = {
     countProducts: 0,
     product: [],
-    productLimit: []
+    productLimit: [],
+    isLoading: true
 }
 
 const fouriteProductReducer = (state=initState, action) => {
@@ -10,30 +11,35 @@ const fouriteProductReducer = (state=initState, action) => {
             state.countProducts = 0
             state.product = []
             state.productLimit = []
+            state.isLoading = true
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_SUCCESS': 
             state.product = action?.data
             state.countProducts = action?.data?.length
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_FAILED': 
             state.product = []
             state.countProducts = 0
+            state.isLoading = true
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_SUCCESS':
             state.productLimit = action?.data
             state.countProducts = action?.count
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_FAILED':
             state.productLimit = []
             state.countProducts = 0
+            state.isLoading = true
             return {
                 ...state
             }

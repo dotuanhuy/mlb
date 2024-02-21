@@ -1,265 +1,265 @@
-import React, { useEffect, useState, memo } from 'react';
-import { connect } from 'react-redux';
-import './HatList.scss'
-import { useLocation, useSearchParams } from 'react-router-dom';
-import * as actions from '../../../store/actions'
-import { 
-    path, 
-    categorieType, 
-    listHat, 
-    allCode, 
-} from '../../../utils';
-import Navbar from '../../HomePage/Navbar/Navbar';
-import Pagination from '../../Paginations/Pagination'
-import { useRef } from 'react';
-import Loading from '../../common/Loading/Loading';
-import Banner from '../../common/Banners/Banner';
-import ListProducts from '../../common/listProducts/ListProducts';
-import OptionSort from '../../common/options/OptionSort';
-import OptionType from '../../common/options/OptionType';
-import OptionColor from '../../common/options/OptionColor';
-import OptionLogo from '../../common/options/OptionLogo';
-import HomeFooter from '../../HomePage/HomeFooter/HomeFooter';
-import jwt_decode from 'jwt-decode';
+// import React, { useEffect, useState, memo } from 'react';
+// import { connect } from 'react-redux';
+// import './HatList.scss'
+// import { useLocation, useSearchParams } from 'react-router-dom';
+// import * as actions from '../../../store/actions'
+// import { 
+//     path, 
+//     categorieType, 
+//     listHat, 
+//     allCode, 
+// } from '../../../utils';
+// import Navbar from '../../HomePage/Navbar/Navbar';
+// import Pagination from '../../Paginations/Pagination'
+// import { useRef } from 'react';
+// import Loading from '../../common/Loading/Loading';
+// import Banner from '../../common/Banners/Banner';
+// import ListProducts from '../../common/listProducts/ListProducts';
+// import OptionSort from '../../common/options/OptionSort';
+// import OptionType from '../../common/options/OptionType';
+// import OptionColor from '../../common/options/OptionColor';
+// import OptionLogo from '../../common/options/OptionLogo';
+// import HomeFooter from '../../HomePage/HomeFooter/HomeFooter';
+// import jwt_decode from 'jwt-decode';
 
 
-const arrColor = ['White', 'Black', 'Gray', 'Brown', 'Blue', 'Green', 'Pink', 'LightPink', 'Red', 'Orange', 'Yellow']
-const arrOptionType = ['hat1', 'hat2']
-const arrOptionLogo = ['NY', 'B', 'LA', 'P', 'SF']
+// const arrColor = ['White', 'Black', 'Gray', 'Brown', 'Blue', 'Green', 'Pink', 'LightPink', 'Red', 'Orange', 'Yellow']
+// const arrOptionType = ['hat1', 'hat2']
+// const arrOptionLogo = ['NY', 'B', 'LA', 'P', 'SF']
 
-const initOptionType = {
-    hat1: false,
-    hat2: false
-}
+// const initOptionType = {
+//     hat1: false,
+//     hat2: false
+// }
 
-const initOptionColor = {
-    White: false,
-    Black: false,
-    Gray: false,
-    Brown: false,
-    Blue: false,
-    Green: false,
-    Pink: false,
-    LightPink: false,
-    Red: false,
-    Orange: false,
-    Yellow: false
-}
+// const initOptionColor = {
+//     White: false,
+//     Black: false,
+//     Gray: false,
+//     Brown: false,
+//     Blue: false,
+//     Green: false,
+//     Pink: false,
+//     LightPink: false,
+//     Red: false,
+//     Orange: false,
+//     Yellow: false
+// }
 
-const initOptionLogo = {
-    NY: false,
-    B: false,
-    LA: false,
-    P: false,
-    SF: false,
-}
+// const initOptionLogo = {
+//     NY: false,
+//     B: false,
+//     LA: false,
+//     P: false,
+//     SF: false,
+// }
 
-function HatList({
-    colors, 
-    categories, 
-    logos, 
-    accessToken, 
-    images,
-    products,
-    isLoading,
-    getAllColorsRedux, 
-    getCategoriesByTypeRedux, 
-    // fetchAllCodeByTypeRedux,
-    getAllImagesByProductIdRedux,
-    getProductByCategoryRedux,
-    getLimitProductsRedux,
-    getLimitProductByOptionRedux,
-    refreshIsloadingStateProductRedux,
-    getAllProductsFavouriteRedux
-}) {
-    const [optionSort, setOptionSort] = useState('default')
-    const [optionType, setOptionType] = useState(initOptionType)
-    const [optionColor, setOptionColor] = useState(initOptionColor)
-    const [optionLogo, setOptionLogo] = useState(initOptionLogo)
-    const [params] = useSearchParams()
-    const listRef = useRef()
-    const { state } = useLocation();
+// function HatList({
+//     colors, 
+//     categories, 
+//     logos, 
+//     accessToken, 
+//     images,
+//     products,
+//     isLoading,
+//     getAllColorsRedux, 
+//     getCategoriesByTypeRedux, 
+//     // fetchAllCodeByTypeRedux,
+//     getAllImagesByProductIdRedux,
+//     getProductByCategoryRedux,
+//     getLimitProductsRedux,
+//     getLimitProductByOptionRedux,
+//     refreshIsloadingStateProductRedux,
+//     getAllProductsFavouriteRedux
+// }) {
+//     const [optionSort, setOptionSort] = useState('default')
+//     const [optionType, setOptionType] = useState(initOptionType)
+//     const [optionColor, setOptionColor] = useState(initOptionColor)
+//     const [optionLogo, setOptionLogo] = useState(initOptionLogo)
+//     const [params] = useSearchParams()
+//     const listRef = useRef()
+//     const { state } = useLocation();
 
-    useEffect(() => {
-        refreshIsloadingStateProductRedux()
-        getAllColorsRedux(allCode.COLOR)
-        getCategoriesByTypeRedux(categorieType.HAT)
-        // fetchAllCodeByTypeRedux(allCode.LOGO)
-        getAllImagesByProductIdRedux(accessToken)
+//     useEffect(() => {
+//         refreshIsloadingStateProductRedux()
+//         getAllColorsRedux(allCode.COLOR)
+//         getCategoriesByTypeRedux(categorieType.HAT)
+//         // fetchAllCodeByTypeRedux(allCode.LOGO)
+//         getAllImagesByProductIdRedux(accessToken)
 
-        let userId = ''
-        if (accessToken) {
-            let tokenDecoded = jwt_decode(accessToken)
-            userId = tokenDecoded?.id
-        }
-        if (userId) {
-            getAllProductsFavouriteRedux(accessToken, userId)
-        }
-        // getLimitProductsRedux(categorieType.HAT, params.get('page') ? params.get('page') : 1, accessToken)
-    }, [])
+//         let userId = ''
+//         if (accessToken) {
+//             let tokenDecoded = jwt_decode(accessToken)
+//             userId = tokenDecoded?.id
+//         }
+//         if (userId) {
+//             getAllProductsFavouriteRedux(accessToken, userId)
+//         }
+//         // getLimitProductsRedux(categorieType.HAT, params.get('page') ? params.get('page') : 1, accessToken)
+//     }, [])
 
-    useEffect(() => {
-        let strColor, strType, strLogo = ''
-        const newArrOptionType = []
-        const newArrOptionLogo = []
-        const newArrColor = []
-        arrColor.forEach(item => {
-            if (optionColor[item]) {
-                newArrColor.push(item.toUpperCase())
-            }
-        })
-        arrOptionType.forEach(item => {
-            if (optionType[item]) {
-                let newOptionType = item === 'hat1' ? listHat.HAT1 : listHat.HAT2
-                newArrOptionType.push(newOptionType)
-            }
-        })
-        arrOptionLogo.forEach(item => {
-            if (optionLogo[item]) 
-                newArrOptionLogo.push(item)
-        })
-        if (newArrColor.length > 0) {
-            strColor = newArrColor.toString()
-        }
-        if (newArrOptionType.length > 0) {
-            strType = newArrOptionType.length > 1 ? '' : newArrOptionType.toString()
-        }
-        if (newArrOptionLogo.length > 0) {
-            strLogo = newArrOptionLogo.toString()
-        }
-        const data = {
-            optionType: strType ? strType : categorieType.HAT,
-            colors: strColor,
-            logos: strLogo
-        }
+//     useEffect(() => {
+//         let strColor, strType, strLogo = ''
+//         const newArrOptionType = []
+//         const newArrOptionLogo = []
+//         const newArrColor = []
+//         arrColor.forEach(item => {
+//             if (optionColor[item]) {
+//                 newArrColor.push(item.toUpperCase())
+//             }
+//         })
+//         arrOptionType.forEach(item => {
+//             if (optionType[item]) {
+//                 let newOptionType = item === 'hat1' ? listHat.HAT1 : listHat.HAT2
+//                 newArrOptionType.push(newOptionType)
+//             }
+//         })
+//         arrOptionLogo.forEach(item => {
+//             if (optionLogo[item]) 
+//                 newArrOptionLogo.push(item)
+//         })
+//         if (newArrColor.length > 0) {
+//             strColor = newArrColor.toString()
+//         }
+//         if (newArrOptionType.length > 0) {
+//             strType = newArrOptionType.length > 1 ? '' : newArrOptionType.toString()
+//         }
+//         if (newArrOptionLogo.length > 0) {
+//             strLogo = newArrOptionLogo.toString()
+//         }
+//         const data = {
+//             optionType: strType ? strType : categorieType.HAT,
+//             colors: strColor,
+//             logos: strLogo
+//         }
 
-        const optionTypeName = state?.typeName ? state?.typeName : ''
+//         const optionTypeName = state?.typeName ? state?.typeName : ''
 
-        if (optionTypeName) {
-            getCategoriesByTypeRedux(listHat.HAT2)
-            data['optionType'] = listHat.HAT2
-        }
-        else {
-            getCategoriesByTypeRedux(categorieType.HAT)
-        }
-        getLimitProductByOptionRedux(
-            data, 
-            params.get('page') ? params.get('page') : 1, 
-            optionSort, 
-            accessToken,
-            optionTypeName
-        )
-        if (listRef.current) {
-            window.scrollTo({
-                behavior: "smooth",
-                top: listRef.current.offsetTop
-            });
-        }
+//         if (optionTypeName) {
+//             getCategoriesByTypeRedux(listHat.HAT2)
+//             data['optionType'] = listHat.HAT2
+//         }
+//         else {
+//             getCategoriesByTypeRedux(categorieType.HAT)
+//         }
+//         getLimitProductByOptionRedux(
+//             data, 
+//             params.get('page') ? params.get('page') : 1, 
+//             optionSort, 
+//             accessToken,
+//             optionTypeName
+//         )
+//         if (listRef.current) {
+//             window.scrollTo({
+//                 behavior: "smooth",
+//                 top: listRef.current.offsetTop
+//             });
+//         }
 
-    }, [params.get('page'), optionSort, optionType, optionColor, optionLogo, state])
+//     }, [params.get('page'), optionSort, optionType, optionColor, optionLogo, state])
     
-    const handleOnchangeTypeType = (e) => {
-        let checked = e.target.getAttribute('for')
-        if (checked === listHat.HAT1) {
-            setOptionType({
-                ...optionType,
-                hat1: !optionType.hat1
-            })
-        }
-        else if (checked === listHat.HAT2) {
-            setOptionType({
-                ...optionType,
-                hat2: !optionType.hat2
-            })
-        }
-    }
+//     const handleOnchangeTypeType = (e) => {
+//         let checked = e.target.getAttribute('for')
+//         if (checked === listHat.HAT1) {
+//             setOptionType({
+//                 ...optionType,
+//                 hat1: !optionType.hat1
+//             })
+//         }
+//         else if (checked === listHat.HAT2) {
+//             setOptionType({
+//                 ...optionType,
+//                 hat2: !optionType.hat2
+//             })
+//         }
+//     }
     
-    const handleOnchangeColor = (e) => {
-        let checked = e.target.getAttribute('for')
-        optionColor[checked] = !optionColor[checked]
-        setOptionColor({
-            ...optionColor
-        })
-    }
+//     const handleOnchangeColor = (e) => {
+//         let checked = e.target.getAttribute('for')
+//         optionColor[checked] = !optionColor[checked]
+//         setOptionColor({
+//             ...optionColor
+//         })
+//     }
 
-    const handleOnchangeLogo = (e) => {
-        let checked = e.target.getAttribute('for')
-        optionLogo[checked] = !optionLogo[checked]
-        setOptionLogo({
-            ...optionLogo
-        })
-    }
+//     const handleOnchangeLogo = (e) => {
+//         let checked = e.target.getAttribute('for')
+//         optionLogo[checked] = !optionLogo[checked]
+//         setOptionLogo({
+//             ...optionLogo
+//         })
+//     }
 
-    return (
-        <>
-            {
-                isLoading ? 
-                <Loading />
-                :
-                <>
-                    <div className='shoes'>
-                        <Navbar />
-                        <Banner 
-                            categoryProduct={categories[0]?.name}
-                            title={`mlb việt nam | ${categories[0]?.name} chính hãng tại việt nam`}
-                        />
+//     return (
+//         <>
+//             {
+//                 isLoading ? 
+//                 <Loading />
+//                 :
+//                 <>
+//                     <div className='shoes'>
+//                         <Navbar />
+//                         <Banner 
+//                             categoryProduct={categories[0]?.name}
+//                             title={`mlb việt nam | ${categories[0]?.name} chính hãng tại việt nam`}
+//                         />
 
-                        <div className='shoes-body pt-5'>
-                            <div className='shoes-container'>
-                                <div className='row'>
-                                    <div className='options col-3'>
-                                        <div className='options-list ps-3'>
-                                            <OptionSort handleSetOptionSort={setOptionSort} optionSort={optionSort} />
-                                            <OptionType optionType={optionType} categories={categories} handleOnchangeTypeType={handleOnchangeTypeType} />
-                                            <OptionColor colors={colors} handleOnchangeColor={handleOnchangeColor} optionColor={optionColor} />
-                                            <OptionLogo handleOnchangeLogo={handleOnchangeLogo} logos={logos} optionType={optionType} />
-                                        </div>
-                                    </div>
+//                         <div className='shoes-body pt-5'>
+//                             <div className='shoes-container'>
+//                                 <div className='row'>
+//                                     <div className='options col-3'>
+//                                         <div className='options-list ps-3'>
+//                                             <OptionSort handleSetOptionSort={setOptionSort} optionSort={optionSort} />
+//                                             <OptionType optionType={optionType} categories={categories} handleOnchangeTypeType={handleOnchangeTypeType} />
+//                                             <OptionColor colors={colors} handleOnchangeColor={handleOnchangeColor} optionColor={optionColor} />
+//                                             <OptionLogo handleOnchangeLogo={handleOnchangeLogo} logos={logos} optionType={optionType} />
+//                                         </div>
+//                                     </div>
                                     
-                                    <div ref={listRef} className='shoes-list col-9'>
-                                        <div className='shoes-list-container'>
-                                            <div className='menu-product row'>
-                                                <ListProducts products={products} images={images} />                                              
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+//                                     <div ref={listRef} className='shoes-list col-9'>
+//                                         <div className='shoes-list-container'>
+//                                             <div className='menu-product row'>
+//                                                 <ListProducts products={products} images={images} />                                              
+//                                             </div>
+//                                         </div>
+//                                     </div>
+//                                 </div>
 
-                                <Pagination pathPage={path.MU_NON_MLB} currentPage={params.get('page') || 1}/>
-                            </div>
-                        </div>
-                    </div>
-                    <HomeFooter />
-                </>
-            }
-        </>
-    );
-}
+//                                 <Pagination pathPage={path.MU_NON_MLB} currentPage={params.get('page') || 1}/>
+//                             </div>
+//                         </div>
+//                     </div>
+//                     <HomeFooter />
+//                 </>
+//             }
+//         </>
+//     );
+// }
 
-const mapStateToProps = state => {
-    return {
-        colors: state.product.colors,
-        categories: state.product.categorieById,
-        logos: state.product.logos,
-        accessToken: state.auth.token,
-        images: state.product.images,
-        products: state.product.products,
-        isLoading: state.product.isLoadingProduct,
-    }
-}
+// const mapStateToProps = state => {
+//     return {
+//         colors: state.product.colors,
+//         categories: state.product.categorieById,
+//         logos: state.product.logos,
+//         accessToken: state.auth.token,
+//         images: state.product.images,
+//         products: state.product.products,
+//         isLoading: state.product.isLoadingProduct,
+//     }
+// }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        getAllColorsRedux: (type) => dispatch(actions.getAllColors(type)),
-        getCategoriesByTypeRedux: (id) => dispatch(actions.getCategoriesByType(id)),
-        // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
-        getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
-        getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),
-        getLimitProductsRedux: (category, page, accessToken) => dispatch(actions.getLimitProducts(category, page, accessToken)),
-        getLimitProductByOptionRedux: (optionData, page, option, accessToken, optionTypeName) => dispatch(actions.getLimitProductByOption(optionData, page, option, accessToken, optionTypeName)),
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId))
-    }
-}
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         getAllColorsRedux: (type) => dispatch(actions.getAllColors(type)),
+//         getCategoriesByTypeRedux: (id) => dispatch(actions.getCategoriesByType(id)),
+//         // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
+//         getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
+//         getProductByCategoryRedux: (category) => dispatch(actions.getProductByCategory(category)),
+//         getLimitProductsRedux: (category, page, accessToken) => dispatch(actions.getLimitProducts(category, page, accessToken)),
+//         getLimitProductByOptionRedux: (optionData, page, option, accessToken, optionTypeName) => dispatch(actions.getLimitProductByOption(optionData, page, option, accessToken, optionTypeName)),
+//         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
+//         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId))
+//     }
+// }
 
-export default memo(connect(mapStateToProps, mapDispatchToProps)(HatList));
+// export default memo(connect(mapStateToProps, mapDispatchToProps)(HatList));

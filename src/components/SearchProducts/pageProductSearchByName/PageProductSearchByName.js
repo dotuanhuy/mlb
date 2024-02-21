@@ -44,7 +44,7 @@ function PageProductSearchByName({
         if (body.current) {
             window.scrollTo({
                 behavior: "smooth",
-                top: body.current.offsetTop - 150
+                top: body.current.offsetTop - 100
             });
         }
     }, [params.get('page'), productName])

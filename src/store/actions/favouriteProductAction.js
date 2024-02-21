@@ -2,9 +2,21 @@ import actionTypes from "./actionTypes";
 import { 
     getAllProductsFavouriteService,
     getAllProductsFavouriteLimitService,
-    addProductFavouriteService
+    changeProductFavouriteService
 
 } from "../../services/favouriteProductService";
+
+export const refreshIStateFavouriteProduct = () => {
+    return (dispatch, getState) => {
+        try {
+            dispatch({
+                type: actionTypes.REFRESH_STORE_SUCCESS
+            })
+        } catch (e) {
+            console.log('refreshIStateFavouriteProduct error: ', e)
+        }
+    }
+}
 
 export const getAllProductsFavourite = (accessToken, userId) => {
     return async (dispatch, getState) => {
@@ -39,12 +51,10 @@ export const getAllProductsFavouriteLimit = (accessToken, userId, offset) => {
         try {
             let newOffset = +offset - 1
             let res = await getAllProductsFavouriteLimitService(accessToken, userId, newOffset)
-            console.log(res)
-            let data = []
-            // res.data.rows.map(item => {
-            //     data.push(item.Product)
-            // })
             if (res && res.errCode === 0) {
+                let data = res.data.rows.map(item => {
+                    return item.dataProductFavourite
+                })
                 dispatch({
                     type: actionTypes.GET_ALL_PRODUCTS_FAVOURITE_LIMIT_SUCCESS,
                     data,
@@ -65,15 +75,11 @@ export const getAllProductsFavouriteLimit = (accessToken, userId, offset) => {
     }
 }
 
-export const addProductFavourite = (accessToken, data, offset=null) => {
+export const changeProductFavourite = (accessToken, data, offset=null) => {
     return async (dispatch, getState) => {
         try {
-            let res = await addProductFavouriteService(accessToken, data)
+            let res = await changeProductFavouriteService(accessToken, data)
             if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.CREATE_PRODUCT_FAVOURITE_FAILED,
-                    data: res.data
-                })
                 // Nếu là xóa
                 if (res.status === 1 && offset) {
                     dispatch(getAllProductsFavouriteLimit(accessToken, data.userId, offset))
@@ -83,16 +89,8 @@ export const addProductFavourite = (accessToken, data, offset=null) => {
                     dispatch(getAllProductsFavourite(accessToken, data.userId))
                 }
             }
-            else {
-                dispatch({
-                    type: actionTypes.CREATE_PRODUCT_FAVOURITE_FAILED
-                })
-            }
         } catch (e) {
-            console.log('addProductFavourite error: ', e)
-            dispatch({
-                type: actionTypes.CREATE_PRODUCT_FAVOURITE_FAILED
-            })
+            console.log('changeProductFavourite error: ', e)
         }
     }
 }

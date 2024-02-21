@@ -17,7 +17,7 @@ function Action({
     isCart=true,
     size,
     accessToken,
-    addProductFavouriteRedux,
+    changeProductFavouriteRedux,
 }) {
     const location = useLocation().search
     const page = new URLSearchParams(location).get("page");
@@ -38,7 +38,7 @@ function Action({
             setIsSateFavourite(!isSateFavourite)
         }
         isSateFavourite ? toast.warn(CustomToast, { autoClose: 3000 }) : toast.info(CustomToast, { autoClose: 3000 }) 
-        addProductFavouriteRedux(accessToken, { productId, userId }, page)
+        changeProductFavouriteRedux(accessToken, { productId, userId }, page)
     }
     
 
@@ -88,7 +88,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addProductFavouriteRedux: (accessToken, data, page) => dispatch(actions.addProductFavourite(accessToken, data, page)),
+        changeProductFavouriteRedux: (accessToken, data, page) => dispatch(actions.changeProductFavourite(accessToken, data, page)),
     }
 }
 

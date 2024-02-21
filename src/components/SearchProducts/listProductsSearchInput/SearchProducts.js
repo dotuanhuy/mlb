@@ -34,7 +34,7 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
         <div className='search position-relative'>
             <FontAwesomeIcon className='icon-infor' icon={faMagnifyingGlass} />
             <div className='input-search rounded position-absolute bg-white'>
-                <form className='form-search' onSubmit={handleSearch}>
+                <form className='form-search position-relative' onSubmit={handleSearch}>
                     <input 
                         className='p-2'
                         placeholder='Tìm kiếm sản phẩm'
@@ -42,7 +42,7 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
                         value={productName}
                     />
                     <button 
-                        className='btn-search bg-transparent'
+                        className='btn-search bg-transparent position-absolute'
                         onClick={e => handleSearch(e)}
                         type='submit'
                     >

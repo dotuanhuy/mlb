@@ -4,7 +4,7 @@ import {
     getAllImagesByProductIdService,
     addImageProductService,
     deleteImageProductService,
-    getmageProductByCategoryService,
+    getImageProductByCategoryService,
 } from "../../services/imageService";
 
 export const refreshStoreImages = () => {
@@ -111,10 +111,10 @@ export const deleteImageProduct = (data, accessToken) => {
     }
 }
 
-export const getmageProductByCategory = (accessToken, category) => {
+export const getImageProductByCategory = (accessToken, category) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getmageProductByCategoryService(accessToken, category)
+            let res = await getImageProductByCategoryService(accessToken, category)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_IMAGES_PRODUCT_BY_CATEGORY_SUCCESS,
@@ -127,7 +127,7 @@ export const getmageProductByCategory = (accessToken, category) => {
                 })
             }
         } catch (e) {
-            console.log('getmageProductByCategory error: ', e)
+            console.log('getImageProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_IMAGES_PRODUCT_BY_CATEGORY_FAILED
             })

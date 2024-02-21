@@ -43,11 +43,13 @@ const productReducer = (state = initState, action) => {
             }
         case 'GET_ALL_PRODUCTS_PUBLIC_SUCCESS':
             state.products = action.data
+            state.isLoadingProduct = false
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_PUBLIC_FAILED':
             state.products = []
+            state.isLoadingProduct = true
             return {
                 ...state
             }

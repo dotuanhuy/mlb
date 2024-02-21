@@ -17,7 +17,7 @@ function HomePage({
     images,
     accessToken, 
     isLoading,
-    refreshStoreImagesRedux,
+    refreshIsloadingStateProductRedux,
     getAllProductPublicRedux, 
     getAllImagesProductRedux,
     getAllProductsFavouriteRedux, 
@@ -25,9 +25,9 @@ function HomePage({
 }) {
 
     useEffect(() => {
-        refreshStoreImagesRedux()
+        refreshIsloadingStateProductRedux()
         getAllProductPublicRedux(accessToken)
-        getAllImagesProductRedux(accessToken)
+        // getAllImagesProductRedux(accessToken)
         
         let userId = ''
         if (accessToken) {
@@ -83,14 +83,14 @@ function HomePage({
 const mapStateToProps = state => {
     return {
         accessToken: state.auth.token,
-        isLoading: state.image.isLoadingImage,
+        isLoading: state.product.isLoadingProduct,
         images: state.image.images
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshStoreImagesRedux: () => dispatch(actions.refreshStoreImages()),
+        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
         getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken)),
         getAllImagesProductRedux: (accessToken) => dispatch(actions.getAllImagesProduct(accessToken)),
         getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),

@@ -31,7 +31,7 @@ const deleteImageProductService = (data, accessToken) => {
     // return axios.post('/api/add-image-product', data)
 }
 
-const getmageProductByCategoryService = (accessToken, category) => {
+const getImageProductByCategoryService = (accessToken, category) => {
     if (accessToken) {
         const axiosJWT = createAxios(accessToken)
         return axiosJWT.get(`/api/get-image-product-by-category?category=${category}`, { headers: {token: `Bearer ${accessToken}`}})
@@ -44,5 +44,5 @@ export {
     getAllImagesByProductIdService,
     addImageProductService,
     deleteImageProductService,
-    getmageProductByCategoryService
+    getImageProductByCategoryService
 }

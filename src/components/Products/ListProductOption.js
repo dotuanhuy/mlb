@@ -47,7 +47,7 @@ function Shoes({
         refreshIsloadingStateProductRedux()
         getAllColorsRedux(accessToken)
         getAllLogosRedux(accessToken)
-        getImageProductByCategoryRedux(accessToken, categoryActive)
+        // getImageProductByCategoryRedux(accessToken, categoryActive)
 
         let userId = ''
         if (accessToken) {
@@ -210,7 +210,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getAllColorsRedux: (accessToken) => dispatch(actions.getAllColors(accessToken)),
         getAllLogosRedux: (accessToken) => dispatch(actions.getAllLogos(accessToken)),
-        getImageProductByCategoryRedux: (category, accessToken) => dispatch(actions.getmageProductByCategory(category, accessToken)),
+        getImageProductByCategoryRedux: (category, accessToken) => dispatch(actions.getImageProductByCategory(category, accessToken)),
         // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
         // getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
         getLimitProductsRedux: (category, page, accessToken) => dispatch(actions.getLimitProducts(category, page, accessToken)),
