@@ -49,11 +49,9 @@ function HomeFooter() {
                         <div className='suport general col-2'>
                             <p>HỖ TRỢ</p>
                             <div className='suport-menu general-menu row'>
-                                <a href='#' className='mb-3'>Tìm kiếm sản phẩm</a>
-                                <a href='#' className='mb-3'>Giỏ hàng</a>
+                                <Link to={`${path.SEARCH_PRODUCT}?pname=`} className='mb-3'>Tìm kiếm sản phẩm</Link>
+                                <Link to={path.CART} className='mb-3'>Giỏ hàng</Link>
                                 <a href='#' className='mb-3'>Kiểm tra tình trạng đơn hàng</a>
-                                <a href='#' className='mb-3'>Đăng ký tk</a>
-                                <a href='#' className='mb-3'>Đăng nhập tk</a>
                             </div>
                         </div>
                         <div className='policy general col-2'>
@@ -69,7 +67,7 @@ function HomeFooter() {
                             <div className='footer-right-box'>
                                 <div className='socail-footer'>
                                     <p>
-                                        <a href='#'>MLB VIỆT NAM </a>
+                                        <Link to={path.HOMEPAGE}>MLB VIỆT NAM </Link>
                                         HÂN HẠNH ĐƯỢC PHỤC VỤ
                                         <br></br>
                                         GOLDEN MANSION BUILDING

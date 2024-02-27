@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, createSearchParams, useLocation, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useLocation, useSearchParams } from 'react-router-dom';
 import { formatDateVN, path } from '../../../../utils'
 import * as actions from '../../../../store/actions'
 import { useNavigate } from 'react-router-dom';
@@ -8,13 +8,12 @@ import Loading from '../../../common/Loading/Loading'
 import Pagination from '../../../Paginations/Pagination';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { Modal } from 'react-bootstrap';
 import { Buffer } from 'buffer';
 
 function TableProductType({
     productTypes, 
-    accessToken, 
     isLoading, 
     refreshStoreProductTypeRedux, 
     getLimitProductTypesRedux,
@@ -30,15 +29,15 @@ function TableProductType({
 
     useEffect(() => {
         refreshStoreProductTypeRedux()
-        getLimitProductTypesRedux(accessToken, params?.get('page') ? params?.get('page') : 1)
+        getLimitProductTypesRedux(params?.get('page') ? params?.get('page') : 1)
     }, [])
 
     useEffect(() => {
-        getLimitProductTypesRedux(accessToken, params?.get('page') ? params?.get('page') : 1)
+        getLimitProductTypesRedux(params?.get('page') ? params?.get('page') : 1)
     }, [params?.get('page')])
 
     const handleDeleteProductType = (id) => {
-        deleteProductTypeRedux(accessToken, id, params.get('page') ? params.get('page') : 1)
+        deleteProductTypeRedux(id, params.get('page') ? params.get('page') : 1)
     }
 
     const handleEdit = (product) => {
@@ -49,8 +48,6 @@ function TableProductType({
             }
         )
     }
-
-    console.log(productTypes)
 
     return (
         <>
@@ -148,7 +145,6 @@ function TableProductType({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         productTypes: state.productType.productTypes,
         isLoading: state.productType.isLoading
     }
@@ -157,8 +153,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshStoreProductTypeRedux: () => dispatch(actions.refreshStoreProductType()),
-        getLimitProductTypesRedux: (accessToken, page) => dispatch(actions.getLimitProductTypes(accessToken, page)),
-        deleteProductTypeRedux: (accessToken, id, page) => dispatch(actions.deleteProductType(accessToken, id, page)),
+        getLimitProductTypesRedux: (page) => dispatch(actions.getLimitProductTypes(page)),
+        deleteProductTypeRedux: (id, page) => dispatch(actions.deleteProductType(id, page)),
     }
 }
 

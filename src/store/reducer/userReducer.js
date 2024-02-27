@@ -3,7 +3,12 @@ const initState = {
     provinces: [],
     roles: [],
     isLoadingUser: true,
-    count: 0
+    count: 0,
+    errMessage: '',
+    errCode: null,
+    otp: '',
+    isVerify: false,
+    email: ''
 }
 
 const userReducer = (state = initState, action) => {
@@ -14,6 +19,9 @@ const userReducer = (state = initState, action) => {
             state.roles = []
             state.isLoadingUser = true
             state.count = 0
+            state.errMessage = ''
+            state.errCode = null
+            state.otp = ''
             return {
                 ...state
             }
@@ -89,6 +97,36 @@ const userReducer = (state = initState, action) => {
             state.users = []
             state.count = 0
             state.isLoadingUser = true
+            return {
+                ...state
+            }
+        case 'REGISTER':
+            state.errMessage = action?.data?.errMessage
+            state.errCode = action?.data?.errCode
+            return {
+                ...state
+            }
+        case 'SEND_MAIL_SUCCESS': 
+            state.otp = action.data
+            return {
+                ...state
+            }
+        case 'SEND_MAIL_FAILED': 
+            state.otp = ''
+            state.errMessage = action?.data?.errMessage
+            state.errCode = action?.data?.errCode
+            return {
+                ...state
+            }
+        case 'VERIFY_OTP_SUCCESS':
+            state.isVerify = action.isVerify
+            state.email = action.data
+            return {
+                ...state
+            }
+        case 'VERIFY_OTP_FAILED':
+            state.isVerify = false
+            state.email = ''
             return {
                 ...state
             }

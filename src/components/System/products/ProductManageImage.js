@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate, createSearchParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { Buffer } from 'buffer';
 import CommonUtils from '../../../utils/CommonUtils';
-import Loading from '../../common/Loading/Loading';
-import Navbar from '../common/navbar/Navbar';
-import Sidebar from '../common/sidebars/Sidebar';
 import { Modal } from 'react-bootstrap';
 import { faImage, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,14 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function ProductManageImage({
     images,
-    accessToken,
     product,
     addImageProductRedux,
     changeImageProductByIdRedux,
     deleteImageProductRedux,
-    refreshIsLoadingImagesRedux
 }) {
-    const [params] = useSearchParams()
     const [show, setShow] = useState(false);
     const [imageMain, setImageMain] = useState('')
     const [listImageItems, setListImageItems] = useState([])
@@ -91,12 +85,12 @@ function ProductManageImage({
 
     const handleSaveImage = () => {
         if (isChangeImageMain) {
-            changeImageProductByIdRedux({ id: product?.id, image: imageMain }, accessToken)
+            changeImageProductByIdRedux({ id: product?.id, image: imageMain })
         }
         if (listImageItemDeleted.length > 0) {
-            deleteImageProductRedux({ listImagesDeleted: listImageItemDeleted, productId: product?.id }, accessToken)
+            deleteImageProductRedux({ listImagesDeleted: listImageItemDeleted, productId: product?.id })
         }
-        addImageProductRedux({ listImages: listImageItems, listImagesDeleted: listImageItemDeleted, productId: product.id }, accessToken)
+        addImageProductRedux({ listImages: listImageItems, listImagesDeleted: listImageItemDeleted, productId: product.id })
         setShow(false)
     }
 
@@ -209,7 +203,6 @@ function ProductManageImage({
 const mapStateToProps = state => {
     return {
         images: state.image.images,
-        accessToken: state.auth.token,
         isLoading: state.image.isLoadingImage,
         product: state.product.products
     }
@@ -217,10 +210,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshIsLoadingImagesRedux: () => dispatch(actions.refreshStoreImages()),
-        addImageProductRedux: (data, accessToken) => dispatch(actions.addImageProduct(data, accessToken)),
-        changeImageProductByIdRedux: (data, accessToken) => dispatch(actions.changeImageProductById(data, accessToken)),
-        deleteImageProductRedux: (data, accessToken) => dispatch(actions.deleteImageProduct(data, accessToken)),
+        addImageProductRedux: (data) => dispatch(actions.addImageProduct(data)),
+        changeImageProductByIdRedux: (data) => dispatch(actions.changeImageProductById(data)),
+        deleteImageProductRedux: (data) => dispatch(actions.deleteImageProduct(data)),
     }
 }
 

@@ -1,25 +1,24 @@
-import React, { useEffect, useState, memo, useCallback } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../HomePage/Navbar/Navbar';
 import './Login.scss'
 import { Link } from 'react-router-dom';
-import { socialLogin } from '../../utils/images';
-import { path, Role } from '../../utils'
+import { path,  } from '../../utils'
 import * as actions from '../../store/actions'
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import jwt_decode from "jwt-decode";
+import LoginOrther from '../common/loginOrthers/LoginOrther';
 
 const initState = {
     email: '',
     password: ''
 }
 
-function Login({user, isLogin, fetLoginRedux}) {
+function Login({titlePage, user, isLogin, fetLoginRedux}) {
     const [dataInput, setDataInput] = useState(initState)
     const navigate = useNavigate()
     
     useEffect(() => {
+            document.title = titlePage
         if(isLogin) {
             navigate(path.HOMEPAGE)
         }
@@ -70,7 +69,7 @@ function Login({user, isLogin, fetLoginRedux}) {
                             <div className='login-form-input'>
                                 <form className='p-4'>
                                     <div className="form-group pb-4">
-                                        <label className='label-input' htmlFor="exampleInputEmail1">EMAIL*</label>
+                                        <label className='label-input' htmlFor="exampleInputEmail1">EMAIL<span className='text-danger'>*</span></label>
                                         <input 
                                             type="email" 
                                             className="form-control" 
@@ -85,7 +84,7 @@ function Login({user, isLogin, fetLoginRedux}) {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label className='label-input' htmlFor="exampleInputPassword1">MẬT KHẨU*</label>
+                                        <label className='label-input' htmlFor="exampleInputPassword1">MẬT KHẨU<span className='text-danger'>*</span></label>
                                         <input 
                                             type="password" 
                                             className="form-control" 
@@ -119,14 +118,7 @@ function Login({user, isLogin, fetLoginRedux}) {
                                 <div className='line-break'>
                                     <span>hoặc đăng nhập qua</span>
                                 </div>
-                                <div className='social-login'>
-                                    <a href='#'>
-                                        <img src={socialLogin.fb}/>
-                                    </a>
-                                    <a href='#'>
-                                        <img src={socialLogin.gp}/>
-                                    </a>
-                                </div>
+                                <LoginOrther />
                             </div>
                         </div>
                     </div>

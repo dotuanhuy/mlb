@@ -1,78 +1,61 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
+const axiosJWT = createAxios()
 
 const refreshTokenService = () => {
     return axios.post('/api/refresh')
 }
 
-const handleLoginAPI = (email, password) => {
-    return axios.post('/api/login', { email, password })
+const handleCreateNewUer = (data) => {
+    return axiosJWT.post('/api/create-new-user', data)
 }
 
-const handleLogoutAPI = () => {
-    return axios.post('/api/logout')
-}
-
-const handleCreateNewUer = (data, accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/create-new-user', data, { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.post('/api/create-new-user', data)
-}
-
-const handleUpdateUser = (data, accessToken, page) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/update-user', data, { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.post('/api/update-user', data)
+const handleUpdateUser = (data) => {
+    return axiosJWT.post('/api/update-user', data)
 }   
 
-const getCountUsersService = (accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get('/api/get-count-users', { headers: {token: `Bearer ${accessToken}`}})
+const getCountUsersService = () => {
+    return axiosJWT.get('/api/get-count-users')
 }
 
-const getAllUsers = (accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get('/api/get-all-users', { headers: {token: `Bearer ${accessToken}`}})
+const getAllUsers = () => {
+    return axiosJWT.get('/api/get-all-users')
 }
 
-const getAllAddressService = (accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get('/api/get-all-address', { headers: {token: `Bearer ${accessToken}`}})
+const getAllAddressService = () => {
+    return axiosJWT.get('/api/get-all-address')
 }
 
-const getAllRolesService = (accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get('/api/get-all-roles', { headers: {token: `Bearer ${accessToken}`}})
+const getAllRolesService = () => {
+    return axiosJWT.get('/api/get-all-roles')
 }
  
-const handleDeleteUser = (id, accessToken, page) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/delete-user', {id}, { headers: {token: `Bearer ${accessToken}`}})
-    // return axios.post('/api/delete-user', {id})
+const handleDeleteUser = (id) => {
+    return axiosJWT.post('/api/delete-user', {id})
 }
 
-const getUserByIdService = (id, accessToken) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.get(`/api/get-user-by-id?id=${id}`, { headers: {token: `Bearer ${accessToken}`}})
+const getUserByIdService = (id) => {
+    return axiosJWT.get(`/api/get-user-by-id?id=${id}`)
 }
 
-const getLimitUserService = (page, accessToken) => {
-    const axiosJWT = createAxios(accessToken) 
-    return axiosJWT.get(`/api/get-limit-users?page=${page}`, { headers: {token: `Bearer ${accessToken}`}})
+const getLimitUserService = (page) => {
+    return axiosJWT.get(`/api/get-limit-users?page=${page}`)
 }
 
 const registerSevice = (data) => {
     return axios.post('/api/register', data)
 }
 
-const resetPasswordService = (data) => {
-    return axios.post('/api/reset-password', data)
+const sendMailService = (email) => {
+    return axios.post('/api/send-mail', { email })
+}
+
+const verifyOtpService = ({otp, email}) => {
+    return axios.post('/api/verifyotp', {otp, email})
 }
 
 export {
     refreshTokenService,
-    handleLoginAPI,
-    handleLogoutAPI,
     handleCreateNewUer,
     handleUpdateUser,
     getCountUsersService,
@@ -83,5 +66,6 @@ export {
     getUserByIdService,
     getLimitUserService,
     registerSevice,
-    resetPasswordService
+    sendMailService,
+    verifyOtpService
 }

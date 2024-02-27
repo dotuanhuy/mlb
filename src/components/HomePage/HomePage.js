@@ -12,31 +12,28 @@ import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
 import jwt_decode from 'jwt-decode';
 import Loading from '../common/Loading/Loading';
+import { useDispatch } from 'react-redux';
 
 function HomePage({ 
-    images,
-    accessToken, 
+    titlePage,
     isLoading,
     refreshIsloadingStateProductRedux,
     getAllProductPublicRedux, 
-    getAllImagesProductRedux,
-    getAllProductsFavouriteRedux, 
-    getProductsInCartByUserRedux
 }) {
-
+    const accessToken = window.localStorage.getItem('accessToken')
+    const dispatch = useDispatch()
+    
     useEffect(() => {
-        refreshIsloadingStateProductRedux()
-        getAllProductPublicRedux(accessToken)
-        // getAllImagesProductRedux(accessToken)
+        document.title = titlePage
+        // refreshIsloadingStateProductRedux()
+        // getAllProductPublicRedux(accessToken)
+        dispatch(actions.refreshIsloadingStateProduct())
+        dispatch(actions.getAllProductPublic())
         
         let userId = ''
         if (accessToken) {
             let tokenDecoded = jwt_decode(accessToken)
             userId = tokenDecoded?.id
-        }
-        if (userId) {
-            // getAllProductsFavouriteRedux(accessToken, userId)
-            // getProductsInCartByUserRedux(accessToken, userId)
         }
     }, [])
     
@@ -82,19 +79,14 @@ function HomePage({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct,
-        images: state.image.images
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        getAllProductPublicRedux: (accessToken) => dispatch(actions.getAllProductPublic(accessToken)),
-        getAllImagesProductRedux: (accessToken) => dispatch(actions.getAllImagesProduct(accessToken)),
-        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
-        getProductsInCartByUserRedux: (accessToken, userId) => dispatch(actions.getProductsInCartByUser(accessToken, userId))
+        getAllProductPublicRedux: () => dispatch(actions.getAllProductPublic()),
     }
 }
 

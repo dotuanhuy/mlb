@@ -9,7 +9,7 @@ import {Buffer} from 'buffer';
 import { formatVND, path, limit_list_search } from '../../../utils';
 import { Link, useNavigate } from 'react-router-dom';
 
-function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, refreshProductSearchRedux }) {
+function SearchProducts({ productSearch, searchProductByNameRedux, refreshProductSearchRedux }) {
     const [isOnchange, setIsOnchange] = useState(false)
     const [productName, setProductName] = useState('')
     const navigate = useNavigate()
@@ -26,7 +26,6 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
 
     const handleSearch = (e) => {
         e.preventDefault()
-        // searchProductByNameRedux(productName, 1)
         navigate(path.SEARCH_PRODUCT+`?pname=${productName}`)
     }
 
@@ -119,7 +118,6 @@ function SearchProducts({ accessToken, productSearch, searchProductByNameRedux, 
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         productSearch: state.product.productSearch
     }
 }

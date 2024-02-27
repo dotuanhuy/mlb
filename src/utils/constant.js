@@ -4,6 +4,7 @@ export const path = {
     LOG_OUT: '/logout',
     REGISTER: '/register',
     SYSTEM: '/system',
+    LOGIN_SUCCESS: '/login-success',
     
     MANAGE: '/system/manage',
     MANAGE_USER: '/system/manage/user',
@@ -72,9 +73,10 @@ export const path = {
     ACCOUNT_CHANGE_PASSWORD: '/account/changepassword',
 
     SEARCH_PRODUCT: '/search',
-    
     FAVOURITE: '/favorite',
     CART: '/cart',
+
+    TUTORIAL_SIZE: '/size-mlb',
 
     PRODUCT: '/product'
 }

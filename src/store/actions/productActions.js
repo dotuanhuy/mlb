@@ -19,8 +19,6 @@ import {
     searchProductByNameServiceLimit,
 
 } from "../../services/productService";
-// import { getAllCodeByType } from "../../services/userService";
-import { allCode } from "../../utils";
 
 export const refreshIsloadingStateProduct = () => {
     return async (dispatch, getSate) => {
@@ -52,10 +50,10 @@ export const refreshStoreProduct = () => {
     }
 }
 
-export const getAllProducts = (type, accessToken) => {
+export const getAllProducts = (type) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllProductsService(type, accessToken)
+            let res = await getAllProductsService(type)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_PRODUCTS_SUCCESS,
@@ -76,10 +74,10 @@ export const getAllProducts = (type, accessToken) => {
     }
 }
 
-export const getAllProductPublic = (accessToken) => {
+export const getAllProductPublic = () => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllProductPublicService(accessToken)
+            let res = await getAllProductPublicService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_PRODUCTS_PUBLIC_SUCCESS,
@@ -101,10 +99,10 @@ export const getAllProductPublic = (accessToken) => {
 }
 
 //*
-export const getQuantityOfEechProductByCategory = (accessToken) => {
+export const getQuantityOfEechProductByCategory = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getQuantityOfEachProductByCategoryService(accessToken)
+            let res = await getQuantityOfEachProductByCategoryService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_SUCCESS,
@@ -126,10 +124,10 @@ export const getQuantityOfEechProductByCategory = (accessToken) => {
 }
 
 //*
-export const createNewProduct = (product, type, accessToken, page) => {
+export const createNewProduct = (product, type, page) => {
     return async (dispatch, getState) => {
         try {
-            let res = await createNewProductService(product, accessToken)
+            let res = await createNewProductService(product)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_NEW_PRODUCT_SUCCESS
@@ -156,10 +154,10 @@ export const createNewProduct = (product, type, accessToken, page) => {
     }
 }
 
-export const deleteProduct = (id, type, accessToken, page) => {
+export const deleteProduct = (id, type, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await deleteProductService(id, accessToken)
+            let res = await deleteProductService(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.DELETE_PRODUCT_SUCCESS
@@ -180,10 +178,10 @@ export const deleteProduct = (id, type, accessToken, page) => {
     }
 }
 
-export const getProductById = (id, accessToken) => {
+export const getProductById = (id) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getProductByIdService(id, accessToken) 
+            let res = await getProductByIdService(id) 
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_PRODUCT_BY_ID_SUCCESS,
@@ -204,10 +202,10 @@ export const getProductById = (id, accessToken) => {
     }
 }
 
-export const updateProduct = (data, type, accessToken, page) => {
+export const updateProduct = (data, type, page) => {
     return async (dispatch, getState) => {
         try {
-            let res = await updateProductService(data, accessToken)
+            let res = await updateProductService(data)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.EDIT_PRODUCT_SUCCESS
@@ -229,10 +227,10 @@ export const updateProduct = (data, type, accessToken, page) => {
     }
 }
 
-export const getCountProducts = (accessToken) => {
+export const getCountProducts = () => {
     return async (dispatch, getState) => {
         try {
-            let res = await getCountProductsService(accessToken)
+            let res = await getCountProductsService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_COUNT_PRODUCTS_SUCCESS,
@@ -253,12 +251,12 @@ export const getCountProducts = (accessToken) => {
     }
 }
 
-export const changeImageProductById = (data, accessToken) => {
+export const changeImageProductById = (data) => {
     return async (dispatch, getState) => {
         try {
-            let res = await changeImageProductByIdService(data, accessToken)
+            let res = await changeImageProductByIdService(data)
             if (res && res.errCode === 0) {
-                dispatch(getProductById(data.id, accessToken))
+                dispatch(getProductById(data.id))
             }
         } catch (e) {
             console.log('deleteImageProduct error: ', e)
@@ -266,10 +264,10 @@ export const changeImageProductById = (data, accessToken) => {
     }
 }
 
-export const fetchDescriptionProduct = (productId, accessToken) => {
+export const fetchDescriptionProduct = (productId) => {
     return async (dispatch, getState) => {
         try {
-            let res = await fetchDescriptionProductService(productId, accessToken) 
+            let res = await fetchDescriptionProductService(productId) 
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_DESCRIPTION_PRODUCT_SUCCESS,
@@ -290,15 +288,15 @@ export const fetchDescriptionProduct = (productId, accessToken) => {
     }
 }
 
-export const addDescriptionProduct = (data, accessToken) => {
+export const addDescriptionProduct = (data) => {
     return async (dispatch, getState) => {
         try {
-            let res = await addDescriptionProductService(data, accessToken) 
+            let res = await addDescriptionProductService(data) 
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.ADD_DESCRIPTION_PRODUCT_SUCCESS
                 })
-                dispatch(fetchDescriptionProduct(data.productId, accessToken))
+                dispatch(fetchDescriptionProduct(data.productId))
             }
             else {
                 dispatch({
@@ -363,11 +361,11 @@ export const getProductByCategoryLimit = (type, offset) => {
     }
 }
 
-export const getLimitProducts = (categore, page, accessToken) => {
+export const getLimitProducts = (categore, page) => {
     return async (dispatch, getState) => {
         try {
             const newPage = +page - 1 
-            let res = await getLimitProductService(categore, newPage, accessToken)
+            let res = await getLimitProductService(categore, newPage)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_LIMIT_PRODUCTS_SUCCESS,
@@ -388,11 +386,11 @@ export const getLimitProducts = (categore, page, accessToken) => {
     }
 }
 
-export const getLimitProductByOption = (optionData, page, option, accessToken) => {
+export const getLimitProductByOption = (optionData, page, option) => {
     return async (dispatch, getState) => {
         try {
             const newPage = +page - 1 
-            let res = await getLimitProductByOptionSortService(optionData, newPage, option, accessToken)
+            let res = await getLimitProductByOptionSortService(optionData, newPage, option)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_SUCCESS,
@@ -453,11 +451,11 @@ export const refreshProductSearch = () => {
     }
 }
 
-export const searchProductByNameLimit = (productName, offset, accessToken) => {
+export const searchProductByNameLimit = (productName, offset) => {
     return async (dispatch, getState) => {
         try {
             let newOffset = +offset - 1
-            let res = await searchProductByNameServiceLimit(productName, newOffset, accessToken)
+            let res = await searchProductByNameServiceLimit(productName, newOffset)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.SEARCH_PRODUCT_BY_NAME_LIMIT_SUCCESS,

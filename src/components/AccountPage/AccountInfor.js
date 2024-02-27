@@ -1,13 +1,11 @@
 import React, { useEffect, useState, memo, useRef } from 'react';
 import { connect } from 'react-redux';
 import './Account.scss'
-import { Link } from 'react-router-dom';
 import Navbar from '../HomePage/Navbar/Navbar';
 import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 import jwt_decode from 'jwt-decode';
 import Account from './Account';
 import Banner from '../common/Banners/Banner';
-import * as actions from  '../../store/actions'
 
 const initState = {
     firstName: '',
@@ -15,12 +13,14 @@ const initState = {
     email: ''
 }
 
-function AccountInfor({token, getAllProductsFavouriteRedux}) {
+function AccountInfor({titlePage}) {
     const [userLogin, setUserLogin] = useState(initState)
-    const body  = useRef()
+    const body = useRef()
     const initialRender  = useRef(true)
 
     useEffect(() => {
+        document.title = titlePage
+        const token = window.localStorage.getItem('accessToken')
         if (token) {
             let tokenDecoded = jwt_decode(token)
             setUserLogin({
@@ -29,15 +29,6 @@ function AccountInfor({token, getAllProductsFavouriteRedux}) {
                 email: tokenDecoded?.email
             })
         }
-
-        let userId = ''
-        if (token) {
-            let tokenDecoded = jwt_decode(token)
-            userId = tokenDecoded?.id
-        }
-        // if (userId) {
-        //     getAllProductsFavouriteRedux(token, userId)
-        // }
     }, [])
 
     useEffect(() => {
@@ -92,13 +83,11 @@ function AccountInfor({token, getAllProductsFavouriteRedux}) {
 
 const mapStateToProps = state => {
     return {
-        token: state.auth.token,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllProductsFavouriteRedux: (token, userId) => dispatch(actions.getAllProductsFavourite(token, userId)),
     }
 }
 

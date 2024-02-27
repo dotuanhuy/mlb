@@ -2,7 +2,6 @@ import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import {  faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link, useLocation } from 'react-router-dom';
 import './Toast.scss';
@@ -16,13 +15,13 @@ function Action({
     isFavourite,
     isCart=true,
     size,
-    accessToken,
     changeProductFavouriteRedux,
 }) {
     const location = useLocation().search
     const page = new URLSearchParams(location).get("page");
     const [isSateFavourite, setIsSateFavourite] = useState(false)
     const [userId, setUserId] = useState('')
+    const accessToken = window.localStorage.getItem('accessToken')
     
     useEffect(() => {
         if (accessToken) {
@@ -38,7 +37,7 @@ function Action({
             setIsSateFavourite(!isSateFavourite)
         }
         isSateFavourite ? toast.warn(CustomToast, { autoClose: 3000 }) : toast.info(CustomToast, { autoClose: 3000 }) 
-        changeProductFavouriteRedux(accessToken, { productId, userId }, page)
+        changeProductFavouriteRedux({ productId, userId }, page)
     }
     
 
@@ -82,13 +81,12 @@ function Action({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeProductFavouriteRedux: (accessToken, data, page) => dispatch(actions.changeProductFavourite(accessToken, data, page)),
+        changeProductFavouriteRedux: (data, page) => dispatch(actions.changeProductFavourite(data, page)),
     }
 }
 

@@ -13,7 +13,6 @@ import { typeStep } from '../../utils';
 import { Modal } from 'react-bootstrap';
 
 function ListCarts({ 
-    accessToken,
     productsCart, 
     totalMoney, 
     countProducts,
@@ -26,6 +25,7 @@ function ListCarts({
 
     const handleClose = () => setShow({});
     const handleShow = (id) => setShow({id})
+    const accessToken = window.localStorage.getItem('accessToken')
 
     useEffect(() => {
         if (accessToken) {
@@ -36,20 +36,20 @@ function ListCarts({
     
     useEffect(() => {
         if (userId) {
-            getProductsInCartByUserRedux(accessToken, userId)
+            getProductsInCartByUserRedux(userId)
         }
     }, [userId])
 
     const handleStepDown = (productId, size, cartId, down) => {
-        deleteAProductInCartRedux(accessToken, { productId, cartId, userId, size, typeStep: down })
+        deleteAProductInCartRedux({ productId, cartId, userId, size, typeStep: down })
     }
 
     const handleStepUp = (productId, size, cartId, up) => {
-        deleteAProductInCartRedux(accessToken, { productId, cartId, userId, size, typeStep: up })
+        deleteAProductInCartRedux({ productId, cartId, userId, size, typeStep: up })
     }
     
     const handleDeleteProductCart = (productId, size, cartId) => {
-        deleteProductInCartRedux(accessToken, { productId, userId, cartId, size })
+        deleteProductInCartRedux({ productId, userId, cartId, size })
     }
 
     const handleOnchangeQuantity = e => {
@@ -228,7 +228,6 @@ function ListCarts({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         productsCart: state.cart.products,
         countProducts: state.cart.countProducts,
         totalMoney: state.cart.totalMoney
@@ -237,9 +236,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getProductsInCartByUserRedux: (accessToken, userId) => dispatch(actions.getProductsInCartByUser(accessToken, userId)),
-        deleteProductInCartRedux: (accessToken, data) => dispatch(actions.deleteProductInCart(accessToken, data)),
-        deleteAProductInCartRedux: (accessToken, data) => dispatch(actions.deleteAProductInCart(accessToken, data))
+        getProductsInCartByUserRedux: (userId) => dispatch(actions.getProductsInCartByUser(userId)),
+        deleteProductInCartRedux: (data) => dispatch(actions.deleteProductInCart(data)),
+        deleteAProductInCartRedux: (data) => dispatch(actions.deleteAProductInCart(data))
     }
 }
 

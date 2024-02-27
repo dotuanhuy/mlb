@@ -20,10 +20,11 @@ import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 import jwt_decode from 'jwt-decode';
 
 function Shoes({
+    productType,
     type,
     categoryActive,
+    titlePage,
     categories, 
-    accessToken, 
     images,
     products,
     isLoading,
@@ -32,8 +33,8 @@ function Shoes({
     getImageProductByCategoryRedux,
     getLimitProductByOptionRedux,
     refreshIsloadingStateProductRedux,
-    getAllProductsFavouriteRedux
 }) {
+    const accessToken = window.localStorage.getItem('accessToken')
     const [optionSort, setOptionSort] = useState('default')
     const [optionType, setOptionType] = useState([])
     const [optionColor, setOptionColor] = useState([])
@@ -41,22 +42,12 @@ function Shoes({
     const [params] = useSearchParams()
     const listRef = useRef()
     const initialRender = useRef(true)
-    const { state } = useLocation();
+    const { state, pathname } = useLocation();
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        getAllColorsRedux(accessToken)
-        getAllLogosRedux(accessToken)
-        // getImageProductByCategoryRedux(accessToken, categoryActive)
-
-        let userId = ''
-        if (accessToken) {
-            let tokenDecoded = jwt_decode(accessToken)
-            userId = tokenDecoded?.id
-        }
-        if (userId) {
-            // getAllProductsFavouriteRedux(accessToken, userId)
-        }
+        getAllColorsRedux()
+        getAllLogosRedux()
     }, [])
 
     useEffect(() => {
@@ -72,20 +63,21 @@ function Shoes({
             }
         }
     }, [listRef.current])
-
+    
     useEffect(() => {
+        document.title = titlePage
         const data = {
             optionType: optionType?.toString(',').length === 0 ? categoryActive : optionType?.toString(','),
             colors: optionColor?.toString(','),
             logos: optionLogo?.toString(','),
-            typeName: state?.id ? state?.id : ''
+            // typeName: state?.id ? state?.id : '',
+            typeName: productType
         }
 
         getLimitProductByOptionRedux(
             data, 
             params.get('page') ? params.get('page') : 1, 
             optionSort, 
-            accessToken,
         )
         if (listRef.current) {
             window.scrollTo({
@@ -101,19 +93,19 @@ function Shoes({
         setOptionColor([])
         setOptionLogo([])
         refreshIsloadingStateProductRedux()
-        getImageProductByCategoryRedux(accessToken, categoryActive)
+        getImageProductByCategoryRedux(categoryActive)
         const data = {
             optionType: optionType?.toString(',').length === 0 ? categoryActive : optionType?.toString(','),
             colors: optionColor?.toString(','),
             logos: optionLogo?.toString(','),
-            typeName: state?.id ? state?.id : ''
+            // typeName: state?.id ? state?.id : ''
+            typeName: productType
         }
 
         getLimitProductByOptionRedux(
             data, 
             params.get('page') ? params.get('page') : 1, 
             optionSort, 
-            accessToken,
         )
     }, [categoryActive])
 
@@ -198,7 +190,6 @@ function Shoes({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         categories: state.category.categoryType,
         images: state.image.images,
         products: state.product.products,
@@ -208,15 +199,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllColorsRedux: (accessToken) => dispatch(actions.getAllColors(accessToken)),
-        getAllLogosRedux: (accessToken) => dispatch(actions.getAllLogos(accessToken)),
-        getImageProductByCategoryRedux: (category, accessToken) => dispatch(actions.getImageProductByCategory(category, accessToken)),
-        // fetchAllCodeByTypeRedux: (type) => dispatch(actions.fetchAllCodeByTypeProduct(type)),
-        // getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
-        getLimitProductsRedux: (category, page, accessToken) => dispatch(actions.getLimitProducts(category, page, accessToken)),
-        getLimitProductByOptionRedux: (optionData, page, option, accessToken, optionTypeName) => dispatch(actions.getLimitProductByOption(optionData, page, option, accessToken, optionTypeName)),
+        getAllColorsRedux: () => dispatch(actions.getAllColors()),
+        getAllLogosRedux: () => dispatch(actions.getAllLogos()),
+        getImageProductByCategoryRedux: (category) => dispatch(actions.getImageProductByCategory(category)),
+        getLimitProductByOptionRedux: (optionData, page, option, optionTypeName) => dispatch(actions.getLimitProductByOption(optionData, page, option, optionTypeName)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
     }
 }
 

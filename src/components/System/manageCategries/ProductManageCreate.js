@@ -2,24 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
-import TableUser from '../common/tableUsers/TableUser';
 import { useSearchParams } from 'react-router-dom';
-import { BuildOptionSelectType, path } from '../../../utils';
-import { validate, validateSelect } from '../../../validate/valiedate';
-import Sidebar from '../common/sidebars/Sidebar';
-import Navbar from '../common/navbar/Navbar';
-import { BuildOptionSelectSame, BuildOptionSelect } from '../../../utils';
+import { BuildOptionSelect } from '../../../utils';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CommonUtils from '../../../utils/CommonUtils';
 
 function ProductManageCreate({
-    accessToken,
     categories,
     getAllCategoriesRedux,
     createProductTypeRedux
 }) {
+    const accessToken = window.localStorage.getItem('accessToken')
     const [show, setShow] = useState(false)
     const [name, setName] = useState('')
     const [selectType, setSelectType] = useState([])
@@ -29,7 +24,7 @@ function ProductManageCreate({
 
     
     useEffect(() => {
-        getAllCategoriesRedux(accessToken)
+        getAllCategoriesRedux()
     }, [])
 
     useEffect(() => {
@@ -66,7 +61,7 @@ function ProductManageCreate({
             categoryId: +dataSelect?.value,
             imageRoot: selectImage
         }
-        createProductTypeRedux(accessToken, data, params.get('page') ? params.get('page') : 1)
+        createProductTypeRedux(data, params.get('page') ? params.get('page') : 1)
         handleClose()
     }
 
@@ -80,7 +75,6 @@ function ProductManageCreate({
         <>
             <button
                 className='btn btn-root fw-500 me-2'
-                // variant="primary"
                 onClick={handleShow}
             >
                 <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
@@ -162,15 +156,14 @@ function ProductManageCreate({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         categories: state.category.categories,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
-        createProductTypeRedux: (accessToken, data, page) => dispatch(actions.createProductType(accessToken, data, page))
+        getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
+        createProductTypeRedux: (data, page) => dispatch(actions.createProductType(data, page))
     }
 }
 

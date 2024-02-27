@@ -2,7 +2,7 @@ const initState = {
     countProducts: 0,
     products: [],
     totalMoney: 0,
-    
+    isLoading: true
 }
 
 const cartReducer = (state=initState, action) => {
@@ -11,6 +11,7 @@ const cartReducer = (state=initState, action) => {
             state.countProducts = 0
             state.products = []
             state.totalMoney = 0
+            state.isLoading = true
             return {
                 ...state
             }
@@ -18,12 +19,14 @@ const cartReducer = (state=initState, action) => {
             state.products = action?.data
             state.countProducts = action?.count
             state.totalMoney = action?.totalMoney
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTs_IN_CART_BY_USER_FAILED':
             state.products = []
             state.countProducts = 0
+            state.isLoading = true
             return {
                 ...state
             }

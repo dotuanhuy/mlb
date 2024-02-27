@@ -18,10 +18,10 @@ export const refreshIStateFavouriteProduct = () => {
     }
 }
 
-export const getAllProductsFavourite = (accessToken, userId) => {
+export const getAllProductsFavourite = (userId) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllProductsFavouriteService(accessToken, userId)
+            let res = await getAllProductsFavouriteService(userId)
             // let data = []
             // res?.data?.map(item => {
             //     data?.push(item.productFavourites)
@@ -46,11 +46,11 @@ export const getAllProductsFavourite = (accessToken, userId) => {
     }
 }
 
-export const getAllProductsFavouriteLimit = (accessToken, userId, offset) => {
+export const getAllProductsFavouriteLimit = (userId, offset) => {
     return async (dispatch, getState) => {
         try {
             let newOffset = +offset - 1
-            let res = await getAllProductsFavouriteLimitService(accessToken, userId, newOffset)
+            let res = await getAllProductsFavouriteLimitService(userId, newOffset)
             if (res && res.errCode === 0) {
                 let data = res.data.rows.map(item => {
                     return item.dataProductFavourite
@@ -75,18 +75,18 @@ export const getAllProductsFavouriteLimit = (accessToken, userId, offset) => {
     }
 }
 
-export const changeProductFavourite = (accessToken, data, offset=null) => {
+export const changeProductFavourite = (data, offset=null) => {
     return async (dispatch, getState) => {
         try {
-            let res = await changeProductFavouriteService(accessToken, data)
+            let res = await changeProductFavouriteService(data)
             if (res && res.errCode === 0) {
                 // Nếu là xóa
                 if (res.status === 1 && offset) {
-                    dispatch(getAllProductsFavouriteLimit(accessToken, data.userId, offset))
-                    dispatch(getAllProductsFavourite(accessToken, data.userId))
+                    dispatch(getAllProductsFavouriteLimit(data.userId, offset))
+                    dispatch(getAllProductsFavourite(data.userId))
                 }
                 else {
-                    dispatch(getAllProductsFavourite(accessToken, data.userId))
+                    dispatch(getAllProductsFavourite(data.userId))
                 }
             }
         } catch (e) {

@@ -24,10 +24,10 @@ export const refreshStoreProductType= () => {
     }
 }
 
-export const getAllProductTypes = (accessToken) => {
+export const getAllProductTypes = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllProductTypesService(accessToken)
+            let res = await getAllProductTypesService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_PRODUCT_TYPES_SUCCESS,
@@ -48,10 +48,10 @@ export const getAllProductTypes = (accessToken) => {
     }
 }
 
-export const getLimitProductTypes = (accessToken, page) => {
+export const getLimitProductTypes = (page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getLimitProductTypesService(accessToken, +page-1)
+            let res = await getLimitProductTypesService(+page-1)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_LIMIT_PRODUCT_TYPES_SUCCESS,
@@ -72,10 +72,10 @@ export const getLimitProductTypes = (accessToken, page) => {
     }
 }
 
-export const getProductTypeByCategoryId = (accessToken, categoryId) => {
+export const getProductTypeByCategoryId = (categoryId) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getProductTypeByCategoryIdService(accessToken, categoryId)
+            let res = await getProductTypeByCategoryIdService(categoryId)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_PRODUCT_TYPES_BY_CATEGORYID_SUCCESS,
@@ -96,10 +96,10 @@ export const getProductTypeByCategoryId = (accessToken, categoryId) => {
     }
 }
 
-export const getProductTypeById = (accessToken, id) => {
+export const getProductTypeById = (id) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getProductTypeByIdService(accessToken, id)
+            let res = await getProductTypeByIdService(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_PRODUCT_TYPES_BY_ID_SUCCESS,
@@ -120,12 +120,12 @@ export const getProductTypeById = (accessToken, id) => {
     }
 }
 
-export const createProductType = (accessToken, data, page) => {
+export const createProductType = (data, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await createProductTypeService(accessToken, data)
+            let res = await createProductTypeService(data)
             if (res && res.errCode === 0) {
-                dispatch(getLimitProductTypes(accessToken, page))
+                dispatch(getLimitProductTypes(page))
             }
         } catch (e) {
             console.log('createProductType error: ', e)
@@ -133,12 +133,12 @@ export const createProductType = (accessToken, data, page) => {
     }
 }
 
-export const deleteProductType = (accessToken, id, page) => {
+export const deleteProductType = (id, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await deleteProductTypeService(accessToken, id)
+            let res = await deleteProductTypeService(id)
             if (res && res.errCode === 0) {
-                dispatch(getLimitProductTypes(accessToken, page))
+                dispatch(getLimitProductTypes(page))
             }
         } catch (e) {
             console.log('deleteProductType error: ', e)
@@ -146,12 +146,12 @@ export const deleteProductType = (accessToken, id, page) => {
     }
 }
 
-export const updateProductType = (accessToken, data, page) => {
+export const updateProductType = (data, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await updateProductTypeService(accessToken, data)
+            let res = await updateProductTypeService(data)
             if (res && res.errCode === 0) {
-                dispatch(getLimitProductTypes(accessToken, page))
+                dispatch(getLimitProductTypes(page))
             }
         } catch (e) {
             console.log('updateProductType error: ', e)

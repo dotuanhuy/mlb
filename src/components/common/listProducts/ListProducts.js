@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions'
 import { formatVND } from "../../../utils";
 import {Buffer} from 'buffer';
 import Toast from "../Actions/Toast";
@@ -9,7 +8,7 @@ import { Link } from "react-router-dom";
 import { path } from "../../../utils";
 
 
-function ListProducts({accessToken, products, images, col='col-4', productFavourites}) {
+function ListProducts({ products, images, col='col-4', productFavourites}) {
 
     return (
         <>
@@ -132,7 +131,6 @@ function ListProducts({accessToken, products, images, col='col-4', productFavour
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         // productFavourites: state.product.productFavourtie,
         productFavourites: state.fouriteProduct.product,
         images: state.image.images

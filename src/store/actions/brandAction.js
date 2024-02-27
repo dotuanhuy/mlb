@@ -18,10 +18,10 @@ export const refreshStoreBrands = () => {
     }
 }
 
-export const getAllBrands  = (accessToken) => {
+export const getAllBrands  = () => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllBrandsService(accessToken)
+            let res = await getAllBrandsService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_BRANDS_SUCCESS,

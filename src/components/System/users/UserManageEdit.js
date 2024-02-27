@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
-import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { path, Role } from '../../../utils';
+import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { path } from '../../../utils';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
 import { BuildOptionSelectSame, BuildOptionSelect } from '../../../utils';
 
 function UserManageEdit({
-    accessToken, 
     users, 
     provinces, 
     roles, 
@@ -22,7 +21,6 @@ function UserManageEdit({
     getAllRolesRedux,
     updateUserRedux
 }) {
-    const { state } = useLocation()
     const [dataInput, setDataInput] = useState([])
     const [selectProvine, setSelectProvince] = useState({})
     const [selectGender, setSelectGender] = useState({})
@@ -36,9 +34,9 @@ function UserManageEdit({
     // ComponentDidMount
     useEffect(() => {
         refreshIsloadingStateRedux()
-        getAllAddressRedux(accessToken)
-        getAllRolesRedux(accessToken)
-        getUserByIdRedux(params.get('id'), accessToken)
+        getAllAddressRedux()
+        getAllRolesRedux()
+        getUserByIdRedux(params.get('id'))
     }, [])
 
     // ComponentDidUpdate
@@ -102,7 +100,7 @@ function UserManageEdit({
             avatar: ''
         }
         if (params.get('page')) {
-            updateUserRedux(newUser, accessToken, params.get('page'))
+            updateUserRedux(newUser, params.get('page'))
             navigate(
                 {
                     pathname: path.MANAGE_USER, 
@@ -111,7 +109,7 @@ function UserManageEdit({
             )
         }
         else {
-            updateUserRedux(newUser, accessToken)
+            updateUserRedux(newUser)
             navigate({
                 pathname: path.MANAGE_USER_DETAIL,
                 search: createSearchParams({ id: users?.id }).toString()
@@ -250,7 +248,6 @@ function UserManageEdit({
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        accessToken: state.auth.token,
         users: state.user.users,
         provinces: state.user.provinces,
         roles: state.user.roles,
@@ -260,10 +257,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllAddressRedux: (accessToken) => dispatch(actions.getAllAddress(accessToken)),
+        getAllAddressRedux: () => dispatch(actions.getAllAddress()),
         getAllRolesRedux: (accessToken) => dispatch(actions.getAllRoles(accessToken)),
-        updateUserRedux: (data, accessToken, page) =>  dispatch(actions.updateUser(data, accessToken, page)),
-        getUserByIdRedux: (id, accessToken) => dispatch(actions.getUserById(id, accessToken)),
+        updateUserRedux: (data, page) =>  dispatch(actions.updateUser(data, page)),
+        getUserByIdRedux: (id) => dispatch(actions.getUserById(id)),
         refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState())
     }
 }

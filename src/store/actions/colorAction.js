@@ -18,10 +18,10 @@ export const refreshStoreColors = () => {
     }
 }
 
-export const getAllColors  = (accessToken) => {
+export const getAllColors  = () => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllColorsService(accessToken)
+            let res = await getAllColorsService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_COLORS_SUCCESS,

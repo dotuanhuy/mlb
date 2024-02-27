@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
-import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { path } from '../../../utils';
 import avatart_male_none from '../../../assets/avatar/avatar_male_none.jpg'
 import * as actions from '../../../store/actions'
@@ -14,7 +14,6 @@ import { faBackward, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 
 function UserManageDetail({
-    accessToken,
     isLoading,
     user,
     getUserByIdRedux
@@ -23,7 +22,7 @@ function UserManageDetail({
     const [params] = useSearchParams()
 
     useEffect(() => {
-        getUserByIdRedux(params.get('id'), accessToken)
+        getUserByIdRedux(params.get('id'))
     }, [])
     
     const handleEdit = (user) => {
@@ -115,7 +114,6 @@ function UserManageDetail({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         isLoading: state.user.isLoadingUser,
         user: state.user.users
     }
@@ -123,7 +121,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getUserByIdRedux: (id, accessToken) => dispatch(actions.getUserById(id, accessToken))
+        getUserByIdRedux: (id) => dispatch(actions.getUserById(id))
     }
 }
 

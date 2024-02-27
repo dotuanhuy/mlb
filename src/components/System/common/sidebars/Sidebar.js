@@ -1,27 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './Sidebar.css'
-import { faCaretDown, faCartShopping, faChartSimple, faHouse, faLayerGroup, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCartShopping, faChartSimple, faDatabase, faHouse, faLayerGroup, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { Active, categorieType, path } from '../../../../utils';
+import { Active, path } from '../../../../utils';
 
-const initActive = {
-    dashboard: false,
-    report: false,
-    product: false,
-    customer: false,
-    user: false
-}
 
 function Sidebar({active='dashboard', activeChild = ''}) {
-    // const [active, setActive] = useState({
-    //     dashboard: true,
-    //     report: false,
-    //     product: false,
-    //     customer: false,
-    //     user: false
-    // })
     const [state ,setState] = useState(false)
     const handleClickCategories = () => {
         setState(!state)
@@ -58,6 +44,17 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         >
                             <FontAwesomeIcon className='pe-2' icon={faChartSimple} />
                             Report
+                        </a>
+                    </li>
+                    <li 
+                        class="nav-item"
+                    >   
+                        <a 
+                            className={active === 'firebase' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
+                            href="#"
+                        >
+                            <FontAwesomeIcon className='pe-2' icon={faDatabase} />
+                            Firebase
                         </a>
                     </li>
                     <li 

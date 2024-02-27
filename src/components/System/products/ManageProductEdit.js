@@ -33,7 +33,6 @@ const initStateImage = {
 function ManageShoesEdit({
     categoryType,
     actives,
-    accessToken,
     products,
     categoriesDetail, 
     discounts, 
@@ -79,14 +78,14 @@ function ManageShoesEdit({
     // ComponentDidMount
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        getAllCategoriesDetailByTypeRedux(accessToken, categoryType)
-        getAllDiscountsRedux(accessToken)
-        getAllBrandsRedux(accessToken)
-        getAllSizesByTypeRedux(accessToken, categoryType)
-        getAllColorsRedux(accessToken)
-        getAllLogosRedux(accessToken)
-        getProductTypeByCategoryIdRedux(accessToken, categoryType)
-        getProductByIdRedux(params.get('id'), accessToken)
+        getAllCategoriesDetailByTypeRedux()
+        getAllDiscountsRedux()
+        getAllBrandsRedux()
+        getAllSizesByTypeRedux(categoryType)
+        getAllColorsRedux()
+        getAllLogosRedux()
+        getProductTypeByCategoryIdRedux(categoryType)
+        getProductByIdRedux(params.get('id'))
     }, [])
 
     useEffect(() => {
@@ -300,7 +299,7 @@ function ManageShoesEdit({
             listColorsDeleted,
             listColorsAdded
         }
-        updateProductRedux(product, categoryType, accessToken, params.get('page'))
+        updateProductRedux(product, categoryType, params.get('page'))
         navigate({
             pathname: actives.pathToHome,
             search: createSearchParams({
@@ -595,7 +594,6 @@ function ManageShoesEdit({
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        accessToken: state.auth.token,
         products: state.product.products,
         categoriesDetail: state.category.categoriesDetail,
         discounts: state.discount.discounts,
@@ -610,15 +608,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesDetailByTypeRedux: (accessToken, categoryType) => dispatch(actions.getAllCategoriesDetailByType(accessToken, categoryType)),
-        getAllDiscountsRedux: (accessToken) => dispatch(actions.getAllDiscounts(accessToken)),
-        getAllBrandsRedux: (accessToken) => dispatch(actions.getAllBrands(accessToken)),
-        getAllSizesByTypeRedux: (accessToken, type) => dispatch(actions.getAllSizesByType(accessToken, type)),
-        getAllColorsRedux: (accessToken) => dispatch(actions.getAllColors(accessToken)),
-        getAllLogosRedux: (accessToken) => dispatch(actions.getAllLogos(accessToken)),
-        getProductTypeByCategoryIdRedux: (accessToken, categoryId) => dispatch(actions.getProductTypeByCategoryId(accessToken, categoryId)),
-        getProductByIdRedux: (id, accessToken) => dispatch(actions.getProductById(id, accessToken)),
-        updateProductRedux: (data, categorieType, accessToken, page) => dispatch(actions.updateProduct(data, categorieType, accessToken, page)),
+        getAllCategoriesDetailByTypeRedux: () => dispatch(actions.getAllCategoriesDetailByType()),
+        getAllDiscountsRedux: () => dispatch(actions.getAllDiscounts()),
+        getAllBrandsRedux: () => dispatch(actions.getAllBrands()),
+        getAllSizesByTypeRedux: (type) => dispatch(actions.getAllSizesByType(type)),
+        getAllColorsRedux: () => dispatch(actions.getAllColors()),
+        getAllLogosRedux: () => dispatch(actions.getAllLogos()),
+        getProductTypeByCategoryIdRedux: (categoryId) => dispatch(actions.getProductTypeByCategoryId(categoryId)),
+        getProductByIdRedux: (id) => dispatch(actions.getProductById(id)),
+        updateProductRedux: (data, categorieType, page) => dispatch(actions.updateProduct(data, categorieType, page)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct())
     }
 }

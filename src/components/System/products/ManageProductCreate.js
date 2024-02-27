@@ -6,7 +6,7 @@ import Sidebar from '../common/sidebars/Sidebar';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
 import { useSearchParams } from 'react-router-dom';
-import { BuildOptionSelectDiscount, TitleProduct, categorieType, ListColorsProduct } from '../../../utils';
+import { BuildOptionSelectDiscount, TitleProduct, ListColorsProduct } from '../../../utils';
 import CommonUtils from '../../../utils/CommonUtils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -34,7 +34,6 @@ const initStateImage = {
 function ManageShoesCreate({
     categoryType,
     actives,
-    accessToken,
     categoriesDetail, 
     discounts, 
     brands, 
@@ -71,13 +70,13 @@ function ManageShoesCreate({
 
     // ComponentDidMount
     useEffect(() => {
-        getAllCategoriesDetailByTypeRedux(accessToken, categoryType)
-        getAllDiscountsRedux(accessToken)
-        getAllBrandsRedux(accessToken)
-        getAllSizesByTypeRedux(accessToken, categoryType)
-        getAllColorsRedux(accessToken)
-        getAllLogosRedux(accessToken)
-        getProductTypeByCategoryIdRedux(accessToken, categoryType)
+        getAllCategoriesDetailByTypeRedux()
+        getAllDiscountsRedux()
+        getAllBrandsRedux()
+        getAllSizesByTypeRedux(categoryType)
+        getAllColorsRedux()
+        getAllLogosRedux()
+        getProductTypeByCategoryIdRedux(categoryType)
     }, [])
 
     useEffect(() => {
@@ -174,7 +173,7 @@ function ManageShoesCreate({
             listSizesAdded: listSizes,
             listColorsAdded: listColors
         }
-        createNewProductRedux(product, categoryType, accessToken, params.get('page') ? params.get('page') : 1)
+        createNewProductRedux(product, categoryType, params.get('page') ? params.get('page') : 1)
         setSelectObject({
             ...initState,
             code: generateRandomString(15)
@@ -480,7 +479,6 @@ function ManageShoesCreate({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         categoriesDetail: state.category.categoriesDetail,
         discounts: state.discount.discounts,
         brands: state.brand.brands,
@@ -493,14 +491,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesDetailByTypeRedux: (accessToken, categoryType) => dispatch(actions.getAllCategoriesDetailByType(accessToken, categoryType)),
-        getAllDiscountsRedux: (accessToken) => dispatch(actions.getAllDiscounts(accessToken)),
-        getAllBrandsRedux: (accessToken) => dispatch(actions.getAllBrands(accessToken)),
-        getAllSizesByTypeRedux: (accessToken, type) => dispatch(actions.getAllSizesByType(accessToken, type)),
-        getAllColorsRedux: (accessToken) => dispatch(actions.getAllColors(accessToken)),
-        getAllLogosRedux: (accessToken) => dispatch(actions.getAllLogos(accessToken)),
-        getProductTypeByCategoryIdRedux: (accessToken, categoryId) => dispatch(actions.getProductTypeByCategoryId(accessToken, categoryId)),
-        createNewProductRedux: (data, type, accessToken, page) => dispatch(actions.createNewProduct(data, type, accessToken, page))
+        getAllCategoriesDetailByTypeRedux: () => dispatch(actions.getAllCategoriesDetailByType()),
+        getAllDiscountsRedux: () => dispatch(actions.getAllDiscounts()),
+        getAllBrandsRedux: () => dispatch(actions.getAllBrands()),
+        getAllSizesByTypeRedux: (type) => dispatch(actions.getAllSizesByType(type)),
+        getAllColorsRedux: () => dispatch(actions.getAllColors()),
+        getAllLogosRedux: () => dispatch(actions.getAllLogos()),
+        getProductTypeByCategoryIdRedux: (categoryId) => dispatch(actions.getProductTypeByCategoryId(categoryId)),
+        createNewProductRedux: (data, type, page) => dispatch(actions.createNewProduct(data, type, page))
     }
 }
 

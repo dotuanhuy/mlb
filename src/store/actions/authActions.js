@@ -1,23 +1,21 @@
 import actionTypes from "./actionTypes";
-import Cookies from 'universal-cookie';
 import { 
     handleLoginAPI, 
+    loginWithGoogleService,
     handleLogoutAPI,
     resetPasswordService
-} from "../../services/userService";
-
-const cookies = new Cookies();
+} from "../../services/authService";
 
 export const fetLogin = (email, password) => {
     return async (dispatch, getSate) => {
         try {
             let res = await handleLoginAPI(email, password)
             if (res && res.errCode === 0) {
+                window.localStorage.setItem('accessToken', res.accessToken)
                 dispatch({
                     type: actionTypes.LOGIN_SUCCESS,
                     data: res
                 })
-                // cookies.set('userLogin', res.token, { path: '/'});
             }
             else {
                 dispatch({
@@ -34,11 +32,37 @@ export const fetLogin = (email, password) => {
     }
 }
 
+export const loginWithGoogle = (id, token) => {
+    return async (dispatch, getSate) => {
+        try {
+            let res = await loginWithGoogleService(id, token)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.LOGIN_SUCCESS,
+                    data: res
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.LOGIN_FAILED
+                })
+            }   
+        } catch (e) {
+            console.log('handleLoginWithGoogle error: ', e)
+            dispatch({
+                type: actionTypes.LOGIN_FAILED
+            })
+        }
+    }
+}
+
 export const fetLogout = () => {
     return async (dispatch, getSate) => {
         try {
             let res = await handleLogoutAPI() 
+            console.log(res)
             if (res && res.errCode === 0) {
+                window.localStorage.removeItem('accessToken')
                 dispatch({
                     type: actionTypes.LOGOUT_SUCCESS
                 })

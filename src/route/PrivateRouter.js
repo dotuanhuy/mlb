@@ -1,20 +1,19 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MutatingDots } from 'react-loader-spinner'
-import axios from "../axios";
-import {createAxios} from '../axiosJWT'
-import Cookies from 'js-cookie';
+import { createAxios } from '../axiosJWT';
 import { Active, path } from '../utils';
 
-function PrivateRouter({categoryType=null, active=null, users, isLogin, accessToken, Component}) {
+function PrivateRouter({categoryType=null, active=null, Component}) {
     const [isAdmin, setIsAdmin] = useState(null)
     const [actives, setActives] = useState({})
     const navigate = useNavigate()
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.post('/api/authentication', { accessToken });
+                const accessToken = window.localStorage.getItem('accessToken')
+                const axiosJWT = createAxios()
+                const res = await axiosJWT.post('/api/authentication', {accessToken});
                 setIsAdmin(res?.isAdmin)
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -23,6 +22,7 @@ function PrivateRouter({categoryType=null, active=null, users, isLogin, accessTo
             }
         };
         fetchData()
+        setIsAdmin()
     }, [])
 
     useEffect(() => {
@@ -34,7 +34,7 @@ function PrivateRouter({categoryType=null, active=null, users, isLogin, accessTo
                 pathToBack: path.MANAGE_PRODUCTS_SHOES,
                 pathToEdit: path.MANAGE_PRODUCTS_SHOES_EDIT,
                 pathToDetail: path.MANAGE_PRODUCTS_SHOES_DETAIL,
-                pathToImage: path.MANAGE_PRODUCTS_SHOES_IMAGES
+                // pathToImage: path.MANAGE_PRODUCTS_SHOES_IMAGES
             })
         }
         else if (active === Active.BAG_BALO) {
@@ -45,7 +45,7 @@ function PrivateRouter({categoryType=null, active=null, users, isLogin, accessTo
                 pathToBack: path.MANAGE_PRODUCTS_BAG_BALO,
                 pathToEdit: path.MANAGE_PRODUCTS_BAG_BALO_EDIT,
                 pathToDetail: path.MANAGE_PRODUCTS_BAG_BALO_DETAIL,
-                pathToImage: path.MANAGE_PRODUCTS_BAG_BALO_IMAGES
+                // pathToImage: path.MANAGE_PRODUCTS_BAG_BALO_IMAGES
             })
         }
         else if (active === Active.HAT) {
@@ -56,7 +56,7 @@ function PrivateRouter({categoryType=null, active=null, users, isLogin, accessTo
                 pathToBack: path.MANAGE_PRODUCTS_HAT,
                 pathToEdit: path.MANAGE_PRODUCTS_HAT_EDIT,
                 pathToDetail: path.MANAGE_PRODUCTS_HAT_DETAIL,
-                pathToImage: path.MANAGE_PRODUCTS_HAT_IMAGES
+                // pathToImage: path.MANAGE_PRODUCTS_HAT_IMAGES
             })
         }
         else if (active === Active.CLOTHES) {
@@ -67,7 +67,7 @@ function PrivateRouter({categoryType=null, active=null, users, isLogin, accessTo
                 pathToBack: path.MANAGE_PRODUCTS_CLOTHES,
                 pathToEdit: path.MANAGE_PRODUCTS_CLOTHES_EDIT,
                 pathToDetail: path.MANAGE_PRODUCTS_CLOTHES_DETAIL,
-                pathToImage: path.MANAGE_PRODUCTS_CLOTHES_IMAGES
+                // pathToImage: path.MANAGE_PRODUCTS_CLOTHES_IMAGES
             })
         }
         else {
@@ -76,10 +76,10 @@ function PrivateRouter({categoryType=null, active=null, users, isLogin, accessTo
             })
         }
     }, [active])
-
-    if (isAdmin !== null) {
+    
+    if (isAdmin) {
         return ( 
-            isAdmin ? <Component actives={actives} categoryType={categoryType}/> : <Navigate to='/' />
+            isAdmin === 1 ? <Component actives={actives} categoryType={categoryType}/> : <Navigate to='/' />
         );
     }
     return (
@@ -89,9 +89,6 @@ function PrivateRouter({categoryType=null, active=null, users, isLogin, accessTo
 
 const mapStateToProps = state => {
     return {
-        users: state.auth.users,
-        isLogin: state.auth.isLogin,
-        accessToken: state.auth.token,
     }
 }
 

@@ -2,19 +2,19 @@ import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'react-redux';
 import './Account.scss'
 import { Link, useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
 import { path } from '../../utils';
 import * as action from '../../store/actions'
 
-function Account({token, userLogin, activeType, fetLogoutRedux}) {
+function Account({userLogin, activeType, fetLogoutRedux}) {
     const [active, setActive] = useState('infor')
     const navigate = useNavigate()
     
 
     useEffect(() => {
-       if (!token) {
+        const token = window.localStorage.getItem('accessToken')
+        if (!token) {
             navigate(path.LOGIN)
-       }
+        }
     }, [])
     
     useEffect(() => {
@@ -61,7 +61,6 @@ function Account({token, userLogin, activeType, fetLogoutRedux}) {
 
 const mapStateToProps = state => {
     return {
-        token: state.auth.token,
     }
 }
 

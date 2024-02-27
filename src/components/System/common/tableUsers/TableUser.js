@@ -15,13 +15,12 @@ import { Modal } from 'react-bootstrap';
 function TableUsers({
     pathPage,
     users, 
-    accessToken, 
     isLoading, 
     refreshIsloadingStateRedux, 
-    fetAllUsersRedux, 
     getLimitUsersRedux,
     deleteUserRedux
 }) {
+    const accessToken = window.localStorage.getItem('accessToken')
     const navigate = useNavigate()   
     const [params] = useSearchParams()
     const [show, setShow] = useState({});
@@ -31,12 +30,11 @@ function TableUsers({
 
     useEffect(() => {
         refreshIsloadingStateRedux()
-        // fetAllUsersRedux(accessToken)
-        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1, accessToken)
+        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1)
     }, [])
 
     useEffect(() => {
-        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1, accessToken)
+        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1)
     }, [params?.get('page')])
 
     const handleDeleteUser = (id) => {
@@ -103,7 +101,6 @@ function TableUsers({
                                                 </td>
                                                 <td>
                                                     <button 
-                                                        // className='btn btn-outline-dàner btn-delete'
                                                         className='btn text-danger btn-delete'
                                                         onClick={() => handleShow(item.id)}
                                                     >
@@ -144,17 +141,15 @@ function TableUsers({
 const mapStateToProps = state => {
     return {
         users: state.user.users,
-        accessToken: state.auth.token,
         isLoading: state.user.isLoadingUser
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetAllUsersRedux: (accessToken) => dispatch(actions.fetAllUsers(accessToken)),
         deleteUserRedux: (id, accessToken, page) => dispatch(actions.deleteUser(id, accessToken, page)),
         refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState()),
-        getLimitUsersRedux: (page, accessToken) => dispatch(actions.getLimitUsers(page, accessToken))
+        getLimitUsersRedux: (page) => dispatch(actions.getLimitUsers(page))
     }
 }
 

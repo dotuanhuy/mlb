@@ -4,16 +4,16 @@ import * as actions from '../../../store/actions'
 import Loading from '../../common/Loading/Loading'
 
 function Dashboard({
-    accessToken,
     countProduct,
     countUser,
     getCountProductsRedux,
     getCountUsersRedux
 }) {
+    const accessToken = window.localStorage.getItem('accessToken')
 
     useEffect(() => {
-        getCountProductsRedux(accessToken)
-        getCountUsersRedux(accessToken)
+        getCountProductsRedux()
+        getCountUsersRedux()
     }, [])
 
     return (
@@ -49,7 +49,6 @@ function Dashboard({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         countProduct: state.product.count,
         countUser: state.user.count,
         isLoading: state.product.isLoadingProduct
@@ -58,8 +57,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getCountProductsRedux: (accessToken) => dispatch(actions.getCountProducts(accessToken)),
-        getCountUsersRedux: (accessToken) => dispatch(actions.getCountUsers(accessToken))
+        getCountProductsRedux: () => dispatch(actions.getCountProducts()),
+        getCountUsersRedux: () => dispatch(actions.getCountUsers())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

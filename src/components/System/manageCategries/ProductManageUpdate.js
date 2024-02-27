@@ -14,7 +14,6 @@ import { Buffer } from 'buffer';
 function ProductManageUpdate({
     actives,
     isLoading,
-    accessToken,
     categories,
     productType,
     refreshStoreProductTypeRedux,
@@ -34,8 +33,8 @@ function ProductManageUpdate({
     // ComponentDidMount
     useEffect(() => {
         refreshStoreProductTypeRedux()
-        getAllCategoriesRedux(accessToken)
-        getProductTypeByIdRedux(accessToken, params.get('id'))
+        getAllCategoriesRedux()
+        getProductTypeByIdRedux(params.get('id'))
     }, [])
 
     useEffect(() => {
@@ -110,7 +109,7 @@ function ProductManageUpdate({
             imageRoot: selectImage,
             status: selectStatus?.value,
         }
-        updateProductTypeRedux(accessToken, data, params.get('page'))
+        updateProductTypeRedux(data, params.get('page'))
         navigate({
             pathname: path.MANAGE_PRODUCT_TYPE,
             search: createSearchParams({
@@ -209,7 +208,6 @@ function ProductManageUpdate({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         isLoading: state.productType.isLoading,
         categories: state.category.categories,
         productType: state.productType.productTypes,
@@ -219,9 +217,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshStoreProductTypeRedux: () => dispatch(actions.refreshStoreProductType()),
-        getAllCategoriesRedux: (accessToken) => dispatch(actions.getAllCategories(accessToken)),
-        getProductTypeByIdRedux: (accessToken, id) => dispatch(actions.getProductTypeById(accessToken, id)),
-        updateProductTypeRedux: (accessToken, data, page) => dispatch(actions.updateProductType(accessToken, data, page)),
+        getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
+        getProductTypeByIdRedux: (id) => dispatch(actions.getProductTypeById(id)),
+        updateProductTypeRedux: (data, page) => dispatch(actions.updateProductType(data, page)),
     }
 }
 

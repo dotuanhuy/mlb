@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
-import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Active, ListColorsProduct, formatVND, path } from '../../../utils';
+import { Link, createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { ListColorsProduct, formatVND } from '../../../utils';
 import * as actions from '../../../store/actions'
 import { formatDateVN } from '../../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackward, faCirclePlus, faMinus, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faBackward, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import SliderProduct from '../../common/Slider/SliderProduct';
 import ProductManageImage from './ProductManageImage';
 
 
 function ProductManageDetail({
     actives,
-    accessToken,
-    isLoadingProduct,
     product,
-    images,
     isLoadingImage,
     refreshIsLoadingImagesRedux,
     getProductByIdRedux,
@@ -26,12 +23,11 @@ function ProductManageDetail({
 }) {
     const navigate = useNavigate()   
     const [params] = useSearchParams()
-    const {pathname} = useLocation()
 
     useEffect(() => {
         refreshIsLoadingImagesRedux()
-        getProductByIdRedux(params.get('id'), accessToken)
-        getAllImagesByProductIdRedux(params.get('id'), accessToken)
+        getProductByIdRedux(params.get('id'))
+        getAllImagesByProductIdRedux(params.get('id'))
     }, [])
     
     const handleEdit = (id) => {
@@ -209,13 +205,6 @@ function ProductManageDetail({
                                 Edit product
                             </button>
                             <ProductManageImage />
-                            {/* <Link 
-                                className='btn btn-root-2 btn-add fw-500'
-                                to={actives?.pathToImage+`?id=${product?.id}&page=${params.get('page')}`}
-                            >
-                                <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
-                                Manage images
-                            </Link> */}
                         </div>
                     </div>
                 }
@@ -227,10 +216,7 @@ function ProductManageDetail({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
-        isLoadingProduct: state.product.isLoadingProduct,
         product: state.product.products,
-        images: state.image.images,
         isLoadingImage: state.image.isLoadingImage
     }
 }
@@ -238,8 +224,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshIsLoadingImagesRedux: () => dispatch(actions.refreshStoreImages()),
-        getProductByIdRedux: (id, accessToken) => dispatch(actions.getProductById(id, accessToken)),
-        getAllImagesByProductIdRedux: (id, accessToken) => dispatch(actions.getAllImagesByProductId(id, accessToken))
+        getProductByIdRedux: (id) => dispatch(actions.getProductById(id)),
+        getAllImagesByProductIdRedux: (id) => dispatch(actions.getAllImagesByProductId(id))
     }
 }
 

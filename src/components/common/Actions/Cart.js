@@ -11,10 +11,11 @@ import { path } from '../../../utils';
 function Cart({
     productId,
     size,
-    accessToken, 
     addProductToCartRedux
 }) {
     const [userId, setUserId] = useState('')
+    const accessToken = window.localStorage.getItem('accessToken')
+    
     useEffect(() => {
         if (accessToken) {
             let tokenDecoded = jwt_decode(accessToken)
@@ -32,7 +33,7 @@ function Cart({
 
     const handleAddCart = () => {
         toast.info(CustomToast, { autoClose: 3000 })
-        addProductToCartRedux(accessToken, { userId, productId, quantity:1, size})
+        addProductToCartRedux({ userId, productId, quantity:1, size})
     }
 
     
@@ -54,13 +55,12 @@ function Cart({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        addProductToCartRedux: (accessToken, data) => dispatch(actions.addProductToCart(accessToken, data))        
+        addProductToCartRedux: (data) => dispatch(actions.addProductToCart(data))        
     }
 }
 

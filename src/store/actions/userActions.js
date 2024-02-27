@@ -11,7 +11,9 @@ import {
     handleDeleteUser,
     getUserByIdService,
     getLimitUserService,
-    registerSevice
+    registerSevice,
+    sendMailService,
+    verifyOtpService
 } from "../../services/userService";
 
 export const refreshStoreUser = () => {
@@ -29,16 +31,15 @@ export const refreshStoreUser = () => {
     }
 }
 
-export const createNewUser = (data, accessToken, page) => {
+export const createNewUser = (data, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleCreateNewUer(data, accessToken)
+            let res = await handleCreateNewUer(data)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_NEW_USER_SUCCESS
                 })
-                // dispatch(fetAllUsers(accessToken))
-                dispatch(getLimitUsers(page, accessToken))
+                dispatch(getLimitUsers(page))
             }
             else {
                 alert(res.errMessage)
@@ -55,10 +56,10 @@ export const createNewUser = (data, accessToken, page) => {
     }
 }
 
-export const fetAllUsers = (accessToken) => {
+export const fetAllUsers = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllUsers(accessToken)  
+            let res = await getAllUsers()  
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_USERS_SUCCESS,
@@ -79,10 +80,10 @@ export const fetAllUsers = (accessToken) => {
     }
 }
 
-export const getAllAddress = (accessToken) => {
+export const getAllAddress = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllAddressService(accessToken)
+            let res = await getAllAddressService()
             let data = res.data.map(item => item.name)
             if (res && res.errCode === 0) {
                 dispatch({
@@ -104,10 +105,10 @@ export const getAllAddress = (accessToken) => {
     }   
 }
 
-export const getAllRoles = (accessToken) => {
+export const getAllRoles = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllRolesService(accessToken)
+            let res = await getAllRolesService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_ROLES_SUCCESS,
@@ -129,16 +130,16 @@ export const getAllRoles = (accessToken) => {
 }
 
 
-export const deleteUser = (id, accessToken, page) => {
+export const deleteUser = (id, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleDeleteUser(id, accessToken, page)
+            let res = await handleDeleteUser(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.DELTE_USER_SUCCESS
                 })
-                // dispatch(fetAllUsers(accessToken))
-                dispatch(getLimitUsers(page, accessToken))
+                // dispatch(fetAllUsers())
+                dispatch(getLimitUsers(page))
             }
             else {
                 dispatch({
@@ -154,20 +155,20 @@ export const deleteUser = (id, accessToken, page) => {
     }
 }
 
-export const updateUser = (data, accessToken, page) => {
+export const updateUser = (data, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleUpdateUser(data, accessToken)
+            let res = await handleUpdateUser(data)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.EDIT_USER_SUCCESS
                 })
-                // dispatch(fetAllUsers(accessToken))
+                // dispatch(fetAllUser))
                 if (page) {
-                    dispatch(getLimitUsers(page, accessToken, page))
+                    dispatch(getLimitUsers(page, page))
                 }
                 else {
-                    dispatch(getUserById(data?.id, accessToken))
+                    dispatch(getUserById(data?.id))
                 }
             }
             else {
@@ -185,10 +186,10 @@ export const updateUser = (data, accessToken, page) => {
     }
 }
 
-export const getCountUsers = (accessToken) => {
+export const getCountUsers = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getCountUsersService(accessToken)
+            let res = await getCountUsersService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_COUNT_USERS_SUCCESS,
@@ -210,10 +211,10 @@ export const getCountUsers = (accessToken) => {
 }
 
 
-export const getUserById = (id, accessToken) => {
+export const getUserById = (id) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getUserByIdService(id, accessToken)
+            let res = await getUserByIdService(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_USER_BY_ID_SUCCESS,
@@ -251,11 +252,11 @@ export const refreshIsloadingState = () => {
     }
 }
 
-export const getLimitUsers = (page, accessToken) => {
+export const getLimitUsers = (page, ) => {
     return async (dispatch, getState) => {
         try {
             const newPage = +page - 1
-            let res = await getLimitUserService(newPage, accessToken)
+            let res = await getLimitUserService(newPage)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_LIMIT_USERS_SUCCESS,
@@ -282,19 +283,67 @@ export const register = (data) => {
             let res = await registerSevice(data)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.REGISTER_SUCCESS,
+                    type: actionTypes.REGISTER,
+                    data: res
                 })
             }
             else {
-                dispatch({
-                    type: actionTypes.REGISTER_FAILED
-                })
+                dispatch(refreshStoreUser())
             }
         } catch (e) {
             console.log('register error: ',e)
+            dispatch(refreshStoreUser())
+        }
+    }
+}
+
+export const sendMail = (email) => {
+    return async (dispatch, getState) => {
+    try {
+        let res = await sendMailService(email)
+        if (res && res.errCode === 0) {
             dispatch({
-                type: actionTypes.REGISTER_FAILED
+                type: actionTypes.SEND_MAIL_SUCCESS,
+                data: res.data
             })
         }
+        else {
+            dispatch({
+                type: actionTypes.SEND_MAIL_FAILED,
+                data: res
+            })
+        }
+    } catch (e) {
+        console.log('sendMail error: ',e)
+        dispatch({
+            type: actionTypes.SEND_MAIL_FAILED,
+        })
+    }
+    }
+}
+
+export const verifyOtp = ({otp, email}) => {
+    return async (dispatch, getState) => {
+    try {
+        let res = await verifyOtpService({otp, email})
+        if (res && res.errCode === 0) {
+            dispatch({
+                type: actionTypes.VERIFY_OTP_SUCCESS,
+                isVerify: true,
+                data: res.data 
+            })
+        }
+        else {
+            dispatch({
+                type: actionTypes.VERIFY_OTP_FAILED,
+            })
+            alert(res.errMessage)
+        }
+    } catch (e) {
+        console.log('verifyOtp error: ',e)
+        dispatch({
+            type: actionTypes.VERIFY_OTP_FAILED,
+        })
+    }
     }
 }

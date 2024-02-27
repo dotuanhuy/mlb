@@ -7,13 +7,13 @@ import {
 
 } from "../../services/cartService";
 
-export const getProductsInCartByUser = (accessToken, userId) => {
+export const getProductsInCartByUser = (userId) => {
     return async (dispatch, getState) => {
         try {
             let res
             if (userId) {
-                res = await getProductsInCartByUserService(accessToken, userId)
-                if (res && res.errCode === 0) {
+                res = await getProductsInCartByUserService(userId)
+                if (res && res?.errCode === 0) {
                     let totalMoney = 0, count = 0
                     let data = []
                     res?.data?.map(item => {
@@ -46,14 +46,14 @@ export const getProductsInCartByUser = (accessToken, userId) => {
     }
 }
 
-export const addProductToCart = (accessToken, data) => {
+export const addProductToCart = (data) => {
     return async (dispatch, getState) => {
         try {
             let res
             if (data) {
-                res = await addProductToCartService(accessToken, data)
+                res = await addProductToCartService(data)
                 if (res && res.errCode === 0) {
-                    dispatch(getProductsInCartByUser(accessToken, data?.userId))
+                    dispatch(getProductsInCartByUser(data?.userId))
                 }
                 else {
                     alert('Thêm sản phẩm vào giỏ hàng thất bại')
@@ -68,14 +68,14 @@ export const addProductToCart = (accessToken, data) => {
     }
 }
 
-export const deleteAProductInCart = (accessToken, data) => {
+export const deleteAProductInCart = (data) => {
     return async (dispatch, getState) => {
         try {
             let res
             if (data) {
-                res = await deleteAProductInCartService(accessToken, data)
+                res = await deleteAProductInCartService(data)
                 if (res && res.errCode === 0) {
-                    dispatch(getProductsInCartByUser(accessToken, data?.userId))
+                    dispatch(getProductsInCartByUser(data?.userId))
                 }
                 else {
                     alert('Xóa sản phẩm trong giỏ hàng thất bại')
@@ -91,14 +91,14 @@ export const deleteAProductInCart = (accessToken, data) => {
 }
 
 
-export const deleteProductInCart = (accessToken, data) => {
+export const deleteProductInCart = (data) => {
     return async (dispatch, getState) => {
         try {
             let res
             if (data) {
-                res = await deleteProductInCartService(accessToken, data)
+                res = await deleteProductInCartService(data)
                 if (res && res.errCode === 0) {
-                    dispatch(getProductsInCartByUser(accessToken, data?.userId))
+                    dispatch(getProductsInCartByUser(data?.userId))
                 }
                 else {
                     alert('Xóa sản phẩm trong giỏ hàng thất bại')

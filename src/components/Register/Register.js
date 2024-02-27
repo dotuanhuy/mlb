@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../HomePage/Navbar/Navbar';
 import './Register.scss'
 import { Link } from 'react-router-dom';
-import { socialLogin } from '../../utils/images';
-import { path, Role } from '../../utils'
+import { path } from '../../utils'
 import * as actions from '../../store/actions'
 import { useNavigate } from 'react-router-dom';
 import { validate } from '../../validate/valiedate';
+import { Modal } from 'react-bootstrap';
+import LoginOrther from '../common/loginOrthers/LoginOrther';
+import VerifyOtp from '../common/verifys/VerifyOtp';
 
 const inintState = {
     firstName: '',
@@ -15,7 +17,6 @@ const inintState = {
     phone: '',
     email: '',
     password: '',
-    roleId: Role.USER,
 }
 
 const inforUserNotValue = {
@@ -24,11 +25,41 @@ const inforUserNotValue = {
     avatar: ''
 }
 
-function Register({createNewUserRedux}) {
+function Register({titlePage, errMessage, errCode, isVerify, email, createNewUserRedux, refreshStoreUserRedux}) {
+    const [show, setShow] = useState(false);
     const [inforUser, setInforUser] = useState(inintState)
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
-    
+    const [isVerifyState, setIsverifyState] = useState(false)
+
+    useEffect(() => {
+        refreshStoreUserRedux()
+        document.title = titlePage
+    }, [])
+
+    useEffect(() => {
+        if (errMessage) {
+            setShow(true)
+        }
+    }, [errMessage])
+
+    useEffect(() => {
+        if (isVerify) {
+            setIsverifyState(isVerify)
+            setInforUser({
+                ...inforUser,
+                email
+            })
+        }
+    }, [isVerify])
+
+    const handleClose = () => {
+        setShow(false)
+        if (errCode === 0) {
+            navigate(path.LOGIN)
+        }
+    }
+
     const handleRegister = (e) => {
         e.preventDefault()
         let error = validate(inforUser)
@@ -36,9 +67,7 @@ function Register({createNewUserRedux}) {
         if (Object.keys(error).length === 0) {
             let newInfoUser = { ...inforUser, ...inforUserNotValue }
             createNewUserRedux(newInfoUser)
-            navigate('/login')
         }
-        
     }
 
     return (
@@ -70,131 +99,140 @@ function Register({createNewUserRedux}) {
                                 </div> 
                             </div>
                             <div className='register-form-input'>
-                                <form className='p-4'>
-                                    <div className="form-group pb-4">
-                                        <label className='label-input' htmlFor="exampleInputFirstName">HỌ*</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="exampleInputFirstName" 
-                                            placeholder="Nhập Họ" 
-                                            value={inforUser.firstName}
-                                            onChange={(e) => {
-                                                setErrors({})
-                                                setInforUser({
-                                                    ...inforUser,
-                                                    firstName: e.target.value
-                                                })
-                                            }}
-                                        />
-                                        {
-                                            errors && errors.firstName ? <span className='error'>{errors.firstName}</span> : ''
-                                        }                                        
-                                    </div>
-                                    <div className="form-group pb-4">
-                                        <label className='label-input' htmlFor="exampleInputLastName">TÊN*</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="exampleInputLastName" 
-                                            placeholder="Nhập Tên" 
-                                            value={inforUser.lastName}
-                                            onChange={(e) => {
-                                                setErrors({})
-                                                setInforUser({
-                                                    ...inforUser,
-                                                    lastName: e.target.value
-                                                })
-                                            }}
-                                        />
-                                        {
-                                            errors && errors.lastName ? <span className='error'>{errors.lastName}</span> : ''
-                                        }  
-                                    </div>  
-                                    <div className="form-group pb-4">
-                                        <label className='label-input' htmlFor="exampleInputphone">SỐ ĐIỆN THOẠI*</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="exampleInputphone" 
-                                            placeholder="Nhập Số điện thoại" 
-                                            value={inforUser.phone}
-                                            onChange={(e) =>  {
-                                                setErrors({})
-                                                setInforUser({
-                                                    ...inforUser,
-                                                    phone: e.target.value
-                                                })
-                                            }}
-                                        />
-                                        {
-                                            errors && errors.phone ? <span className='error'>{errors.phone}</span> : ''
-                                        }  
-                                    </div>
-                                    <div className="form-group pb-4">
-                                        <label className='label-input' htmlFor="exampleInputEmail1">EMAIL*</label>
-                                        <input 
-                                            type="email" 
-                                            className="form-control" 
-                                            id="exampleInputEmail1" 
-                                            aria-describedby="emailHelp" 
-                                            placeholder="Nhập Địa chỉ Email" 
-                                            value={inforUser.email}
-                                            onChange={(e) => {
-                                                setErrors({})
-                                                setInforUser({
-                                                    ...inforUser,
-                                                    email: e.target.value
-                                                })
-                                            }}
-                                        />
-                                        {
-                                            errors && errors.email ? <span className='error'>{errors.email}</span> : ''
-                                        }  
-                                    </div>
-                                    <div className="form-group pb-4">
-                                        <label className='label-input' htmlFor="exampleInputPassword1">MẬT KHẨU*</label>
-                                        <input 
-                                            type="password" 
-                                            className="form-control" 
-                                            id="exampleInputPassword1" 
-                                            placeholder="Nhập Mật khẩu" 
-                                            value={inforUser.password}
-                                            onChange={(e) => {
-                                                setErrors({})
-                                                setInforUser({
-                                                    ...inforUser,
-                                                    password: e.target.value
-                                                })
-                                            }}
-                                        />
-                                        {
-                                            errors && errors.password ? <span className='error'>{errors.password}</span> : ''
-                                        }  
-                                    </div>
-                                    <button 
-                                        type="submit" 
-                                        className="btn btn-primary w-100 btn-register"
-                                        onClick={(e) => handleRegister(e)}
-                                    >
-                                        TẠO TÀI KHOẢN
-                                    </button>
-                                </form>
+                                {
+                                    isVerifyState ? 
+                                    <form className='p-4'>
+                                        <div className="form-group pb-4">
+                                            <label className='label-input' htmlFor="exampleInputFirstName">HỌ<span className='text-danger'>*</span></label>
+                                            <input 
+                                                type="text" 
+                                                className="form-control" 
+                                                id="exampleInputFirstName" 
+                                                placeholder="Nhập Họ" 
+                                                value={inforUser.firstName}
+                                                onChange={(e) => {
+                                                    setErrors({...errors, firstName: ''})
+                                                    setInforUser({
+                                                        ...inforUser,
+                                                        firstName: e.target.value
+                                                    })
+                                                }}
+                                            />
+                                            {
+                                                errors && errors.firstName ? <span className='error'>{errors.firstName}</span> : ''
+                                            }                                        
+                                        </div>
+                                        <div className="form-group pb-4">
+                                            <label className='label-input' htmlFor="exampleInputLastName">TÊN<span className='text-danger'>*</span></label>
+                                            <input 
+                                                type="text" 
+                                                className="form-control" 
+                                                id="exampleInputLastName" 
+                                                placeholder="Nhập Tên" 
+                                                value={inforUser.lastName}
+                                                onChange={(e) => {
+                                                    setErrors({...errors, lastName: ''})
+                                                    setInforUser({
+                                                        ...inforUser,
+                                                        lastName: e.target.value
+                                                    })
+                                                }}
+                                            />
+                                            {
+                                                errors && errors.lastName ? <span className='error'>{errors.lastName}</span> : ''
+                                            }  
+                                        </div>  
+                                        <div className="form-group pb-4">
+                                            <label className='label-input' htmlFor="exampleInputphone">SỐ ĐIỆN THOẠI<span className='text-danger'>*</span></label>
+                                            <input 
+                                                type="text" 
+                                                className="form-control" 
+                                                id="exampleInputphone" 
+                                                placeholder="Nhập Số điện thoại" 
+                                                value={inforUser.phone}
+                                                onChange={(e) =>  {
+                                                    setErrors({...errors, phone: ''})
+                                                    setInforUser({
+                                                        ...inforUser,
+                                                        phone: e.target.value
+                                                    })
+                                                }}
+                                            />
+                                            {
+                                                errors && errors.phone ? <span className='error'>{errors.phone}</span> : ''
+                                            }  
+                                        </div>
+                                        <div className="form-group pb-4">
+                                            <label className='label-input' htmlFor="exampleInputEmail1">EMAIL<span className='text-danger'>*</span></label>
+                                            <input 
+                                                type="email" 
+                                                className="form-control" 
+                                                id="exampleInputEmail1" 
+                                                aria-describedby="emailHelp" 
+                                                placeholder="Nhập Địa chỉ Email" 
+                                                value={inforUser.email}
+                                                disabled
+                                            />
+                                        </div>
+                                        <div className="form-group pb-4">
+                                            <label className='label-input' htmlFor="exampleInputPassword1">MẬT KHẨU<span className='text-danger'>*</span></label>
+                                            <input 
+                                                type="password" 
+                                                className="form-control" 
+                                                id="exampleInputPassword1" 
+                                                placeholder="Nhập Mật khẩu" 
+                                                value={inforUser.password}
+                                                onChange={(e) => {
+                                                    setErrors({...errors, password: ''})
+                                                    setInforUser({
+                                                        ...inforUser,
+                                                        password: e.target.value
+                                                    })
+                                                }}
+                                            />
+                                            {
+                                                errors && errors.password ? <span className='error'>{errors.password}</span> : ''
+                                            }  
+                                        </div>
+                                        <button 
+                                            type="submit" 
+                                            className="btn btn-primary w-100 btn-register"
+                                            onClick={(e) => handleRegister(e)}
+                                        >
+                                            TẠO TÀI KHOẢN
+                                        </button>
+                                    </form>
+                                    :
+                                    <VerifyOtp />
+                                }
                                 <div className='line-break'>
                                     <span>hoặc đăng nhập qua</span>
                                 </div>
-                                <div className='social-register'>
-                                    <a href='#'>
-                                        <img src={socialLogin.fb}/>
-                                    </a>
-                                    <a href='#'>
-                                        <img src={socialLogin.gp}/>
-                                    </a>
-                                </div>
+                                <LoginOrther />
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <Modal
+                    show={show}
+                    onHide={handleClose}
+                    backdrop="static"
+                    keyboard={false}
+                    // centered
+                    size="sm"
+                >
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body className='text-center'>
+                    <span className='fw-500'>{errMessage}</span>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className='btn btn-root fw-500' variant="secondary" onClick={handleClose}>
+                        Đóng
+                    </button>
+                </Modal.Footer>
+            </Modal>
             </div>
         </div>
     );
@@ -202,13 +240,17 @@ function Register({createNewUserRedux}) {
 
 const mapStateToProps = state => {
     return {
-
+        errMessage: state.user.errMessage,
+        errCode: state.user.errCode,
+        isVerify: state.user.isVerify,
+        email: state.user.email
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        createNewUserRedux: (data) => dispatch(actions.register(data)) 
+        createNewUserRedux: (data) => dispatch(actions.register(data)), 
+        refreshStoreUserRedux: () => dispatch(actions.refreshStoreUser())
     }
 }
 

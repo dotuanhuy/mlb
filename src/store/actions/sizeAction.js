@@ -18,10 +18,10 @@ export const refreshStoreSizes = () => {
     }
 }
 
-export const getAllSizesByType  = (accessToken, type) => {
+export const getAllSizesByType  = (type) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllSizesByTypeService(accessToken, type)
+            let res = await getAllSizesByTypeService(type)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_SIZES_BY_TYPE_SUCCESS,

@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-// import './ManageProducts.scss'
-import { Link, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../utils';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
 import HorizontalBarChart from '../common/charts/HorizontalBarChart';
@@ -11,18 +8,16 @@ import Loading from '../../common/Loading/Loading'
 
 
 function ProductManage({
-    accessToken,
     categoriesDetail,
     quantityArr,
     isLoading,
     getAllCategoriesDetailRedux,
     getQuantityOfEechProductByCategory
 }) {
-    const navigate = useNavigate()
     
     useEffect(() => {
-        getAllCategoriesDetailRedux(accessToken)
-        getQuantityOfEechProductByCategory(accessToken)
+        getAllCategoriesDetailRedux()
+        getQuantityOfEechProductByCategory()
     }, [])
 
     return (    
@@ -70,8 +65,6 @@ function ProductManage({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
-        isLogin: state.auth.isLogin,
         categoriesDetail: state.category.categoriesDetail,
         quantityArr: state.product.quantityArr,
         isLoading: state.product.isLoadingProduct
@@ -80,8 +73,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesDetailRedux: (accessToken) => dispatch(actions.getAllCategoriesDetail(accessToken)),
-        getQuantityOfEechProductByCategory: (accessToken) => dispatch(actions.getQuantityOfEechProductByCategory(accessToken)),
+        getAllCategoriesDetailRedux: () => dispatch(actions.getAllCategoriesDetail()),
+        getQuantityOfEechProductByCategory: () => dispatch(actions.getQuantityOfEechProductByCategory()),
     }
 }
 

@@ -1,61 +1,56 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
+const accessToken = window.localStorage.getItem('accessToken')
+const axiosJWT = createAxios()
 
-const getAllProductTypesService = (accessToken) => {
+const getAllProductTypesService = () => {
     if (accessToken) {
-        const axiosJWT = createAxios(accessToken)
-        return axiosJWT.get('/api/get-all-product-type', { headers: {token: `Bearer ${accessToken}`}})
+        return axiosJWT.get('/api/get-all-product-type')
     }
     else {
         return axios.get('/api/get-all-product-type')
     }
 }
 
-const getLimitProductTypesService = (accessToken, page) => {
+const getLimitProductTypesService = (page) => {
     if (accessToken) {
-        const axiosJWT = createAxios(accessToken)
-        return axiosJWT.get(`/api/get-product-type-limit?page=${page}`, { headers: {token: `Bearer ${accessToken}`}})
+        return axiosJWT.get(`/api/get-product-type-limit?page=${page}`)
     }
     else {
         return axios.get(`/api/get-product-type-limit?page=${page}`)
     }
 }
 
-const getProductTypeByCategoryIdService = (accessToken, categoryId) => {
+const getProductTypeByCategoryIdService = (categoryId) => {
     if (accessToken) {
-        const axiosJWT = createAxios(accessToken)
-        return axiosJWT.get(`/api/get-product-type-by-categoryId?categoryId=${categoryId}`, { headers: {token: `Bearer ${accessToken}`}})
+        return axiosJWT.get(`/api/get-product-type-by-categoryId?categoryId=${categoryId}`)
     }
     else {
         return axios.get(`/api/get-product-type-by-categoryId?categoryId=${categoryId}`)
     }
 }
 
-const getProductTypeByIdService = (accessToken, id) => {
+const getProductTypeByIdService = (id) => {
     if (accessToken) {
-        const axiosJWT = createAxios(accessToken)
-        return axiosJWT.get(`/api/get-product-type-by-id?id=${id}`, { headers: {token: `Bearer ${accessToken}`}})
+        return axiosJWT.get(`/api/get-product-type-by-id?id=${id}`)
     }
     else {
         return axios.get(`/api/get-product-type-by-id?id=${id}`)
     }
 }
 
-const createProductTypeService = (accessToken, data) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/create-product-type', { data }, { headers: {token: `Bearer ${accessToken}`}})
+const createProductTypeService = (data) => {
+    return axiosJWT.post('/api/create-product-type', { data })
     // return axios.get('/api/get-all-categories')
 }
 
-const deleteProductTypeService = (accessToken, id) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/delete-product-type-by-id', { id }, { headers: {token: `Bearer ${accessToken}`}})
+const deleteProductTypeService = (id) => {
+    return axiosJWT.post('/api/delete-product-type-by-id', { id })
     // return axios.get('/api/get-all-categories')
 }
 
-const updateProductTypeService = (accessToken, data) => {
-    const axiosJWT = createAxios(accessToken)
-    return axiosJWT.post('/api/update-product-type', { data }, { headers: {token: `Bearer ${accessToken}`}})
+const updateProductTypeService = (data) => {
+    return axiosJWT.post('/api/update-product-type', { data })
     // return axios.get('/api/get-all-categories')
 }
 

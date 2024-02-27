@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { handleLogoutAPI } from './services/userService';
+import { getRefreshToken } from  './services/authService'
 
 const instance = axios.create({
     // baseURL: process.env.REACT_APP_BACKEND_URL
@@ -7,9 +8,33 @@ const instance = axios.create({
     withCredentials: true
 });
 
+// instance.interceptors.request.use(
+//     async (config) => {
+//         if (config.url.indexOf('/api/login') >= 0 || config.url.indexOf('/api/get-refresh-token') >= 0) {
+//             return config
+//         }
+//         // const token = document.cookie('token');
+//         // const token = await 
+//         console.log(document.cookie())
+//         config.headers['token'] = 'Bearer ' + 'abc'
+//         return config
+//     },
+//     (err) => {
+//         console.log('error: ', err)
+//         return Promise.reject(err);
+//     }
+// )
+
 instance.interceptors.response.use(
-    (response) => {
-        const { data } = response
+    async (response) => {
+        // if (config.url.indexOf('/api/login') >= 0 || config.url.indexOf('/api/get-refresh-token') >= 0) {
+        //     return response.data
+        // }
+        // const {accessToken} = await getRefreshToken()
+        // if (accessToken) {
+        //     config.headers['token'] = 'Bearer ' + accessToken
+
+        // }
         return response.data 
     },
     async (error) => {

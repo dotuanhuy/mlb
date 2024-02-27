@@ -20,7 +20,6 @@ const initState = {
 }
 
 function UserManageCreate({
-    accessToken, 
     provinces, 
     roles, 
     getAllAddressRedux, 
@@ -40,8 +39,8 @@ function UserManageCreate({
 
     // ComponentDidMount
     useEffect(() => {
-        getAllAddressRedux(accessToken)
-        getAllRolesRedux(accessToken)
+        getAllAddressRedux()
+        getAllRolesRedux()
     }, [])
     
     
@@ -123,7 +122,7 @@ function UserManageCreate({
         }
         
         if (Object.keys(error).length === 0 && errorProvine === '' && errorGender === '' && errorRole === '') {
-            createNewUserRedux(user, accessToken, params.get('page') ? params.get('page') : 1)
+            createNewUserRedux(user, params.get('page') ? params.get('page') : 1)
             setDataInput(initState)
             setSelectProvince([])
             setSelectGender([])
@@ -294,7 +293,6 @@ function UserManageCreate({
 const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
-        accessToken: state.auth.token,
         provinces: state.user.provinces,
         roles: state.user.roles
     }
@@ -302,9 +300,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllAddressRedux: (accessToken) => dispatch(actions.getAllAddress(accessToken)),
-        getAllRolesRedux: (accessToken) => dispatch(actions.getAllRoles(accessToken)),
-        createNewUserRedux: (data, accessToken ,page) =>  dispatch(actions.createNewUser(data, accessToken, page))
+        getAllAddressRedux: () => dispatch(actions.getAllAddress()),
+        getAllRolesRedux: () => dispatch(actions.getAllRoles()),
+        createNewUserRedux: (data ,page) =>  dispatch(actions.createNewUser(data, page))
     }
 }
 

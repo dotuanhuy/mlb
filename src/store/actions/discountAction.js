@@ -18,10 +18,10 @@ export const refreshStoreDiscount = () => {
     }
 }
 
-export const getAllDiscounts  = (accessToken) => {
+export const getAllDiscounts  = () => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllDiscountsService(accessToken)
+            let res = await getAllDiscountsService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_DISCOUNTS_SUCCESS,

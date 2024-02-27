@@ -14,17 +14,20 @@ import Loading from '../Loading/Loading';
 
 
 function Product({
-    accessToken, 
     isLoading,
-    product, 
     fouriteProducts,
+    refreshStoreProductRedux,
     getAllProductsFavouriteRedux,
     getProductByIdRedux,
     getAllImagesByProductIdRedux
 }) {
     const {productId, productName} = useLocation().state 
     const [isFavourite, setIsFavourite] = useState(false)
+    const accessToken = window.localStorage.getItem('accessToken')
 
+    useEffect(() => {
+        refreshStoreProductRedux()
+    }, [])
     useEffect(() => {
         let userId = ''
         if (accessToken) {
@@ -32,10 +35,10 @@ function Product({
             userId = tokenDecoded?.id
         }
         if (userId) {
-            getAllProductsFavouriteRedux(accessToken, userId)
+            getAllProductsFavouriteRedux(userId)
         }
-        getProductByIdRedux(productId, accessToken)
-        getAllImagesByProductIdRedux(productId, accessToken)
+        getProductByIdRedux(productId)
+        getAllImagesByProductIdRedux(productId)
     }, [productId])
     
     useEffect(() => {
@@ -75,18 +78,17 @@ function Product({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct,
-        product: state.product.products,
-        fouriteProducts: state.fouriteProduct.product
+        fouriteProducts: state.fouriteProduct.product,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
-        getProductByIdRedux: (productId, accessToken) => dispatch(actions.getProductById(productId, accessToken)),
-        getAllImagesByProductIdRedux: (productId, accessToken) => dispatch(actions.getAllImagesByProductId(productId, accessToken)),
+        refreshStoreProductRedux: () => dispatch(actions.refreshStoreProduct()),
+        getAllProductsFavouriteRedux: (userId) => dispatch(actions.getAllProductsFavourite(userId)),
+        getProductByIdRedux: (productId) => dispatch(actions.getProductById(productId)),
+        getAllImagesByProductIdRedux: (productId) => dispatch(actions.getAllImagesByProductId(productId)),
     }
 }
 

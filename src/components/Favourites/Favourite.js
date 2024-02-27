@@ -11,25 +11,22 @@ import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 import jwt_decode from 'jwt-decode';
 import ListProducts from '../common/listProducts/ListProducts';
 
-
 function Favourite({
+    titlePage,
     isLoading,
-    accessToken, 
     productsLimit,
     images,
     refreshIStateFavouriteProductRedux,
-    getAllImagesByProductIdRedux,
     getAllProductsFavouriteLimitRedux,
-    getAllProductsFavouriteRedux
 }) {
     const [params] = useSearchParams()
     const body = useRef()
     const initialRender  = useRef(true)
+    const accessToken = window.localStorage.getItem('accessToken')
     
     useEffect(() => {
-        console.log('check')
+        document.title = titlePage
         refreshIStateFavouriteProductRedux()
-        // getAllImagesByProductIdRedux(accessToken)
     }, [])
 
     useEffect(() => {
@@ -53,8 +50,7 @@ function Favourite({
             userId = tokenDecoded?.id
         }
         if (userId) {
-            // getAllProductsFavouriteRedux(accessToken, userId)
-            getAllProductsFavouriteLimitRedux(accessToken, userId, params.get('page') || 1)
+            getAllProductsFavouriteLimitRedux(userId, params.get('page') || 1)
         }
         if (body.current) {
             window.scrollTo({
@@ -96,10 +92,8 @@ function Favourite({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         isLoading: state.fouriteProduct.isLoading,
         images: state.product.images,
-        // productsLimit: state.product.productFavouriteLimit,
         productsLimit: state.fouriteProduct.productLimit
     }
 }
@@ -107,9 +101,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshIStateFavouriteProductRedux: () => dispatch(actions.refreshIStateFavouriteProduct()),
-        getAllImagesByProductIdRedux: (accessToken) => dispatch(actions.getAllImagesByProductId('', accessToken)),
-        getAllProductsFavouriteRedux: (accessToken, userId) => dispatch(actions.getAllProductsFavourite(accessToken, userId)),
-        getAllProductsFavouriteLimitRedux: (accessToken, userId, offset) => dispatch(actions.getAllProductsFavouriteLimit(accessToken, userId, offset))
+        getAllProductsFavouriteLimitRedux: (userId, offset) => dispatch(actions.getAllProductsFavouriteLimit(userId, offset))
     }
 }
 

@@ -5,7 +5,7 @@ import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { shoes, bag, logo } from '../../../utils/images';
 import './Navbar.scss'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { categorieType, path } from '../../../utils';
 import jwt_decode from "jwt-decode";
@@ -20,7 +20,6 @@ const initState = {
 
 function Navbar({
     isLogin, 
-    token, 
     countFavourite, 
     countProductsCart, 
     productTypes,
@@ -30,21 +29,20 @@ function Navbar({
     getAllProductTypesRedux
 }) {
     const [userLogin, setUserLogin] = useState(initState)
-    const navigate = useNavigate()
-    const [params] = useSearchParams()
     const [currentActive, setCurrentActive] = useState()
 
     useEffect(() => {
         // refreshStoreProductType()
+        const token = window.localStorage.getItem('accessToken')
         if (token) {
             let tokenDecoded = jwt_decode(token)
             setUserLogin({
                 firstName: tokenDecoded.firstName,
                 lastName: tokenDecoded.lastName,
             })
-            getAllProductsFavouriteRedux(token, tokenDecoded.id)
+            getAllProductsFavouriteRedux(tokenDecoded.id)
         }
-        getAllProductTypesRedux(token)
+        getAllProductTypesRedux()
     }, [])
     
     const handleLogout = async () => {
@@ -293,7 +291,6 @@ function Navbar({
 
 const mapStateToProps = state => {
     return {
-        token: state.auth.token,
         isLogin: state.auth.isLogin,
         productTypes: state.productType.productTypes,
         countFavourite: state.fouriteProduct.countProducts,
@@ -305,8 +302,8 @@ const mapDispatchToProps = dispatch => {
     return {
         refreshStoreProductType: () => dispatch(actions.refreshStoreProductType()),
         fetLogoutRedux: () => dispatch(actions.fetLogout()),
-        getAllProductsFavouriteRedux: (token, userId) => dispatch(actions.getAllProductsFavourite(token, userId)),
-        getAllProductTypesRedux: (accessToken) => dispatch(actions.getAllProductTypes(accessToken))
+        getAllProductsFavouriteRedux: (userId) => dispatch(actions.getAllProductsFavourite(userId)),
+        getAllProductTypesRedux: () => dispatch(actions.getAllProductTypes())
     }
 }
 

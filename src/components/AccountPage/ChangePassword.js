@@ -1,7 +1,7 @@
 import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'react-redux';
 import './Account.scss'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../HomePage/Navbar/Navbar';
 import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 import jwt_decode from 'jwt-decode';
@@ -22,13 +22,15 @@ const initInforChangePassword = {
     rePassword: ''
 }
 
-function ChangePassword({token, isResetPassword, resetPasswordRedux, fetLogoutRedux}) {
+function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogoutRedux}) {
     const [userLogin, setUserLogin] = useState(initState)
     const [inforChangePassword, setInforChangePassword] = useState(initInforChangePassword);
     const [error, setError] = useState({})
     const navigate = useNavigate()
 
     useEffect(() => {
+        document.title = titlePage
+        const token = window.localStorage.getItem('accessToken')
         if (token) {
             let tokenDecoded = jwt_decode(token)
             setUserLogin({
@@ -65,19 +67,7 @@ function ChangePassword({token, isResetPassword, resetPasswordRedux, fetLogoutRe
         <>
             <div className='account'>
                 <Navbar />
-                {/* <div className='account-header'>
-                    <div className='title'>
-                        Thay đổi mật khẩu
-                    </div>
-                    <ul className='list-link'>
-                        <li className='item-link-home'>
-                            <Link to='/'>Trang chủ</Link>
-                        </li>
-                        <li>
-                            <span>Thay đổi mật khẩu</span>
-                        </li>
-                    </ul>
-                </div> */}
+                
                 <Banner categoryProduct='Thay đổi mật khẩu' title='Trang thay đổi mật khẩu'/>
                 <div className='account-body p-5'>
                     <div className='container'>
@@ -171,7 +161,6 @@ function ChangePassword({token, isResetPassword, resetPasswordRedux, fetLogoutRe
 
 const mapStateToProps = state => {
     return {
-        token: state.auth.token,
         isResetPassword: state.auth.isResetPassword
     }
 }

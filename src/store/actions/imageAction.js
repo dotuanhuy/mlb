@@ -23,10 +23,10 @@ export const refreshStoreImages = () => {
 }
 
 
-export const getAllImagesProduct = (accessToken) => {
+export const getAllImagesProduct = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllImageProductService(accessToken)
+            let res = await getAllImageProductService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_IMAGES_PRODUCT_SUCCESS,
@@ -47,10 +47,10 @@ export const getAllImagesProduct = (accessToken) => {
     }
 }
 
-export const getAllImagesByProductId = (id, accessToken) => {
+export const getAllImagesByProductId = (id) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllImagesByProductIdService(id, accessToken)
+            let res = await getAllImagesByProductIdService(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_IMAGES_BY_PRODUCTID_SUCCESS,
@@ -71,15 +71,15 @@ export const getAllImagesByProductId = (id, accessToken) => {
     }
 }
 
-export const addImageProduct = (data, accessToken) => {
+export const addImageProduct = (data) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await addImageProductService(data, accessToken)
+            let res = await addImageProductService(data)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.ADD_IMAGE_PRODUCT_SUCCESS
                 })
-                dispatch(getAllImagesByProductId(data.productId, accessToken))
+                dispatch(getAllImagesByProductId(data.productId))
             }
             else {
                 dispatch({
@@ -95,12 +95,12 @@ export const addImageProduct = (data, accessToken) => {
     }
 }
 
-export const deleteImageProduct = (data, accessToken) => {
+export const deleteImageProduct = (data) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await deleteImageProductService(data, accessToken)
+            let res = await deleteImageProductService(data)
             if (res && res.errCode === 0) {
-                dispatch(getAllImagesByProductId(data.productId, accessToken))
+                dispatch(getAllImagesByProductId(data.productId))
             }
         } catch (e) {
             console.log('deleteImageProduct error: ', e)
@@ -111,10 +111,10 @@ export const deleteImageProduct = (data, accessToken) => {
     }
 }
 
-export const getImageProductByCategory = (accessToken, category) => {
+export const getImageProductByCategory = (category) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getImageProductByCategoryService(accessToken, category)
+            let res = await getImageProductByCategoryService(category)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_IMAGES_PRODUCT_BY_CATEGORY_SUCCESS,

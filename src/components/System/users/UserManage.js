@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
@@ -34,9 +34,7 @@ function UserManage() {
 
 const mapStateToProps = state => {
     return {
-        users: state.user.users,
-        isLogin: state.auth.isLogin,
-        accessToken: state.auth.token,
+
     }
 }
 

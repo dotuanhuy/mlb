@@ -37,6 +37,11 @@ button {
     border: none;
 }
 
+.error {
+    color: red;
+    font-size: 14px;
+}
+
 .fw-500 {
     font-weight: 500
 }
@@ -47,6 +52,14 @@ button {
 
 .fs-18 {
     font-size: 18px;
+}
+
+.text-color-root-light {
+    color: #942319;
+}
+
+.text-color-root-bold {
+    color: #420500;
 }
 
 .text-sm-hover {
@@ -60,6 +73,21 @@ button {
 .button-hover {
     &:hover {
         opacity: 0.8;
+    }
+}
+
+.button-auth {
+    background: #212529;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #000;
+    text-transform: uppercase;
+
+    &:focus, &:hover {
+        color: #fff;
+        background-color: #420500;
+        border-color: #420500;
     }
 }
 

@@ -18,10 +18,10 @@ export const refreshStoreLogos = () => {
     }
 }
 
-export const getAllLogos  = (accessToken) => {
+export const getAllLogos  = () => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllLogosService(accessToken)
+            let res = await getAllLogosService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_LOGOS_SUCCESS,

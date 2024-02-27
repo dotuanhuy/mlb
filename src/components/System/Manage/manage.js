@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import './manage.scss'
-import { Link, useNavigate } from 'react-router-dom';
-import { path, Role } from '../../../utils';
-import * as actions from '../../../store/actions'
 import Sidebar from '../common/sidebars/Sidebar';
 import Dashboard from '../dashboards/Dashboard';
 import Navbar from '../common/navbar/Navbar';
 
-
-function Manage({accessToken, fetAllUsersRedux}) {
-    const navigate = useNavigate()   
+function Manage() {
     return (    
         <>
             <Navbar />
@@ -28,9 +23,6 @@ function Manage({accessToken, fetAllUsersRedux}) {
 
 const mapStateToProps = state => {
     return {
-        users: state.user.users,
-        isLogin: state.auth.isLogin,
-        accessToken: state.auth.token,
     }
 }
 

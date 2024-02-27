@@ -191,7 +191,6 @@ function Pagination({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct,
         countProduct: state.product.count,
         countUser: state.user.count,

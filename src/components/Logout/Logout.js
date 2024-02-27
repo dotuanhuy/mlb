@@ -9,8 +9,8 @@ function Logout({refreshStoreProduct, refreshStoreUser}) {
     useEffect(() => {
         refreshStoreProduct()
         refreshStoreUser()
+        navigate(path.LOGIN)
     }, [])
-    navigate(path.LOGIN)
     
     return (
         <></>
@@ -19,7 +19,6 @@ function Logout({refreshStoreProduct, refreshStoreUser}) {
 
 const mapStateToProps = state => {
     return {
-        token: state.auth.token,
     }
 }
 

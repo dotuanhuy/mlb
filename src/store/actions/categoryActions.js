@@ -21,10 +21,10 @@ export const refreshStoreCategory = () => {
     }
 }
 
-export const getAllCategories = (accessToken) => {
+export const getAllCategories = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllCategoriesService(accessToken)
+            let res = await getAllCategoriesService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_CATEGORIES_SUCCESS,
@@ -45,10 +45,10 @@ export const getAllCategories = (accessToken) => {
     }
 }
 
-export const getAllCategoriesDetail = (accessToken) => {
+export const getAllCategoriesDetail = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllCategoriesDetailService(accessToken)
+            let res = await getAllCategoriesDetailService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_CATEGORIES_DETAIL_SUCCESS,
@@ -69,10 +69,10 @@ export const getAllCategoriesDetail = (accessToken) => {
     }
 }
 
-export const getAllCategoriesDetailByType = (accessToken, categoryType) => {
+export const getAllCategoriesDetailByType = (categoryType) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllCategoriesDetailByTypeService(accessToken, categoryType)
+            let res = await getAllCategoriesDetailByTypeService(categoryType)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_CATEGORIES_DETAIL_BY_TYPE_SUCCESS,

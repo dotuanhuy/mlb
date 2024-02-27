@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import './PageProductSearchByName.scss'
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { path } from '../../../utils';
 import Navbar from '../../HomePage/Navbar/Navbar';
@@ -12,16 +12,15 @@ import ListProducts from '../../common/listProducts/ListProducts';
 import Banner from '../../common/Banners/Banner';
 
 function PageProductSearchByName({
-    accessToken,
-    productSearchOld, 
+    titlePage,
     productSearch,
     countProduct,
-    images, 
     isLoading, 
     refreshIsloadingStateProductRedux, 
     searchProductByNameLimitRedux,
     getAllImagesProductRedux
 }) {
+    const accessToken = window.localStorage.getItem('accessToken')
     const [params] = useSearchParams()
     const [searchParams] = useSearchParams();
     const productName = searchParams.get('pname')
@@ -31,15 +30,16 @@ function PageProductSearchByName({
     const [name, setName] = useState('')
 
     useEffect(() => {
+        document.title = titlePage
         refreshIsloadingStateProductRedux()
         if (productName) {
-            getAllImagesProductRedux(accessToken)
+            getAllImagesProductRedux()
         }
     }, [])
 
     useEffect(() => {
         if (productName) {
-            searchProductByNameLimitRedux(productName, params.get('page') || 1, accessToken) 
+            searchProductByNameLimitRedux(productName, params.get('page') || 1) 
         }
         if (body.current) {
             window.scrollTo({
@@ -67,7 +67,6 @@ function PageProductSearchByName({
         e.preventDefault()
         navigate(path.SEARCH_PRODUCT+`?pname=${name}`)
     }
-
 
     return (       
         <>
@@ -124,11 +123,8 @@ function PageProductSearchByName({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
-        productSearchOld: state.product.productSearch,
         productSearch: state.product.productSearchLimit,
         countProduct: state.product.count,
-        images: state.product.images,
         isLoading: state.product.isLoadingProduct
     }
 }
@@ -136,8 +132,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        searchProductByNameLimitRedux: (productName, offset, accessToken) => dispatch(actions.searchProductByNameLimit(productName, offset, accessToken)),
-        getAllImagesProductRedux: (accessToken) => dispatch(actions.getAllImagesProduct(accessToken)),       
+        searchProductByNameLimitRedux: (productName, offset) => dispatch(actions.searchProductByNameLimit(productName, offset)),
+        getAllImagesProductRedux: () => dispatch(actions.getAllImagesProduct()),       
     }
 }
 

@@ -11,6 +11,7 @@ import productReducer from "./productReducer";
 import imageReducer from "./imageReducer";
 import fouriteProductReducer from './favouriteProductReducer'
 import cartReducer from "./cartReducer";
+import firebaseReducer from "./firebaseReducer";
 import { combineReducers } from "redux";
 import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
@@ -24,7 +25,7 @@ const commonConfig = {
 const authConfig = {
     ...commonConfig,
     key: 'auth',
-    whitelist: ['isLogin', 'token']  // chọn những state lưu vào storage
+    whitelist: ['isLogin']  // chọn những state lưu vào storage
 }
 
 const rootReducer = combineReducers({
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
     image: imageReducer,
     fouriteProduct: fouriteProductReducer,
     cart: cartReducer,
+    firebase: firebaseReducer
 })
 
 export default rootReducer

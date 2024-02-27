@@ -1,11 +1,6 @@
 import axios from "../axios";
-import {createAxios} from '../axiosJWT'
 
-const getAllLogosService = (accessToken) => {
-    // if (accessToken) {
-    //     const axiosJWT = createAxios(accessToken)
-    //     return axiosJWT.get('/api-get-all-sizes-by-type', { headers: {token: `Bearer ${accessToken}`}})
-    // }
+const getAllLogosService = () => {
     return axios.get('/api/get-all-logos')
 }
 

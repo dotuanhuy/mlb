@@ -15,13 +15,12 @@ import { Modal } from 'react-bootstrap';
 function TableCategory({
     pathPage,
     users, 
-    accessToken, 
     isLoading, 
     refreshIsloadingStateRedux, 
-    fetAllUsersRedux, 
     getLimitUsersRedux,
     deleteUserRedux
 }) {
+    const accessToken = window.localStorage.getItem('accessToken')
     const navigate = useNavigate()   
     const [params] = useSearchParams()
     const [show, setShow] = useState({});
@@ -31,16 +30,15 @@ function TableCategory({
 
     useEffect(() => {
         refreshIsloadingStateRedux()
-        // fetAllUsersRedux(accessToken)
-        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1, accessToken)
+        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1)
     }, [])
 
     useEffect(() => {
-        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1, accessToken)
+        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1)
     }, [params?.get('page')])
 
     const handleDeleteUser = (id) => {
-        deleteUserRedux(id, accessToken, params.get('page') ? params.get('page') : 1)
+        deleteUserRedux(id, params.get('page') ? params.get('page') : 1)
     }
 
     const handleEdit = (user) => {
@@ -144,17 +142,15 @@ function TableCategory({
 const mapStateToProps = state => {
     return {
         users: state.user.users,
-        accessToken: state.auth.token,
         isLoading: state.user.isLoadingUser
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetAllUsersRedux: (accessToken) => dispatch(actions.fetAllUsers(accessToken)),
-        deleteUserRedux: (id, accessToken, page) => dispatch(actions.deleteUser(id, accessToken, page)),
+        deleteUserRedux: (id, page) => dispatch(actions.deleteUser(id, page)),
         refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState()),
-        getLimitUsersRedux: (page, accessToken) => dispatch(actions.getLimitUsers(page, accessToken))
+        getLimitUsersRedux: (page) => dispatch(actions.getLimitUsers(page))
     }
 }
 

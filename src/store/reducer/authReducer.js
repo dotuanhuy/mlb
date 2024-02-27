@@ -9,7 +9,7 @@ const authReducer = (state = initState, action) => {
     switch (action.type) {
         case 'LOGIN_SUCCESS': 
             state.isLogin = true
-            state.token = action?.data?.data?.accessToken
+            state.token = action?.data?.accessToken
             let {email, firstName, lastName, phone, gender, address, roleId} = action?.data?.data
             state.user = {
                 email,

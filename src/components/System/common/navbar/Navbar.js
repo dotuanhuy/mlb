@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { faBell, faMagnifyingGlass, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Navbar.scss'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import OutsideAlerter from '../../../../utils/OutSide';
 import * as actions from '../../../../store/actions'
 import { path } from '../../../../utils';
 
 function Navbar({
-    accessToken,
     fetLogoutRedux
 }) {
+    const accessToken = window.localStorage.getItem('accessToken')
     const navigate = useNavigate()
     const [nameUser, setNameUser] = useState('')
     const [active, setActive] = useState({
@@ -54,9 +54,6 @@ function Navbar({
             >
                 MLB
             </a>
-            {/* <button class="navbar-toggler position-absolute d-md-none collapsed">
-                <span class="navbar-toggler-icon"></span>
-            </button> */}
             <div className='col-2'>
                 <input class="form-control form-control-dark" type="text" placeholder="Search" aria-label="Search"/>
             </div>
@@ -94,7 +91,6 @@ function Navbar({
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
     }
 }
 

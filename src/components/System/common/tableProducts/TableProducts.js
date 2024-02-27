@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './TableProducts.scss'
-import { path, categorieType, formatVND, TitleProduct } from '../../../../utils';
+import { path, formatVND } from '../../../../utils';
 import * as actions from '../../../../store/actions'
 import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {Buffer} from 'buffer';
@@ -16,12 +16,12 @@ function TableProducts({
     categoryType, 
     actives,
     products, 
-    accessToken, 
     isLoading, 
     getProductByCategoryLimitRedux,
     deleteProductRedux, 
     refreshIsloadingStateProductRedux,
 }) {
+    const accessToken = window.localStorage.getItem('accessToken')
     const navigate = useNavigate()
     const [params] = useSearchParams()
     const {pathname} = useLocation()
@@ -35,8 +35,6 @@ function TableProducts({
     useEffect(() => {
         refreshIsloadingStateProductRedux()
         getProductByCategoryLimitRedux(categoryType, params?.get('page') ? params?.get('page') : 1)
-        // getAllProductsRedux(typeCategore, accessToken)
-        // getLimitProductsRedux(typeCategore, params.get('page') ? params.get('page') : 1, accessToken)
     }, [])
 
     useEffect(() => {
@@ -87,7 +85,7 @@ function TableProducts({
     // }, [params.get('page')])
     
     const handleDeleteProduct = (id) => {
-        deleteProductRedux(id, categoryType, accessToken, params.get('page') ? params.get('page') : 1)
+        deleteProductRedux(id, categoryType, params.get('page') ? params.get('page') : 1)
     }
 
     const handleEdit = (id) => {
@@ -255,7 +253,6 @@ function TableProducts({
 const mapStateToProps = state => {
     return {
         products: state.product.products,
-        accessToken: state.auth.token,
         isLoading: state.product.isLoadingProduct
     }
 }
@@ -263,7 +260,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getProductByCategoryLimitRedux:  (type, offset) => dispatch(actions.getProductByCategoryLimit(type, offset)),
-        deleteProductRedux: (id, typeCategore, accessToken, page) => dispatch(actions.deleteProduct(id, typeCategore, accessToken, page)),
+        deleteProductRedux: (id, typeCategore, page) => dispatch(actions.deleteProduct(id, typeCategore, page)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
     }
 }

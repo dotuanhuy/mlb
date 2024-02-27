@@ -1,25 +1,24 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
+const accessToken = window.localStorage.getItem('accessToken')
+const axiosJWT = createAxios()
 
-const getAllProductsFavouriteService = (accessToken, userId) => {
+const getAllProductsFavouriteService = (userId) => {
     if (accessToken) {
-        const axiosJWT = createAxios(accessToken)
         return axiosJWT.get(`/api/get-all-favourite-products?userId=${userId}`, { headers: { token: `Bearer ${accessToken}` }})
     }
     return axios.get(`/api/get-all-favourite-products?userId=${userId}`)
 }
 
-const getAllProductsFavouriteLimitService = (accessToken, userId, offset) => {
+const getAllProductsFavouriteLimitService = (userId, offset) => {
     if (accessToken) {
-        const axiosJWT = createAxios(accessToken)
         return axiosJWT.get(`/api/get-all-favourite-products-limit?userId=${userId}&offset=${offset}`, { headers: { token: `Bearer ${accessToken}` }})
     }
     return axios.get(`/api/get-all-favourite-products-limit-limit?userId=${userId}&offset=${offset}`)
 }
 
-const changeProductFavouriteService = (accessToken, data) => {
+const changeProductFavouriteService = (data) => {
     if (accessToken) {
-        const axiosJWT = createAxios(accessToken)
         return axiosJWT.post(`/api/add-product-favourite`, data, { headers: { token: `Bearer ${accessToken}` }})
     }
     return axios.post(`/api/add-product-favourite`, data)

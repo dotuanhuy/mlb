@@ -1,20 +1,23 @@
-import React, { useEffect, memo } from 'react';
-import {Routes, Route, redirect, useNavigate } from 'react-router-dom';
+import React, { memo } from 'react';
+import {Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from '.././utils'
 import Login from '../components/Login/Login';
 import Register from '../components/Register/Register';
 import Logout from '../components/Logout/Logout';
+import LoginSuccess from '../components/Login/loginSuccess';
+import VerifyOtp from '../components/common/verifys/VerifyOtp';
 
 
-function AuthRoute({isLogin}) {
+function AuthRoute() {
 
     return (
         <>
             <Routes>
-                <Route path={path.LOGIN} element={<Login />}/>
-                <Route path={path.REGISTER} element={<Register />}/>
-                <Route path={path.LOG_OUT} element={<Logout />}></Route>
+                <Route path={path.LOGIN} element={<Login titlePage='Đăng nhập' />}/>
+                <Route path={path.REGISTER} element={<Register titlePage='Đăng ký' />}/>
+                <Route path={path.LOGIN_SUCCESS} element={<LoginSuccess />} />
+                <Route path={path.LOG_OUT} element={<Logout titlePage='Đăng xuất'/>}></Route>
             </Routes>
         </>
     );
@@ -22,7 +25,6 @@ function AuthRoute({isLogin}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
     }
 }
 

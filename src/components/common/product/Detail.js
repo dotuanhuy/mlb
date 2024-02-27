@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import jwt_decode from 'jwt-decode';
@@ -7,16 +7,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './Detail.scss'
 import { toast } from 'react-toastify';
+import { faFileLines } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
 
 
-
-function Detail({accessToken, product, sizes, addProductToCartRedux}) {
-    const [discount, setDiscount] = useState('')
+function Detail({product, addProductToCartRedux}) {
     const [size, setSize] = useState('')
     const [quantity, setQuantity] = useState(1)
     const [userId, setUserId] = useState('')
+    const body = useRef()
+    const initialRender = useRef(true)
+    const accessToken = window.localStorage.getItem('accessToken')
 
     useEffect(() => {
+        document.title = product.name
         if (accessToken) {
             let tokenDecoded = jwt_decode(accessToken)
             setUserId(tokenDecoded?.id)
@@ -24,13 +28,21 @@ function Detail({accessToken, product, sizes, addProductToCartRedux}) {
     }, [])
 
     useEffect(() => {
-        let dis = 0
-        if (product?.dataDiscount?.valueEn !== '0') {
-            dis = parseFloat(product?.dataDiscount?.valueEn.split('%')[0])
-            dis = product?.price - (dis/100 * product?.price)
-            setDiscount(dis)
+        if (initialRender.current) {
+            initialRender.current = false
         }
-        setSize(sizes?.at(0))
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop - 100
+                });
+            }
+        }
+    }, [body.current])
+
+    useEffect(() => {
+        setSize(product?.dataSizeDetail?.at(0)?.name)
     }, [product])
 
     const handleOnchangeRadio = e => {
@@ -65,11 +77,11 @@ function Detail({accessToken, product, sizes, addProductToCartRedux}) {
                 để tới giỏ hàng
             </span>
         ), { autoClose: 3000 })
-        addProductToCartRedux(accessToken, { userId, productId: product?.id, quantity:quantity, size})
+        addProductToCartRedux({ userId, productId: product?.id, quantity: quantity, size })
     }
    
     return (
-        <div className='product-detail'>
+        <div ref={body} className='product-detail'>
             <h3 className='fs-4'>{product?.name}</h3>
             <div className='mb-1'>
                 <span className='text-banner text-muted'>Đánh giá sản phẩm này</span>
@@ -77,29 +89,29 @@ function Detail({accessToken, product, sizes, addProductToCartRedux}) {
             <div className='banner d-flex gap-4 mb-2'>
                 <div className='brand'>
                     <span className='text-banner text-muted'>Thương hiệu: 
-                        <span className='text-black fs-6'> {product?.dataBrand?.valueEn}</span>
+                        <span className='text-black fs-6'> {product?.dataBrands?.name}</span>
                     </span>
                 </div>
                 <div className='code'>
                     <span className='text-banner text-muted'>Mã: 
-                        <span className='text-black fs-6'> {product?.productCode}</span>
+                        <span className='text-black fs-6'> {product?.code}</span>
                     </span>
                 </div>
             </div>
             <div className='price mb-2'>
                 {
-                    discount ? <span className='price-last fs-4 fw-bold' style={{ color: '#942319' }}>{formatVND(discount)}</span> : ''
+                    product?.dataDiscounts?.value !== 0 ? <span className='price-last fs-4 fw-bold' style={{ color: '#942319' }}>{formatVND(+product?.price - +product?.price*+product?.dataDiscounts?.value)}</span> : ''
                 }
                 <span 
-                    className={discount ? 'price-begin fs-5 ms-2 text-decoration-line-through' : 'price-begin fs-4 fw-bold'} 
-                    style={discount ? { color: '#949494' } : { color: '#942319' }}
+                    className={product?.dataDiscounts?.value !== 0 ? 'price-begin fs-5 ms-2 text-decoration-line-through' : 'price-begin fs-4 fw-bold'} 
+                    style={product?.dataDiscounts?.value !== 0 ? { color: '#949494' } : { color: '#942319' }}
                 >
                     {formatVND(product?.price)}
                 </span>
             </div>
             <form>
                 {
-                    product?.categoresId === listBag.BALO || product?.categoresId === listBag.BAG || product?.categoresId === listHat.HAT1 || product?.categoresId === listHat.HAT2 ?
+                    product?.dataSizeDetail?.length === 0 ?
                     '' : 
                     <div className='size'>
                         <div className='title mb-2'>
@@ -107,29 +119,28 @@ function Detail({accessToken, product, sizes, addProductToCartRedux}) {
                             <span style={{ color: '#942319', fontWeight: '600'}}> {size}</span>
                         </div>
                         <div className='select-size mb-2'>
-                            <div className='row gap-2'>
+                            <div className='row gy-2'>
                                 {   
-                                    sizes && sizes.length > 0 &&
-                                    sizes.map((item, index) => {
+                                    product?.dataSizeDetail?.map((item, index) => {
                                         return (
                                             <div 
-                                                className='col-2' 
+                                                className='col-3' 
                                                 key={index}
                                             >
                                                 <input 
                                                     type="radio" 
-                                                    checked={size === item ? true : false}
-                                                    className="form-check-input" 
-                                                    id={`checkItem${item}`}
-                                                    value={item}
+                                                    checked={size === item.name ? true : false}
+                                                    className="form-control" 
+                                                    id={`checkItem${item.name}`}
+                                                    value={item.name}
                                                     onChange={e => handleOnchangeRadio(e)}
                                                     hidden={true}
                                                 />
                                                 <label 
-                                                    className={size === item ? 'form-check-label rounded p-2 px-4 active' : 'form-check-label rounded p-2 px-4 label-select'}
-                                                    htmlFor={`checkItem${item}`}
+                                                    className={size === item.name ? 'form-check-label rounded active py-2 w-100 text-center' : 'form-check-label rounded py-2 w-100 text-center label-select'}
+                                                    htmlFor={`checkItem${item.name}`}
                                                 >
-                                                    {item}
+                                                    {item.name}
                                                 </label>
                                             </div>
                                         )
@@ -151,7 +162,6 @@ function Detail({accessToken, product, sizes, addProductToCartRedux}) {
                         <input 
                             type='number' 
                             className='form-control w-100' 
-                            defaultValue={1}
                             min={1}
                             max={100}
                             value={quantity}
@@ -168,7 +178,7 @@ function Detail({accessToken, product, sizes, addProductToCartRedux}) {
                 <div className='d-flex mt-3 gap-3'>
                     <div className='add-cart col-md-5'>
                         <button  
-                            className='btn btn-add-cart text-white w-100'
+                            className='btn btn-add-cart text-white w-100 fw-500'
                             onClick={(e) => handleAddCart(e)}
                         >
                             Thêm vào giỏ hàng
@@ -176,28 +186,36 @@ function Detail({accessToken, product, sizes, addProductToCartRedux}) {
                     </div>
                     <div className='add-cart col-md-5'>
                         <button  
-                            className='btn btn-add-buy text-white w-100'
+                            className='btn btn-add-buy text-white w-100 fw-500'
                         >
                             Mua ngay
                         </button>
                     </div>
                 </div>
             </form>
+            <div className='mt-2 fw-500 fs-14'>
+                <Link
+                    className='text-color-root-bold'
+                    to={path.TUTORIAL_SIZE}
+                    target='_blank'
+                >
+                    <FontAwesomeIcon className='pe-2' icon={faFileLines} />
+                    Xem hướng dẫn chọn size
+                </Link>
+            </div>
         </div>
     );
 }
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.auth.token,
         product: state.product.products,
-        sizes: state.product.sizes
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        addProductToCartRedux: (accessToken, data) => dispatch(actions.addProductToCart(accessToken, data))        
+        addProductToCartRedux: (data) => dispatch(actions.addProductToCart(data))        
 
     }
 }
