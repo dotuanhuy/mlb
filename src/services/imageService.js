@@ -1,9 +1,9 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
-const accessToken = window.localStorage.getItem('accessToken')
 const axiosJWT = createAxios()
 
 const getAllImageProductService = () => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get('/api/get-all-images-product')
     }
@@ -11,6 +11,7 @@ const getAllImageProductService = () => {
 }
 
 const getAllImagesByProductIdService = (id) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-all-images-by-productId?id=${id}`)
     }
@@ -30,6 +31,7 @@ const deleteImageProductService = (data) => {
 }
 
 const getImageProductByCategoryService = (category) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-image-product-by-category?category=${category}`)
     }

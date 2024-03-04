@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import * as actions from '../../../store/actions'
 import jwt_decode from 'jwt-decode'
 import { path } from '../../../utils';
+import { Modal } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 
 function Cart({
@@ -15,6 +17,8 @@ function Cart({
 }) {
     const [userId, setUserId] = useState('')
     const accessToken = window.localStorage.getItem('accessToken')
+    const [show, setShow] = useState({})
+    const navigate = useNavigate()
     
     useEffect(() => {
         if (accessToken) {
@@ -22,6 +26,8 @@ function Cart({
             setUserId(tokenDecoded?.id)
         }
     }, [])
+
+    const handleClose = () => setShow({});
 
     const CustomToast = () => (
         <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
@@ -32,10 +38,18 @@ function Cart({
     )
 
     const handleAddCart = () => {
-        toast.info(CustomToast, { autoClose: 3000 })
-        addProductToCartRedux({ userId, productId, quantity:1, size})
+        if (accessToken) {
+            toast.info(CustomToast, { autoClose: 3000 })
+            addProductToCartRedux({ userId, productId, quantity:1, size})
+        }
+        else {
+            setShow({id: productId})
+        }
     }
 
+    const handlePathToLogin = () => {
+        navigate(path.LOGIN)
+    }
     
     return (
         <>    
@@ -49,6 +63,26 @@ function Cart({
                     <FontAwesomeIcon icon={faCartShopping} />
                 </button>
             </div>
+            <Modal show={show?.id === productId || false} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Cảnh báo</Modal.Title>
+                </Modal.Header>
+                <Modal.Body><span className='fw-500'>Bạn cần đăng nhập để thêm sản phẩm yêu thích</span></Modal.Body>
+                <Modal.Footer>
+                    <button 
+                        className='btn btn-secondary' 
+                        onClick={handleClose}
+                    >
+                        Hủy
+                    </button>
+                    <button 
+                        className='btn btn-root fw-500' 
+                        onClick={handlePathToLogin}
+                    >
+                        Đăng nhập
+                    </button>
+                </Modal.Footer>
+            </Modal> 
         </>
     )
 }

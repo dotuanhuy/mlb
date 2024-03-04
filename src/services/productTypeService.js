@@ -1,9 +1,9 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
-const accessToken = window.localStorage.getItem('accessToken')
 const axiosJWT = createAxios()
 
 const getAllProductTypesService = () => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get('/api/get-all-product-type')
     }
@@ -13,6 +13,7 @@ const getAllProductTypesService = () => {
 }
 
 const getLimitProductTypesService = (page) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-product-type-limit?page=${page}`)
     }
@@ -22,6 +23,7 @@ const getLimitProductTypesService = (page) => {
 }
 
 const getProductTypeByCategoryIdService = (categoryId) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-product-type-by-categoryId?categoryId=${categoryId}`)
     }
@@ -31,6 +33,7 @@ const getProductTypeByCategoryIdService = (categoryId) => {
 }
 
 const getProductTypeByIdService = (id) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-product-type-by-id?id=${id}`)
     }

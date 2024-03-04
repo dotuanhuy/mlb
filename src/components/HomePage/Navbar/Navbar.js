@@ -5,7 +5,7 @@ import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { shoes, bag, logo } from '../../../utils/images';
 import './Navbar.scss'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { categorieType, path } from '../../../utils';
 import jwt_decode from "jwt-decode";
@@ -30,6 +30,7 @@ function Navbar({
 }) {
     const [userLogin, setUserLogin] = useState(initState)
     const [currentActive, setCurrentActive] = useState()
+    const navigate = useNavigate()
 
     useEffect(() => {
         // refreshStoreProductType()
@@ -45,8 +46,10 @@ function Navbar({
         getAllProductTypesRedux()
     }, [])
     
-    const handleLogout = async () => {
+    const handleLogout = () => {
         fetLogoutRedux()
+        window.localStorage.removeItem('accessToken')
+        navigate(path.LOG_OUT)
     }
 
     return (

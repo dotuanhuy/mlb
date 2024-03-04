@@ -3,12 +3,15 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../utils';
 import * as actions from '../../store/actions'
+import { useDispatch } from 'react-redux';
 
-function Logout({refreshStoreProduct, refreshStoreUser}) {
+function Logout() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     useEffect(() => {
-        refreshStoreProduct()
-        refreshStoreUser()
+        dispatch(actions.refreshStoreProduct())
+        dispatch(actions.refreshStoreUser())
+        dispatch(actions.refreshIStateFavouriteProduct())
         navigate(path.LOGIN)
     }, [])
     
@@ -24,8 +27,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshStoreProduct: () => dispatch(actions.refreshStoreProduct()),
-        refreshStoreUser: () => dispatch(actions.refreshStoreUser())
     }
 }
 

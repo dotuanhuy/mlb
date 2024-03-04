@@ -37,6 +37,8 @@ export const loginWithGoogle = (id, token) => {
         try {
             let res = await loginWithGoogleService(id, token)
             if (res && res.errCode === 0) {
+                console.log(res)
+                window.localStorage.setItem('accessToken', res.accessToken)
                 dispatch({
                     type: actionTypes.LOGIN_SUCCESS,
                     data: res
@@ -60,9 +62,7 @@ export const fetLogout = () => {
     return async (dispatch, getSate) => {
         try {
             let res = await handleLogoutAPI() 
-            console.log(res)
             if (res && res.errCode === 0) {
-                window.localStorage.removeItem('accessToken')
                 dispatch({
                     type: actionTypes.LOGOUT_SUCCESS
                 })

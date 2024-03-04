@@ -83,7 +83,7 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
                                     <p>Để đảm bảo tính bảo mật vui lòng đặt mật khẩu với ít nhất 8 kí tự</p>
                                     <form>
                                         <div className="form-group pb-4">
-                                            <label className='label-input pb-2' htmlFor="exampleInputPassword1">MẬT KHẨU CŨ *</label>
+                                            <label className='label-input pb-2' htmlFor="exampleInputPassword1">MẬT KHẨU CŨ<span className='text-danger'>*</span></label>
                                             <input 
                                                 type="password" 
                                                 className="form-control" 
@@ -102,7 +102,7 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
                                             }
                                         </div>
                                         <div className="form-group pb-4">
-                                            <label className='label-input pb-2' htmlFor="exampleInputPassword1">MẬT KHẨU MỚI *</label>
+                                            <label className='label-input pb-2' htmlFor="exampleInputPassword1">MẬT KHẨU MỚI<span className='text-danger'>*</span></label>
                                             <input 
                                                 type="password" 
                                                 className="form-control" 
@@ -121,7 +121,7 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
                                             }
                                         </div>
                                         <div className="form-group">
-                                            <label className='label-input pb-2' htmlFor="exampleInputPassword2">XÁC NHẬN LẠI MẬT KHẨU MỚI *</label>
+                                            <label className='label-input pb-2' htmlFor="exampleInputPassword2">XÁC NHẬN LẠI MẬT KHẨU MỚI<span className='text-danger'>*</span></label>
                                             <input 
                                                 type="password" 
                                                 className="form-control" 

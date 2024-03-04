@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../HomePage/Navbar/Navbar';
 import './Register.scss'
@@ -10,6 +10,8 @@ import { validate } from '../../validate/valiedate';
 import { Modal } from 'react-bootstrap';
 import LoginOrther from '../common/loginOrthers/LoginOrther';
 import VerifyOtp from '../common/verifys/VerifyOtp';
+import Banner from '../common/Banners/Banner';
+import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 
 const inintState = {
     firstName: '',
@@ -31,11 +33,38 @@ function Register({titlePage, errMessage, errCode, isVerify, email, createNewUse
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
     const [isVerifyState, setIsverifyState] = useState(false)
+    const body = useRef()
+    const initialRender  = useRef(true)
 
     useEffect(() => {
         refreshStoreUserRedux()
         document.title = titlePage
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop
+                });
+            }
+        }
     }, [])
+
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop - 80
+                });
+            }
+        }
+    }, [body.current])
 
     useEffect(() => {
         if (errMessage) {
@@ -75,20 +104,8 @@ function Register({titlePage, errMessage, errCode, isVerify, email, createNewUse
             <Navbar />  
             <div className='register'>
                 <div className='register-container'>
-                    <div className='register-header'>
-                        <div className='title'>
-                            ĐĂNG Ký TÀI KHOẢN
-                        </div>
-                        <ul className='list-link'>
-                            <li className='item-link-home'>
-                                <Link to='/'>Trang chủ</Link>
-                            </li>
-                            <li>
-                                <span>Đăng ký tài khoản</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className='register-box'>
+                    <Banner categoryProduct='Đăng ký tài khoản' title='Đăng ký tài khoản'/>
+                    <div ref={body}  className='register-box'>
                         <div className='register-form-container'>
                             <div className='register-form-header'>
                                 <div className='title'>
@@ -234,6 +251,7 @@ function Register({titlePage, errMessage, errCode, isVerify, email, createNewUse
                 </Modal.Footer>
             </Modal>
             </div>
+            <HomeFooter />
         </div>
     );
 }

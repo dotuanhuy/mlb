@@ -1,8 +1,8 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
-const accessToken = window.localStorage.getItem('accessToken')
 
 const getAllBrandsService = () => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         const axiosJWT = createAxios()
         // return axiosJWT.get('/api/get-all-brands', { headers: {token: `Bearer ${accessToken}`}})

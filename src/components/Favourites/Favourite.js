@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from '../../utils';
 import Loading from '../common/Loading/Loading';
@@ -23,6 +23,7 @@ function Favourite({
     const body = useRef()
     const initialRender  = useRef(true)
     const accessToken = window.localStorage.getItem('accessToken')
+    const navigate = useNavigate()
     
     useEffect(() => {
         document.title = titlePage
@@ -48,6 +49,9 @@ function Favourite({
         if (accessToken) {
             let tokenDecoded = jwt_decode(accessToken)
             userId = tokenDecoded?.id
+        }
+        else {
+            navigate(path.LOGIN)
         }
         if (userId) {
             getAllProductsFavouriteLimitRedux(userId, params.get('page') || 1)

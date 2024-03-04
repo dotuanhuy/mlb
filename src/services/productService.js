@@ -1,6 +1,5 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
-const accessToken = window.localStorage.getItem('accessToken')
 const axiosJWT = createAxios()
 
 const getAllProductsService = (type) => {
@@ -9,6 +8,7 @@ const getAllProductsService = (type) => {
 }
 
 const getAllProductPublicService = () => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get('/api/get-all-product-public')
     }
@@ -30,6 +30,7 @@ const deleteProductService = (id) => {
 }
 
 const getProductByIdService = (id) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-product-by-id?id=${id}`)
     }
@@ -73,6 +74,7 @@ const getProductByCategoryLimitService = (type, offset) => {
 }
 
 const getLimitProductService = (categore, page) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-limit-products?categore=${categore}&page=${page}`)
     }
@@ -87,7 +89,7 @@ const getLimitProductByOptionSortService = (optionData, page, option) => {
     // }
     // else
     //     return axios.get(`/api/get-limit-product-by-option-sort?categore=${categore}&page=${page}&option=${option}`)
-
+    const accessToken = window.localStorage.getItem('accessToken')
     let url = `/api/get-limit-product-by-option-sort?page=${page}&option=${option}`
     url = optionData?.optionType ? url + `&type=${optionData?.optionType}` : url
     url = optionData?.colors? url + `&colors=${optionData?.colors}` : url
@@ -105,6 +107,7 @@ const searchProductByNameService = (productName, offset) => {
 }
 
 const searchProductByNameServiceLimit = (productName, offset) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/search-product-by-name-limit?productName=${productName}&offset=${offset}`, { headers: {token: `Bearer ${accessToken}`}})
     }

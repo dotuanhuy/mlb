@@ -4,7 +4,7 @@ import * as actions from '../../../store/actions'
 import { Link } from "react-router-dom";
 import './Banner.scss'
 
-function Banner({categoryProduct, title}) {
+function Banner({categoryProduct, title}) { 
     
     return (
         <div className='product-banner d-flex justify-content-center align-items-center text-white'>

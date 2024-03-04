@@ -1,9 +1,9 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
-const accessToken = window.localStorage.getItem('accessToken')
 const axiosJWT = createAxios()
 
 const getAllCategoriesService = () => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get('/api/get-all-categories')
     }
@@ -16,6 +16,7 @@ const getAllCategoriesDetailService = () => {
 }
 
 const getAllCategoriesDetailByTypeService = (type) => {
+    const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-all-categories-detail-by-type?type=${type}`)
     }

@@ -1,9 +1,9 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
-const accessToken = window.localStorage.getItem('accessToken')
 const axiosJWT = createAxios()
 
 const getAllProductsFavouriteService = (userId) => {
+    let accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-all-favourite-products?userId=${userId}`, { headers: { token: `Bearer ${accessToken}` }})
     }
@@ -11,6 +11,7 @@ const getAllProductsFavouriteService = (userId) => {
 }
 
 const getAllProductsFavouriteLimitService = (userId, offset) => {
+    let accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.get(`/api/get-all-favourite-products-limit?userId=${userId}&offset=${offset}`, { headers: { token: `Bearer ${accessToken}` }})
     }
@@ -18,6 +19,7 @@ const getAllProductsFavouriteLimitService = (userId, offset) => {
 }
 
 const changeProductFavouriteService = (data) => {
+    let accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.post(`/api/add-product-favourite`, data, { headers: { token: `Bearer ${accessToken}` }})
     }

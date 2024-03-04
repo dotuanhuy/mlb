@@ -43,6 +43,7 @@ function Navbar({
 
     const handleLogout = async () => {
         fetLogoutRedux()
+        window.localStorage.removeItem('accessToken')
         navigate(path.LOG_OUT)
     }
 

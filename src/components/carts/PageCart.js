@@ -9,7 +9,7 @@ import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 import jwtDecode from 'jwt-decode';
 import Banner from '../common/Banners/Banner';
 import { formatVND, path, typeStep } from '../../utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Buffer } from 'buffer';
 import './PageCart.scss'
 import { Modal } from 'react-bootstrap';
@@ -28,6 +28,7 @@ function PageCart({
     const [show, setShow] = useState({})
     const body = useRef()
     const initialRender  = useRef(true)
+    const navigate = useNavigate()
 
     const handleClose = () => setShow({});
     const handleShow = (id) => setShow({id})
@@ -37,6 +38,9 @@ function PageCart({
         if (accessToken) {
             let tokenDecoded = jwtDecode(accessToken)
             setUserId(tokenDecoded?.id)
+        }
+        else {
+            navigate(path.LOGIN)
         }
     }, [])
     

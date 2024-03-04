@@ -6,8 +6,6 @@ import Login from '../components/Login/Login';
 import Register from '../components/Register/Register';
 import Logout from '../components/Logout/Logout';
 import LoginSuccess from '../components/Login/loginSuccess';
-import VerifyOtp from '../components/common/verifys/VerifyOtp';
-
 
 function AuthRoute() {
 

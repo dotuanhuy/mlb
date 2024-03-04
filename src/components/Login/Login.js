@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo, useRef } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../HomePage/Navbar/Navbar';
 import './Login.scss'
@@ -7,6 +7,8 @@ import { path,  } from '../../utils'
 import * as actions from '../../store/actions'
 import { useNavigate } from 'react-router-dom';
 import LoginOrther from '../common/loginOrthers/LoginOrther';
+import Banner from '../common/Banners/Banner';
+import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
 
 const initState = {
     email: '',
@@ -16,13 +18,40 @@ const initState = {
 function Login({titlePage, user, isLogin, fetLoginRedux}) {
     const [dataInput, setDataInput] = useState(initState)
     const navigate = useNavigate()
+    const body = useRef()
+    const initialRender  = useRef(true)
     
     useEffect(() => {
-            document.title = titlePage
+        document.title = titlePage
         if(isLogin) {
             navigate(path.HOMEPAGE)
         }
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop
+                });
+            }
+        }
     }, [])
+
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop - 80
+                });
+            }
+        }
+    }, [body.current])
 
     useEffect(() => {
         if (isLogin && user.roleId === 1) {
@@ -43,20 +72,8 @@ function Login({titlePage, user, isLogin, fetLoginRedux}) {
             <Navbar />  
             <div className='login'>
                 <div className='login-container'>
-                    <div className='login-header'>
-                        <div className='title'>
-                            ĐĂNG NHẬP TÀI KHOẢN
-                        </div>
-                        <ul className='list-link'>
-                            <li className='item-link-home'>
-                                <Link to='/'>Trang chủ</Link>
-                            </li>
-                            <li>
-                                <span>Đăng nhập tài khoản</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className='login-box'>
+                    <Banner categoryProduct='Đăng nhập tài khoản' title='Đăng nhập tài khoản'/>
+                    <div ref={body} className='login-box'>
                         <div className='login-form-container'>
                             <div className='login-form-header'>
                                 <div className='title title-login'>
@@ -124,6 +141,7 @@ function Login({titlePage, user, isLogin, fetLoginRedux}) {
                     </div>
                 </div>
             </div>
+            <HomeFooter />
         </div>
     );
 }
