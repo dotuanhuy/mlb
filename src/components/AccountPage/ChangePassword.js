@@ -9,6 +9,7 @@ import Account from './Account';
 import * as action from '../../store/actions'
 import { validate } from '../../validate/valiedate';
 import Banner from '../common/Banners/Banner';
+import { path } from '../../utils';
 
 const initState = {
     firstName: '',
@@ -41,7 +42,7 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
             })
         }
         else {
-            navigate('/login')
+            navigate(path.LOGIN)
         }
     }, [])
 
@@ -49,7 +50,7 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
         if (isResetPassword) {
             alert("Đổi mật khẩu thành công, vui lòng đăng nhập lại")
             fetLogoutRedux()
-            navigate('/login')
+            navigate(path.HOMEPAGE)
         }
     }, [isResetPassword])
 

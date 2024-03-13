@@ -39,8 +39,8 @@ function Cart({
 
     const handleAddCart = () => {
         if (accessToken) {
-            toast.info(CustomToast, { autoClose: 3000 })
             addProductToCartRedux({ userId, productId, quantity:1, size})
+            toast.info(CustomToast, { autoClose: 3000 })
         }
         else {
             setShow({id: productId})

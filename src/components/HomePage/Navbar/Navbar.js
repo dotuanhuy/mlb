@@ -26,10 +26,12 @@ function Navbar({
     refreshStoreProductType,
     getAllProductsFavouriteRedux, 
     fetLogoutRedux,
-    getAllProductTypesRedux
+    getAllProductTypesRedux,
+    refreshIStateFavouriteProduct
 }) {
     const [userLogin, setUserLogin] = useState(initState)
     const [currentActive, setCurrentActive] = useState()
+    const [userId, setUserId] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -41,15 +43,23 @@ function Navbar({
                 firstName: tokenDecoded.firstName,
                 lastName: tokenDecoded.lastName,
             })
-            getAllProductsFavouriteRedux(tokenDecoded.id)
+            setUserId(tokenDecoded.id)
+        }
+        else {
+            setUserId('')
         }
         getAllProductTypesRedux()
     }, [])
-    
+
+    useEffect(() => {
+        if (userId) {
+            getAllProductsFavouriteRedux(userId)
+        }
+    }, [userId])
+
     const handleLogout = () => {
         fetLogoutRedux()
-        window.localStorage.removeItem('accessToken')
-        navigate(path.LOG_OUT)
+        navigate(path.HOMEPAGE)
     }
 
     return (
@@ -306,7 +316,8 @@ const mapDispatchToProps = dispatch => {
         refreshStoreProductType: () => dispatch(actions.refreshStoreProductType()),
         fetLogoutRedux: () => dispatch(actions.fetLogout()),
         getAllProductsFavouriteRedux: (userId) => dispatch(actions.getAllProductsFavourite(userId)),
-        getAllProductTypesRedux: () => dispatch(actions.getAllProductTypes())
+        getAllProductTypesRedux: () => dispatch(actions.getAllProductTypes()),
+        refreshIStateFavouriteProduct: () => dispatch(actions.refreshIStateFavouriteProduct())
     }
 }
 

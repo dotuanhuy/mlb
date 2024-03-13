@@ -2,14 +2,13 @@ import React, { memo, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import jwt_decode from 'jwt-decode';
-import { formatVND, listBag, listHat, path } from '../../../utils';
+import { formatVND, path } from '../../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './Detail.scss'
 import { toast } from 'react-toastify';
 import { faFileLines } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
-
 
 function Detail({product, addProductToCartRedux}) {
     const [size, setSize] = useState('')

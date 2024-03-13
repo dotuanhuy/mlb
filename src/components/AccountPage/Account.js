@@ -23,6 +23,7 @@ function Account({userLogin, activeType, fetLogoutRedux}) {
 
     const handleLogout = () => {
         fetLogoutRedux()
+        navigate(path.HOMEPAGE)
     }
 
     return (

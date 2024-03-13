@@ -19,7 +19,7 @@ const handleLogoutAPI = () => {
 }
 
 const resetPasswordService = (data) => {
-    return axios.post('/api/reset-password', data)
+    return axiosJWT.post('/api/reset-password', data)
 }
 
 export {

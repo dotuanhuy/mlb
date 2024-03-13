@@ -133,6 +133,17 @@ button {
     &:hover {
         opacity: 0.7 !important;
         color: #fff;
+    }
+}
+
+.btn-sub {
+    background: #b835bb !important;
+    color: #fff;
+    font-size: 14px;
+
+    &:hover {
+        opacity: 0.7 !important;
+        color: #fff;
 
     }
 }
@@ -145,6 +156,10 @@ button {
 .bg-root {
     background: #420500 !important;
     border: none;
+}
+
+.bg-nav-2 {
+    background: #323c42;
 }
 
 @keyframes identifier {

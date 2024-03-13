@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 function Logout() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    console.log('logout')
     useEffect(() => {
         dispatch(actions.refreshStoreProduct())
         dispatch(actions.refreshStoreUser())
