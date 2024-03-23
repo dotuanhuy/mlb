@@ -18,7 +18,7 @@ function ListCarts({
     countProducts,
     getProductsInCartByUserRedux,
     deleteProductInCartRedux,
-    deleteAProductInCartRedux
+    changeCartRedux
 }) {
     const [userId, setUserId] = useState('')
     const [show, setShow] = useState({})
@@ -40,16 +40,16 @@ function ListCarts({
         }
     }, [userId])
 
-    const handleStepDown = (productId, size, cartId, down) => {
-        deleteAProductInCartRedux({ productId, cartId, userId, size, typeStep: down })
+    const handleStepDown = (cartDetailId, down) => {
+        changeCartRedux({ cartDetailId, userId, typeStep: down })
     }
 
-    const handleStepUp = (productId, size, cartId, up) => {
-        deleteAProductInCartRedux({ productId, cartId, userId, size, typeStep: up })
+    const handleStepUp = (cartDetailId, up) => {
+        changeCartRedux({ cartDetailId, userId, typeStep: up })
     }
     
-    const handleDeleteProductCart = (productId, size, cartId) => {
-        deleteProductInCartRedux({ productId, userId, cartId, size })
+    const handleDeleteProductCart = (cartDetailId) => {
+        deleteProductInCartRedux({ cartDetailId, userId })
     }
 
     const handleOnchangeQuantity = e => {
@@ -140,7 +140,7 @@ function ListCarts({
                                                                     <div className='col-md-6 d-flex'>
                                                                         <button 
                                                                             className="btn py-0 px-2 button-hover"
-                                                                            onClick={() => handleStepDown(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId, typeStep.DOWN)}
+                                                                            onClick={() => handleStepDown(item?.dataCartProduct?.CartDetail?.id, typeStep.DOWN)}
                                                                         >
                                                                             <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faMinus} />
                                                                         </button>
@@ -153,11 +153,12 @@ function ListCarts({
                                                                             className="form-control form-control-sm py-0" 
                                                                             value={+item.dataCartProduct.CartDetail.quantity} 
                                                                             onChange={e => handleOnchangeQuantity(e)}
+                                                                            disabled
                                                                         />
 
                                                                         <button 
                                                                             className="btn py-0 px-2 button-hover"
-                                                                            onClick={() => handleStepUp(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId, typeStep.UP)}
+                                                                            onClick={() => handleStepUp(item?.dataCartProduct?.CartDetail?.id, typeStep.UP)}
                                                                         >
                                                                             <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faPlus} />
                                                                         </button>
@@ -184,7 +185,7 @@ function ListCarts({
                                                                             </button>
                                                                             <button 
                                                                                 className='btn btn-root fw-500' 
-                                                                                onClick={() => handleDeleteProductCart(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId)}
+                                                                                onClick={() => handleDeleteProductCart(item?.dataCartProduct?.CartDetail?.id)}
                                                                             >
                                                                                 Xóa
                                                                             </button>
@@ -238,7 +239,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getProductsInCartByUserRedux: (userId) => dispatch(actions.getProductsInCartByUser(userId)),
         deleteProductInCartRedux: (data) => dispatch(actions.deleteProductInCart(data)),
-        deleteAProductInCartRedux: (data) => dispatch(actions.deleteAProductInCart(data))
+        changeCartRedux: (data) => dispatch(actions.changeCart(data))
     }
 }
 

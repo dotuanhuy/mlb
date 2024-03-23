@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './Sidebar.css'
-import { faCaretDown, faCartShopping, faChartSimple, faDatabase, faHouse, faLayerGroup, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCartShopping, faChartSimple, faDatabase, faHouse, faLayerGroup, faTag, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { Active, path } from '../../../../utils';
@@ -9,15 +9,13 @@ import { Active, path } from '../../../../utils';
 
 function Sidebar({active='dashboard', activeChild = ''}) {
     const [state ,setState] = useState(false)
-    const handleClickCategories = () => {
-        setState(!state)
-    }
+    const [isProduct, setIsProduct] = useState(false)
 
-    useEffect(() => {
-        if (active === 'category' || active === 'product-type') {
-            setState(true)
-        }
-    }, active)
+    // useEffect(() => {
+    //     if (active === 'category' || active === 'product-type') {
+    //         setState(true)
+    //     }
+    // }, active)
 
     return (
         <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse">
@@ -60,7 +58,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                     <li 
                         class="nav-item"
                     >   
-                        <div 
+                        {/* <div 
                             className={state === true ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             onClick={handleClickCategories} 
                             style={{ cursor: 'pointer' }}                           
@@ -68,8 +66,17 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             <FontAwesomeIcon className='pe-2' icon={faLayerGroup} />
                             Categoies
                             <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
+                        </div> */}
+                        <div 
+                            className={state === true || active === 'category' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
+                            onClick={() =>  setState(!state)} 
+                            style={{ cursor: 'pointer' }}                           
+                        >
+                            <FontAwesomeIcon className='pe-2' icon={faLayerGroup} />
+                            Categoies
+                            <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
                         </div>
-                        <ul className={state === true ? 'd-block' : 'd-none'}>
+                        <ul className={state === true || active === 'category' ? 'd-block' : 'd-none'}>
                             <li className='border-bottom py-2'>
                                 <Link 
                                     className={activeChild === Active.CATEGORY ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
@@ -91,14 +98,15 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                     <li 
                         class="nav-item"
                     >   
-                        <Link 
-                            className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
-                            to={path.MANAGE_PRODUCTS}
+                        <div
+                            className={isProduct === true || active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
+                            style={{ cursor: 'pointer' }}         
+                            onClick={() => setIsProduct(!isProduct)}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
                             Products
                             <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
-                        </Link>
+                        </div>
                         {/* <button
                             className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             onClick={handleShowProductItem}
@@ -108,7 +116,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             <FontAwesomeIcon className='ps-2' icon={faCaretDown} />
                         </button> */}
 
-                        <ul className={active === 'product' ? 'dbloc' : 'd-none'}>
+                        <ul className={isProduct === true || active === 'product' ? 'dbloc' : 'd-none'}>
                             <li className='border-bottom pb-2'>
                                 <Link 
                                     className={activeChild === Active.SHOSE ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
@@ -143,6 +151,17 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                                 </Link>
                             </li>
                         </ul>
+                    </li>
+                    <li 
+                        class="nav-item"
+                    >   
+                        <Link
+                            className={active === 'discount' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
+                            to={path.MANAGE_DISCOUNT}
+                        >
+                            <FontAwesomeIcon className='pe-2' icon={faTag} />
+                            Discount
+                        </Link>
                     </li>
                     <li 
                         class="nav-item"

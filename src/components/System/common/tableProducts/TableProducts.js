@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import './TableProducts.scss'
 import { path, formatVND } from '../../../../utils';
 import * as actions from '../../../../store/actions'
 import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
@@ -10,7 +9,7 @@ import Pagination from '../../../Paginations/Pagination';
 import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'react-bootstrap';
-import { faEye, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots, faEye, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function TableProducts({
     categoryType, 

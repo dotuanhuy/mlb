@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
-import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { path } from '../../../utils';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
@@ -21,7 +21,7 @@ function UserManageEdit({
     getAllRolesRedux,
     updateUserRedux
 }) {
-    const [dataInput, setDataInput] = useState([])
+    const [dataInput, setDataInput] = useState({})
     const [selectProvine, setSelectProvince] = useState({})
     const [selectGender, setSelectGender] = useState({})
     const [selectRole, setSelectRole] = useState({})
@@ -100,7 +100,7 @@ function UserManageEdit({
             avatar: ''
         }
         if (params.get('page')) {
-            updateUserRedux(newUser, params.get('page'))
+            updateUserRedux(newUser, params.get('id'), params.get('page'))
             navigate(
                 {
                     pathname: path.MANAGE_USER, 
@@ -109,7 +109,7 @@ function UserManageEdit({
             )
         }
         else {
-            updateUserRedux(newUser)
+            updateUserRedux(newUser, params.get('id'))
             navigate({
                 pathname: path.MANAGE_USER_DETAIL,
                 search: createSearchParams({ id: users?.id }).toString()
@@ -120,127 +120,124 @@ function UserManageEdit({
 
     return (
         <>
-            {
-                isLoading ? 
-                <Loading />
-                :
-                <>
-                    <Navbar />
-                    <div className='row gx-0'>
-                    <div className='col-2'>
-                            <Sidebar active={'user'}/>
-                        </div> 
-                        <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
-                            <div className='d-flex justify-content-between'>
-                                <h2>Update user</h2>
-                            </div>
-                            <hr/>
-
-                            <div className='user-manage'>
-                                <div className='user-manage-container'>
-                                    <div className='user-manage-form mx-2 my-4'>
-                                        <form>
-                                            <div className='form row'>
-                                                <div className="mb-3 col-4">
-                                                    <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
-                                                    <input 
-                                                        type="email" 
-                                                        className="form-control" 
-                                                        id="exampleInputEmail1" 
-                                                        aria-describedby="emailHelp" 
-                                                        value={dataInput.email}
-                                                        disabled
-                                                    />
-                                                </div>
-                                                <div className="mb-3 col-4">
-                                                    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                                                    <input 
-                                                        type="password" 
-                                                        className="form-control" 
-                                                        id="exampleInputPassword1" 
-                                                        value={dataInput.password}
-                                                        disabled
-                                                    />
-                                                </div>
-                                                <div className="mb-3 col-4">
-                                                    <label htmlFor="exampleInputFirstName" className="form-label">First name</label>
-                                                    <input 
-                                                        type="text" 
-                                                        className="form-control" 
-                                                        id="exampleInputFirstName" 
-                                                        value={dataInput.firstName}
-                                                        onChange={(e) => setDataInput({
-                                                            ...dataInput,
-                                                            firstName: e.target.value
-                                                        })}
-                                                    />
-                                                </div>
-                                                <div className="mb-3 col-4">
-                                                    <label htmlFor="exampleInputLastName" className="form-label">Last name</label>
-                                                    <input 
-                                                        type="text" 
-                                                        className="form-control" 
-                                                        id="exampleInputLastName" 
-                                                        value={dataInput.lastName}
-                                                        onChange={(e) => setDataInput({
-                                                            ...dataInput,
-                                                            lastName: e.target.value
-                                                        })}
-                                                    />
-                                                </div>
-                                                <div className="mb-3 col-4">
-                                                    <label htmlFor="exampleInputphone" className="form-label">Phone number</label>
-                                                    <input 
-                                                        type="text" 
-                                                        className="form-control" 
-                                                        id="exampleInputphone" 
-                                                        value={dataInput.phone}
-                                                        onChange={(e) => setDataInput({
-                                                            ...dataInput,
-                                                            phone: e.target.value
-                                                        })}
-                                                    />
-                                                </div>
-                                                <div className="mb-3 col-4">
-                                                    <label className="form-label">Address</label>
-                                                    <Select
-                                                        onChange={handleOnchangeAddress}
-                                                        value={selectProvine}
-                                                        options={listProvinces}
-                                                    />
-                                                </div>
-                                                <div className="mb-3 col-4">
-                                                    <label className="form-label">Gender</label>
-                                                    <Select
-                                                        value={selectGender}
-                                                        onChange={handleOnchangeGender}
-                                                        options={listGenders}
-                                                    />
-                                                </div>
-                                                <div className="mb-3 col-4">
-                                                    <label className="form-label">Role</label>
-                                                    <Select
-                                                        value={selectRole}
-                                                        onChange={handleOnchangeRole}
-                                                        options={listRoles}
-                                                    />
-                                                </div>
+            <Navbar />
+            <div className='row gx-0'>
+            <div className='col-2'>
+                    <Sidebar active={'user'}/>
+                </div> 
+                <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
+                    <div className='d-flex justify-content-between'>
+                        <h2>Update user</h2>
+                    </div>
+                    <hr/>
+                    {
+                        isLoading ? 
+                        <Loading />
+                        :
+                        <div className='user-manage'>
+                            <div className='user-manage-container'>
+                                <div className='user-manage-form mx-2 my-4'>
+                                    <form>
+                                        <div className='form row'>
+                                            <div className="mb-3 col-4">
+                                                <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
+                                                <input 
+                                                    type="email" 
+                                                    className="form-control" 
+                                                    id="exampleInputEmail1" 
+                                                    aria-describedby="emailHelp" 
+                                                    value={dataInput.email}
+                                                    disabled
+                                                />
                                             </div>
-                                            <button 
-                                                type="submit" 
-                                                className="btn btn-root text-white fw-500"
-                                                onClick={(e) => handleUpdateUser(e)}
-                                            >
-                                                Save
-                                            </button>
-                                        </form>
-                                    </div>
+                                            <div className="mb-3 col-4">
+                                                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                                                <input 
+                                                    type="password" 
+                                                    className="form-control" 
+                                                    id="exampleInputPassword1" 
+                                                    value={dataInput.password}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className="mb-3 col-4">
+                                                <label htmlFor="exampleInputFirstName" className="form-label">First name</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="form-control" 
+                                                    id="exampleInputFirstName" 
+                                                    value={dataInput.firstName}
+                                                    onChange={(e) => setDataInput({
+                                                        ...dataInput,
+                                                        firstName: e.target.value
+                                                    })}
+                                                />
+                                            </div>
+                                            <div className="mb-3 col-4">
+                                                <label htmlFor="exampleInputLastName" className="form-label">Last name</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="form-control" 
+                                                    id="exampleInputLastName" 
+                                                    value={dataInput.lastName}
+                                                    onChange={(e) => setDataInput({
+                                                        ...dataInput,
+                                                        lastName: e.target.value
+                                                    })}
+                                                />
+                                            </div>
+                                            <div className="mb-3 col-4">
+                                                <label htmlFor="exampleInputphone" className="form-label">Phone number</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="form-control" 
+                                                    id="exampleInputphone" 
+                                                    value={dataInput.phone}
+                                                    onChange={(e) => setDataInput({
+                                                        ...dataInput,
+                                                        phone: e.target.value
+                                                    })}
+                                                />
+                                            </div>
+                                            <div className="mb-3 col-4">
+                                                <label className="form-label">Address</label>
+                                                <Select
+                                                    onChange={handleOnchangeAddress}
+                                                    value={selectProvine}
+                                                    options={listProvinces}
+                                                />
+                                            </div>
+                                            <div className="mb-3 col-4">
+                                                <label className="form-label">Gender</label>
+                                                <Select
+                                                    value={selectGender}
+                                                    onChange={handleOnchangeGender}
+                                                    options={listGenders}
+                                                />
+                                            </div>
+                                            <div className="mb-3 col-4">
+                                                <label className="form-label">Role</label>
+                                                <Select
+                                                    value={selectRole}
+                                                    onChange={handleOnchangeRole}
+                                                    options={listRoles}
+                                                />
+                                            </div>
+                                        </div>
+                                        <button 
+                                            type="submit" 
+                                            className="btn btn-root text-white fw-500"
+                                            onClick={(e) => handleUpdateUser(e)}
+                                        >
+                                            Save
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </>
-            }
+                    }
+                </div>
+            </div>
         </>
     );
 }

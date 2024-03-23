@@ -13,7 +13,7 @@ function PrivateRouter({categoryType=null, active=null, Component}) {
             try {
                 const accessToken = window.localStorage.getItem('accessToken')
                 const axiosJWT = createAxios()
-                const res = await axiosJWT.post('/api/authentication', {accessToken});
+                const res = await axiosJWT.post('/api/v1/auth/authentication', {accessToken});
                 setIsAdmin(res?.isAdmin)
             } catch (error) {
                 console.error('Error fetching data:', error);

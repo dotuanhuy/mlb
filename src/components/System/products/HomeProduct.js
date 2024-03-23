@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 // import './ManageShoes.scss'
 import Navbar from '../common/navbar/Navbar'
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { path, Role, TitleProduct } from '../../../utils';
+import { Link } from 'react-router-dom';
 import TableProduct from '../common/tableProducts/TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
-import * as actions from '../../../store/actions'
 
 function HomeProduct({
-    // getProductByCategoryLimitRedux
     categoryType,
     actives
 }) {
@@ -47,7 +44,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        // getProductByCategoryLimitRedux:  (type, offset) => dispatch(actions.getProductByCategoryLimit(type, offset)),
     }
 }
 

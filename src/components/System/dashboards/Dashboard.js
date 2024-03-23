@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import Loading from '../../common/Loading/Loading'
+import HorizontalBarChart from '../common/charts/HorizontalBarChart';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Dashboard({
     countProduct,
@@ -10,10 +12,16 @@ function Dashboard({
     getCountUsersRedux
 }) {
     const accessToken = window.localStorage.getItem('accessToken')
+    const dispatch = useDispatch()
+    const {categoriesDetail} = useSelector(state => state.category)
+    const {quantityArr} = useSelector(state => state.product)
 
     useEffect(() => {
         getCountProductsRedux()
         getCountUsersRedux()
+
+        dispatch(actions.getAllCategoriesDetail())
+        dispatch(actions.getQuantityOfEechProductByCategory())
     }, [])
 
     return (
@@ -42,6 +50,23 @@ function Dashboard({
                 >
                     Total user: {countUser}
                 </div>
+            </div>
+
+            <div className='mb-4'>
+                <HorizontalBarChart
+                    titleText='Horizontal chart statistics the number of products of the type'
+                    labels={categoriesDetail}
+                    label='Quantity'
+                    data={quantityArr}
+                />
+            </div>
+            <div>
+                <span className='text-muted fw-500'>
+                    Total products: {
+                        quantityArr.reduce((acc, cur) => acc + +cur.quantity, 0)
+                    } products
+
+                </span>
             </div>
         </>
     )

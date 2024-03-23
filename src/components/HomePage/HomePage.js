@@ -27,7 +27,7 @@ function HomePage({
         document.title = titlePage
         // refreshIsloadingStateProductRedux()
         // getAllProductPublicRedux(accessToken)
-        dispatch(actions.refreshIsloadingStateProduct())
+        // dispatch(actions.refreshIsloadingStateProduct())
         dispatch(actions.getAllProductPublic())
         
         let userId = ''
@@ -58,10 +58,10 @@ function HomePage({
 
     return (
         <>
-            {
+            {/* {
                 isLoading ? 
                 <Loading />
-                :
+                : */}
                 <div>
                     <Navbar />
                     <SliderHomePage settings={settings} />
@@ -72,7 +72,7 @@ function HomePage({
                     <MLBBackPack />
                     <HomeFooter />
                 </div>
-            }
+            {/* } */}
         </>
     );
 }

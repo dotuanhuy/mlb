@@ -11,7 +11,8 @@ function Pagination({
     currentPage, 
     countProductType,
     pname=null,
-    countProductsFavourite
+    countProductsFavourite,
+    countDiscount
 }) {
     const navigate = useNavigate()
     const [arrPage, setArrPage] = useState([])
@@ -33,6 +34,9 @@ function Pagination({
         }
         else if (pathPage === path.MANAGE_PRODUCT_TYPE) {
             maxPage =  Math.ceil(countProductType / +limit_page)
+        }
+        else if (pathPage === path.MANAGE_DISCOUNT) {
+            maxPage =  Math.ceil(countDiscount / +limit_page)
         }
         else {
             maxPage =  Math.ceil(countProduct / +limit_page)
@@ -78,6 +82,7 @@ function Pagination({
         } : {
             page: e.target.getAttribute('data-page'),
         }
+        console.log(object)
         navigate({
             pathname: pathPage,
             search: createSearchParams(object).toString(),
@@ -109,6 +114,9 @@ function Pagination({
         }
         else if (pathPage === path.MANAGE_PRODUCT_TYPE) {
             end =  Math.ceil(countProductType / +limit_page)
+        }
+        else if (pathPage === path.MANAGE_DISCOUNT) {
+            end =  Math.ceil(countDiscount / +limit_page)
         }
         else {
             end =  Math.ceil(countProduct / +limit_page)
@@ -195,7 +203,8 @@ const mapStateToProps = state => {
         countProduct: state.product.count,
         countUser: state.user.count,
         countProductsFavourite: state.fouriteProduct.countProducts,
-        countProductType: state.productType.count
+        countProductType: state.productType.count,
+        countDiscount: state.discount.count
     }
 }
 

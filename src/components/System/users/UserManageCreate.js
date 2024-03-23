@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
-import TableUser from '../common/tableUsers/TableUser';
+import TableUser from './TableUser';
 import { useSearchParams } from 'react-router-dom';
 import { path } from '../../../utils';
 import { validate, validateSelect } from '../../../validate/valiedate';

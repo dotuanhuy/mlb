@@ -28,10 +28,17 @@ export const validate = (obj, value) => {
         else if (item === 'rePassword' && obj[item] !== obj['newPassword']) {
             errors[item] = 'Mật khẩu không khớp'
         }
+        else if (item === 'value' && !(/^(100|[1-9]?[0-9])$/).test(obj[item])) {
+            errors[item] = `Mã giảm giá không hợp lệ, vui lòng nhập số (0-100)`
+        }
     })
     return errors
 }
 
 export const validateSelect = (select) => {
     return select.length === 0 ? 'Trường này không bỏ trống' : ''
+}
+
+export const validateRequire = (name, value) => {
+    return value === '' ? `${name} không được để trống` : ''
 }

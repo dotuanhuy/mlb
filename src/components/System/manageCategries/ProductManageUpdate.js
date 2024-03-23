@@ -100,7 +100,7 @@ function ProductManageUpdate({
         }
     }
 
-    const handleUpdateUser = (e) => {
+    const handleUpdateProductType = (e) => {
         e.preventDefault()
         let data = {
             id: +params.get('id'),
@@ -192,7 +192,7 @@ function ProductManageUpdate({
                                         <button
                                             type="submit"
                                             className="btn btn-root text-white fw-500"
-                                            onClick={(e) => handleUpdateUser(e)}
+                                            onClick={(e) => handleUpdateProductType(e)}
                                         >
                                             Save
                                         </button>

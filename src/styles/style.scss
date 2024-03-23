@@ -62,6 +62,14 @@ button {
     color: #420500;
 }
 
+.text-color-review {
+    color: #b835bb;
+}
+
+.text-color-light {
+    color: #21252980;
+}
+
 .text-sm-hover {
     font-size: 14px;
     cursor: pointer;
@@ -136,7 +144,7 @@ button {
     }
 }
 
-.btn-sub {
+.btn-review {
     background: #b835bb !important;
     color: #fff;
     font-size: 14px;
@@ -146,6 +154,11 @@ button {
         color: #fff;
 
     }
+}
+
+.btn-active-star {
+    border: 1px solid #b835bb; 
+    color: #b835bb;
 }
 
 .img-avatar {
@@ -160,6 +173,10 @@ button {
 
 .bg-nav-2 {
     background: #323c42;
+}
+
+.bg-review {
+    background: #b834bc1a;
 }
 
 @keyframes identifier {

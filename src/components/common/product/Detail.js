@@ -8,7 +8,8 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './Detail.scss'
 import { toast } from 'react-toastify';
 import { faFileLines } from '@fortawesome/free-regular-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
 
 function Detail({product, addProductToCartRedux}) {
     const [size, setSize] = useState('')
@@ -17,6 +18,10 @@ function Detail({product, addProductToCartRedux}) {
     const body = useRef()
     const initialRender = useRef(true)
     const accessToken = window.localStorage.getItem('accessToken')
+    const [show, setShow] = useState({})
+    const navigate = useNavigate()
+
+    const handleClose = () => setShow({});
 
     useEffect(() => {
         document.title = product.name
@@ -69,16 +74,25 @@ function Detail({product, addProductToCartRedux}) {
 
     const handleAddCart = e => {
         e.preventDefault()
-        toast.info(() => (
-            <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
-                Bạn vừa thêm 1 sản phẩm vào giỏ hàng. Bấm
-                <a href={path.CART} className='text-primary' > vào đây </a>
-                để tới giỏ hàng
-            </span>
-        ), { autoClose: 3000 })
-        addProductToCartRedux({ userId, productId: product?.id, quantity: quantity, size })
+        if (accessToken) {
+            addProductToCartRedux({ userId, productId: product?.id, quantity: quantity, size })
+            toast.info(() => (
+                <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
+                    Bạn vừa thêm 1 sản phẩm vào giỏ hàng. Bấm
+                    <a href={path.CART} className='text-primary' > vào đây </a>
+                    để tới giỏ hàng
+                </span>
+            ), { autoClose: 3000 })
+        }
+        else {
+            setShow({id: product?.id})
+        }
     }
    
+    const handlePathToLogin = () => {
+        navigate(path.LOGIN)
+    }
+
     return (
         <div ref={body} className='product-detail'>
             <h3 className='fs-4'>{product?.name}</h3>
@@ -202,6 +216,27 @@ function Detail({product, addProductToCartRedux}) {
                     Xem hướng dẫn chọn size
                 </Link>
             </div>
+
+            <Modal show={show?.id === product?.id || false} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Cảnh báo</Modal.Title>
+                </Modal.Header>
+                <Modal.Body><span className='fw-500'>Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng</span></Modal.Body>
+                <Modal.Footer>
+                    <button 
+                        className='btn btn-secondary' 
+                        onClick={handleClose}
+                    >
+                        Hủy
+                    </button>
+                    <button 
+                        className='btn btn-root fw-500' 
+                        onClick={handlePathToLogin}
+                    >
+                        Đăng nhập
+                    </button>
+                </Modal.Footer>
+            </Modal> 
         </div>
     );
 }

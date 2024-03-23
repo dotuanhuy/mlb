@@ -1,7 +1,10 @@
 import axios from "../axios";
+import { API_VERSION } from "../utils";
+
+const api = `/api/${API_VERSION}/size`
 
 const getAllSizesByTypeService = (type) => {
-    return axios.get(`/api/get-all-sizes-by-type?type=${type}`)
+    return axios.get(`${api}/type?type=${type}`)
 }
 
 export {

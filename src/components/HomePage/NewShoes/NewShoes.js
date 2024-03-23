@@ -2,11 +2,13 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import './NewShoes.scss'
 import { Link } from 'react-router-dom';
-import { path, categorieType } from '../../../utils';
+import { path, categorieType, LIMIT_HOME_SHOES } from '../../../utils';
 import { useState } from 'react';
 import ListProducts from '../../common/listProducts/ListProducts'
+import { useSelector } from 'react-redux';
 
-function NewShoes({products}) {
+function NewShoes() {
+    const {products} = useSelector(state => state.product)
     const [shoes, setShoes] = useState([])
     
     useEffect(() => {
@@ -39,8 +41,6 @@ function NewShoes({products}) {
 
 const mapStateToProps = state => {
     return {
-        products: state.product.products,
-        images: state.product.images,
     }
 }
 

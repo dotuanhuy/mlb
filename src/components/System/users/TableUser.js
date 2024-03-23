@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import './TableUser.scss'
 import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
-import { path } from '../../../../utils'
-import * as actions from '../../../../store/actions'
+import { path } from '../../../utils'
+import * as actions from '../../../store/actions'
 import { useNavigate } from 'react-router-dom';
-import Loading from '../../../common/Loading/Loading'
-import Pagination from '../../../Paginations/Pagination';
+import Loading from '../../common/Loading/Loading'
+import Pagination from '../../Paginations/Pagination';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
@@ -30,7 +29,6 @@ function TableUsers({
 
     useEffect(() => {
         refreshIsloadingStateRedux()
-        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1)
     }, [])
 
     useEffect(() => {

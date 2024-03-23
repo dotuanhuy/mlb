@@ -1,29 +1,32 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
+import { API_VERSION } from "../utils";
+
 const axiosJWT = createAxios()
+const api = `/api/${API_VERSION}/favourite`
 
 const getAllProductsFavouriteService = (userId) => {
     let accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.get(`/api/get-all-favourite-products?userId=${userId}`, { headers: { token: `Bearer ${accessToken}` }})
+        return axiosJWT.get(`${api}?userId=${userId}`, { headers: { token: `Bearer ${accessToken}` }})
     }
-    return axios.get(`/api/get-all-favourite-products?userId=${userId}`)
+    return axios.get(`${api}?userId=${userId}`)
 }
 
 const getAllProductsFavouriteLimitService = (userId, offset) => {
     let accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.get(`/api/get-all-favourite-products-limit?userId=${userId}&offset=${offset}`, { headers: { token: `Bearer ${accessToken}` }})
+        return axiosJWT.get(`${api}/limit?userId=${userId}&offset=${offset}`, { headers: { token: `Bearer ${accessToken}` }})
     }
-    return axios.get(`/api/get-all-favourite-products-limit-limit?userId=${userId}&offset=${offset}`)
+    return axios.get(`${api}/limit-limit?userId=${userId}&offset=${offset}`)
 }
 
 const changeProductFavouriteService = (data) => {
     let accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.post(`/api/add-product-favourite`, data, { headers: { token: `Bearer ${accessToken}` }})
+        return axiosJWT.post(`${api}/create`, data, { headers: { token: `Bearer ${accessToken}` }})
     }
-    return axios.post(`/api/add-product-favourite`, data)
+    return axios.post(`${api}/create`, data)
 }
 
 export {

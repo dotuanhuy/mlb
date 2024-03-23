@@ -61,7 +61,7 @@ function Product({
                     <Banner categoryProduct={productName} title={productName}/>
                     <div className='product my-5'>
                         <div className='container'>
-                            <div className='row pb-4'>
+                            <div className='row mb-5 pb-4'>
                                 <div className='col-7 position-relative'>
                                     <SliderProduct />
                                     <Toast productId={productId} isFavourite={isFavourite} isCart={false}/>
@@ -105,7 +105,7 @@ function Product({
                                 {
                                     state === 'des' ? <DescriptionProduct /> : 
                                     state === 'auth' ? '' :
-                                    state === 'review' ? <ReviewProduct /> :
+                                    state === 'review' ? <ReviewProduct productId={productId} /> :
                                     state === 'policy' ? '' : ''
                                 }
                             </div>

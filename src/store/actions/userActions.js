@@ -2,13 +2,13 @@ import actionTypes from "./actionTypes";
 import { allCode } from "../../utils";
 
 import { 
-    handleCreateNewUer, 
-    handleUpdateUser,
+    createUserService, 
+    updateUserService,
     getCountUsersService,
     getAllUsers,
     getAllAddressService,
     getAllRolesService,
-    handleDeleteUser,
+    deleteUserService,
     getUserByIdService,
     getLimitUserService,
     registerSevice,
@@ -34,7 +34,7 @@ export const refreshStoreUser = () => {
 export const createNewUser = (data, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleCreateNewUer(data)
+            let res = await createUserService(data)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_NEW_USER_SUCCESS
@@ -133,7 +133,7 @@ export const getAllRoles = () => {
 export const deleteUser = (id, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleDeleteUser(id)
+            let res = await deleteUserService(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.DELTE_USER_SUCCESS
@@ -155,15 +155,14 @@ export const deleteUser = (id, page) => {
     }
 }
 
-export const updateUser = (data, page) => {
+export const updateUser = (data, id, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await handleUpdateUser(data)
+            let res = await updateUserService(data, id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.EDIT_USER_SUCCESS
                 })
-                // dispatch(fetAllUser))
                 if (page) {
                     dispatch(getLimitUsers(page, page))
                 }

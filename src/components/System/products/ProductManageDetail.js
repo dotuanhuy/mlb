@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import SliderProduct from '../../common/Slider/SliderProduct';
 import ProductManageImage from './ProductManageImage';
+import ReviewManage from '../Reviews/ReviewManage';
 
 
 function ProductManageDetail({
@@ -52,7 +53,7 @@ function ProductManageDetail({
                     isLoadingImage ?
                     <Loading />
                     :
-                    <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
+                    <div className='col-10 container bg-light mt-4 px-5 py-3 rounded mb-4'>
                         
                         <div className='d-flex justify-content-between'>
                             <h2>Shoe detail</h2>
@@ -205,6 +206,10 @@ function ProductManageDetail({
                                 Edit product
                             </button>
                             <ProductManageImage />
+                        </div>
+
+                        <div className='mt-5'>
+                            <ReviewManage />
                         </div>
                     </div>
                 }

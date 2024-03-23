@@ -67,7 +67,7 @@ function Cart({
                 <Modal.Header closeButton>
                     <Modal.Title>Cảnh báo</Modal.Title>
                 </Modal.Header>
-                <Modal.Body><span className='fw-500'>Bạn cần đăng nhập để thêm sản phẩm yêu thích</span></Modal.Body>
+                <Modal.Body><span className='fw-500'>Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng</span></Modal.Body>
                 <Modal.Footer>
                     <button 
                         className='btn btn-secondary' 

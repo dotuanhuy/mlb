@@ -3,7 +3,7 @@ import {
     getProductsInCartByUserService,
     addProductToCartService,
     deleteProductInCartService,
-    deleteAProductInCartService
+    changeCartService
 
 } from "../../services/cartService";
 
@@ -68,12 +68,12 @@ export const addProductToCart = (data) => {
     }
 }
 
-export const deleteAProductInCart = (data) => {
+export const changeCart = (data) => {
     return async (dispatch, getState) => {
         try {
             let res
             if (data) {
-                res = await deleteAProductInCartService(data)
+                res = await changeCartService(data)
                 if (res && res.errCode === 0) {
                     dispatch(getProductsInCartByUser(data?.userId))
                 }

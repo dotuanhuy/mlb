@@ -1,3 +1,4 @@
+export const API_VERSION = 'v1'
 export const path = {
     HOMEPAGE: '/',
     LOGIN: '/login',
@@ -37,7 +38,10 @@ export const path = {
     MANAGE_PRODUCTS_CLOTHES_EDIT: '/system/manage/products/clothes/edit',
     MANAGE_PRODUCTS_CLOTHES_DETAIL: '/system/manage/products/clothes/detail',
 
-    
+    MANAGE_DISCOUNT: '/system/manage/discount',
+    MANAGE_DISCOUNT_CREATE: '/system/manage/discount/create',
+    MANAGE_DISCOUNT_EDIT: '/system/manage/discount/edit',
+
     // MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     // MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
     
@@ -78,7 +82,7 @@ export const path = {
 
     TUTORIAL_SIZE: '/size-mlb',
 
-    PRODUCT: '/product'
+    PRODUCT: '/product',
 }
 
 export const allCode = {
@@ -169,6 +173,7 @@ export const optionSortContant = {
     PRICE_HIGH_TO_LOW: 'highToLow',
 }
 
+export const LIMIT_HOME_SHOES = 8
 export const limit_page = 5
 export const limit_list_search = 4
 

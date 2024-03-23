@@ -17,8 +17,11 @@ import AddDescriptionProduc from '../components/System/Manage/Products/HandleAdd
 import { Active, categorieType, path } from '../utils';
 import PrivateRouter from './PrivateRouter';
 import UserManage from '../components/System/users/UserManage';
+import DiscountManage from '../components/System/discounts/DiscountManage';
+import DiscountCreate from '../components/System/discounts/DiscountCreate';
+import DiscountUpdate from '../components/System/discounts/DiscountUpdate';
 
-function System({isLogin}) {
+function System() {
     return (
        <>
             <Routes>
@@ -41,10 +44,10 @@ function System({isLogin}) {
                     element={<PrivateRouter Component={UserManageDetail} />} 
                 />
                 
-                <Route 
+                {/* <Route 
                     path={path.MANAGE_PRODUCTS}
-                    element={<PrivateRouter Component={ProductManage}/>} 
-                />  
+                    // element={<PrivateRouter Component={ProductManage}/>} 
+                />   */}
 
                 <Route  
                     path={path.MANAGE_CATEGORY_PRODUCT}
@@ -126,6 +129,19 @@ function System({isLogin}) {
                     path={path.MANAGE_PRODUCTS_CLOTHES_DETAIL}
                     element={<PrivateRouter active={Active.CLOTHES} Component={ProductManageDetail}/>} 
                 />
+                
+                <Route 
+                    path={path.MANAGE_DISCOUNT}
+                    element={<PrivateRouter Component={DiscountManage} />}
+                />
+                <Route 
+                    path={path.MANAGE_DISCOUNT_CREATE}
+                    element={<PrivateRouter Component={DiscountCreate} />}
+                />
+                <Route 
+                    path={path.MANAGE_DISCOUNT_EDIT}
+                    element={<PrivateRouter Component={DiscountUpdate} />}
+                />
             </Routes>
        </>
     );
@@ -133,7 +149,6 @@ function System({isLogin}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
     }
 }
 

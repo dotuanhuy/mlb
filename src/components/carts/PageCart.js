@@ -20,7 +20,7 @@ function PageCart({
     totalMoney,
     isLoading,
     getProductsInCartByUserRedux,
-    deleteAProductInCartRedux,
+    changeCartRedux,
     deleteProductInCartRedux
 }) {
     const accessToken = window.localStorage.getItem('accessToken')
@@ -65,11 +65,11 @@ function PageCart({
     }, [userId])
 
     const handleStepDown = (productId, size, cartId, down) => {
-        deleteAProductInCartRedux({ productId, cartId, userId, size, typeStep: down })
+        changeCartRedux({ productId, cartId, userId, size, typeStep: down })
     }
 
     const handleStepUp = (productId, size, cartId, up) => {
-        deleteAProductInCartRedux({ productId, cartId, userId, size, typeStep: up })
+        changeCartRedux({ productId, cartId, userId, size, typeStep: up })
     }
     
     const handleDeleteProductCart = (productId, size, cartId) => {
@@ -283,7 +283,7 @@ const mapDispatchToProps = dispatch => {
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
         getProductsInCartByUserRedux: (userId) => dispatch(actions.getProductsInCartByUser(userId)),
         deleteProductInCartRedux: (data) => dispatch(actions.deleteProductInCart(data)),
-        deleteAProductInCartRedux: (data) => dispatch(actions.deleteAProductInCart(data))
+        changeCartRedux: (data) => dispatch(actions.changeCart(data))
     }
 }
 

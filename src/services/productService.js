@@ -1,6 +1,9 @@
 import axios from "../axios";
 import {createAxios} from '../axiosJWT'
+import { API_VERSION } from "../utils";
+
 const axiosJWT = createAxios()
+const api = `/api/${API_VERSION}/product`
 
 const getAllProductsService = (type) => {
     return axiosJWT.get(`/api/get-all-prducts?type=${type}`)
@@ -10,87 +13,77 @@ const getAllProductsService = (type) => {
 const getAllProductPublicService = () => {
     const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.get('/api/get-all-product-public')
+        return axiosJWT.get(`${api}/public`)
     }
-    else return axios.get('/api/get-all-product-public')
+    else return axios.get(`${api}/public`)
 }
 
 const getQuantityOfEachProductByCategoryService = () => {
-    return axiosJWT.get('/api/get-quantity-ofeach-product-by-category')
+    return axiosJWT.get(`${api}/category/count`)
 }
 
 const createNewProductService = (data) => {
-    return axiosJWT.post('/api/create-new-product', data)
-    // return axios.post('/api/create-new-product', data)
+    return axiosJWT.post(`${api}/create`, data)
 }
 
 const deleteProductService = (id) => {
-    return axiosJWT.post('/api/delete-product-by-id', { id })
+    return axiosJWT.delete(`${api}/delete?id=${id}`)
     // return axios.post('/api/delete-product', { id })
 }
 
 const getProductByIdService = (id) => {
     const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.get(`/api/get-product-by-id?id=${id}`)
+        return axiosJWT.get(`${api}/id?id=${id}`)
     }
     else {
-        return axios.get(`/api/get-product-by-id?id=${id}`)
+        return axios.get(`${api}/id?id=${id}`)
     }
 }
 
 const getCountProductsService = () => {
-    return axiosJWT.get('/api/get-count-products')
-    // return axios.get(`/api/get-product-by-id?id=${id}`)
+    return axiosJWT.get(`${api}/count`)
 } 
 
 
 const updateProductService = (data) => {
-    return axiosJWT.post('/api/update-product', data)
+    return axiosJWT.post(`${api}/update`, data)
     // return axios.post('/api/update-product', data)
 }
 
 const changeImageProductByIdService = (data) => {
-    return axiosJWT.post('/api/change-image-product-by-id', { data })
-    // return axios.post('/api/delete-image-product', { id })
+    return axiosJWT.post(`${api}/iamge/change`, { data })
 }
 
 const fetchDescriptionProductService = (id) => {
-    return axiosJWT.get(`/api/get-all-description-product?id=${id}`)
+    return axiosJWT.get(`${api}/description?id=${id}`)
     // return axios.get(`/api/get-all-description-product?id=${id}`)
 }
 
 const addDescriptionProductService = (data) => {
-    return axiosJWT.post('/api/add-description-product', data)
-    // return axios.post('/api/add-description-product', data)
+    return axiosJWT.post(`${api}/description/create`, data)
 }
 
 const getProductByCategoryService = (type) => {
-    return axios.get(`/api/get-product-by-category?type=${type}`)
+    return axios.get(`${api}/category?type=${type}`)
 }
 
 const getProductByCategoryLimitService = (type, offset) => {
-    return axios.get(`/api/get-product-by-category-limit?type=${type}&offset=${offset}`)
+    return axios.get(`${api}/category/limit?type=${type}&offset=${offset}`)
 }
 
 const getLimitProductService = (categore, page) => {
     const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.get(`/api/get-limit-products?categore=${categore}&page=${page}`)
+        return axiosJWT.get(`${api}/limit?categore=${categore}&page=${page}`)
     }
     else
-        return axios.get(`/api/get-limit-products?categore=${categore}&page=${page}`)
+        return axios.get(`${api}/limit?categore=${categore}&page=${page}`)
 }
 
 const getLimitProductByOptionSortService = (optionData, page, option) => {
-    // if (accessToken) {
-    //     const axiosJWT = createAxios(accessToken)
-    //     return axiosJWT.get(`/api/get-limit-product-by-option-sort?categore=${categore}&page=${page}&option=${option}`, { headers: {token: `Bearer ${accessToken}`}})
-    // }
-    // else
-    //     return axios.get(`/api/get-limit-product-by-option-sort?categore=${categore}&page=${page}&option=${option}`)
     const accessToken = window.localStorage.getItem('accessToken')
-    let url = `/api/get-limit-product-by-option-sort?page=${page}&option=${option}`
+    let url = `${api}/sort/limit?page=${page}&option=${option}`
     url = optionData?.optionType ? url + `&type=${optionData?.optionType}` : url
     url = optionData?.colors? url + `&colors=${optionData?.colors}` : url
     url = optionData?.logos? url + `&logos=${optionData?.logos}` : url
@@ -103,15 +96,15 @@ const getLimitProductByOptionSortService = (optionData, page, option) => {
 }
 
 const searchProductByNameService = (productName, offset) => {
-    return axios.get(`/api/search-product-by-name?productName=${productName}&offset=${offset}`)
+    return axios.get(`${api}/search/name?productName=${productName}&offset=${offset}`)
 }
 
 const searchProductByNameServiceLimit = (productName, offset) => {
     const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.get(`/api/search-product-by-name-limit?productName=${productName}&offset=${offset}`, { headers: {token: `Bearer ${accessToken}`}})
+        return axiosJWT.get(`${api}/search/name/limit?productName=${productName}&offset=${offset}`, { headers: {token: `Bearer ${accessToken}`}})
     }
-    return axios.get(`/api/search-product-by-name-limit?productName=${productName}&offset=${offset}`)
+    return axios.get(`${api}/search/name/limit?productName=${productName}&offset=${offset}`)
 }
 
 export {

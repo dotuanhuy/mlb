@@ -20,7 +20,7 @@ function ProductTypeManage({
             <Navbar />
             <div className='row gx-0'>
                <div className='col-2'>
-                    <Sidebar active='product-type' activeChild={actives?.active}/>
+                    <Sidebar active='category' activeChild={actives?.active}/>
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>

@@ -1,6 +1,9 @@
 import axios from "axios";
-import jwtDecode from "jwt-decode";
-import { refreshTokenService, getRefreshToken, handleLogoutAPI } from "./services/userService";
+import { getRefreshToken, handleLogoutAPI } from "./services/userService";
+import { refreshTokenService } from "./services/authService";
+import { API_VERSION } from "./utils";
+
+const api = `/api/${API_VERSION}/auth`
 
 export const createAxios = () => {
     const instance = axios.create({
@@ -13,18 +16,7 @@ export const createAxios = () => {
     })
     instance.interceptors.request.use(
         async (config) => {
-            // let date = new Date()
-            // const decodedToken = jwtDecode(accessToken)
-            // if (decodedToken.exp < date.getTime() / 1000) {
-            //     const data = await refreshTokenService()
-            //     config.headers['token'] = 'Bearer ' + data.accessToken
-            // }
-
-            
-            // if (config.url.indexOf('/login') >= 0 || config.url.indexOf('/refreshToken') >= 0) {
-            //     return config
-            // }
-            if (config.url.indexOf('/api/get-refresh-token') >= 0) {
+            if (config.url.indexOf(`${api}/refresh`) >= 0) {
                 return config
             }
             const token = await instance.getLocalAccessToken()
@@ -39,7 +31,7 @@ export const createAxios = () => {
     instance.interceptors.response.use(
         async (response) => {
             const config = response.config
-            if (config.url.indexOf('/api/login') >= 0 || config.url.indexOf('/api/get-refresh-token') >= 0) {
+            if (config.url.indexOf(`${api}/login`) >= 0 || config.url.indexOf(`${api}/refresh`) >= 0) {
                 return response.data
             }
             const {errCode, errMessage} = response?.data
@@ -60,6 +52,10 @@ export const createAxios = () => {
             switch(status) {
                 case 401: {
                     window.location.href = '/'
+                    return Promise.reject(error)
+                }
+                case 400: {
+                    alert(error)
                     return Promise.reject(error)
                 }
             }
