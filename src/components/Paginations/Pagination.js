@@ -82,7 +82,6 @@ function Pagination({
         } : {
             page: e.target.getAttribute('data-page'),
         }
-        console.log(object)
         navigate({
             pathname: pathPage,
             search: createSearchParams(object).toString(),
@@ -199,7 +198,7 @@ function Pagination({
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.product.isLoadingProduct,
+        isLoading: state.product.isLoading,
         countProduct: state.product.count,
         countUser: state.user.count,
         countProductsFavourite: state.fouriteProduct.countProducts,

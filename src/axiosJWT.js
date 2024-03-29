@@ -11,7 +11,8 @@ export const createAxios = () => {
         withCredentials: true,
         timeout: 3*1000, // 3s,
         headers: {
-            'Content-Type': 'application/json'
+            // 'Content-Type': ['application/json', 'multipart/form-data'],
+            'Content-Type': 'application/json',
         }
     })
     instance.interceptors.request.use(
@@ -55,7 +56,6 @@ export const createAxios = () => {
                     return Promise.reject(error)
                 }
                 case 400: {
-                    alert(error)
                     return Promise.reject(error)
                 }
             }

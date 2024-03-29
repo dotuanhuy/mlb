@@ -76,7 +76,7 @@ const mapStateToProps = state => {
     return {
         countProduct: state.product.count,
         countUser: state.user.count,
-        isLoading: state.product.isLoadingProduct
+        isLoading: state.product.isLoading
     }
 }
 

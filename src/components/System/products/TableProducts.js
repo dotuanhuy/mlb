@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { path, formatVND } from '../../../../utils';
-import * as actions from '../../../../store/actions'
+import { path, formatVND } from '../../../utils';
+import * as actions from '../../../store/actions'
 import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {Buffer} from 'buffer';
-import Loading from '../../../common/Loading/Loading';
-import Pagination from '../../../Paginations/Pagination';
+import Loading from '../../common/Loading/Loading';
+import Pagination from '../../Paginations/Pagination';
 import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'react-bootstrap';
@@ -33,7 +33,6 @@ function TableProducts({
 
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        getProductByCategoryLimitRedux(categoryType, params?.get('page') ? params?.get('page') : 1)
     }, [])
 
     useEffect(() => {
@@ -155,7 +154,6 @@ function TableProducts({
                                     <th>Code</th>
                                     <th>Price</th>
                                     <th>Image</th>
-                                    <th>Brand</th>
                                     <th>Logo</th>
                                     <th>Detail</th>
                                     <th>Edit</th>
@@ -167,10 +165,6 @@ function TableProducts({
                                     products && products.length > 0 &&
                                     products.map((item, index) => {
                                         let page = params?.get('page') ? params?.get('page') : 1
-                                        let imageBase64 = ''
-                                        if (item.image) {
-                                            imageBase64 = Buffer.from(item.image.data, 'base64').toString('binary')
-                                        }
                                         return (
                                             <tr key={index}>
                                                 <td>{item.id}</td>
@@ -183,14 +177,13 @@ function TableProducts({
                                                         style={{ 
                                                             width: '50px', 
                                                             height: '100px',
-                                                            backgroundImage: `url(${imageBase64})`,
+                                                            backgroundImage: `url(${item.image})`,
                                                             backgroundPosition: '0% 0%',
                                                             backgroundSize: 'contain',
                                                             backgroundRepeat: 'no-repeat'
                                                         }}
                                                     ></div>
                                                 </td>
-                                                <td>{item.dataBrands?.name}</td>
                                                 <td>{item.dataLogos?.name}</td>
                                                 <td>
                                                     <Link 
@@ -252,7 +245,7 @@ function TableProducts({
 const mapStateToProps = state => {
     return {
         products: state.product.products,
-        isLoading: state.product.isLoadingProduct
+        isLoading: state.product.isLoading
     }
 }
 

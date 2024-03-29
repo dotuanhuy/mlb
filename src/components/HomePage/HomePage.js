@@ -28,7 +28,7 @@ function HomePage({
         // refreshIsloadingStateProductRedux()
         // getAllProductPublicRedux(accessToken)
         // dispatch(actions.refreshIsloadingStateProduct())
-        dispatch(actions.getAllProductPublic())
+        // dispatch(actions.getAllProductPublic())
         
         let userId = ''
         if (accessToken) {
@@ -79,7 +79,7 @@ function HomePage({
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.product.isLoadingProduct,
+        isLoading: state.product.isLoading,
     }
 }
 

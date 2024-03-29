@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Navbar from '../common/navbar/Navbar'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { path, Role, TitleProduct } from '../../../utils';
-import TableProduct from '../common/tableProducts/TableProducts';
+import TableProducts from '../products/TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
 import * as actions from '../../../store/actions'
 

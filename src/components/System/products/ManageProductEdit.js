@@ -3,18 +3,17 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { BuildOptionSelect, BuildOptionSelectDiscount, ListColorsProduct, TitleProduct, categorieType } from '../../../utils';
-import CommonUtils from '../../../utils/CommonUtils';
+import { BuildOptionSelect, BuildOptionSelectDiscount, ListColorsProduct, TitleProduct } from '../../../utils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
-import {Buffer} from 'buffer';
 import _ from 'lodash'
 import Loading from '../../common/Loading/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
+import { useDispatch, useSelector } from 'react-redux';
 
 const initState = {
     name: '',
@@ -26,33 +25,24 @@ const initState = {
 }
 
 const initStateImage = {
-    image: null,
-    previewImgURL: null
+    image: '',
+    previewImgURL: ''
 }
 
 function ManageShoesEdit({
     categoryType,
     actives,
-    products,
-    categoriesDetail, 
-    discounts, 
-    brands, 
-    colors, 
-    logos, 
-    sizes,
-    productTypes,
-    isLoading,
-    getProductByIdRedux,
-    getAllCategoriesDetailByTypeRedux,
-    getAllDiscountsRedux,
-    getAllBrandsRedux,
-    getAllSizesByTypeRedux,
-    getAllColorsRedux,
-    getAllLogosRedux,
-    getProductTypeByCategoryIdRedux,
-    updateProductRedux,
     refreshIsloadingStateProductRedux
 }) {
+    const dispatch = useDispatch()
+    const {products, isLoading} = useSelector(state => state.product)
+    const {categoriesDetail} = useSelector(state => state.category)
+    const {discounts} = useSelector(state => state.discount)
+    const {brands} = useSelector(state => state.brand)
+    const {colors} = useSelector(state => state.color)
+    const {logos} = useSelector(state => state.logo)
+    const {sizes} = useSelector(state => state.size)
+    const {productTypes} = useSelector(state => state.productType)
     const navigate = useNavigate()
     const [selectCategory, setSelectCategory] = useState('')
     const [selectProductType, setSelectProductType] = useState('')
@@ -78,14 +68,14 @@ function ManageShoesEdit({
     // ComponentDidMount
     useEffect(() => {
         refreshIsloadingStateProductRedux()
-        getAllCategoriesDetailByTypeRedux()
-        getAllDiscountsRedux()
-        getAllBrandsRedux()
-        getAllSizesByTypeRedux(categoryType)
-        getAllColorsRedux()
-        getAllLogosRedux()
-        getProductTypeByCategoryIdRedux(categoryType)
-        getProductByIdRedux(params.get('id'))
+        dispatch(actions.getAllCategoriesDetailByType())
+        dispatch(actions.getAllDiscounts())
+        dispatch(actions.getAllBrands())
+        dispatch(actions.getAllSizesByType(categoryType))
+        dispatch(actions.getAllColors())
+        dispatch(actions.getAllLogos())
+        dispatch(actions.getProductTypeByCategoryId(categoryType))
+        dispatch(actions.getProductById(params.get('id')))
     }, [])
 
     useEffect(() => {
@@ -127,17 +117,15 @@ function ManageShoesEdit({
                 label: products?.status === 1 ? 'active' : 'inactive'
             })
             if (products?.image) {
-                let imageBase64 = Buffer.from(products.image.data, 'base64').toString('binary')
                 setSelectImage({
-                    image: imageBase64,
-                    previewImgURL: imageBase64
+                    ...selectImage,
+                    previewImgURL: products?.image
                 })
             }
             if (products?.dataColorDetail?.length > 0) {
                 setListColors(products.dataColorDetail.map(item => item.colorId))
             }
             if (products?.releaseDate) {
-                // setSelectReleaseDate(new Date(`${products.releaseDate} 00:00:00 GMT+0700 (Indochina Time)`))
                 setSelectReleaseDate(new Date(products.releaseDate))
             }
             if (products?.dataSizeDetail?.length > 0) {
@@ -197,15 +185,11 @@ function ManageShoesEdit({
     }
 
     const handleOnchangeImage = async (e) => {
-        let files = e.target.files
-        let file = files[0]
+        let file = e.target.files[0]
         if (file) {
-            //convert file to base64
-            let base64 = await CommonUtils.getBase64(file)
-            let objectUrl = URL.createObjectURL(file)
             setSelectImage({
-                image: base64,
-                previewImgURL: objectUrl
+                image: file,
+                previewImgURL: URL.createObjectURL(file)
             })
         }
     }
@@ -255,12 +239,12 @@ function ManageShoesEdit({
         let listColorsAdded = [] 
 
         products?.dataSizeDetail?.forEach(item => {
-            if (listSizes.every(element => element !== item.sizeId)) {
-                listSizesDeleted.push(item.sizeId);
+            if (listSizes.every(element => element !== item.id)) {
+                listSizesDeleted.push(item.id);
             }
         })
         listSizes.forEach(item => {
-            if (products?.dataSizeDetail?.every(element => element.sizeId !== item)) {
+            if (products?.dataSizeDetail?.every(element => element.id !== item)) {
                 listSizesAdded.push(item);
             }
         })
@@ -276,16 +260,15 @@ function ManageShoesEdit({
             }
         })
 
-
         let product = {
-            id: params.get('id'),
             name: selectObject?.name,
             code: selectObject?.code,
             price: +(selectObject?.price),
             categoryDetailId: +selectCategory?.value,
             productTypeId: +selectProductType?.value,
             discountId: +selectDiscount?.value,
-            image: selectImage?.image,
+            imageUrl: products?.image,
+            image: selectImage?.previewImgURL,
             productionSite: selectObject?.productionSite,
             releaseDate: moment(selectReleaseDate).format('MM/DD/YYYY'),
             brandId: +selectBrand?.value,
@@ -299,7 +282,15 @@ function ManageShoesEdit({
             listColorsDeleted,
             listColorsAdded
         }
-        updateProductRedux(product, categoryType, params.get('page'))
+        if (selectImage.image) {
+            const formData = new FormData()
+            formData.append('image', selectImage.image)
+            formData.append('product', JSON.stringify(product))
+            dispatch(actions.updateProductAndImage(params.get('id'), formData, categoryType, params.get('page'), 'single'))
+        }
+        else {
+            dispatch(actions.updateProduct(params.get('id'), product, categoryType, params.get('page')))
+        }
         navigate({
             pathname: actives.pathToHome,
             search: createSearchParams({
@@ -593,30 +584,11 @@ function ManageShoesEdit({
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
-        products: state.product.products,
-        categoriesDetail: state.category.categoriesDetail,
-        discounts: state.discount.discounts,
-        brands: state.brand.brands,
-        colors: state.color.colors,
-        logos: state.logo.logos,
-        sizes: state.size.sizes,
-        productTypes: state.productType.productTypes,
-        isLoading: state.product.isLoadingProduct
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesDetailByTypeRedux: () => dispatch(actions.getAllCategoriesDetailByType()),
-        getAllDiscountsRedux: () => dispatch(actions.getAllDiscounts()),
-        getAllBrandsRedux: () => dispatch(actions.getAllBrands()),
-        getAllSizesByTypeRedux: (type) => dispatch(actions.getAllSizesByType(type)),
-        getAllColorsRedux: () => dispatch(actions.getAllColors()),
-        getAllLogosRedux: () => dispatch(actions.getAllLogos()),
-        getProductTypeByCategoryIdRedux: (categoryId) => dispatch(actions.getProductTypeByCategoryId(categoryId)),
-        getProductByIdRedux: (id) => dispatch(actions.getProductById(id)),
-        updateProductRedux: (data, categorieType, page) => dispatch(actions.updateProduct(data, categorieType, page)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct())
     }
 }

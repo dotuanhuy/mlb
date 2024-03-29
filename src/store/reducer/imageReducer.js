@@ -1,6 +1,7 @@
 const initState = {
     images: [],
-    isLoadingImage: true
+    isLoadingImage: true,
+    infoResponse: ''
 }
 
 const imageReducer = (state=initState, action) => {
@@ -8,6 +9,12 @@ const imageReducer = (state=initState, action) => {
         case 'REFRESH_STORE_SUCCESS':
             state.images = []
             state.isLoadingImage = true
+            state.infoResponse = ''
+            return {
+                ...state
+            }
+        case 'REFRESH_ERROR_IMAGE': 
+            state.infoResponse = ''
             return {
                 ...state
             }
@@ -44,6 +51,11 @@ const imageReducer = (state=initState, action) => {
         case 'GET_IMAGES_PRODUCT_BY_CATEGORY_FAILED':
             state.images = []
             state.isLoadingImage = true
+            return {
+                ...state
+            }
+        case 'ADD_IMAGE_PRODUCT':
+            state.infoResponse = action.infoResponse
             return {
                 ...state
             }

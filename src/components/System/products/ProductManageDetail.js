@@ -12,23 +12,20 @@ import { faBackward, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import SliderProduct from '../../common/Slider/SliderProduct';
 import ProductManageImage from './ProductManageImage';
 import ReviewManage from '../Reviews/ReviewManage';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-function ProductManageDetail({
-    actives,
-    product,
-    isLoadingImage,
-    refreshIsLoadingImagesRedux,
-    getProductByIdRedux,
-    getAllImagesByProductIdRedux,
-}) {
+function ProductManageDetail({actives}) {
+    const dispatch = useDispatch()
+    const {products} = useSelector(state => state.product)
+    const {isLoadingImage} = useSelector(state => state.image)
     const navigate = useNavigate()   
     const [params] = useSearchParams()
 
     useEffect(() => {
-        refreshIsLoadingImagesRedux()
-        getProductByIdRedux(params.get('id'))
-        getAllImagesByProductIdRedux(params.get('id'))
+        dispatch(actions.refreshStoreImages())
+        dispatch(actions.getProductById(params.get('id')))
+        dispatch(actions.getAllImagesByProductId(params.get('id')))
     }, [])
     
     const handleEdit = (id) => {
@@ -64,34 +61,34 @@ function ProductManageDetail({
                                 <SliderProduct />
                             </div>
                             <div className='col-6 product-detail'>
-                                <h3 className='fs-4'>{product?.name}</h3>
+                                <h3 className='fs-4'>{products?.name}</h3>
                                 <div className='d-flex gap-3 mb-1'>
                                     <div className='review'>
                                         <span className='text-banner text-muted'>Product review</span>
                                     </div>
                                     <div className='review'>
                                         <span className='text-banner text-muted'>Status: 
-                                            <span className='text-black fs-6'> {product?.status === 1 ? 'active' : 'inactive'}</span>
+                                            <span className='text-black fs-6'> {products?.status === 1 ? 'active' : 'inactive'}</span>
                                         </span>
                                     </div>
                                 </div>
                                 <div className='d-flex gap-4 mb-1'>
                                     <div className='category'>
-                                        <span className='text-banner text-muted'>Category name: <span className='text-black fs-6'>{product?.dataCategoryDetail?.name}</span></span>
+                                        <span className='text-banner text-muted'>Category name: <span className='text-black fs-6'>{products?.dataCategoryDetail?.name}</span></span>
                                     </div>
                                     <div className='logo'>
-                                        <span className='text-banner text-muted'>Logo name: <span className='text-black fs-6'>{product?.dataLogos?.name}</span></span>
+                                        <span className='text-banner text-muted'>Logo name: <span className='text-black fs-6'>{products?.dataLogos?.name}</span></span>
                                     </div>
                                 </div>
                                 <div className='banner d-flex gap-4 mb-1'>
                                     <div className='brand'>
                                         <span className='text-banner text-muted'>Brand: 
-                                            <span className='text-black fs-6'> {product?.dataBrands?.name}</span>
+                                            <span className='text-black fs-6'> {products?.dataBrands?.name}</span>
                                         </span>
                                     </div>
                                     <div className='code'>
                                         <span className='text-banner text-muted'>Code: 
-                                            <span className='text-black fs-6'> {product?.code}</span>
+                                            <span className='text-black fs-6'> {products?.code}</span>
                                         </span>
                                     </div>
                                 </div>
@@ -100,37 +97,37 @@ function ProductManageDetail({
                                         className='price-begin text-banner text-muted'
                                         // style={{ color: '#942319' }}
                                     >
-                                        Begin price: <span className='text-black fs-6'>{formatVND(product?.price)}</span>
+                                        Begin price: <span className='text-black fs-6'>{formatVND(products?.price)}</span>
                                     </span>
                                     <br/>
                                     {
-                                        product?.dataDiscounts?.value ? 
+                                        products?.dataDiscounts?.value ? 
                                         <span 
                                             className='price-last text-banner text-muted' 
                                         >
-                                           after discount ({+product?.dataDiscounts?.value*100}%): <span className='text-black fs-6'>{formatVND(+product?.price - (+product?.dataDiscounts?.value)*(+product?.price))}</span>
+                                           after discount ({+products?.dataDiscounts?.value*100}%): <span className='text-black fs-6'>{formatVND(+products?.price - (+products?.dataDiscounts?.value)*(+products?.price))}</span>
                                         </span> : ''
                                     }
                                 </div>
                                 <div className='mb-1'>
                                         <span className='text-banner text-muted'>Product type: 
-                                            <span className='text-black fs-6'> {product?.dataProductType?.name}</span>
+                                            <span className='text-black fs-6'> {products?.dataProductType?.name}</span>
                                         </span>
                                 </div>
                                 <div className='d-flex gap-3 mb-1'>
                                     <div className='release-date'>
                                         <span className='text-banner text-muted'>Release date: 
-                                            <span className='text-black fs-6'> {formatDateVN(product?.releaseDate)}</span>
+                                            <span className='text-black fs-6'> {formatDateVN(products?.releaseDate)}</span>
                                         </span>
                                     </div>
                                     <div className='quantity'>
                                         <span className='text-banner text-muted'>Quantity remaining:  
-                                            <span className='text-black fs-6'> {product?.quantity}</span>
+                                            <span className='text-black fs-6'> {products?.quantity}</span>
                                         </span>
                                     </div>
                                 </div>
                                 {
-                                    product?.dataSizeDetail?.length === 0 ?
+                                    products?.dataSizeDetail?.length === 0 ?
                                     '' : 
                                     <div className='size'>
                                         <div className='title mb-2'>
@@ -139,7 +136,7 @@ function ProductManageDetail({
                                         <div className='select-size mb-2'>
                                             <div className='row gap-2 ms-0'>
                                                 {   
-                                                    product?.dataSizeDetail?.map((item, index) => {
+                                                    products?.dataSizeDetail?.map((item, index) => {
                                                         return (
                                                             <div 
                                                                 className='col-2 rounded px-1 py-2 text-center active' 
@@ -155,7 +152,7 @@ function ProductManageDetail({
                                     </div>
                                 }
                                 {
-                                    product?.dataColorDetail?.length === 0 ?
+                                    products?.dataColorDetail?.length === 0 ?
                                     '' : 
                                     <div className='color'>
                                         <div className='title mb-2'>
@@ -164,7 +161,7 @@ function ProductManageDetail({
                                         <div className='select-color mb-2'>
                                             <div className='row gap-2 ms-0'>
                                                 {   
-                                                    product?.dataColorDetail?.map((item, index) => {
+                                                    products?.dataColorDetail?.map((item, index) => {
                                                         return (
                                                             <div 
                                                                 className='col-2 rounded px-1 py-2 text-center active' 
@@ -200,7 +197,7 @@ function ProductManageDetail({
                             </Link>
                             <button 
                                 className='btn btn-root-2 btn-add fw-500 me-2'
-                                onClick={() => handleEdit(product?.id)}
+                                onClick={() => handleEdit(products?.id)}
                             >
                                 <FontAwesomeIcon className='pe-1' icon={faPenToSquare} />
                                 Edit product
@@ -221,16 +218,11 @@ function ProductManageDetail({
 
 const mapStateToProps = state => {
     return {
-        product: state.product.products,
-        isLoadingImage: state.image.isLoadingImage
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshIsLoadingImagesRedux: () => dispatch(actions.refreshStoreImages()),
-        getProductByIdRedux: (id) => dispatch(actions.getProductById(id)),
-        getAllImagesByProductIdRedux: (id) => dispatch(actions.getAllImagesByProductId(id))
     }
 }
 

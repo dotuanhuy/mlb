@@ -24,9 +24,9 @@ const getAllProductsFavouriteLimitService = (userId, offset) => {
 const changeProductFavouriteService = (data) => {
     let accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.post(`${api}/create`, data, { headers: { token: `Bearer ${accessToken}` }})
+        return axiosJWT.post(`${api}/change`, data, { headers: { token: `Bearer ${accessToken}` }})
     }
-    return axios.post(`${api}/create`, data)
+    return axios.post(`${api}/change`, data)
 }
 
 export {

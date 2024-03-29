@@ -22,8 +22,8 @@ const getQuantityOfEachProductByCategoryService = () => {
     return axiosJWT.get(`${api}/category/count`)
 }
 
-const createNewProductService = (data) => {
-    return axiosJWT.post(`${api}/create`, data)
+const createNewProductService = (formData) => {
+    return axiosJWT.post(`${api}/create?type=single`, formData, { headers : { 'Content-type': 'multipart/form-data' } })
 }
 
 const deleteProductService = (id) => {
@@ -46,13 +46,17 @@ const getCountProductsService = () => {
 } 
 
 
-const updateProductService = (data) => {
-    return axiosJWT.post(`${api}/update`, data)
-    // return axios.post('/api/update-product', data)
+const updateProductService = (id, product) => {
+    console.log(product)
+    return axiosJWT.post(`${api}/update?id=${id}`, product)
 }
 
-const changeImageProductByIdService = (data) => {
-    return axiosJWT.post(`${api}/iamge/change`, { data })
+const updateProductAndImageService = (id, formData, type) => {
+    return axiosJWT.post(`${api}/update/image?id=${id}&type=${type}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
+}
+
+const changeImageProductByIdService = (id, formData, type) => {
+    return axiosJWT.post(`${api}/image/change?id=${id}&type=${type}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
 }
 
 const fetchDescriptionProductService = (id) => {
@@ -81,9 +85,9 @@ const getLimitProductService = (categore, page) => {
         return axios.get(`${api}/limit?categore=${categore}&page=${page}`)
 }
 
-const getLimitProductByOptionSortService = (optionData, page, option) => {
+const getLimitProductByOptionSortService = (optionData, page, option, limit) => {
     const accessToken = window.localStorage.getItem('accessToken')
-    let url = `${api}/sort/limit?page=${page}&option=${option}`
+    let url = `${api}/sort/limit?&limit=${+limit}&page=${page}&option=${option}`
     url = optionData?.optionType ? url + `&type=${optionData?.optionType}` : url
     url = optionData?.colors? url + `&colors=${optionData?.colors}` : url
     url = optionData?.logos? url + `&logos=${optionData?.logos}` : url
@@ -115,6 +119,7 @@ export {
     deleteProductService,
     getProductByIdService,
     updateProductService,
+    updateProductAndImageService,
     getCountProductsService,
     changeImageProductByIdService,
     addDescriptionProductService,

@@ -268,7 +268,7 @@
 //         accessToken: state.auth.token,
 //         images: state.product.images,
 //         products: state.product.products,
-//         isLoading: state.product.isLoadingProduct,
+//         isLoading: state.product.isLoading,
 //     }
 // }
 

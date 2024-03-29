@@ -22,6 +22,17 @@ export const refreshStoreImages = () => {
     }
 }
 
+export const refreshErrorImage = () => {
+    return (dispatch, getState) => {
+        try {
+            dispatch({
+                type: actionTypes.REFRESH_ERROR_IMAGE
+            })
+        } catch (e) {
+            console.log('refreshErrorImage error: ', e)
+        }
+    }
+}
 
 export const getAllImagesProduct = () => {
     return async (dispatch, getSate) => {
@@ -71,42 +82,56 @@ export const getAllImagesByProductId = (id) => {
     }
 }
 
-export const addImageProduct = (data) => {
+export const addImageProduct = (formData, id, type) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await addImageProductService(data)
+            let res = await addImageProductService(formData, id, type)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.ADD_IMAGE_PRODUCT_SUCCESS
+                    type: actionTypes.ADD_IMAGE_PRODUCT,
+                    infoResponse: res
                 })
-                dispatch(getAllImagesByProductId(data.productId))
+                dispatch(getAllImagesByProductId(id))
             }
             else {
                 dispatch({
-                    type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
+                    type: actionTypes.ADD_IMAGE_PRODUCT,
+                    infoResponse: res
                 })
             }
         } catch (e) {
-            console.log('addImageProduct error: ', e)
             dispatch({
-                type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
+                type: actionTypes.ADD_IMAGE_PRODUCT,
+                infoResponse: e?.response?.data?.errMessage ? e?.response?.data?.errMessage : e.message
             })
+            console.log('addImageProduct error: ', e?.response?.data?.errMessage)
         }
     }
 }
 
-export const deleteImageProduct = (data) => {
+export const deleteImageProduct = (formData, productId, type) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await deleteImageProductService(data)
+            let res = await deleteImageProductService(formData, type)
             if (res && res.errCode === 0) {
-                dispatch(getAllImagesByProductId(data.productId))
+                dispatch({
+                    type: actionTypes.ADD_IMAGE_PRODUCT,
+                    infoResponse: res
+                })
+                dispatch(getAllImagesByProductId(productId))
+            }
+            else {
+                dispatch({
+                    type: actionTypes.ADD_IMAGE_PRODUCT,
+                    infoResponse: res
+                })
             }
         } catch (e) {
-            console.log('deleteImageProduct error: ', e)
             dispatch({
-                type: actionTypes.ADD_IMAGE_PRODUCT_FAILED
+                type: actionTypes.ADD_IMAGE_PRODUCT,
+                infoResponse: e?.response?.data?.errMessage ? e?.response?.data?.errMessage : e.message
             })
+            console.log('deleteImageProduct error: ', e)
         }
     }
 }

@@ -125,7 +125,7 @@ const mapStateToProps = state => {
     return {
         productSearch: state.product.productSearchLimit,
         countProduct: state.product.count,
-        isLoading: state.product.isLoadingProduct
+        isLoading: state.product.isLoading
     }
 }
 

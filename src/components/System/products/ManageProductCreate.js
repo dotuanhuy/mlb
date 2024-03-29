@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../common/navbar/Navbar';
-import TableProducts from '../common/tableProducts/TableProducts';
+import TableProducts from './TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
 import { useSearchParams } from 'react-router-dom';
 import { BuildOptionSelectDiscount, TitleProduct, ListColorsProduct } from '../../../utils';
-import CommonUtils from '../../../utils/CommonUtils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
@@ -26,8 +25,8 @@ const initState = {
 }
 
 const initStateImage = {
-    image: null,
-    previewImgURL: null
+    image: '',
+    previewImgURL: ''
 }
 
 
@@ -70,7 +69,7 @@ function ManageShoesCreate({
 
     // ComponentDidMount
     useEffect(() => {
-        getAllCategoriesDetailByTypeRedux()
+        getAllCategoriesDetailByTypeRedux(categoryType)
         getAllDiscountsRedux()
         getAllBrandsRedux()
         getAllSizesByTypeRedux(categoryType)
@@ -106,15 +105,11 @@ function ManageShoesCreate({
     }
 
     const handleOnchangeImage = async (e) => {
-        let files = e.target.files
-        let file = files[0]
+        let file = e.target.files[0]
         if (file) {
-            //convert file to base64
-            let base64 = await CommonUtils.getBase64(file)
-            let objectUrl = URL.createObjectURL(file)
             setSelectImage({
-                image: base64,
-                previewImgURL: objectUrl
+                image: file,
+                previewImgURL: URL.createObjectURL(file)
             })
         }
     }
@@ -162,7 +157,6 @@ function ManageShoesCreate({
             categoryDetailId: +selectCategory?.value,
             productTypeId: +selectProductType?.value,
             discountId: +selectDiscount?.value,
-            image: selectImage?.image,
             productionSite: selectObject?.productionSite,
             releaseDate: moment(selectReleaseDate).format('MM/DD/YYYY'),
             brandId: +selectBrand?.value,
@@ -173,20 +167,28 @@ function ManageShoesCreate({
             listSizesAdded: listSizes,
             listColorsAdded: listColors
         }
-        createNewProductRedux(product, categoryType, params.get('page') ? params.get('page') : 1)
-        setSelectObject({
-            ...initState,
-            code: generateRandomString(15)
-        })
-        setSelectImage(initStateImage)
-        setSelectCategory('')
-        setSelectDiscount('')
-        setSelectBrand('')
-        setSelectLogo('')
-        setSelectReleaseDate('')
-        setSelectProductType('')
-        setListColors([])
-        setListSizes([])
+        if (selectImage.image) {
+            const formData = new FormData()
+            formData.append('image', selectImage.image)
+            formData.append('product', JSON.stringify(product))
+            createNewProductRedux(formData, categoryType, params.get('page') ? params.get('page') : 1)
+            setSelectObject({
+                ...initState,
+                code: generateRandomString(15)
+            })
+            setSelectImage(initStateImage)
+            setSelectCategory('')
+            setSelectDiscount('')
+            setSelectBrand('')
+            setSelectLogo('')
+            setSelectReleaseDate('')
+            setSelectProductType('')
+            setListColors([])
+            setListSizes([])
+        }
+        else {
+            alert('Please, choose image!')
+        }
     }
     
 
@@ -491,14 +493,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesDetailByTypeRedux: () => dispatch(actions.getAllCategoriesDetailByType()),
+        getAllCategoriesDetailByTypeRedux: (categoryType) => dispatch(actions.getAllCategoriesDetailByType(categoryType)),
         getAllDiscountsRedux: () => dispatch(actions.getAllDiscounts()),
         getAllBrandsRedux: () => dispatch(actions.getAllBrands()),
         getAllSizesByTypeRedux: (type) => dispatch(actions.getAllSizesByType(type)),
         getAllColorsRedux: () => dispatch(actions.getAllColors()),
         getAllLogosRedux: () => dispatch(actions.getAllLogos()),
         getProductTypeByCategoryIdRedux: (categoryId) => dispatch(actions.getProductTypeByCategoryId(categoryId)),
-        createNewProductRedux: (data, type, page) => dispatch(actions.createNewProduct(data, type, page))
+        createNewProductRedux: (formData, type, page) => dispatch(actions.createNewProduct(formData, type, page))
     }
 }
 

@@ -5,6 +5,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import * as actions from '../../store/actions'
 import { 
     path, 
+    limit_page
 } from '../../utils';
 import Navbar from '../HomePage/Navbar/Navbar';
 import Pagination from '../Paginations/Pagination'
@@ -78,6 +79,7 @@ function Shoes({
             data, 
             params.get('page') ? params.get('page') : 1, 
             optionSort, 
+            limit_page
         )
         if (listRef.current) {
             window.scrollTo({
@@ -106,6 +108,7 @@ function Shoes({
             data, 
             params.get('page') ? params.get('page') : 1, 
             optionSort, 
+            limit_page
         )
     }, [categoryActive])
 
@@ -193,7 +196,7 @@ const mapStateToProps = state => {
         categories: state.category.categoryType,
         images: state.image.images,
         products: state.product.products,
-        isLoading: state.product.isLoadingProduct,
+        isLoading: state.product.isLoading,
     }
 }
 
@@ -202,7 +205,7 @@ const mapDispatchToProps = dispatch => {
         getAllColorsRedux: () => dispatch(actions.getAllColors()),
         getAllLogosRedux: () => dispatch(actions.getAllLogos()),
         getImageProductByCategoryRedux: (category) => dispatch(actions.getImageProductByCategory(category)),
-        getLimitProductByOptionRedux: (optionData, page, option, optionTypeName) => dispatch(actions.getLimitProductByOption(optionData, page, option, optionTypeName)),
+        getLimitProductByOptionRedux: (optionData, page, option, limit) => dispatch(actions.getLimitProductByOption(optionData, page, option, limit)),
         refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
     }
 }

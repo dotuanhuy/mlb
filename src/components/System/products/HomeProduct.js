@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // import './ManageShoes.scss'
 import Navbar from '../common/navbar/Navbar'
 import { Link } from 'react-router-dom';
-import TableProduct from '../common/tableProducts/TableProducts';
+import TableProduct from './TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
 
 function HomeProduct({

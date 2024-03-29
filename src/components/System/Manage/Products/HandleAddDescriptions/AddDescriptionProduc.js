@@ -96,7 +96,7 @@
 //     return {
 //         descriptions: state.product.descriptions,
 //         accessToken: state.auth.token,
-//         isLoading: state.product.isLoadingProduct
+//         isLoading: state.product.isLoading
 //     }
 // }
 

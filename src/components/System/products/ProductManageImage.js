@@ -1,98 +1,153 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
 import { Buffer } from 'buffer';
 import CommonUtils from '../../../utils/CommonUtils';
-import { Modal } from 'react-bootstrap';
-import { faImage, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
+import { Form, Modal } from 'react-bootstrap';
+import { faFloppyDisk, faImage, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { MAX_LENGTH_IMAGE } from '../../../utils';
+import { toast } from 'react-toastify';
 
-
-function ProductManageImage({
-    images,
-    product,
-    addImageProductRedux,
-    changeImageProductByIdRedux,
-    deleteImageProductRedux,
-}) {
+function ProductManageImage() {
+    const dispatch = useDispatch()
+    const {images, isLoadingImage, infoResponse} = useSelector(state => state.image)
+    const {products} = useSelector(state => state.product)
     const [show, setShow] = useState(false);
-    const [imageMain, setImageMain] = useState('')
+    const [imageMain, setImageMain] = useState({url: '', value: ''})
     const [listImageItems, setListImageItems] = useState([])
     const [listImageItemDeleted, setListImageItemDeleted] = useState([])
-    const [isChangeImageMain, setIsCheckImageMain] = useState(false)
+    const [listImageItemAdded, setListImageItemAdded] = useState([])
 
     useEffect(() => {
-        if (product?.image?.data) {
-            setImageMain(Buffer.from(product?.image?.data, 'base64').toString('binary'))
+        if (products?.image) {
+            setImageMain({
+                ...imageMain,
+                url: products?.image
+            })
         }
         if (images.length > 0) {
-            setListImageItems(images.map(item => Buffer.from(item.image.data, 'base64').toString('binary')))
+            setListImageItems(images.map(item => {
+                return {
+                    url: item.image
+                }
+            }))
         }
-    }, [images, product])
+    }, [images, products])
+
+    useEffect(() => {
+        if (infoResponse) {
+            if (infoResponse.errCode === 0) {
+                toast.success(CustomToast(infoResponse.errMessage), { autoClose: 3000 })
+            }
+            else {
+                toast.error(CustomToast(infoResponse.errMessage), { autoClose: 3000 })
+            }
+            dispatch(actions.refreshErrorImage())
+        }
+    }, [infoResponse])
+
+    const CustomToast = (message) => (
+        <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
+            {message}
+        </span>
+    )
 
     const handleClose = () => {
         setShow(false)
-        setImageMain(product?.image?.data ? Buffer.from(product?.image?.data, 'base64').toString('binary') : '')
-        if (images.length > 0) {
-            setListImageItems(images.map(item => Buffer.from(item.image.data, 'base64').toString('binary')))
-        }
-        else {
-            setListImageItems([])
-        }
         setListImageItemDeleted([])
+        setListImageItemAdded([])
+        setListImageItems([])
     }
-    const handleShow = () => setShow(true);
+
+    const handleShow = () => {
+        setShow(true)
+        if (images.length > 0) {
+            setListImageItems(images.map(item => {
+                return {
+                    url: item.image
+                }
+            }))
+        }
+    };
 
     const handleOnchangeImageMain = async (e) => {
-        setIsCheckImageMain(true)
-        let files = e.target.files
-        let file = files[0]
-        if (file) {
-            //convert file to base64
-            let base64 = await CommonUtils.getBase64(file)
-            let objectUrl = URL.createObjectURL(file)
-            if (Buffer.from(product?.image?.data, 'base64').toString('binary') !== base64) {
-                setIsCheckImageMain(true)            
-            }
-            else {
-                setIsCheckImageMain(false)
-            }
-            setImageMain(base64)
+        setImageMain({
+            url: URL.createObjectURL(e.target.files[0]),
+            value: e.target.files[0]
+        })
+    }
+    
+    const handleSaveImageMain = (e) => {
+        e.preventDefault()
+        if (imageMain.value) {
+            const formData = new FormData()
+            formData.append('image', imageMain.value)
+            dispatch(actions.changeImageProductById(products?.id, formData, 'single'))
+            setShow(false)
         }
+        else {
+            toast.warn(CustomToast('Please select a photo!'), { autoClose: 3000 })
+        }
+    }
+    
+    const handleOnchangeImageItem = async (e) => {
+        let base64 = await CommonUtils.getBase64(e.target.files[0])
+        setListImageItemAdded([...listImageItemAdded, {
+            url: URL.createObjectURL(e.target.files[0]),
+            value: e.target.files[0],
+            base64
+        }])
+        setListImageItems([...listImageItems, {
+            url: URL.createObjectURL(e.target.files[0]),
+            value: e.target.files[0],
+            base64 
+        }])
     }
 
-    const handleOnchangeImageItem = async (e) => {
-        let files = e.target.files
-        let file = files[0]
-        if (file) {
-            //convert file to base64
-            let base64 = await CommonUtils.getBase64(file)
-            let objectUrl = URL.createObjectURL(file)
-            let arrImage = [...listImageItems]
-            arrImage.push(base64)
-            setListImageItems(arrImage)
-        }
-    }
 
     const handleDeleteImageItem = (image) => {
-        let arr = listImageItems.filter(item => item !== image)
+        let arr = listImageItems.filter(item => item?.url !== image.url)
         setListImageItems(arr)
-        if (images.some(item => Buffer.from(item.image.data, 'base64').toString('binary') === image) && !listImageItemDeleted?.some(item => item === image)) {
-            setListImageItemDeleted([...listImageItemDeleted, image])
+        let arrAdded = listImageItemAdded.filter(item => item?.base64 !== image.base64)
+        setListImageItemAdded(arrAdded)
+        // !listImageItemDeleted?.some(item => item === image)
+        const temp = images.find(item => item.image === image.url)
+        if (temp) {
+            setListImageItemDeleted([...listImageItemDeleted, { id: temp?.id, url: temp?.image}])
         }
     }
 
     const handleSaveImage = () => {
-        if (isChangeImageMain) {
-            changeImageProductByIdRedux({ id: product?.id, image: imageMain })
+        if (listImageItems.length > MAX_LENGTH_IMAGE) {
+            toast.warn(CustomToast('The number of photos has exceeded 12, please delete more photos!'), { autoClose: 3000 })
         }
-        if (listImageItemDeleted.length > 0) {
-            deleteImageProductRedux({ listImagesDeleted: listImageItemDeleted, productId: product?.id })
+        else if (listImageItemAdded.length === 0 && listImageItemDeleted.length === 0) {
+            toast.warn(CustomToast('Please, choose image!'), { autoClose: 3000 })
         }
-        addImageProductRedux({ listImages: listImageItems, listImagesDeleted: listImageItemDeleted, productId: product.id })
-        setShow(false)
+        else {
+            if (listImageItemDeleted.length > 0) {
+                const arrId = []
+                const formData = new FormData()
+                listImageItemDeleted.map(item => {
+                    formData.append('image[]', item.url)
+                    arrId.push(item.id)
+                })
+                formData.append('arrId', arrId)
+                dispatch(actions.deleteImageProduct(formData, products?.id, 'multiple'))
+            }
+            if (listImageItemAdded.length > 0) {
+                const formData = new FormData()
+                listImageItemAdded.map(item => {
+                    formData.append('image[]', item.value)
+                })
+                dispatch(actions.addImageProduct(formData, products?.id, 'multiple'))
+            }
+            handleClose()
+        }
     }
+
 
     return (
         <>
@@ -119,27 +174,39 @@ function ProductManageImage({
                 <Modal.Body>
                     <div className=''>
                         <div className='col-3 mt-1 mb-2'>
-                            <label className='form-label fw-bold' htmlFor='addimagemain'>Choose image main:</label>
-                            <input 
-                                type='file' 
-                                className='form-control' 
-                                id='addimagemain'
-                                onChange={(e) => { handleOnchangeImageMain(e) }}
-                            />
+                            <label className='form-label fw-bold' htmlFor='image'>Choose image main:</label>
+                            <Form onSubmit={(e) => handleSaveImageMain(e)}>
+                                <Form.Control 
+                                    type='file'
+                                    id='image'
+                                    name='image'
+                                    onChange={(e) => { handleOnchangeImageMain(e) }}
+                                />
+                                {
+
+                                    imageMain?.url && 
+                                    <div 
+                                        style={{ 
+                                            width: '100%', 
+                                            height: '250px',
+                                            // backgroundImage: `url(${imageMain})`,
+                                            backgroundImage: `url(${imageMain?.url})`,
+                                            backgroundPosition: '0% 0%',
+                                            backgroundSize: 'contain',
+                                            backgroundRepeat: 'no-repeat'
+                                        }}
+                                    ></div>
+                                }
+                                <button 
+                                    className='btn btn-root fw-500 mt-2'
+                                    type='submmit'
+                                >
+                                    <FontAwesomeIcon className='pe-1' icon={faFloppyDisk} />
+                                    Save
+                                </button>
+                            </Form>
                         </div>
-                        {
-                            product?.image && 
-                                <div 
-                                    style={{ 
-                                        width: '100%', 
-                                        height: '250px',
-                                        backgroundImage: `url(${imageMain})`,
-                                        backgroundPosition: '0% 0%',
-                                        backgroundSize: 'contain',
-                                        backgroundRepeat: 'no-repeat'
-                                    }}
-                            ></div>
-                        }
+                        
                     </div>
                     <hr/>
                     <div className='mt-2'>
@@ -169,7 +236,7 @@ function ProductManageImage({
                                                 style={{ 
                                                     width: '100%', 
                                                     height: '200px',
-                                                    backgroundImage: `url(${item})`,
+                                                    backgroundImage: `url(${item.url})`,
                                                     backgroundPosition: '0% 0%',
                                                     backgroundSize: 'contain',
                                                     backgroundRepeat: 'no-repeat'
@@ -181,18 +248,19 @@ function ProductManageImage({
                                 })
                             }
                         </div>
+                        <button 
+                            className='btn btn-root fw-500 mt-2' 
+                            variant="primary"
+                            onClick={handleSaveImage}
+                        >
+                            <FontAwesomeIcon className='pe-1' icon={faFloppyDisk} />
+                            Save
+                        </button>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className='btn btn-root fw-500' variant="secondary" onClick={handleClose}>
+                    <button className='btn btn-root-2 fw-500' variant="secondary" onClick={handleClose}>
                         Close
-                    </button>
-                    <button 
-                        className='btn btn-root-2 fw-500' 
-                        variant="primary"
-                        onClick={handleSaveImage}
-                    >
-                        Save
                     </button>
                 </Modal.Footer>
             </Modal>
@@ -202,17 +270,11 @@ function ProductManageImage({
 
 const mapStateToProps = state => {
     return {
-        images: state.image.images,
-        isLoading: state.image.isLoadingImage,
-        product: state.product.products
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        addImageProductRedux: (data) => dispatch(actions.addImageProduct(data)),
-        changeImageProductByIdRedux: (data) => dispatch(actions.changeImageProductById(data)),
-        deleteImageProductRedux: (data) => dispatch(actions.deleteImageProduct(data)),
     }
 }
 

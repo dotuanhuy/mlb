@@ -67,7 +67,7 @@ const mapStateToProps = state => {
     return {
         categoriesDetail: state.category.categoriesDetail,
         quantityArr: state.product.quantityArr,
-        isLoading: state.product.isLoadingProduct
+        isLoading: state.product.isLoading
     }
 }
 

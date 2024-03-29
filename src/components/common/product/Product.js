@@ -120,7 +120,7 @@ function Product({
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.product.isLoadingProduct,
+        isLoading: state.product.isLoading,
         fouriteProducts: state.fouriteProduct.product,
     }
 }

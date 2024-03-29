@@ -23,12 +23,12 @@ const getAllImagesByProductIdService = (id) => {
     }
 }
 
-const addImageProductService = (data) => {
-    return axiosJWT.post(`${api}/change`, data)
+const addImageProductService = (formData, id, type) => {
+    return axiosJWT.post(`${api}/change?productId=${id}&type=${type}`, formData, { headers : { 'Content-type': 'multipart/form-data' } })
 }
 
-const deleteImageProductService = (data) => {
-    return axiosJWT.post(`${api}/delete`, data)
+const deleteImageProductService = (formData, type) => {
+    return axiosJWT.post(`${api}/delete?type=${type}`, formData, { headers : { 'Content-type': 'multipart/form-data' } })
 }
 
 const getImageProductByCategoryService = (category) => {

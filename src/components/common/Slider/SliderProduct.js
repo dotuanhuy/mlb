@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import './SliderProduct.scss'
-import { Buffer } from 'buffer';
 
 function SliderProduct({product, images}) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null)
@@ -12,11 +11,11 @@ function SliderProduct({product, images}) {
 
     useEffect(() => {
         let image, arr = []
-        if ( product?.image) {
-            image = Buffer.from(product.image.data, 'base64').toString('binary')
+        if (product?.image) {
+            image = product?.image
         }
         if (images.length > 0) {
-            arr = images.map(item => Buffer.from(item.image.data, 'base64').toString('binary'))
+            arr = images.map(item => item.image)
         }
         setListImages([image, ...arr])
     }, [images, product])

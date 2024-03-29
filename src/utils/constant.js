@@ -213,3 +213,5 @@ export const typeStep = {
     DOWN: 'down',
     UP: 'up'
 }
+
+export const MAX_LENGTH_IMAGE = 12

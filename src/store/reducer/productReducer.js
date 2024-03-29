@@ -4,7 +4,7 @@ const initState = {
     products: [],
     count: 0,
     descriptions: [],
-    isLoadingProduct: true,
+    isLoading: true,
     countFavouriteProduct: 0,
     productSearch: [],
     productSearchLimit: [],
@@ -14,14 +14,14 @@ const initState = {
 const productReducer = (state = initState, action) => {
     switch (action.type) {
         case 'LOADING_PRODUCT_SUCCESS':
-            state.isLoadingProduct = true
+            state.isLoading = true
             return {
                 ...state
             }
         case 'REFRESH_STORE_SUCCESS':
             state.products = []
             state.descriptions = []
-            state.isLoadingProduct = true
+            state.isLoading = true
             state.count = 0
             state.countFavouriteProduct = 0
             state.productSearch = []
@@ -31,25 +31,25 @@ const productReducer = (state = initState, action) => {
             }
         case 'FETCH_ALL_PRODUCTS_SUCCESS':
             state.products = action.data
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'FETCH_ALL_PRODUCTS_FAILED': 
             state.products = []
-            state.isLoadingProduct = true
+            state.isLoading = true
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_PUBLIC_SUCCESS':
             state.products = action.data
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_ALL_PRODUCTS_PUBLIC_FAILED':
             state.products = []
-            state.isLoadingProduct = true
+            state.isLoading = true
             return {
                 ...state
             }
@@ -60,49 +60,49 @@ const productReducer = (state = initState, action) => {
             }
         case 'GET_PRODUCT_BY_ID_SUCCESS':
             state.products = action.data
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_PRODUCT_BY_ID_FAILED':
             state.products = []
-            state.isLoadingProduct = true
+            state.isLoading = true
             return {
                 ...state
             }
         case 'FETCH_DESCRIPTION_PRODUCT_SUCCESS': 
             state.descriptions = action.data
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'FETCH_DESCRIPTION_PRODUCT_FAILED': 
             state.descriptions = []
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_COUNT_PRODUCTS_SUCCESS':
             state.count = action.data.count
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_COUNT_PRODUCTS_FAILED':
                 state.count = 0
-                state.isLoadingProduct = true
+                state.isLoading = true
                 return {
                     ...state
                 }
         case 'GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_SUCCESS':
             state.quantityArr = action.data
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_FAILED':
             state.quantity = []
-            state.isLoadingProduct = true
+            state.isLoading = true
             return {
                 ...state
             }
@@ -118,14 +118,14 @@ const productReducer = (state = initState, action) => {
             }
         case 'GET_PRODUCT_BY_CATEGORY_LIMIT_SUCCESS':
             state.products = action.data
-            state.isLoadingProduct = false
+            state.isLoading = false
             state.count = action.count
             return {
                 ...state
             }
         case 'GET_PRODUCT_BY_CATEGORY_LIMIT_FAILED':
             state.products = []
-            state.isLoadingProduct = true
+            state.isLoading = true
             state.count = 0
             return {
                 ...state
@@ -133,39 +133,39 @@ const productReducer = (state = initState, action) => {
         case 'GET_LIMIT_PRODUCTS_SUCCESS':
             state.products = action.data.rows
             state.count = action.data.count
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_LIMIT_PRODUCTS_FAILED':
             state.products = []
             state.count = 0
-            state.isLoadingProduct = true
+            state.isLoading = true
             return {
                 ...state
             }
         case 'GET_LIMIT_PRODUCTS_BY_OPTION_SORT_SUCCESS': 
             state.products = action.data.rows
             state.count = action.data.count
-            state.isLoadingProduct = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED': 
             state.products = []
             state.count = 0
-            state.isLoadingProduct = true
+            state.isLoading = true
             return {
                 ...state
             }
         case 'SEARCH_PRODUCT_BY_NAME_SUCCESS':
-            state.isLoadingProduct = false
+            state.isLoading = false
             state.productSearch = action.data
             return {
                 ...state
             }
         case 'SEARCH_PRODUCT_BY_NAME_FAILED':
-            state.isLoadingProduct = false
+            state.isLoading = false
             state.productSearch = []
             return {
                 ...state
@@ -176,7 +176,7 @@ const productReducer = (state = initState, action) => {
                 ...state
             }
         case 'SEARCH_PRODUCT_BY_NAME_LIMIT_SUCCESS':
-            state.isLoadingProduct = false
+            state.isLoading = false
             state.productSearchLimit = action.data.rows
             state.count = action.data.count
             return {
@@ -184,7 +184,7 @@ const productReducer = (state = initState, action) => {
             }
         case 'SEARCH_PRODUCT_BY_NAME_LIMIT_FAILED':
             state.productSearchLimit = []
-            state.isLoadingProduct = true
+            state.isLoading = true
             state.count = 0
             return {
                 ...state

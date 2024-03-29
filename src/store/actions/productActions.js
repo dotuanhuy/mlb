@@ -7,6 +7,7 @@ import {
     deleteProductService,
     getProductByIdService,
     updateProductService,
+    updateProductAndImageService,
     getCountProductsService,
     changeImageProductByIdService,
     addDescriptionProductService,
@@ -124,10 +125,10 @@ export const getQuantityOfEechProductByCategory = () => {
 }
 
 //*
-export const createNewProduct = (product, type, page) => {
+export const createNewProduct = (formData, type, page) => {
     return async (dispatch, getState) => {
         try {
-            let res = await createNewProductService(product)
+            let res = await createNewProductService(formData)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_NEW_PRODUCT_SUCCESS
@@ -202,27 +203,30 @@ export const getProductById = (id) => {
     }
 }
 
-export const updateProduct = (data, type, page) => {
+export const updateProductAndImage = (id, formData, category, page, type) => {
     return async (dispatch, getState) => {
         try {
-            let res = await updateProductService(data)
+            let res = await updateProductAndImageService(id, formData, type)
             if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.EDIT_PRODUCT_SUCCESS
-                })
                 // dispatch(getAllProducts(type, accessToken))
-                dispatch(getProductByCategoryLimit(type, page))
-            }
-            else {
-                dispatch({
-                    type: actionTypes.EDIT_PRODUCT_SUCCESS
-                })
+                dispatch(getProductByCategoryLimit(category, page))
             }
         } catch (e) {
             console.log('updateProduct error: ', e)
-            dispatch({
-                type: actionTypes.EDIT_PRODUCT_SUCCESS
-            })
+        } 
+    }
+}
+
+export const updateProduct = (id, product, type, page) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await updateProductService(id, product)
+            if (res && res.errCode === 0) {
+                // dispatch(getAllProducts(type, accessToken))
+                dispatch(getProductByCategoryLimit(type, page))
+            }
+        } catch (e) {
+            console.log('updateProduct error: ', e)
         } 
     }
 }
@@ -251,15 +255,18 @@ export const getCountProducts = () => {
     }
 }
 
-export const changeImageProductById = (data) => {
+export const changeImageProductById = (id, formData, type) => {
     return async (dispatch, getState) => {
         try {
-            let res = await changeImageProductByIdService(data)
+            let res = await changeImageProductByIdService(id, formData, type)
             if (res && res.errCode === 0) {
-                dispatch(getProductById(data.id))
+                dispatch(getProductById(id))
+            }
+            else {
+                console.log(res)
             }
         } catch (e) {
-            console.log('deleteImageProduct error: ', e)
+            console.log('changeImageProductById error: ', e)
         }
     }
 }
@@ -386,11 +393,11 @@ export const getLimitProducts = (categore, page) => {
     }
 }
 
-export const getLimitProductByOption = (optionData, page, option) => {
+export const getLimitProductByOption = (optionData, page, option, limit) => {
     return async (dispatch, getState) => {
         try {
             const newPage = +page - 1 
-            let res = await getLimitProductByOptionSortService(optionData, newPage, option)
+            let res = await getLimitProductByOptionSortService(optionData, newPage, option, limit)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_SUCCESS,
