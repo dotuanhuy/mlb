@@ -18,14 +18,12 @@ function DiscountManage() {
                     <Sidebar active={'discount'}/>
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
-                    <div className='d-flex justify-content-between'>
+                    <div className='d-flex justify-content-between align-items-center'>
                         <h2>Discount</h2>
-                        <button className='btn btn-root btn-add py-1'>
-                            <Link className='text-white fw-500' to={path.MANAGE_DISCOUNT_CREATE}>
-                                <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
-                                Add new
-                            </Link>
-                        </button>
+                        <Link className='text-white fw-500 btn btn-root text-center' to={path.MANAGE_DISCOUNT_CREATE}>
+                            <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
+                            Add new
+                        </Link>
                     </div>
                     <hr/>
                     <TableDiscount />

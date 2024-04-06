@@ -73,11 +73,7 @@ function ListCarts({
                                         {
                                             productsCart && productsCart.length > 0 &&
                                             productsCart.map((item, index) => {
-                                                let imageBase64 = ''
                                                 let price = ''
-                                                if (item?.dataCartProduct?.image) {
-                                                    imageBase64 = Buffer.from(item.dataCartProduct.image.data, 'base64').toString('binary')
-                                                }
                                                 if (item?.dataCartProduct?.price) {
                                                     price = formatVND((+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.CartDetail.quantity)
                                                 }
@@ -110,7 +106,7 @@ function ListCarts({
                                                                         style={{ 
                                                                             width: '100%',   
                                                                             height: '100%',                                                     
-                                                                            backgroundImage: `url(${imageBase64})`,
+                                                                            backgroundImage: `url(${item.dataCartProduct.image})`,
                                                                             backgroundPosition: 'center',
                                                                             backgroundSize: 'contain',
                                                                             backgroundRepeat: 'no-repeat'

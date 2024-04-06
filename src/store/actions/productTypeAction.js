@@ -120,15 +120,25 @@ export const getProductTypeById = (id) => {
     }
 }
 
-export const createProductType = (data, page) => {
+export const createProductType = (formData, page, type) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await createProductTypeService(data)
+            let res = await createProductTypeService(formData, type)
             if (res && res.errCode === 0) {
                 dispatch(getLimitProductTypes(page))
             }
+            else {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: res.errMessage
+                })
+            }
         } catch (e) {
             console.log('createProductType error: ', e)
+            dispatch({
+                type: actionTypes.ERROR,
+                error: e?.response?.data?.errMessage
+            })
         }
     }
 }
@@ -146,10 +156,10 @@ export const deleteProductType = (id, page) => {
     }
 }
 
-export const updateProductType = (data, page) => {
+export const updateProductType = (formData, id, page, type) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await updateProductTypeService(data)
+            let res = await updateProductTypeService(formData, id, type)
             if (res && res.errCode === 0) {
                 dispatch(getLimitProductTypes(page))
             }

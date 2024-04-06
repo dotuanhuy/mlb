@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-do
 import { path, Role, TitleProduct } from '../../../utils';
 import Sidebar from '../common/sidebars/Sidebar';
 import * as actions from '../../../store/actions'
-import TableProductType from '../common/tableCategories/TableProductType';
+import TableProductType from './TableProductType';
 import ProductManageCreate from './ProductManageCreate';
 
 function ProductTypeManage({

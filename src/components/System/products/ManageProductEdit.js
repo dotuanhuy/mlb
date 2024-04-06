@@ -10,7 +10,7 @@ import moment from 'moment';
 import _ from 'lodash'
 import Loading from '../../common/Loading/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -259,7 +259,8 @@ function ManageShoesEdit({
                 listColorsAdded.push(item);
             }
         })
-
+        
+        const formData = new FormData()
         let product = {
             name: selectObject?.name,
             code: selectObject?.code,
@@ -282,15 +283,11 @@ function ManageShoesEdit({
             listColorsDeleted,
             listColorsAdded
         }
+        formData.append('product', JSON.stringify(product))
         if (selectImage.image) {
-            const formData = new FormData()
             formData.append('image', selectImage.image)
-            formData.append('product', JSON.stringify(product))
-            dispatch(actions.updateProductAndImage(params.get('id'), formData, categoryType, params.get('page'), 'single'))
         }
-        else {
-            dispatch(actions.updateProduct(params.get('id'), product, categoryType, params.get('page')))
-        }
+        dispatch(actions.updateProduct(params.get('id'), formData, categoryType, params.get('page'), 'single'))
         navigate({
             pathname: actives.pathToHome,
             search: createSearchParams({
@@ -567,9 +564,10 @@ function ManageShoesEdit({
                                 </div>
                                 <button 
                                     type="submit" 
-                                    className="btn btn-root"
+                                    className="btn btn-root fw-500"
                                     onClick={(e) => handleUpdateProduct(e)}
                                 >
+                                    <FontAwesomeIcon className='pe-1' icon={faFloppyDisk} />
                                     Save
                                 </button>
                             </form>

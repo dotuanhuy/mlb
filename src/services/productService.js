@@ -23,12 +23,11 @@ const getQuantityOfEachProductByCategoryService = () => {
 }
 
 const createNewProductService = (formData) => {
-    return axiosJWT.post(`${api}/create?type=single`, formData, { headers : { 'Content-type': 'multipart/form-data' } })
+    return axiosJWT.post(`${api}/create?type=single`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
 }
 
 const deleteProductService = (id) => {
-    return axiosJWT.delete(`${api}/delete?id=${id}`)
-    // return axios.post('/api/delete-product', { id })
+    return axiosJWT.delete(`${api}/delete?id=${id}&type=single`)
 }
 
 const getProductByIdService = (id) => {
@@ -46,13 +45,8 @@ const getCountProductsService = () => {
 } 
 
 
-const updateProductService = (id, product) => {
-    console.log(product)
-    return axiosJWT.post(`${api}/update?id=${id}`, product)
-}
-
-const updateProductAndImageService = (id, formData, type) => {
-    return axiosJWT.post(`${api}/update/image?id=${id}&type=${type}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
+const updateProductService = (id, formData, type) => {
+    return axiosJWT.post(`${api}/update?id=${id}&type=${type}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
 }
 
 const changeImageProductByIdService = (id, formData, type) => {
@@ -119,7 +113,6 @@ export {
     deleteProductService,
     getProductByIdService,
     updateProductService,
-    updateProductAndImageService,
     getCountProductsService,
     changeImageProductByIdService,
     addDescriptionProductService,

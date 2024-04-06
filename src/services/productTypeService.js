@@ -46,16 +46,16 @@ const getProductTypeByIdService = (id) => {
     }
 }
 
-const createProductTypeService = (data) => {
-    return axiosJWT.post(`${api}/create`, { data })
+const createProductTypeService = (formData, type) => {
+    return axiosJWT.post(`${api}/create?type=${type}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
 }
 
 const deleteProductTypeService = (id) => {
-    return axiosJWT.delete(`${api}/delete?id=${id}`)
+    return axiosJWT.delete(`${api}/delete?id=${id}&type=single`)
 }
 
-const updateProductTypeService = (data) => {
-    return axiosJWT.post(`${api}/update`, { data })
+const updateProductTypeService = (formData, id, type) => {
+    return axiosJWT.post(`${api}/update?type=${type}&id=${id}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
 }
 
 export {

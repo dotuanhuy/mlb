@@ -35,7 +35,7 @@ function Pagination({
         else if (pathPage === path.MANAGE_PRODUCT_TYPE) {
             maxPage =  Math.ceil(countProductType / +limit_page)
         }
-        else if (pathPage === path.MANAGE_DISCOUNT) {
+        else if (pathPage === path.MANAGE_DISCOUNT || pathPage === path.MANAGE_DISCOUNT_CREATE) {
             maxPage =  Math.ceil(countDiscount / +limit_page)
         }
         else {

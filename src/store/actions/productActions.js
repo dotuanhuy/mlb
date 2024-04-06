@@ -7,7 +7,6 @@ import {
     deleteProductService,
     getProductByIdService,
     updateProductService,
-    updateProductAndImageService,
     getCountProductsService,
     changeImageProductByIdService,
     addDescriptionProductService,
@@ -203,27 +202,12 @@ export const getProductById = (id) => {
     }
 }
 
-export const updateProductAndImage = (id, formData, category, page, type) => {
+export const updateProduct = (id, fromData, categoryType, page, type) => {
     return async (dispatch, getState) => {
         try {
-            let res = await updateProductAndImageService(id, formData, type)
+            const res = await updateProductService(id, fromData, type)
             if (res && res.errCode === 0) {
-                // dispatch(getAllProducts(type, accessToken))
-                dispatch(getProductByCategoryLimit(category, page))
-            }
-        } catch (e) {
-            console.log('updateProduct error: ', e)
-        } 
-    }
-}
-
-export const updateProduct = (id, product, type, page) => {
-    return async (dispatch, getState) => {
-        try {
-            let res = await updateProductService(id, product)
-            if (res && res.errCode === 0) {
-                // dispatch(getAllProducts(type, accessToken))
-                dispatch(getProductByCategoryLimit(type, page))
+                dispatch(getProductByCategoryLimit(categoryType, page))
             }
         } catch (e) {
             console.log('updateProduct error: ', e)

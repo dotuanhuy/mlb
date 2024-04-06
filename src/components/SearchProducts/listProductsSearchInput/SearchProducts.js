@@ -57,11 +57,7 @@ function SearchProducts({ productSearch, searchProductByNameRedux, refreshProduc
                                 productSearch.map((item, index) => {
                                     if (index === limit_list_search) 
                                         return ''
-                                    let imageBase64 = ''
                                     let price = ''
-                                    if (item.image) {
-                                        imageBase64 = Buffer.from(item.image.data, 'base64').toString('binary')
-                                    }
                                     if (item.price) {
                                         price = formatVND(item.price)
                                     }
@@ -79,7 +75,7 @@ function SearchProducts({ productSearch, searchProductByNameRedux, refreshProduc
                                                 <div 
                                                     style={{ 
                                                         width: '250px',                                                        
-                                                        backgroundImage: `url(${imageBase64})`,
+                                                        backgroundImage: `url(${item.image})`,
                                                         backgroundPosition: '0% 0%',
                                                         backgroundSize: 'contain',
                                                         backgroundRepeat: 'no-repeat'

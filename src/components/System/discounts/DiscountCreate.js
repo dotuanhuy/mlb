@@ -35,6 +35,7 @@ function DiscountCreat() {
                 description: dataInput?.description, 
                 page: params?.get('page') ? +params?.get('page') : 1
             }))
+            setDataInput(initDataInput)
         }
     }
 

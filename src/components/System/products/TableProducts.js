@@ -3,24 +3,17 @@ import { connect } from 'react-redux';
 import { path, formatVND } from '../../../utils';
 import * as actions from '../../../store/actions'
 import { Link, createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import {Buffer} from 'buffer';
 import Loading from '../../common/Loading/Loading';
 import Pagination from '../../Paginations/Pagination';
 import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'react-bootstrap';
-import { faCommentDots, faEye, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
 
-function TableProducts({
-    categoryType, 
-    actives,
-    products, 
-    isLoading, 
-    getProductByCategoryLimitRedux,
-    deleteProductRedux, 
-    refreshIsloadingStateProductRedux,
-}) {
-    const accessToken = window.localStorage.getItem('accessToken')
+function TableProducts({categoryType, actives}) {
+    const dispatch = useDispatch()
+    const {products, isLoading} = useSelector(state => state.product)
     const navigate = useNavigate()
     const [params] = useSearchParams()
     const {pathname} = useLocation()
@@ -32,11 +25,11 @@ function TableProducts({
     const handleShow = (id) => setShow({id})
 
     useEffect(() => {
-        refreshIsloadingStateProductRedux()
+        dispatch(actions.refreshIsloadingStateProduct())
     }, [])
 
     useEffect(() => {
-        getProductByCategoryLimitRedux(categoryType, params?.get('page') ? params?.get('page') : 1)
+        dispatch(actions.getProductByCategoryLimit(categoryType, params?.get('page') ? params?.get('page') : 1))
     }, [params?.get('page')])
 
     useEffect(() => {
@@ -64,26 +57,12 @@ function TableProducts({
                 pathToDetail: path.MANAGE_PRODUCTS_CLOTHES_DETAIL
             })
         }
-        refreshIsloadingStateProductRedux()
-        getProductByCategoryLimitRedux(categoryType, params?.get('page') ? params?.get('page') : 1)
-        // getAllProductsRedux(typeCategore, accessToken)
-        // getLimitProductsRedux(typeCategore, params.get('page') ? params.get('page') : 1, accessToken)
+        dispatch(actions.refreshIsloadingStateProduct())
+        dispatch(actions.getProductByCategoryLimit(categoryType, params?.get('page') ? params?.get('page') : 1))
     }, [categoryType])
-
-    // useEffect(() => {
-    //     if (params.get('page')) {
-    //         getLimitProductsRedux(typeCategore, params.get('page') ? params.get('page') : 1, accessToken)
-    //         if (listRef.current) {
-    //             window.scrollTo({
-    //               behavior: "smooth",
-    //               top: listRef.current.offsetTop
-    //             });
-    //         }
-    //     }
-    // }, [params.get('page')])
     
     const handleDeleteProduct = (id) => {
-        deleteProductRedux(id, categoryType, params.get('page') ? params.get('page') : 1)
+        dispatch(actions.deleteProduct(id, categoryType, params.get('page') ? params.get('page') : 1))
     }
 
     const handleEdit = (id) => {
@@ -95,7 +74,6 @@ function TableProducts({
             }).toString()
         })
     }
-
 
     // const handleAddDescription = (id) => {
     //     // navigate(path.MANAGE_PRODUCTS_DESCRIPTION_ADD, { state: id })
@@ -244,16 +222,11 @@ function TableProducts({
 
 const mapStateToProps = state => {
     return {
-        products: state.product.products,
-        isLoading: state.product.isLoading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getProductByCategoryLimitRedux:  (type, offset) => dispatch(actions.getProductByCategoryLimit(type, offset)),
-        deleteProductRedux: (id, typeCategore, page) => dispatch(actions.deleteProduct(id, typeCategore, page)),
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
     }
 }
 

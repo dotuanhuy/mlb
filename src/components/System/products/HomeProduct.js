@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import './ManageShoes.scss'
 import Navbar from '../common/navbar/Navbar'
 import { Link } from 'react-router-dom';
 import TableProduct from './TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function HomeProduct({
     categoryType,
@@ -25,6 +26,7 @@ function HomeProduct({
                             className='text-white fw-500 btn btn-root text-center' 
                             to={actives?.pathToCreate}
                         >
+                            <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
                             Add new
                         </Link>
                     </div>

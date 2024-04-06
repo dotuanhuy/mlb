@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createSearchParams, useLocation, useSearchParams } from 'react-router-dom';
-import { formatDateVN, path } from '../../../../utils'
-import * as actions from '../../../../store/actions'
+import { formatDateVN, path } from '../../../utils'
+import * as actions from '../../../store/actions'
 import { useNavigate } from 'react-router-dom';
-import Loading from '../../../common/Loading/Loading'
-import Pagination from '../../../Paginations/Pagination';
+import Loading from '../../common/Loading/Loading'
+import Pagination from '../../Paginations/Pagination';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
@@ -74,8 +74,6 @@ function TableProductType({
                                 { 
                                     productTypes && productTypes.length > 0 &&
                                     productTypes.map((item, index) => {
-                                        let page = params?.get('page') ? params?.get('page') : 1
-                                        let imageBase64 = item.imageRoot ? Buffer.from(item.imageRoot.data, 'base64').toString('binary') : ''
                                         return (
                                             <tr key={index}>
                                                 <td scope='row'>{item.id}</td>
@@ -86,7 +84,7 @@ function TableProductType({
                                                         style={{ 
                                                             width: '100%', 
                                                             height: '100px',
-                                                            backgroundImage: `url(${imageBase64})`,
+                                                            backgroundImage: `url(${item.imageRoot})`,
                                                             backgroundPosition: '0% 0%',
                                                             backgroundSize: 'contain',
                                                             backgroundRepeat: 'no-repeat'

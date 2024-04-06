@@ -10,6 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MAX_LENGTH_IMAGE } from '../../../utils';
 import { toast } from 'react-toastify';
 
+const CustomToast = (message) => (
+    <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
+        {message}
+    </span>
+)
+
 function ProductManageImage() {
     const dispatch = useDispatch()
     const {images, isLoadingImage, infoResponse} = useSelector(state => state.image)
@@ -47,12 +53,6 @@ function ProductManageImage() {
             dispatch(actions.refreshErrorImage())
         }
     }, [infoResponse])
-
-    const CustomToast = (message) => (
-        <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
-            {message}
-        </span>
-    )
 
     const handleClose = () => {
         setShow(false)
@@ -186,6 +186,7 @@ function ProductManageImage() {
 
                                     imageMain?.url && 
                                     <div 
+                                        className='mt-1'
                                         style={{ 
                                             width: '100%', 
                                             height: '250px',

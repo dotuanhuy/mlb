@@ -10,10 +10,9 @@ export const createAxios = () => {
         baseURL: 'http://localhost:8080',
         withCredentials: true,
         timeout: 3*1000, // 3s,
-        headers: {
-            // 'Content-Type': ['application/json', 'multipart/form-data'],
-            'Content-Type': 'application/json',
-        }
+        // headers: {
+        //     'Content-Type': 'application/json',
+        // }
     })
     instance.interceptors.request.use(
         async (config) => {

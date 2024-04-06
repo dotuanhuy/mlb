@@ -8,6 +8,13 @@ import { useSearchParams } from 'react-router-dom';
 import { formatDateTimeVN } from '../../../utils';
 import { Form, InputGroup, Modal } from 'react-bootstrap';
 import { validateRequire } from '../../../validate/valiedate';
+import { toast } from 'react-toastify';
+
+const CustomToast = (message) => (
+    <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
+        {message}
+    </span>
+)
 
 const arrStar = ['Tất cả', 5, 4, 3, 2, 1]
 
@@ -29,8 +36,8 @@ function ReviewManage() {
     useEffect(() => {
         dispatch(actions.getReviewProduct(params.get('id')))
     }, [])
-
-
+    
+    
     useEffect(() => {
         if (reviews.length > 0) {
             setStateReview(reviews)
@@ -47,7 +54,7 @@ function ReviewManage() {
                 setStateReview(arr)
             }
         }
-    }, [star])
+    }, [star, reviews])
 
     const handOnKeyDown = (e, reviewId) => {
         if (e.key === 'Enter') {
@@ -85,21 +92,24 @@ function ReviewManage() {
         else {
             dispatch(actions.updateFeedback({ id, content: contentReview, productId: params.get('id') }))
             setStateUpdateFeedback('')
+            setContentReview('')
         }
     }
-
+    
     const handleDeleteFeedback = (id) => {
         dispatch(actions.deleteFeedback({ id, productId: params.get('id') }))
         handleClose()
     }
-
+    
     const handleUpdateReview = (id, userId) => {
         if (contentReview === '') {
+            toast.error(CustomToast('Please, you need change content review!'), { autoClose: 3000 })
             setStateUpdateReview('')
         }
         else {
             dispatch(actions.updateReview({ id, userId, content: contentReview, rate: starUpdate, productId: params.get('id') }))
             setStateUpdateReview('')
+            setContentReview('')
         }
     }
 
@@ -231,7 +241,7 @@ function ReviewManage() {
                                     <Modal.Header closeButton>
                                         <Modal.Title>Xóa bình luận</Modal.Title>
                                     </Modal.Header>
-                                    <Modal.Body>Bạn có chắc xóa bình luật này không"</Modal.Body>
+                                    <Modal.Body>Bạn có chắc xóa bình luật này không</Modal.Body>
                                     <Modal.Footer>
                                         <button className='btn btn-secondary' onClick={handleClose}>
                                             Hủy

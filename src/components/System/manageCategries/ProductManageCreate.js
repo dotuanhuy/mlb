@@ -7,25 +7,35 @@ import { BuildOptionSelect } from '../../../utils';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CommonUtils from '../../../utils/CommonUtils';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-function ProductManageCreate({
-    categories,
-    getAllCategoriesRedux,
-    createProductTypeRedux
-}) {
-    const accessToken = window.localStorage.getItem('accessToken')
+const CustomToast = (message) => (
+    <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
+        {message}
+    </span>
+)
+
+function ProductManageCreate() {
+    const dispatch = useDispatch()
+    const {categories} = useSelector(state => state.category)
+    const {error} = useSelector(state => state.error)
     const [show, setShow] = useState(false)
     const [name, setName] = useState('')
     const [selectType, setSelectType] = useState([])
     const [dataSelect, setDataSelect] = useState('')
-    const [selectImage, setSelectImage] = useState('')
+    const [selectImage, setSelectImage] = useState({ value: '', url: '' })
     const [params] = useSearchParams()
 
-    
     useEffect(() => {
-        getAllCategoriesRedux()
+        dispatch(actions.getAllCategories())
     }, [])
+
+    useEffect(() => {
+        if (error) {
+            toast.error(CustomToast(error), { autoClose: 3000 })
+        }
+    }, [error])
 
     useEffect(() => {
         let dataType = BuildOptionSelect(categories)
@@ -46,23 +56,29 @@ function ProductManageCreate({
     }
 
     const handleOnchangeImage = async (e) => {
-        let files = e.target.files
-        let file = files[0]
-        if (file) {
-            //convert file to base64
-            let base64 = await CommonUtils.getBase64(file)
-            setSelectImage(base64)
+        if (e.target.files[0]) {
+            setSelectImage({
+                value: e.target.files[0],
+                url: URL.createObjectURL(e.target.files[0])
+            })
         }
     }
 
     const handleAdd = () => {
-        let data = {
-            name,
-            categoryId: +dataSelect?.value,
-            imageRoot: selectImage
+        if (!selectImage?.value) {
+            toast.warn(CustomToast('Please select a photo!'), { autoClose: 3000 })
         }
-        createProductTypeRedux(data, params.get('page') ? params.get('page') : 1)
-        handleClose()
+        else {
+            const data = {
+                name,
+                categoryId: +dataSelect?.value,
+            }
+            const formData = new FormData()
+            formData.append('image', selectImage.value)
+            formData.append('productType', JSON.stringify(data))
+            dispatch(actions.createProductType(formData, params.get('page') ? params.get('page') : 1, 'single'))
+            handleClose()
+        }
     }
 
     const handleOnSubmit = (e) => {
@@ -128,7 +144,7 @@ function ProductManageCreate({
                                     style={{
                                         width: '80%', 
                                         height: '100px', 
-                                        background: `url(${selectImage}) 0% 0% / contain no-repeat`, 
+                                        background: `url(${selectImage.url}) 0% 0% / contain no-repeat`, 
                                     }}
                                 ></div> 
                                 : ''
@@ -156,14 +172,11 @@ function ProductManageCreate({
 
 const mapStateToProps = state => {
     return {
-        categories: state.category.categories,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
-        createProductTypeRedux: (data, page) => dispatch(actions.createProductType(data, page))
     }
 }
 

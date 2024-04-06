@@ -10,21 +10,18 @@ import Sidebar from '../common/sidebars/Sidebar';
 import { BuildOptionSelect } from '../../../utils';
 import CommonUtils from '../../../utils/CommonUtils';
 import { Buffer } from 'buffer';
+import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
-function ProductManageUpdate({
-    actives,
-    isLoading,
-    categories,
-    productType,
-    refreshStoreProductTypeRedux,
-    getProductTypeByIdRedux,
-    getAllCategoriesRedux,
-    updateProductTypeRedux
-}) {
+function ProductManageUpdate({actives}) {
+    const dispatch = useDispatch()
+    const {isLoading, productTypes} = useSelector(state => state.productType)
+    const {categories} = useSelector(state => state.category)
     const [name, setName] = useState('')
     const [selectCategory, setSelectCategory] = useState({})
     const [selectStatus, setSelectStatus] = useState({})
-    const [selectImage, setSelectImage] = useState('')
+    const [selectImage, setSelectImage] = useState({ value: '', url: '' })
     const [listCategories, setListCategories] = useState([])
     const [listStatus, setListStatus] = useState([])
     const navigate = useNavigate()
@@ -32,26 +29,28 @@ function ProductManageUpdate({
 
     // ComponentDidMount
     useEffect(() => {
-        refreshStoreProductTypeRedux()
-        getAllCategoriesRedux()
-        getProductTypeByIdRedux(params.get('id'))
+        dispatch(actions.refreshStoreProductType())
+        dispatch(actions.getAllCategories())
+        dispatch(actions.getProductTypeById(params.get('id')))
     }, [])
 
     useEffect(() => {
-        setName(productType?.name)
-        if (productType?.imageRoot) {
-            let imageBase64 = Buffer.from(productType?.imageRoot?.data, 'base64').toString('binary')
-            setSelectImage(imageBase64)
+        setName(productTypes?.name)
+        if (productTypes?.imageRoot) {
+            setSelectImage({
+                value: '',
+                url: productTypes?.imageRoot
+            })
         }
         setSelectCategory({
-            label: productType?.dataProductTypeCategory?.name ? productType?.dataProductTypeCategory?.name : '',
-            value: productType?.dataProductTypeCategory?.id ? productType?.dataProductTypeCategory?.id : ''
+            label: productTypes?.dataProductTypeCategory?.name ? productTypes?.dataProductTypeCategory?.name : '',
+            value: productTypes?.dataProductTypeCategory?.id ? productTypes?.dataProductTypeCategory?.id : ''
         })
         setSelectStatus({
-            label: productType?.status ? 'Active' : 'Not active',
-            value: productType?.status ? true : false,
+            label: productTypes?.status ? 'Active' : 'Not active',
+            value: productTypes?.status ? true : false,
         })
-    }, [productType])
+    }, [productTypes])
 
     useEffect(() => {
         let dataCategories = BuildOptionSelect(categories)
@@ -73,12 +72,12 @@ function ProductManageUpdate({
     // ComponentDidUpdate
     useEffect(() => {
         setSelectCategory({
-            label: productType?.dataProductTypeCategory?.name ? productType.dataProductTypeCategory?.name : '',
-            value: productType?.dataProductTypeCategory?.id ? productType.dataProductTypeCategory?.id : ''
+            label: productTypes?.dataProductTypeCategory?.name ? productTypes.dataProductTypeCategory?.name : '',
+            value: productTypes?.dataProductTypeCategory?.id ? productTypes.dataProductTypeCategory?.id : ''
         })
         setSelectStatus({
-            label: productType?.status ? 'Active' : 'Not active',
-            value: productType?.status ? true : false
+            label: productTypes?.status ? 'Active' : 'Not active',
+            value: productTypes?.status ? true : false
         })
     }, [categories])
 
@@ -91,25 +90,28 @@ function ProductManageUpdate({
     }
 
     const handleOnchangeImage = async (e) => {
-        let files = e.target.files
-        let file = files[0]
-        if (file) {
-            //convert file to base64
-            let base64 = await CommonUtils.getBase64(file)
-            setSelectImage(base64)
+        if (e.target.files[0]) {
+            setSelectImage({
+                value: e.target.files[0],
+                url: URL.createObjectURL(e.target.files[0])
+            })
         }
     }
 
     const handleUpdateProductType = (e) => {
         e.preventDefault()
-        let data = {
-            id: +params.get('id'),
+        const formData = new FormData()
+        const data = {
             name,
+            imageUrl: selectImage.url,
             categoryId: selectCategory?.value,
-            imageRoot: selectImage,
             status: selectStatus?.value,
         }
-        updateProductTypeRedux(data, params.get('page'))
+        formData.append('productType', JSON.stringify(data))
+        if(selectImage.value) {
+            formData.append('image', selectImage.value)
+        }
+        dispatch(actions.updateProductType(formData, +params.get('id'), params.get('page'), 'single'))
         navigate({
             pathname: path.MANAGE_PRODUCT_TYPE,
             search: createSearchParams({
@@ -176,13 +178,13 @@ function ProductManageUpdate({
                                                     onChange={(e) => handleOnchangeImage(e)}
                                                 />
                                                 {
-                                                    selectImage ? 
+                                                    selectImage.url ? 
                                                     <div 
                                                         className='mt-2'
                                                         style={{
                                                             width: '80%', 
                                                             height: '100px', 
-                                                            background: `url(${selectImage}) 0% 0% / contain no-repeat`, 
+                                                            background: `url(${selectImage.url}) 0% 0% / contain no-repeat`, 
                                                         }}
                                                     ></div> 
                                                     : ''
@@ -191,9 +193,10 @@ function ProductManageUpdate({
                                         </div>
                                         <button
                                             type="submit"
-                                            className="btn btn-root text-white fw-500"
+                                            className="btn btn-root text-white fw-500 mt-2"
                                             onClick={(e) => handleUpdateProductType(e)}
                                         >
+                                            <FontAwesomeIcon icon={faFloppyDisk} className='pe-1'/>
                                             Save
                                         </button>
                                     </form>
@@ -208,18 +211,11 @@ function ProductManageUpdate({
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.productType.isLoading,
-        categories: state.category.categories,
-        productType: state.productType.productTypes,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshStoreProductTypeRedux: () => dispatch(actions.refreshStoreProductType()),
-        getAllCategoriesRedux: () => dispatch(actions.getAllCategories()),
-        getProductTypeByIdRedux: (id) => dispatch(actions.getProductTypeById(id)),
-        updateProductTypeRedux: (data, page) => dispatch(actions.updateProductType(data, page)),
     }
 }
 

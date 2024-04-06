@@ -22,7 +22,7 @@ const deleteFeedbackService = ({id}) => {
 }
 
 const updateReviewService = ({id, userId, content, rate}) => {
-    return axiosJWT.post(`${api}/review/update`, {id, userId, content, rate})
+    return axiosJWT.post(`${api}/update`, {id, userId, content, rate})
 }
 
 const deleteReviewService = ({id, userId}) => {

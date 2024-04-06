@@ -2,6 +2,9 @@ const actionTypes = Object.freeze({
     REFRESH_STORE_SUCCESS: 'REFRESH_STORE_SUCCESS',
     REFRESH_STORE_FAILED: 'REFRESH_STORE_FAILED',
 
+    // error:
+    ERROR: 'ERROR',
+
     // login/logout
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
     LOGIN_FAILED: 'LOGIN_FAILED',

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import { shoes, bag, logo } from '../../../utils/images';
+import { logo } from '../../../utils/images';
 import './Navbar.scss'
 import { Link, useNavigate } from 'react-router-dom';
 import * as actions from '../../../store/actions'
@@ -80,7 +80,7 @@ function Navbar({
                                     <ul>
                                         <li>
                                             <Link to={path.GIAY_MLB}>
-                                                <img src={shoes.allShoes}/>
+                                                {/* <img src={shoes.allShoes}/> */}
                                             </Link>
                                             <Link to={path.GIAY_MLB} className='name-shoes' >all shoes</Link>
                                         </li>
@@ -95,7 +95,7 @@ function Navbar({
                                                                     style={{ 
                                                                         width: '100%', 
                                                                         height: '130px',
-                                                                        backgroundImage: `url(${item?.imageRoot?.data ? Buffer.from(item?.imageRoot?.data, 'base64').toString('binary') : ''})`,
+                                                                        backgroundImage: `url(${item?.imageRoot})`,
                                                                         backgroundPosition: 'center',
                                                                         backgroundSize: 'contain',
                                                                         backgroundRepeat: 'no-repeat'
@@ -118,7 +118,7 @@ function Navbar({
                                     <ul>
                                         <li>
                                             <Link to={path.TUI_MLB}>
-                                                <img src={bag.allBag}/>
+                                                {/* <img src={bag.allBag}/> */}
                                             </Link>
                                             <Link to={path.TUI_MLB} className='name-shoes' >All bag</Link>
                                         </li>
@@ -133,7 +133,7 @@ function Navbar({
                                                                 style={{ 
                                                                     width: '100%', 
                                                                     height: '130px',
-                                                                    backgroundImage: `url(${Buffer.from(item.imageRoot.data, 'base64').toString('binary')})`,
+                                                                    backgroundImage: `url(${item.imageRoot})`,
                                                                     backgroundPosition: 'center',
                                                                     backgroundSize: 'contain',
                                                                     backgroundRepeat: 'no-repeat'
@@ -165,7 +165,7 @@ function Navbar({
                                                                     style={{ 
                                                                         width: '100%', 
                                                                         height: '130px',
-                                                                        backgroundImage: `url(${Buffer.from(item.imageRoot.data, 'base64').toString('binary')})`,
+                                                                        backgroundImage: `url(${item.imageRoot})`,
                                                                         backgroundPosition: 'center',
                                                                         backgroundSize: 'contain',
                                                                         backgroundRepeat: 'no-repeat'
@@ -197,7 +197,7 @@ function Navbar({
                                                                     style={{ 
                                                                         width: '100%', 
                                                                         height: '130px',
-                                                                        backgroundImage: `url(${Buffer.from(item.imageRoot.data, 'base64').toString('binary')})`,
+                                                                        backgroundImage: `url(${item.imageRoot})`,
                                                                         backgroundPosition: 'center',
                                                                         backgroundSize: 'contain',
                                                                         backgroundRepeat: 'no-repeat'

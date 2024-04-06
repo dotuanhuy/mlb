@@ -16,18 +16,9 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
                 products && products?.length > 0 &&
                 products?.map((item, index) => {
                     let size = item?.dataSizeDetail?.at(0)?.name
-                    let imageBase64 = ''
-                    let imageHoverBase64 = ''
                     let price = ''
                     let newPrice = ''
                     // let imageHover = images?.find(image => image?.productId === item?.id)
-                    let imageHover = item?.dataImageProducts?.at(0)
-                    if (item?.image) {
-                        imageBase64 = Buffer.from(item?.image?.data, 'base64').toString('binary')
-                    }
-                    if (imageHover) {
-                        imageHoverBase64 = Buffer.from(imageHover?.image?.data, 'base64').toString('binary')
-                    }
                     if (item.price) {
                         price = formatVND(item.price)
                     }
@@ -75,7 +66,7 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
                                         style={{ 
                                             maxWidth: '100%', 
                                             height: '340px',
-                                            backgroundImage: `url(${imageBase64})`,
+                                            backgroundImage: `url(${item?.image})`,
                                             backgroundPosition: '0% 0%',
                                             backgroundSize: 'contain',
                                             backgroundRepeat: 'no-repeat'
@@ -95,7 +86,7 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
                                         style={{ 
                                             maxWidth: '100%', 
                                             height: '340px',
-                                            backgroundImage: `url(${imageHoverBase64})`,
+                                            backgroundImage: `url(${item?.dataImageProducts?.at(0)?.image})`,
                                             backgroundPosition: '0% 0%',
                                             backgroundSize: 'contain',
                                             backgroundRepeat: 'no-repeat'

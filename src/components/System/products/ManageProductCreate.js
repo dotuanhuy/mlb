@@ -463,10 +463,10 @@ function ManageShoesCreate({
                             </div>
                             <button 
                                 type="submit" 
-                                className="btn btn-root"
+                                className="btn btn-root fw-500"
                                 onClick={(e) => handleCreateNewProduct(e)}
                             >
-                                Tạo
+                                Create
                             </button>
                         </form>
                     </div>
