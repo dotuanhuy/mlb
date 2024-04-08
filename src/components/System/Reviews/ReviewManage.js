@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { faCircle, faPencil, faStar, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../../store/actions'
@@ -29,14 +29,13 @@ function ReviewManage() {
     const [show, setShow] = useState({})
     const [stateUpdateReview, setStateUpdateReview] = useState('')
     const [starUpdate, setStarUpdate] = useState('')
-
+    
     const handleClose = () => setShow({});
     const handleShow = (id, type) => setShow({ id, type })
-
+    
     useEffect(() => {
         dispatch(actions.getReviewProduct(params.get('id')))
     }, [])
-    
     
     useEffect(() => {
         if (reviews.length > 0) {
@@ -55,6 +54,7 @@ function ReviewManage() {
             }
         }
     }, [star, reviews])
+
 
     const handOnKeyDown = (e, reviewId) => {
         if (e.key === 'Enter') {
@@ -87,13 +87,13 @@ function ReviewManage() {
 
     const handleUpdateFeedback = (id) => {
         if (contentReview === '') {
-            setStateUpdateFeedback('')
+            toast.error(CustomToast('Please, you need change content feedback!'), { autoClose: 3000 })
         }
         else {
             dispatch(actions.updateFeedback({ id, content: contentReview, productId: params.get('id') }))
-            setStateUpdateFeedback('')
             setContentReview('')
         }
+        setStateUpdateFeedback('')
     }
     
     const handleDeleteFeedback = (id) => {
@@ -104,13 +104,12 @@ function ReviewManage() {
     const handleUpdateReview = (id, userId) => {
         if (contentReview === '') {
             toast.error(CustomToast('Please, you need change content review!'), { autoClose: 3000 })
-            setStateUpdateReview('')
         }
         else {
             dispatch(actions.updateReview({ id, userId, content: contentReview, rate: starUpdate, productId: params.get('id') }))
-            setStateUpdateReview('')
             setContentReview('')
         }
+        setStateUpdateReview('')
     }
 
     const handleDeleteReview = (id, userId) => {
@@ -145,7 +144,7 @@ function ReviewManage() {
                                         className={item === star ? 'rounded btn-active-star bg-light py-2 px-4 me-2 mt-1' : 'rounded border bg-light text-dark py-2 px-4 me-2 mt-1'}
                                         onClick={() => setStar(item)}
                                     >
-                                        {item != 'Tất cả' ? `${item} sao (${totalEachRating[item]})` : item}
+                                        {item !== 'Tất cả' ? `${item} sao (${totalEachRating[item]})` : item}
                                     </button>
                                 )
                             })

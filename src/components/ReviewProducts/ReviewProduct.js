@@ -1,6 +1,6 @@
 import { faCircle, faPencil, faStar, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions'
@@ -8,7 +8,8 @@ import { Form, InputGroup, Modal } from 'react-bootstrap';
 import { validateRequire } from '../../validate/valiedate';
 import { formatDateTimeVN } from '../../utils';
 import jwt_decode from 'jwt-decode'
-
+import SocketContext from '../../configs/socketContext';
+import { useSocket } from '../../configs/socketContext';
 
 const arrStar = ['Tất cả', 5, 4, 3, 2, 1]
 
@@ -22,6 +23,7 @@ function ReviewProduct({ productId }) {
     const [show, setShow] = useState({})
     const [stateUpdateReview, setStateUpdateReview] = useState('')
     const [starUpdate, setStarUpdate] = useState({update: 0, current: 0})
+    const socket = useSocket()
 
     const handleClose = () => setShow({});
     const handleShow = (id, type) => setShow({ id, type })
@@ -29,7 +31,6 @@ function ReviewProduct({ productId }) {
     useEffect(() => {
         dispatch(actions.getReviewProduct(productId))
     }, [])
-
 
     useEffect(() => {
         if (reviews.length > 0) {

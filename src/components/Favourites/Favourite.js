@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { path } from '../../utils';
+import { path, BACKEND_URL } from '../../utils';
 import Loading from '../common/Loading/Loading';
 import * as actions from '../../store/actions';
 import Pagination from '../Paginations/Pagination';

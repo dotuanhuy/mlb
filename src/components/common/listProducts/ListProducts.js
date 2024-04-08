@@ -7,7 +7,6 @@ import './ListProducts.scss';
 import { Link } from "react-router-dom";
 import { path } from "../../../utils";
 
-
 function ListProducts({ products, images, col='col-4', productFavourites}) {
 
     return (
@@ -38,16 +37,6 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
                                 </div>
                                 : ''
                             }
-                            {/* <div className='actions text-center'>
-                                <div className='tym mb-2 px-3'>
-                                    <FontAwesomeIcon icon={faHeart} />
-                                </div>
-                                <div className='cart'>
-                                    <button className='btn-buy'>
-                                        <FontAwesomeIcon icon={faCartShopping} />
-                                    </button>
-                                </div>
-                            </div> */}
                             <Toast 
                                 productId={item.id} 
                                 productFavourites={productFavourites} 

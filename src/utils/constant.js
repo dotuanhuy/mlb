@@ -1,4 +1,5 @@
 export const API_VERSION = 'v1'
+export const BACKEND_URL = 'http://localhost:8080'
 export const path = {
     HOMEPAGE: '/',
     LOGIN: '/login',
@@ -83,6 +84,8 @@ export const path = {
     TUTORIAL_SIZE: '/size-mlb',
 
     PRODUCT: '/product',
+
+    CHECKOUT: '/checkout'
 }
 
 export const allCode = {
@@ -176,6 +179,7 @@ export const optionSortContant = {
 export const LIMIT_HOME_SHOES = 8
 export const limit_page = 5
 export const limit_list_search = 4
+export const LIMIT_SLIDER_PRODUCT = 9
 
 export const typeShoesSandanl = {
     BIGBALL_CHUNKY: 'BigBall Chunky',

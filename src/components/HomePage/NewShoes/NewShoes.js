@@ -8,18 +8,10 @@ import ListProducts from '../../common/listProducts/ListProducts'
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../../store/actions'
 import InfiniteScroll from "react-infinite-scroll-component";
-import Loading from '../../common/Loading/Loading';
-
-const style = {
-    height: 30,
-    border: "1px solid green",
-    margin: 6,
-    padding: 8
-};
 
 function NewShoes() {
     const dispatch = useDispatch()
-    const { products, isLoading } = useSelector(state => state.product)
+    const { products } = useSelector(state => state.product)
     const [shoes, setShoes] = useState([])
 
     // useEffect(() => {
@@ -50,12 +42,7 @@ function NewShoes() {
                 </div>
                 <div className='menu-box'>
                     <div className='menu-product row'>
-                        {
-                            isLoading ? 
-                            <Loading />
-                            :
-                            <ListProducts products={products} col='col-3' />
-                        }
+                        <ListProducts products={products} col='col-3' />
                     </div>
                     <div className='view-all text-center'>
                         <Link to={path.GIAY_MLB}>Xem tất cả</Link>

@@ -13,7 +13,7 @@ import {
     fetchDescriptionProductService,
     getProductByCategoryService,
     getProductByCategoryLimitService,
-    getLimitProductService,
+    getProductByCategoryDetailLimitService,
     getLimitProductByOptionSortService,
     searchProductByNameService,
     searchProductByNameServiceLimit,
@@ -352,26 +352,25 @@ export const getProductByCategoryLimit = (type, offset) => {
     }
 }
 
-export const getLimitProducts = (categore, page) => {
+export const getProductByCategoryDetailLimit = (id, limit) => {
     return async (dispatch, getState) => {
-        try {
-            const newPage = +page - 1 
-            let res = await getLimitProductService(categore, newPage)
+        try {   
+            let res = await getProductByCategoryDetailLimitService(id, limit) 
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.GET_LIMIT_PRODUCTS_SUCCESS,
-                    data: res.data
+                    type: actionTypes.GET_PRODUCT_BY_CATEGORY_DETAIL_SUCCESS,
+                    productSlider: res.data,
                 })
             }
             else {
                 dispatch({
-                    type: actionTypes.GET_LIMIT_PRODUCTS_FAILED
+                    type: actionTypes.GET_PRODUCT_BY_CATEGORY_DETAIL_FAILED
                 })
             }
         } catch (e) {
-            console.log('getLimitProducts error: ', e) 
+            console.log('getProductByCategory error: ', e)
             dispatch({
-                type: actionTypes.GET_LIMIT_PRODUCTS_FAILED
+                type: actionTypes.GET_PRODUCT_BY_CATEGORY_DETAIL_FAILED
             })
         }
     }

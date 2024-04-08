@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, memo, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './Navbar/Navbar'
 import SliderHomePage from './Slider/SliderHomePage';
@@ -11,7 +11,6 @@ import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
 import jwt_decode from 'jwt-decode';
-import Loading from '../common/Loading/Loading';
 import { useDispatch } from 'react-redux';
 
 function HomePage({ 
@@ -34,9 +33,10 @@ function HomePage({
         if (accessToken) {
             let tokenDecoded = jwt_decode(accessToken)
             userId = tokenDecoded?.id
+            
         }
     }, [])
-    
+
     const settings = {
         dots: true,
         infinite: false,
@@ -57,23 +57,16 @@ function HomePage({
     }
 
     return (
-        <>
-            {/* {
-                isLoading ? 
-                <Loading />
-                : */}
-                <div>
-                    <Navbar />
-                    <SliderHomePage settings={settings} />
-                    <Intro />
-                    <NewShoes />
-                    <MLBBag />
-                    <MLBOutfit />
-                    <MLBBackPack />
-                    <HomeFooter />
-                </div>
-            {/* } */}
-        </>
+        <div>
+            <Navbar />
+            <SliderHomePage settings={settings} />
+            <Intro />
+            <NewShoes />
+            <MLBBag />
+            <MLBOutfit />
+            <MLBBackPack />
+            <HomeFooter />
+        </div>
     );
 }
 

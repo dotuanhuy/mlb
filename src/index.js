@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -15,18 +15,21 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import { SocketProvider } from './configs/socketContext';
 
 const { store, persistor } = reduxStore()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
+    // <SocketProvider>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <App />
                 <ToastContainer />
             </PersistGate>
         </Provider>
+    // </SocketProvider>
     // </React.StrictMode>
 );
 reportWebVitals();

@@ -10,3 +10,14 @@
         position: relative;
     }
 }
+
+.product-same {
+    letter-spacing: 10px;
+    &:hover {
+        color: #942319 !important;
+        .icon-hover {
+            background: #942319 !important;
+        }
+    }
+    
+}

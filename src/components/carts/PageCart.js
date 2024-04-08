@@ -108,11 +108,7 @@ function PageCart({
                                     <tbody>
                                         {
                                             products.map((item, index) => {
-                                                let imageBase64 = ''
                                                 let price = ''
-                                                if (item?.dataCartProduct?.image) {
-                                                    imageBase64 = Buffer.from(item?.dataCartProduct?.image?.data, 'base64').toString('binary')
-                                                }
                                                 if (item?.dataCartProduct?.price) {
                                                     price = formatVND((+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.CartDetail.quantity)
                                                 }
@@ -144,7 +140,7 @@ function PageCart({
                                                                             style={{ 
                                                                                 width: '100%', 
                                                                                 height: '100px',
-                                                                                backgroundImage: `url(${imageBase64})`,
+                                                                                backgroundImage: `url(${item?.dataCartProduct?.image})`,
                                                                                 backgroundPosition: '0% 0%',
                                                                                 backgroundSize: 'contain',
                                                                                 backgroundRepeat: 'no-repeat'

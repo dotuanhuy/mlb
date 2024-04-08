@@ -8,7 +8,8 @@ const initState = {
     countFavouriteProduct: 0,
     productSearch: [],
     productSearchLimit: [],
-    quantityArr: []
+    quantityArr: [],
+    productSlider: []
 }
 
 const productReducer = (state = initState, action) => {
@@ -26,6 +27,7 @@ const productReducer = (state = initState, action) => {
             state.countFavouriteProduct = 0
             state.productSearch = []
             state.productSearchLimit = []
+            state.productSlider = []
             return {
                 ...state
             }
@@ -130,17 +132,13 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'GET_LIMIT_PRODUCTS_SUCCESS':
-            state.products = action.data.rows
-            state.count = action.data.count
-            state.isLoading = false
+        case 'GET_PRODUCT_BY_CATEGORY_DETAIL_SUCCESS': 
+            state.productSlider = action.productSlider
             return {
                 ...state
             }
-        case 'GET_LIMIT_PRODUCTS_FAILED':
-            state.products = []
-            state.count = 0
-            state.isLoading = true
+        case 'GET_PRODUCT_BY_CATEGORY_DETAIL_FAILED': 
+            state.productSlider = []
             return {
                 ...state
             }

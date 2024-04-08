@@ -11,7 +11,7 @@ import Favourite from '../components/Favourites/Favourite';
 import Product from '../components/common/product/Product';
 import PageCart from '../components/carts/PageCart';
 import TutorialSize from '../components/tutorialSize/TutorialSize';
-
+import Payment from '../components/payments/Payment';
 
 function PublicRoute() {
 
@@ -60,6 +60,8 @@ function PublicRoute() {
                 <Route path={path.CART} element={<PageCart titlePage='Giỏ hàng' />}></Route>
 
                 <Route path={path.TUTORIAL_SIZE} element={<TutorialSize titlePage='Bảng size MLB' />}></Route>
+
+                <Route path={path.CHECKOUT} element={<Payment titlePage='Thanh toán đơn hàng' />}></Route>
             </Routes>
         </>
     );

@@ -46,6 +46,10 @@ button {
     font-weight: 500
 }
 
+.fs-10 {
+    font-size: 10px;
+}
+
 .fs-14 {
     font-size: 14px;
 }
@@ -76,6 +80,10 @@ button {
     &:hover {
         color: #942319 !important;
     }
+}
+
+.bg-root-solid {
+    background: #420500;
 }
 
 .button-hover {

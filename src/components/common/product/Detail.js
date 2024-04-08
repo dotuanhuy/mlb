@@ -93,6 +93,10 @@ function Detail({product, addProductToCartRedux}) {
         navigate(path.LOGIN)
     }
 
+    const handleBuyNow = () => {
+        
+    }
+
     return (
         <div ref={body} className='product-detail'>
             <h3 className='fs-4'>{product?.name}</h3>
@@ -200,6 +204,7 @@ function Detail({product, addProductToCartRedux}) {
                     <div className='add-cart col-md-5'>
                         <button  
                             className='btn btn-add-buy text-white w-100 fw-500'
+                            onClick={handleBuyNow}
                         >
                             Mua ngay
                         </button>

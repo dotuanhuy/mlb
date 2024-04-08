@@ -44,7 +44,6 @@ const getCountProductsService = () => {
     return axiosJWT.get(`${api}/count`)
 } 
 
-
 const updateProductService = (id, formData, type) => {
     return axiosJWT.post(`${api}/update?id=${id}&type=${type}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
 }
@@ -66,17 +65,12 @@ const getProductByCategoryService = (type) => {
     return axios.get(`${api}/category?type=${type}`)
 }
 
-const getProductByCategoryLimitService = (type, offset) => {
-    return axios.get(`${api}/category/limit?type=${type}&offset=${offset}`)
+const getProductByCategoryDetailLimitService = (id, limit) => {
+    return axios.get(`${api}/categoryDetail?id=${id}&limit=${limit}`)
 }
 
-const getLimitProductService = (categore, page) => {
-    const accessToken = window.localStorage.getItem('accessToken')
-    if (accessToken) {
-        return axiosJWT.get(`${api}/limit?categore=${categore}&page=${page}`)
-    }
-    else
-        return axios.get(`${api}/limit?categore=${categore}&page=${page}`)
+const getProductByCategoryLimitService = (type, offset) => {
+    return axios.get(`${api}/category/limit?type=${type}&offset=${offset}`)
 }
 
 const getLimitProductByOptionSortService = (optionData, page, option, limit) => {
@@ -118,8 +112,8 @@ export {
     addDescriptionProductService,
     fetchDescriptionProductService,
     getProductByCategoryService,
+    getProductByCategoryDetailLimitService,
     getProductByCategoryLimitService,
-    getLimitProductService,
     getLimitProductByOptionSortService,
     searchProductByNameService,
     searchProductByNameServiceLimit,
