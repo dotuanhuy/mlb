@@ -7,35 +7,37 @@ import {
 
 } from "../../services/cartService";
 
-export const getProductsInCartByUser = (userId) => {
+export const refreshStateCart = () => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: actionTypes.REFRESH_STORE_SUCCESS
+        })
+    }
+}
+
+export const getProductsInCartByUser = () => {
     return async (dispatch, getState) => {
         try {
-            let res
-            if (userId) {
-                res = await getProductsInCartByUserService(userId)
-                if (res && res?.errCode === 0) {
-                    let totalMoney = 0, count = 0
-                    let data = []
-                    res?.data?.map(item => {
-                        data.push(item)
-                        totalMoney += (+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.CartDetail.quantity
-                        count += +item.dataCartProduct.CartDetail.quantity
-                    })
-                    dispatch({
-                        type: actionTypes.GET_ALL_PRODUCTs_IN_CART_BY_USER_SUCCESS,
-                        data,
-                        totalMoney,
-                        count
-                    })
-                }
-                else {
-                    dispatch({
-                        type: actionTypes.GET_ALL_PRODUCTs_IN_CART_BY_USER_FAILED
-                    })
-                }
+            let res = await getProductsInCartByUserService()
+            if (res && res?.errCode === 0) {
+                let totalMoney = 0, count = 0
+                let data = []
+                res?.data?.map(item => {
+                    data.push(item)
+                    totalMoney += (+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.CartDetail.quantity
+                    count += +item.dataCartProduct.CartDetail.quantity
+                })
+                dispatch({
+                    type: actionTypes.GET_ALL_PRODUCTs_IN_CART_BY_USER_SUCCESS,
+                    data,
+                    totalMoney,
+                    count
+                })
             }
             else {
-                alert('Bạn cần đăng nhập để thêm giỏ hàng')
+                dispatch({
+                    type: actionTypes.GET_ALL_PRODUCTs_IN_CART_BY_USER_FAILED
+                })
             }
         } catch (e) {
             console.log('getProductsInCartByUser error: ', e)
@@ -53,7 +55,7 @@ export const addProductToCart = (data) => {
             if (data) {
                 res = await addProductToCartService(data)
                 if (res && res.errCode === 0) {
-                    dispatch(getProductsInCartByUser(data?.userId))
+                    dispatch(getProductsInCartByUser())
                 }
                 else {
                     alert('Thêm sản phẩm vào giỏ hàng thất bại')
@@ -75,7 +77,7 @@ export const changeCart = (data) => {
             if (data) {
                 res = await changeCartService(data)
                 if (res && res.errCode === 0) {
-                    dispatch(getProductsInCartByUser(data?.userId))
+                    dispatch(getProductsInCartByUser())
                 }
                 else {
                     alert('Xóa sản phẩm trong giỏ hàng thất bại')
@@ -98,7 +100,7 @@ export const deleteProductInCart = (data) => {
             if (data) {
                 res = await deleteProductInCartService(data)
                 if (res && res.errCode === 0) {
-                    dispatch(getProductsInCartByUser(data?.userId))
+                    dispatch(getProductsInCartByUser())
                 }
                 else {
                     alert('Xóa sản phẩm trong giỏ hàng thất bại')

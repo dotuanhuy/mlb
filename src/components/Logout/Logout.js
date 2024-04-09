@@ -7,12 +7,12 @@ import { useDispatch } from 'react-redux';
 
 function Logout() {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    console.log('logout')
+    const dispatch = useDispatch()  
     useEffect(() => {
         dispatch(actions.refreshStoreProduct())
         dispatch(actions.refreshStoreUser())
         dispatch(actions.refreshIStateFavouriteProduct())
+        dispatch(actions.refreshStateCart())
         navigate(path.LOGIN)
     }, [])
     

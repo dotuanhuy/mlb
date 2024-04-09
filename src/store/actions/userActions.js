@@ -84,11 +84,12 @@ export const getAllAddress = () => {
     return async (dispatch, getSate) => {
         try {
             let res = await getAllAddressService()
-            let data = res.data.map(item => item.name)
             if (res && res.errCode === 0) {
+                let data = res.data.map(item => item.name)
                 dispatch({
                     type: actionTypes.GET_ALL_ADDRESS_SUCCESS,
-                    data
+                    data,
+                    address: res.data
                 })
             }
             else {

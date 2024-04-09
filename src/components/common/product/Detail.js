@@ -94,7 +94,12 @@ function Detail({product, addProductToCartRedux}) {
     }
 
     const handleBuyNow = () => {
-        
+        const newProduct = {...product}
+        newProduct.size = size
+        newProduct.quantityBuy = quantity
+        navigate({
+            pathname: path.CHECKOUT
+        }, { state: [newProduct] })
     }
 
     return (

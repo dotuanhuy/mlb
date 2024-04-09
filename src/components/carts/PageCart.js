@@ -10,19 +10,12 @@ import jwtDecode from 'jwt-decode';
 import Banner from '../common/Banners/Banner';
 import { formatVND, path, typeStep } from '../../utils';
 import { Link, useNavigate } from 'react-router-dom';
-import { Buffer } from 'buffer';
-import './PageCart.scss'
 import { Modal } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
-function PageCart({
-    titlePage,
-    products,
-    totalMoney,
-    isLoading,
-    getProductsInCartByUserRedux,
-    changeCartRedux,
-    deleteProductInCartRedux
-}) {
+function PageCart({titlePage}) {
+    const dispatch = useDispatch()
+    const {products, totalMoney, isLoading} = useSelector(state => state.cart)
     const accessToken = window.localStorage.getItem('accessToken')
     const [userId, setUserId] = useState('')
     const [show, setShow] = useState({})
@@ -60,26 +53,40 @@ function PageCart({
     
     useEffect(() => {
         if (userId) {
-            getProductsInCartByUserRedux(userId)
+            dispatch(actions.getProductsInCartByUser())
         }
     }, [userId])
 
-    const handleStepDown = (productId, size, cartId, down) => {
-        changeCartRedux({ productId, cartId, userId, size, typeStep: down })
+    const handleStepDown = (cartDetailId, down) => {
+        dispatch(actions.changeCart({ cartDetailId, typeStep: down }))
     }
 
-    const handleStepUp = (productId, size, cartId, up) => {
-        changeCartRedux({ productId, cartId, userId, size, typeStep: up })
+    const handleStepUp = (cartDetailId, up) => {
+        dispatch(actions.changeCart({ cartDetailId, typeStep: up }))
     }
     
-    const handleDeleteProductCart = (productId, size, cartId) => {
-        deleteProductInCartRedux({ productId, userId, cartId, size })
+    const handleDeleteProductCart = (cartDetailId) => {
+        dispatch(actions.deleteProductInCart({ cartDetailId }))
     }
 
     const handleOnchangeQuantity = e => {
         console.log(+e.target.value)
     }
+
+    const handlePayment = () => {
+        const newProduct = products.map(item => item.dataCartProduct)
+        products.map((item, index) => {
+            newProduct[index].quantityBuy = item.dataCartProduct.CartDetail.quantity
+            newProduct[index].size = item.dataCartProduct.CartDetail.size
+            newProduct[index].dataDiscounts = item.dataCartProduct.dataDiscounts
+        })
+        navigate({
+            pathname: path.CHECKOUT
+        }, { state: newProduct })
+    }
     
+    console.log('check: ', products)
+
     return (
         <>
             {
@@ -184,7 +191,7 @@ function PageCart({
                                                                             </button>
                                                                             <button 
                                                                                 className='btn btn-root fw-500' 
-                                                                                onClick={() => handleDeleteProductCart(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId)}
+                                                                                onClick={() => handleDeleteProductCart(item?.dataCartProduct?.CartDetail?.id)}
                                                                             >
                                                                                 Yes
                                                                             </button>
@@ -205,7 +212,7 @@ function PageCart({
                                                             <div className='col-md-8 d-flex'>
                                                                 <button 
                                                                     className="btn py-0 px-2 button-hover"
-                                                                    onClick={() => handleStepDown(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId, typeStep.DOWN)}
+                                                                    onClick={() => handleStepDown(item?.dataCartProduct?.CartDetail?.id, typeStep.DOWN)}
                                                                 >
                                                                     <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faMinus} />
                                                                 </button>
@@ -218,11 +225,12 @@ function PageCart({
                                                                     className="form-control form-control-sm py-0" 
                                                                     value={+item.dataCartProduct.CartDetail.quantity} 
                                                                     onChange={e => handleOnchangeQuantity(e)}
+                                                                    disabled
                                                                 />
 
                                                                 <button 
                                                                     className="btn py-0 px-2 button-hover"
-                                                                    onClick={() => handleStepUp(item?.dataCartProduct?.id, item?.dataCartProduct?.CartDetail?.size, item?.dataCartProduct?.CartDetail?.cartId, typeStep.UP)}
+                                                                    onClick={() => handleStepUp(item?.dataCartProduct?.CartDetail?.id, typeStep.UP)}
                                                                 >
                                                                     <FontAwesomeIcon style={{ fontSize: '11px' }} icon={faPlus} />
                                                                 </button>
@@ -247,6 +255,7 @@ function PageCart({
                                         <button 
                                             className='btn w-100 text-white py-2 button-hover'  
                                             style={{ backgroundColor: '#420500' }}
+                                            onClick={handlePayment}
                                         >
                                             Thanh toán
                                         </button>
@@ -268,18 +277,11 @@ function PageCart({
 
 const mapStateToProps = state => {
     return {
-        products: state.cart.products,
-        totalMoney: state.cart.totalMoney,
-        isLoading: state.cart.isLoading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        getProductsInCartByUserRedux: (userId) => dispatch(actions.getProductsInCartByUser(userId)),
-        deleteProductInCartRedux: (data) => dispatch(actions.deleteProductInCart(data)),
-        changeCartRedux: (data) => dispatch(actions.changeCart(data))
     }
 }
 

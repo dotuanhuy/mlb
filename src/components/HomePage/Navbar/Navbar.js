@@ -11,7 +11,6 @@ import { categorieType, path } from '../../../utils';
 import jwt_decode from "jwt-decode";
 import SearchProducts from '../../SearchProducts/listProductsSearchInput/SearchProducts';
 import ListCarts from '../../carts/ListCarts';
-import { Buffer } from 'buffer';
 
 const initState = {
     firstName: '',

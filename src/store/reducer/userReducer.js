@@ -1,5 +1,6 @@
 const initState = {
     users: [],
+    address: [],
     provinces: [],
     roles: [],
     isLoadingUser: true,
@@ -22,6 +23,7 @@ const userReducer = (state = initState, action) => {
             state.errMessage = ''
             state.errCode = null
             state.otp = ''
+            state.address = []
             return {
                 ...state
             }
@@ -39,11 +41,13 @@ const userReducer = (state = initState, action) => {
             }
         case 'GET_ALL_ADDRESS_SUCCESS':
             state.provinces = action.data
+            state.address = action.address
             return {
                 ...state
             }
         case 'GET_ALL_ADDRESS_FAILED':
             state.provinces = []
+            state.address = []
             return {
                 ...state
             }

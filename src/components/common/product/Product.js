@@ -58,8 +58,6 @@ function Product() {
         }
     }, [product])
 
-    console.log(productSlider)
-
     return (
         <>
             {

@@ -7,11 +7,14 @@ export const validate = (obj, value) => {
         if (obj[item].length === 0) {
             errors[item] = `Trường này không được để trống`
         }
-        else if ((item === 'firstName' || item === 'lastName') && (/^\d/.test(obj[item]))) {
+        else if ((item === 'firstName' || item === 'lastName') && !(/[a-zA-Z]{2,}/.test(obj[item]))) {
             if (item === 'firstName')
                 errors[item] = 'Họ không đúng định dạng'
             else 
                 errors[item] = 'Tên không đúng định dạng'
+        }
+        else if ((item === 'fullName') && !(/[a-zA-Z]{2,}/.test(obj[item]))) {
+            errors[item] = 'Họ và tên không đúng định dạng'
         }
         else if (item === 'price' && (typeof obj[item] === 'string' || obj[item] <= 0)) {
             errors[item] = 'Giá bán không đúng định dạng'
@@ -40,5 +43,5 @@ export const validateSelect = (select) => {
 }
 
 export const validateRequire = (name, value) => {
-    return value === '' ? `${name} không được để trống` : ''
+    return !value ? `${name} không được để trống` : ''
 }

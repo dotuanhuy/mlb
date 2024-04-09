@@ -5,12 +5,8 @@ import { API_VERSION } from "../utils";
 const axiosJWT = createAxios()
 const api = `/api/${API_VERSION}/cart`
 
-const getProductsInCartByUserService = (userId) => {
-    const accessToken = window.localStorage.getItem('accessToken')
-    if (accessToken) {
-        return axiosJWT.get(`${api}/user?userId=${userId}`)
-    }
-    return axios.get(`${api}/user?userId=${userId}`)
+const getProductsInCartByUserService = () => {
+    return axiosJWT.get(`${api}/user`)
 }
 
 const addProductToCartService = (data) => {

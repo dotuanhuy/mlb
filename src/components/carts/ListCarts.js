@@ -36,7 +36,7 @@ function ListCarts({
     
     useEffect(() => {
         if (userId) {
-            getProductsInCartByUserRedux(userId)
+            getProductsInCartByUserRedux()
         }
     }, [userId])
 
@@ -233,7 +233,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getProductsInCartByUserRedux: (userId) => dispatch(actions.getProductsInCartByUser(userId)),
+        getProductsInCartByUserRedux: () => dispatch(actions.getProductsInCartByUser()),
         deleteProductInCartRedux: (data) => dispatch(actions.deleteProductInCart(data)),
         changeCartRedux: (data) => dispatch(actions.changeCart(data))
     }
