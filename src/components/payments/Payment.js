@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import * as actions from '../../store/actions'
 import { formatVND, path } from '../../utils';
 import './Payment.scss'
 import { Form } from 'react-bootstrap';
-import { faAngleLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faMinus, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { validate, validateRequire } from '../../validate/valiedate';
 import Paypal from '../paypal/Paypal';
@@ -23,13 +23,14 @@ function Payment({ titlePage }) {
     const { address } = useSelector(state => state.user)
     const listProducts = useLocation().state
     const navigate = useNavigate()
+    const [products, setProducts] = useState([])
     const [codeCity, setCodeCity] = useState('')
     const [codeDistrict, setCodeDistrict] = useState('')
     const [districts, setDistricts] = useState([])
     const [wards, setWards] = useState([])
     const [stateWard, setStateWard] = useState('')
     const [totalPrice, setTotalPrice] = useState(0)
-    const [shippingType, setShippingType] = useState({ value: 0, type: 'fast'})
+    const [shippingType, setShippingType] = useState({ value: 0, type: 'fast' })
     const [paymentType, setPaymentType] = useState('')
     const [info, setInfo] = useState(initInfo)
     const [note, setNote] = useState('')
@@ -45,9 +46,10 @@ function Payment({ titlePage }) {
         else {
             let total = 0
             listProducts.map(item => {
-                total += item?.dataDiscounts?.value === 0 ? +item?.price*+item.quantityBuy : (+item?.price - +item?.price*+item?.dataDiscounts?.value)*item.quantityBuy
+                total += item?.dataDiscounts?.value === 0 ? +item?.price * +item.quantityBuy : (+item?.price - +item?.price * +item?.dataDiscounts?.value) * item.quantityBuy
             })
             setTotalPrice(total)
+            setProducts(listProducts)
         }
     }, [])
 
@@ -57,7 +59,7 @@ function Payment({ titlePage }) {
             setDistricts(arr)
         }
     }, [codeCity])
- 
+
     useEffect(() => {
         if (codeDistrict?.code) {
             const arr = districts.find(item => item.code === codeDistrict.code)?.wards
@@ -82,7 +84,7 @@ function Payment({ titlePage }) {
         const errDistrict = validateRequire('Quận huyện', codeDistrict.name)
         const errWard = validateRequire('Phường xã', stateWard)
         const errPayment = validateRequire('Phương thức thanh toán', paymentType)
-        if (err || errCity || errDistrict || errWard || errPayment) {
+        if (Object.keys(err).length > 0 || errCity || errDistrict || errWard || errPayment) {
             setErrors(err)
             setErrorSelect({
                 errCity,
@@ -104,10 +106,9 @@ function Payment({ titlePage }) {
                 shippingType,
                 paymentType
             }
+            
         }
     }
-
-    console.log(listProducts)
 
     return (
         <div className='container-xl'>
@@ -120,8 +121,8 @@ function Payment({ titlePage }) {
                         <div className='col-6'>
                             <p className='fw-bolder'>Thông tin giao hàng</p>
                             <Form.Group className="mb-3">
-                                <Form.Control 
-                                    placeholder="Email" 
+                                <Form.Control
+                                    placeholder="Email"
                                     onChange={(e) => setInfo({
                                         ...info,
                                         email: e.target.value
@@ -132,8 +133,8 @@ function Payment({ titlePage }) {
                                 }
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Control 
-                                    placeholder="Họ và tên" 
+                                <Form.Control
+                                    placeholder="Họ và tên"
                                     onChange={(e) => setInfo({
                                         ...info,
                                         fullName: e.target.value
@@ -144,20 +145,20 @@ function Payment({ titlePage }) {
                                 }
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Control 
-                                    placeholder="Số điện thoại" 
+                                <Form.Control
+                                    placeholder="Số điện thoại"
                                     onChange={(e) => setInfo({
                                         ...info,
                                         phone: e.target.value
-                                    })}    
+                                    })}
                                 />
                                 {
                                     errors && errors.phone ? <span className='error'>{errors.phone}</span> : ''
                                 }
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Control 
-                                    placeholder="Số nhà, ngõ, ngách,..." 
+                                <Form.Control
+                                    placeholder="Số nhà, ngõ, ngách,..."
                                     onChange={(e) => setInfo({
                                         ...info,
                                         address: e.target.value
@@ -188,7 +189,7 @@ function Payment({ titlePage }) {
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Select
-                                    disabled = {codeCity ? false : true}
+                                    disabled={codeCity ? false : true}
                                     onChange={(e) => setCodeDistrict({
                                         code: +e.target.value,
                                         name: e.target.options[e.target.selectedIndex].text
@@ -208,7 +209,7 @@ function Payment({ titlePage }) {
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Select
-                                    disabled = {codeDistrict ? false : true}
+                                    disabled={codeDistrict ? false : true}
                                     onChange={(e) => setStateWard(e.target.options[e.target.selectedIndex].text)}
                                 >
                                     <option disabled selected>Phường xã</option>
@@ -224,9 +225,9 @@ function Payment({ titlePage }) {
                                 }
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Control as='textarea' 
-                                    rows={3} 
-                                    placeholder="Ghi chú" 
+                                <Form.Control as='textarea'
+                                    rows={3}
+                                    placeholder="Ghi chú"
                                     onChange={(e) => setNote(e.target.value)}
                                 />
                             </Form.Group>
@@ -236,9 +237,9 @@ function Payment({ titlePage }) {
                             <div className='border rounded py-3 px-3'>
                                 <div className='d-flex gap-1 align-items-center justify-content-between'>
                                     <Form.Group>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Giao hàng tận nơi - COD tiêu chuẩn 1-2 ngày" 
+                                        <Form.Check
+                                            type="radio"
+                                            label="Giao hàng tận nơi - COD tiêu chuẩn 1-2 ngày"
                                             value='fast'
                                             checked={shippingType.type === 'fast'}
                                             onChange={handleOnchangeShipping}
@@ -249,9 +250,9 @@ function Payment({ titlePage }) {
                                 <hr />
                                 <div className='d-flex gap-1 align-items-center justify-content-between'>
                                     <Form.Group>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Ship nhanh trong ngày(Chỉ áp dụng cho Hà Nội và HCM)" 
+                                        <Form.Check
+                                            type="radio"
+                                            label="Ship nhanh trong ngày(Chỉ áp dụng cho Hà Nội và HCM)"
                                             value='express'
                                             checked={shippingType.type === 'express'}
                                             onChange={handleOnchangeShipping}
@@ -264,22 +265,22 @@ function Payment({ titlePage }) {
                             <div className='border rounded py-3 px-3'>
                                 <div className='d-flex gap-1 align-items-center justify-content-between'>
                                     <Form.Group>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Thanh toán nhanh bằng QR" 
+                                        <Form.Check
+                                            type="radio"
+                                            label="Thanh toán nhanh bằng QR"
                                             value='qr'
                                             checked={paymentType === 'qr'}
                                             onChange={handleOnchangePayment}
                                         />
                                     </Form.Group>
-                                    <img src='https://i.gyazo.com/566d62fd25cf0867e0033fb1b9b47927.png' height='20px'/>
+                                    <img src='https://i.gyazo.com/566d62fd25cf0867e0033fb1b9b47927.png' height='20px' />
                                 </div>
                                 <hr />
                                 <div className='d-flex gap-1 align-items-center justify-content-between'>
                                     <Form.Group>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Thanh toán qua Paypal" 
+                                        <Form.Check
+                                            type="radio"
+                                            label="Thanh toán qua Paypal"
                                             value='paypal'
                                             checked={paymentType === 'paypal'}
                                             onChange={handleOnchangePayment}
@@ -290,9 +291,9 @@ function Payment({ titlePage }) {
                                 <hr />
                                 <div className='d-flex gap-1 align-items-center justify-content-between'>
                                     <Form.Group>
-                                        <Form.Check 
-                                            type="radio" 
-                                            label="Thanh toán khi nhận hàng (COD)" 
+                                        <Form.Check
+                                            type="radio"
+                                            label="Thanh toán khi nhận hàng (COD)"
                                             value='cod'
                                             checked={paymentType === 'cod'}
                                             onChange={handleOnchangePayment}
@@ -308,25 +309,25 @@ function Payment({ titlePage }) {
                     </div>
                 </div>
                 <div className='col-4 bg-light h-100' >
-                    <p className='fw-bolder mt-4'>Đơn hàng ({listProducts.length} sản phẩm)</p>
-                    <div 
+                    <p className='fw-bolder mt-4'>Đơn hàng ({products.length} sản phẩm)</p>
+                    <div
                         className='list-product-payment overflow-auto position-relative'
-                        style={{ 
+                        style={{
                             maxHeight: 'calc(100vh - 380px)',
                         }}
                     >
                         {
-                            listProducts.map((item, index) => {
+                            products.map((item, index) => {
                                 let priceNew = ''
-                                if(item?.dataDiscounts?.value !== 0) {
-                                    priceNew = +item?.price - +item?.price*+item?.dataDiscounts?.value
+                                if (item?.dataDiscounts?.value !== 0) {
+                                    priceNew = +item?.price - +item?.price * +item?.dataDiscounts?.value
                                 }
                                 return (
                                     <div className='d-flex align-items-center justify-content-center gap-1 mb-4 px-4'>
-                                        <div className='col-2 position-relative'>   
-                                            <div 
+                                        <div className='col-2 position-relative'>
+                                            <div
                                                 className='position-absolute'
-                                                style={{ 
+                                                style={{
                                                     'right': '5px',
                                                     'top': '-10px'
                                                 }}
@@ -357,7 +358,7 @@ function Payment({ titlePage }) {
                                                 style={{ cursor: 'pointer' }}
                                                 data-toggle="tooltip"
                                                 title='Xóa'
-                                                // onClick={() => handleShow(item?.dataCartProduct?.CartDetail?.productId)}
+                                            // onClick={() => handleShow(item?.dataCartProduct?.CartDetail?.productId)}
                                             >
                                                 <FontAwesomeIcon icon={faTrash} style={{ color: '#942319' }} />
                                             </button>
@@ -380,16 +381,16 @@ function Payment({ titlePage }) {
                                             </Modal> */}
                                         </div>
                                         <div className='col-2 position-relative'>
-                                            
+
                                             {
-                                                priceNew ? 
-                                                <>
-                                                    <div className='text-danger fw-500 fs-14'>-{+item?.dataDiscounts?.value * 100}%</div>
-                                                    <div className='fs-14 fw-500'>{formatVND(priceNew)}</div>
-                                                    <div className='fs-14 fw-500 text-muted text-decoration-line-through'>{formatVND(item.price)}</div>
-                                                </>
-                                                : 
-                                                <div className='fs-14 fw-500'>{formatVND(item.price)}</div>
+                                                priceNew ?
+                                                    <>
+                                                        <div className='text-danger fw-500 fs-14'>-{+item?.dataDiscounts?.value * 100}%</div>
+                                                        <div className='fs-14 fw-500'>{formatVND(priceNew)}</div>
+                                                        <div className='fs-14 fw-500 text-muted text-decoration-line-through'>{formatVND(item.price)}</div>
+                                                    </>
+                                                    :
+                                                    <div className='fs-14 fw-500'>{formatVND(item.price)}</div>
                                             }
                                         </div>
                                     </div>
@@ -408,16 +409,16 @@ function Payment({ titlePage }) {
                         </div>
                         <div className='d-flex justify-content-between align-items-center mb-2'>
                             <span className='fw-500'>Tổng cộng</span>
-                            <span className='text-color-root-light fs-5 fw-500'>{formatVND(totalPrice+shippingType.value)}</span>
+                            <span className='text-color-root-light fs-5 fw-500'>{formatVND(totalPrice + shippingType.value)}</span>
                         </div>
                         <div className='d-flex justify-content-between align-items-center pt-3'>
                             <Link className='text-color-root-light fs-14' to={path.CART}>
                                 <FontAwesomeIcon className='pe-1' icon={faAngleLeft} />Quay về giỏ hàng
                             </Link>
                             {
-                                paymentType === 'paypal' ? 
-                                <Paypal 
-                                    amount={10}
+                                paymentType === 'paypal' ?
+                                    <Paypal
+                                        amount={10}
                                     // amount={((totalMoney+fee - totalMoney*(voucherValue/100))/23000).toFixed(2)} 
                                     // orders={{ 
                                     // totalAmount: totalMoney+fee - totalMoney*(voucherValue/100),
@@ -428,14 +429,14 @@ function Payment({ titlePage }) {
                                     // shippingcost: fee
                                     // }} 
                                     // products={products?.Products}
-                                />
-                                :
-                                <button
-                                    className='btn btn-root-2 py-2 px-4 fw-500'
-                                    onClick={handlePay}
-                                >
-                                    ĐẶT HÀNG
-                                </button>
+                                    />
+                                    :
+                                    <button
+                                        className='btn btn-root-2 py-2 px-4 fw-500'
+                                        onClick={handlePay}
+                                    >
+                                        ĐẶT HÀNG
+                                    </button>
                             }
                         </div>
                     </div>

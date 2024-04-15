@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './Sidebar.css'
-import { faCaretDown, faCartShopping, faChartSimple, faDatabase, faHouse, faLayerGroup, faTag, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faBasketShopping, faCaretDown, faCartShopping, faChartSimple, faDatabase, faHouse, faLayerGroup, faTag, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { Active, path } from '../../../../utils';
 
-
 function Sidebar({active='dashboard', activeChild = ''}) {
     const [state ,setState] = useState(false)
     const [isProduct, setIsProduct] = useState(false)
-
-    // useEffect(() => {
-    //     if (active === 'category' || active === 'product-type') {
-    //         setState(true)
-    //     }
-    // }, active)
 
     return (
         <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse">
@@ -58,15 +51,6 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                     <li 
                         class="nav-item"
                     >   
-                        {/* <div 
-                            className={state === true ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
-                            onClick={handleClickCategories} 
-                            style={{ cursor: 'pointer' }}                           
-                        >
-                            <FontAwesomeIcon className='pe-2' icon={faLayerGroup} />
-                            Categoies
-                            <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
-                        </div> */}
                         <div 
                             className={state === true || active === 'category' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             onClick={() =>  setState(!state)} 
@@ -107,15 +91,6 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             Products
                             <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
                         </div>
-                        {/* <button
-                            className={active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
-                            onClick={handleShowProductItem}
-                        >
-                            <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
-                            Products
-                            <FontAwesomeIcon className='ps-2' icon={faCaretDown} />
-                        </button> */}
-
                         <ul className={isProduct === true || active === 'product' ? 'dbloc' : 'd-none'}>
                             <li className='border-bottom pb-2'>
                                 <Link 
@@ -161,6 +136,17 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                         >
                             <FontAwesomeIcon className='pe-2' icon={faTag} />
                             Discount
+                        </Link>
+                    </li>
+                    <li 
+                        class="nav-item"
+                    >   
+                        <Link
+                            className={active === 'order' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
+                            to={path.MANAGE_ORDER}
+                        >
+                            <FontAwesomeIcon className='pe-2' icon={faBasketShopping} />
+                            Order
                         </Link>
                     </li>
                     <li 

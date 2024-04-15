@@ -14,6 +14,7 @@ import cartReducer from "./cartReducer";
 import firebaseReducer from "./firebaseReducer";
 import reviewReducer from "./reviewReducer";
 import errorReducer from "./errorReducer";
+import orderReducer from "./orderReducer";
 import { combineReducers } from "redux";
 import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
     cart: cartReducer,
     firebase: firebaseReducer,
     review: reviewReducer,
+    order: orderReducer
 })
 
 export default rootReducer

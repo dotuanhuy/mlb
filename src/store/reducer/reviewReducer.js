@@ -27,6 +27,13 @@ const reviewReducer = (state=initState, action) => {
             return {
                 ...state
             }
+        case 'CHANGE_STATE':
+            console.log('check reducer')
+            state.rate = action.rate
+            state.totalEachRating = action.totalEachRating
+            return {
+                ...state
+            }
         default:
             return state
     }

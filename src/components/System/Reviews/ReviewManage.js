@@ -9,6 +9,7 @@ import { formatDateTimeVN } from '../../../utils';
 import { Form, InputGroup, Modal } from 'react-bootstrap';
 import { validateRequire } from '../../../validate/valiedate';
 import { toast } from 'react-toastify';
+import { useSocket } from '../../../configs/socketContext';
 
 const CustomToast = (message) => (
     <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
@@ -29,6 +30,7 @@ function ReviewManage() {
     const [show, setShow] = useState({})
     const [stateUpdateReview, setStateUpdateReview] = useState('')
     const [starUpdate, setStarUpdate] = useState('')
+    const socket = useSocket()
     
     const handleClose = () => setShow({});
     const handleShow = (id, type) => setShow({ id, type })
@@ -36,9 +38,23 @@ function ReviewManage() {
     useEffect(() => {
         dispatch(actions.getReviewProduct(params.get('id')))
     }, [])
+
+    useEffect(() => {
+        if (socket) {
+            socket.on('receive_review', ({reviews, _productId}) => {
+                if (+_productId === +params.get('id')) {
+                    console.log('check')
+                    setStateReview(reviews)
+                }
+            })
+        }
+    }, [socket])
     
     useEffect(() => {
         if (reviews.length > 0) {
+            if (socket) {
+                socket.emit('send_review', {reviews, _productId: params.get('id')})
+            }
             setStateReview(reviews)
         }
     }, [reviews])
@@ -112,8 +128,8 @@ function ReviewManage() {
         setStateUpdateReview('')
     }
 
-    const handleDeleteReview = (id, userId) => {
-        dispatch(actions.deleteReview({ id, userId, productId: params.get('id') }))
+    const handleDeleteReview = (id) => {
+        dispatch(actions.deleteReview({ id, productId: params.get('id') }))
         handleClose()
     }   
 

@@ -17,7 +17,7 @@ const updateFeedbackService = ({id, content}) => {
     return axiosJWT.post(`${api}/feedback/update`, {id, content})
 }
 
-const deleteFeedbackService = ({id}) => {
+const deleteFeedbackService = (id) => {
     return axiosJWT.delete(`${api}/feedback/delete/${id}`)
 }
 
@@ -25,8 +25,12 @@ const updateReviewService = ({id, userId, content, rate}) => {
     return axiosJWT.post(`${api}/update`, {id, userId, content, rate})
 }
 
-const deleteReviewService = ({id, userId}) => {
-    return axiosJWT.delete(`${api}/delete?id=${id}&userId=${userId}`)
+const deleteReviewService = (id) => {
+    return axiosJWT.delete(`${api}/delete?id=${id}`)
+}
+
+const createReviewService = (data) => {
+    return axiosJWT.post(`${api}/create`, data)
 }
 
 export {
@@ -35,5 +39,6 @@ export {
     updateFeedbackService,
     deleteFeedbackService,
     updateReviewService,
-    deleteReviewService
+    deleteReviewService,
+    createReviewService
 }

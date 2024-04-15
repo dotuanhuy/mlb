@@ -9,7 +9,6 @@ import CategoryManage from '../components/System/manageCategries/CategoryManage'
 import ProductTypeManage from '../components/System/manageCategries/ProductTypeManage';
 import ProductManageUpdate from '../components/System/manageCategries/ProductManageUpdate';
 import HomeProduct from '../components/System/products/HomeProduct';
-import ProductManage from '../components/System/products/ProductManage';
 import ManageProductCreate from '../components/System/products/ManageProductCreate';
 import ManageProductEdit from '../components/System/products/ManageProductEdit';
 import ProductManageDetail from '../components/System/products/ProductManageDetail';
@@ -20,6 +19,8 @@ import UserManage from '../components/System/users/UserManage';
 import DiscountManage from '../components/System/discounts/DiscountManage';
 import DiscountCreate from '../components/System/discounts/DiscountCreate';
 import DiscountUpdate from '../components/System/discounts/DiscountUpdate';
+import OrderMange from '../components/System/orders/OrderMange';
+import OrderMangeDetail from '../components/System/orders/OrderMangeDetail';
 
 function System() {
     return (
@@ -141,6 +142,15 @@ function System() {
                 <Route 
                     path={path.MANAGE_DISCOUNT_EDIT}
                     element={<PrivateRouter Component={DiscountUpdate} />}
+                />
+
+                <Route 
+                    path={path.MANAGE_ORDER}
+                    element={<PrivateRouter Component={OrderMange} />}
+                />
+                <Route 
+                    path={path.MANAGE_ORDER_CREATE}
+                    element={<PrivateRouter Component={OrderMangeDetail} />}
                 />
             </Routes>
        </>

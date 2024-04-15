@@ -43,6 +43,9 @@ export const path = {
     MANAGE_DISCOUNT_CREATE: '/system/manage/discount/create',
     MANAGE_DISCOUNT_EDIT: '/system/manage/discount/edit',
 
+    MANAGE_ORDER: '/system/manage/order',
+    MANAGE_ORDER_CREATE: '/system/manage/order/create',
+
     // MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     // MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
     
@@ -219,3 +222,11 @@ export const typeStep = {
 }
 
 export const MAX_LENGTH_IMAGE = 12
+
+export const SHIPPING_FEE = 35000
+
+export const orderStatus = {
+    WAIT_CONFIRMATION: 'wait confirmation',
+    SHIPPING: 'shipping',
+    FINISHED: 'finished',
+}

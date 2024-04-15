@@ -15,7 +15,7 @@ function DiscountManage() {
             <Navbar />
             <div className='row gx-0'>
                <div className='col-2'>
-                    <Sidebar active={'discount'}/>
+                    <Sidebar active='discount'/>
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>

@@ -1,5 +1,5 @@
 import React, { useEffect, memo, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Navbar from './Navbar/Navbar'
 import SliderHomePage from './Slider/SliderHomePage';
 import './HomePage.scss'
@@ -21,9 +21,11 @@ function HomePage({
 }) {
     const accessToken = window.localStorage.getItem('accessToken')
     const dispatch = useDispatch()
+    const {listId} = useSelector(state => state.order)
     
     useEffect(() => {
         document.title = titlePage
+        dispatch(actions.getLostOrderId())
         // refreshIsloadingStateProductRedux()
         // getAllProductPublicRedux(accessToken)
         // dispatch(actions.refreshIsloadingStateProduct())
@@ -36,6 +38,12 @@ function HomePage({
             
         }
     }, [])
+
+    useEffect(() => {
+        if (listId) {
+            window.localStorage.setItem('orderId', listId)
+        }
+    }, [listId])
 
     const settings = {
         dots: true,

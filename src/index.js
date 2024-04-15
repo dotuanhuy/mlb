@@ -20,16 +20,17 @@ import { SocketProvider } from './configs/socketContext';
 const { store, persistor } = reduxStore()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const user = window.localStorage.getItem('accessToken')
 root.render(
     // <React.StrictMode>
-    // <SocketProvider>
+    <SocketProvider user={user}>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <App />
                 <ToastContainer />
             </PersistGate>
         </Provider>
-    // </SocketProvider>
+    </SocketProvider>
     // </React.StrictMode>
 );
 reportWebVitals();

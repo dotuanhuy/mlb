@@ -64,6 +64,7 @@ export const fetLogout = () => {
             let res = await handleLogoutAPI() 
             if (res && res.errCode === 0) {
                 window.localStorage.removeItem('accessToken')
+                window.localStorage.removeItem('orderId')
                 dispatch({
                     type: actionTypes.LOGOUT_SUCCESS
                 })

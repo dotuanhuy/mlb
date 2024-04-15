@@ -8,25 +8,32 @@ import { Form, InputGroup, Modal } from 'react-bootstrap';
 import { validateRequire } from '../../validate/valiedate';
 import { formatDateTimeVN } from '../../utils';
 import jwt_decode from 'jwt-decode'
-import SocketContext from '../../configs/socketContext';
 import { useSocket } from '../../configs/socketContext';
+import { toast } from 'react-toastify';
+import { CustomToast } from '../../utils/customToast';
 
 const arrStar = ['Tất cả', 5, 4, 3, 2, 1]
 
 function ReviewProduct({ productId }) {
     const dispatch = useDispatch()
     const { reviews, rate, totalEachRating } = useSelector(state => state.review)
+    const listOrderId = window.localStorage.getItem('orderId').split(',')
     const [curentUser, setCurrentUser] = useState('')
     const [star, setStar] = useState(arrStar[0])
     const [stateReview, setStateReview] = useState([])
-    const [contentReview, setContentReview] = useState({update: '', current: ''})
-    const [show, setShow] = useState({})
+    const [contentReview, setContentReview] = useState({ update: '', current: '' })
     const [stateUpdateReview, setStateUpdateReview] = useState('')
-    const [starUpdate, setStarUpdate] = useState({update: 0, current: 0})
+    const [starUpdate, setStarUpdate] = useState({ update: 0, current: 0 })
+    const [showClient, setShowClient] = useState(false)
+    const [contentReviewClient, setContenReviewClient] = useState('')
+    const [rateClient, setRateClient] = useState('')
     const socket = useSocket()
 
-    const handleClose = () => setShow({});
-    const handleShow = (id, type) => setShow({ id, type })
+    const handleCloseClient = () => {
+        setContenReviewClient('')
+        setRateClient('')
+        setShowClient(false)
+    }
 
     useEffect(() => {
         dispatch(actions.getReviewProduct(productId))
@@ -38,6 +45,9 @@ function ReviewProduct({ productId }) {
             if (token) {
                 const currentUser = jwt_decode(token)
                 setCurrentUser(currentUser)
+            }
+            if (socket) {
+                socket.emit('send_review', {reviews, _productId: productId})
             }
             setStateReview(reviews)
         }
@@ -55,26 +65,19 @@ function ReviewProduct({ productId }) {
         }
     }, [star])
 
-    const handOnKeyDown = (e, reviewId) => {
-        if (e.key === 'Enter') {
-            handleSendReview(reviewId)
+    useEffect(() => {
+        if (socket) {
+            socket.on('receive_review', ({reviews, _productId}) => {
+                if (+_productId === +productId) {
+                    setStateReview(reviews)
+                }
+            })
         }
-    }
+    }, [socket])
 
     const handOnKeyDownUpdateReview = (e, id, userId) => {
         if (e.key === 'Enter') {
             handleUpdateReview(id, userId)
-        }
-    }
-
-    const handleSendReview = (reviewId) => {
-        const message = validateRequire('Phản hồi', contentReview.update.trim())
-        if (message) {
-            alert(message)
-        }
-        else {
-            dispatch(actions.createFeedback({ reviewId, content: contentReview.update.trim(), productId: productId }))
-            setContentReview({update: '', current: contentReview.current})
         }
     }
 
@@ -88,9 +91,20 @@ function ReviewProduct({ productId }) {
         }
     }
 
-    const handleDeleteReview = (id, userId) => {
-        dispatch(actions.deleteReview({ id, userId, productId: productId }))
-        handleClose()
+    const handleSendReviewClient = () => {
+        const message = validateRequire('Phản hồi', contentReviewClient.trim())
+        const rate = validateRequire('Đánh giá sao', rateClient)
+        if (message || rate) {
+            toast.error(CustomToast(rate ? rate : message ), { autoClose: 3000 })
+        }
+        else {
+            dispatch(actions.createReview({
+                productId, 
+                rate: rateClient, 
+                content: contentReviewClient
+            }))
+            handleCloseClient()
+        }
     }
 
     return (
@@ -110,7 +124,66 @@ function ReviewProduct({ productId }) {
                             }
                         </div>
                         <p>({reviews?.length} đánh giá)</p>
-                        <button className='btn btn-review' >Gửi đánh giá của bạn</button>
+                        {
+                            listOrderId.some(item => +item === productId) ?
+                                <>
+                                    <button
+                                        className='btn btn-review'
+                                        onClick={() => setShowClient(true)}
+                                    >
+                                        Gửi đánh giá của bạn
+                                    </button>
+                                    <Modal size='lg' show={showClient} onHide={handleCloseClient}>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title>Gửi phản hồi</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            <div className='mb-2'>
+                                                <span className='pe-2 fs-14'>Đánh giá</span>
+                                                {
+                                                    [1, 2, 3, 4, 5].map((number, index) => 
+                                                        number <= +rateClient ? 
+                                                        <FontAwesomeIcon
+                                                            key={index} className='me-1'
+                                                            style={{ fontSize: '12px', cursor: 'pointer' }}
+                                                            color='#ff4d00'
+                                                            icon={faStar}
+                                                            onClick={() => setRateClient(number)}
+                                                        />
+                                                        :
+                                                        <FontAwesomeIcon
+                                                            key={index} className='me-1'
+                                                            style={{ fontSize: '12px', cursor: 'pointer' }}
+                                                            icon={faStar}
+                                                            onClick={() => setRateClient(number)}
+                                                        />
+                                                    )
+                                                }
+                                            </div>
+                                            <Form.Control as="textarea" 
+                                                rows={5} 
+                                                placeholder="Nhập phản hồi"
+                                                onChange={(e) => setContenReviewClient(e.target.value)}
+                                            />
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <button
+                                                className='btn btn-secondary'
+                                                onClick={handleCloseClient}
+                                            >
+                                                Hủy
+                                            </button>
+                                            <button
+                                                className='btn btn-root fw-500'
+                                                onClick={handleSendReviewClient}
+                                            >
+                                                Gửi
+                                            </button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                </>
+                                : ''
+                        }
                     </div>
                     <div className='col-9'>
                         {
@@ -149,7 +222,7 @@ function ReviewProduct({ productId }) {
                                     <FontAwesomeIcon style={{ fontSize: '4px' }} icon={faCircle} />
                                     {formatDateTimeVN(item?.updatedAt)}
                                 </span>
-                                {
+                                {/* {
                                     curentUser?.id === item?.dataReviewUser?.id ?
                                         <>
                                             <FontAwesomeIcon
@@ -172,18 +245,10 @@ function ReviewProduct({ productId }) {
                                                     })
                                                 }}
                                             />
-                                            <FontAwesomeIcon
-                                                data-toggle="tooltip"
-                                                title='Xóa'
-                                                className='ms-3 text-color-light'
-                                                style={{ cursor: 'pointer' }}
-                                                icon={faTrash}
-                                                onClick={() => handleShow(item?.id, 'review')}
-                                            />
                                             <br></br>
                                         </>
-                                    : ''
-                                }
+                                        : ''
+                                } */}
                                 {
                                     item?.id === stateUpdateReview ?
                                         <>
@@ -234,57 +299,22 @@ function ReviewProduct({ productId }) {
                                         </>
                                         : ''
                                 }
-                                <Modal show={(show?.id === item?.id && show.type === 'review') || false} onHide={handleClose}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>Xóa bình luận</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>Bạn có chắc xóa bình luật này không</Modal.Body>
-                                    <Modal.Footer>
-                                        <button className='btn btn-secondary' onClick={handleClose}>
-                                            Hủy
-                                        </button>
-                                        <button
-                                            className='btn btn-root fw-500'
-                                            onClick={() => handleDeleteReview(item?.id, item?.dataReviewUser?.id)}
-                                        >
-                                            Xóa
-                                        </button>
-                                    </Modal.Footer>
-                                </Modal>
                             </div>
                             {
                                 item?.dataFeedbackReview ?
-                                    <div className='ps-5'>
-                                        <div className='d-flex align-items-center'>
-                                            <FontAwesomeIcon className='border p-2 rounded-circle' icon={faUser} />
-                                            <span className='ps-2 fw-500'>MLB</span>
-                                            <span className='border px-2 ms-2 rounded text-light' style={{ background: '#b835bb', fontSize: '12px' }}>Quản trị viên</span>
-                                        </div>
-                                        <p className='ps-5 mb-0'>{item?.dataFeedbackReview?.content}</p>
-                                        <span className='ps-5 text-muted fw-500 d-flex align-items-center gap-1' style={{ fontSize: '12px' }}>
-                                            <FontAwesomeIcon style={{ fontSize: '4px' }} icon={faCircle} />
-                                            {formatDateTimeVN(item?.dataFeedbackReview?.updatedAt)}
-                                        </span>
+                                <div className='ps-5'>
+                                    <div className='d-flex align-items-center'>
+                                        <FontAwesomeIcon className='border p-2 rounded-circle' icon={faUser} />
+                                        <span className='ps-2 fw-500'>MLB</span>
+                                        <span className='border px-2 ms-2 rounded text-light' style={{ background: '#b835bb', fontSize: '12px' }}>Quản trị viên</span>
                                     </div>
-                                    :
-                                    <InputGroup className="mb-3 mt-1">
-                                        <Form.Control
-                                            placeholder="Nhập nội dung phản hồi"
-                                            aria-label="Nhập nội dung phản hồi"
-                                            aria-describedby="basic-addon2"
-                                            onKeyDown={(e) => handOnKeyDown(e, item?.id)}
-                                            value={contentReview}
-                                            onChange={(e) => setContentReview({
-                                                ...contentReview,
-                                                update: e.target.value
-                                            })}
-                                        />
-                                        <button
-                                            className='btn btn-review'
-                                            // id="basic-addon2"
-                                            onClick={() => handleSendReview(item?.id)}
-                                        >Gửi</button>
-                                    </InputGroup>
+                                    <p className='ps-5 mb-0'>{item?.dataFeedbackReview?.content}</p>
+                                    <span className='ps-5 text-muted fw-500 d-flex align-items-center gap-1' style={{ fontSize: '12px' }}>
+                                        <FontAwesomeIcon style={{ fontSize: '4px' }} icon={faCircle} />
+                                        {formatDateTimeVN(item?.dataFeedbackReview?.updatedAt)}
+                                    </span>
+                                </div>
+                                : ''
                             }
                         </div>
 
