@@ -25,7 +25,7 @@ function HomePage({
     
     useEffect(() => {
         document.title = titlePage
-        dispatch(actions.getLostOrderId())
+        dispatch(actions.getListOrderId())
         // refreshIsloadingStateProductRedux()
         // getAllProductPublicRedux(accessToken)
         // dispatch(actions.refreshIsloadingStateProduct())

@@ -50,35 +50,35 @@ function OrderManage() {
                                 <ul className='d-flex gap-2 p-0 fw-500 text-muted'>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
-                                        className={option === 'all' ? 'fs-14 p-2 text-color-root-bold active-li' : 'fs-14 p-2'}
+                                        className={option === 'all' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('all')}
                                     >
                                         All
                                     </li>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
-                                        className={option === 'waitConfirmation' ? 'fs-14 p-2 text-color-root-bold active-li' : 'fs-14 p-2'}
+                                        className={option === 'waitConfirmation' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('waitConfirmation')}
                                     >
                                         Wait for confirmation
                                     </li>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
-                                        className={option === 'waitPay' ? 'fs-14 p-2 text-color-root-bold active-li' : 'fs-14 p-2'}
+                                        className={option === 'waitPay' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('waitPay')}
                                     >
                                         Wait for pay
                                     </li>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
-                                        className={option === 'shipping' ? 'fs-14 p-2 text-color-root-bold active-li' : 'fs-14 p-2'}
+                                        className={option === 'shipping' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('shipping')}
                                     >
                                         Shipping
                                     </li>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
-                                        className={option === 'finished' ? 'fs-14 p-2 text-color-root-bold active-li' : 'fs-14 p-2'}
+                                        className={option === 'finished' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('finished')}
                                     >
                                         Finished

@@ -10,9 +10,11 @@ import { faAngleLeft, faMinus, faPlus, faTrash } from '@fortawesome/free-solid-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { validate, validateRequire } from '../../validate/valiedate';
 import Paypal from '../paypal/Paypal';
+import Loading from '../common/Loading/Loading';
+import { toast } from 'react-toastify';
+import { CustomToast } from '../../utils/customToast';
 
 const initInfo = {
-    email: '',
     fullName: '',
     phone: '',
     address: ''
@@ -21,6 +23,7 @@ const initInfo = {
 function Payment({ titlePage }) {
     const dispatch = useDispatch()
     const { address } = useSelector(state => state.user)
+    const { errorOrder, orderId } = useSelector(state => state.order)
     const listProducts = useLocation().state
     const navigate = useNavigate()
     const [products, setProducts] = useState([])
@@ -30,7 +33,7 @@ function Payment({ titlePage }) {
     const [wards, setWards] = useState([])
     const [stateWard, setStateWard] = useState('')
     const [totalPrice, setTotalPrice] = useState(0)
-    const [shippingType, setShippingType] = useState({ value: 0, type: 'fast' })
+    const [shippingType, setShippingType] = useState({ value: 0, type: 'cod' })
     const [paymentType, setPaymentType] = useState('')
     const [info, setInfo] = useState(initInfo)
     const [note, setNote] = useState('')
@@ -67,6 +70,21 @@ function Payment({ titlePage }) {
         }
     }, [codeDistrict])
 
+    useEffect(() => {
+        if (errorOrder) {
+            if (errorOrder === 'none') {
+                dispatch(actions.createNotification({
+                    typeId: orderId,
+                    typeText: 'order'
+                }))
+                navigate(path.ORDER_TRACKING)
+            }
+            else {
+                toast.error(CustomToast(errorOrder), { autoClose: 3000 })
+            }
+        }
+    }, [errorOrder])
+
     const handleOnchangeShipping = (e) => {
         setShippingType({
             type: e.target.value,
@@ -95,7 +113,6 @@ function Payment({ titlePage }) {
         }
         else {
             const data = {
-                email: info.email,
                 fullName: info.fullName,
                 phone: info.phone,
                 address: info.address,
@@ -103,10 +120,12 @@ function Payment({ titlePage }) {
                 district: codeDistrict.name,
                 ward: stateWard,
                 note,
-                shippingType,
-                paymentType
+                shippingMethod: shippingType.type,
+                paymentType,
+                totalMoney: totalPrice + shippingType.value,
+                products
             }
-            
+            dispatch(actions.createOrder(data))
         }
     }
 
@@ -114,24 +133,12 @@ function Payment({ titlePage }) {
         <div className='container-xl'>
             <div className='row'>
                 <div className='col-8'>
-                    <div className='w-100 d-flex'>
+                    <div className='w-100 d-flex justify-content-center'>
                         <div className='image-logo'></div>
                     </div>
                     <div className='row mt-4 pt-3'>
                         <div className='col-6'>
                             <p className='fw-bolder'>Thông tin giao hàng</p>
-                            <Form.Group className="mb-3">
-                                <Form.Control
-                                    placeholder="Email"
-                                    onChange={(e) => setInfo({
-                                        ...info,
-                                        email: e.target.value
-                                    })}
-                                />
-                                {
-                                    errors && errors.email ? <span className='error'>{errors.email}</span> : ''
-                                }
-                            </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Control
                                     placeholder="Họ và tên"
@@ -240,8 +247,8 @@ function Payment({ titlePage }) {
                                         <Form.Check
                                             type="radio"
                                             label="Giao hàng tận nơi - COD tiêu chuẩn 1-2 ngày"
-                                            value='fast'
-                                            checked={shippingType.type === 'fast'}
+                                            value='cod'
+                                            checked={shippingType.type === 'cod'}
                                             onChange={handleOnchangeShipping}
                                         />
                                     </Form.Group>
@@ -418,17 +425,20 @@ function Payment({ titlePage }) {
                             {
                                 paymentType === 'paypal' ?
                                     <Paypal
-                                        amount={10}
-                                    // amount={((totalMoney+fee - totalMoney*(voucherValue/100))/23000).toFixed(2)} 
-                                    // orders={{ 
-                                    // totalAmount: totalMoney+fee - totalMoney*(voucherValue/100),
-                                    // voucherId: stateVoucher === 'none' || stateVoucher === '' ? 1 : stateVoucher,
-                                    // paymentMethod: methodPayment,
-                                    // shippingAddress: shippingAddress,
-                                    // shippingMethods: shippinMethod,
-                                    // shippingcost: fee
-                                    // }} 
-                                    // products={products?.Products}
+                                        amount={((totalPrice + shippingType.value) / 23000).toFixed(2)}
+                                        orders={{
+                                            fullName: info.fullName,
+                                            phone: info.phone,
+                                            address: info.address,
+                                            city: codeCity.name,
+                                            district: codeDistrict.name,
+                                            ward: stateWard,
+                                            note,
+                                            shippingMethod: shippingType.type,
+                                            paymentType,
+                                            totalMoney: totalPrice + shippingType.value,
+                                            products
+                                        }}
                                     />
                                     :
                                     <button

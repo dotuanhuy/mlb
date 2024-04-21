@@ -3,7 +3,8 @@ const initState = {
     count: 0,
     isLoading: true,
     errorOrder: '',
-    listId: []
+    listId: [],
+    orderId: ''
 }
 
 const orderReducer = (state=initState, action) => {
@@ -14,11 +15,24 @@ const orderReducer = (state=initState, action) => {
             state.isLoading = true
             state.errorOrder = ''
             state.listId = []
+            state.orderId = ''
             return {
                 ...state
             }
         case 'ORDER_FAILED':
             state.errorOrder = action.error
+            return {
+                ...state
+            }
+        case 'GET_ALL_ORDERS_BY_USER_SUCCESS':
+            state.orders = action.data
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case 'GET_ALL_ORDERS_BY_USER_FAILED':
+            state.orders = []
+            state.isLoading = true
             return {
                 ...state
             }
@@ -43,6 +57,21 @@ const orderReducer = (state=initState, action) => {
             }
         case 'GET_LIST_ORDER_ID_FAILED':
             state.listId = []
+            return {
+                ...state
+            }
+        case 'CREATE_ORDER_SUCCESS':
+            state.errorOrder = 'none'
+            state.orderId = action.orderId
+            return {
+                ...state
+            }
+        case 'CREATE_ORDER_FAILED':
+            state.errorOrder = action.errMessage
+            state.orderId = ''
+            return {
+                ...state
+            }
         default:
             return state
     }

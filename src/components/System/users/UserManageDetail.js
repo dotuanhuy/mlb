@@ -10,19 +10,16 @@ import * as actions from '../../../store/actions'
 import { formatDateVN } from '../../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
 
-
-
-function UserManageDetail({
-    isLoading,
-    user,
-    getUserByIdRedux
-}) {
+function UserManageDetail() {
+    const dispatch = useDispatch()
+    const {users, isLoading} = useSelector(state => state.user)
     const navigate = useNavigate()   
     const [params] = useSearchParams()
 
     useEffect(() => {
-        getUserByIdRedux(params.get('id'))
+        dispatch(actions.getUserById(params.get('id')))
     }, [])
     
     const handleEdit = (user) => {
@@ -57,32 +54,32 @@ function UserManageDetail({
                             <div className='row'>
                                 <div className='col-4'>
                                     {
-                                        user?.avatar ? ''
+                                        users?.avatar ? ''
                                         :
                                         <img className='rounded' src={avatart_male_none} width='100%' />
                                     }
                                 </div>
                                 <div className='col-8 text-muted border rounded'>
                                     <div className='my-2'>
-                                        <span className='fs-6 fw-500 text-muted'>Full name: <span className='text-black'>{user?.firstName} {user?.lastName}</span></span>    
+                                        <span className='fs-6 fw-500 text-muted'>Full name: <span className='text-black'>{users?.firstName} {users?.lastName}</span></span>    
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500 '>Email: <span className='text-black'>{user?.email}</span></span>
+                                        <span className='fs-6 fw-500 '>Email: <span className='text-black'>{users?.email}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Phone: <span className='text-black'>{user?.phone}</span></span>
+                                        <span className='fs-6 fw-500'>Phone: <span className='text-black'>{users?.phone}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Address: <span className='text-black'>{user?.address}</span></span>
+                                        <span className='fs-6 fw-500'>Address: <span className='text-black'>{users?.address}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Gender: <span className='text-black'>{user?.gender}</span></span>
+                                        <span className='fs-6 fw-500'>Gender: <span className='text-black'>{users?.gender}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Role: <span className='text-black'>{user?.dataRole?.name}</span></span>
+                                        <span className='fs-6 fw-500'>Role: <span className='text-black'>{users?.dataRole?.name}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Create at: <span className='text-black'>{formatDateVN(user?.createdAt)}</span></span>
+                                        <span className='fs-6 fw-500'>Create at: <span className='text-black'>{formatDateVN(users?.createdAt)}</span></span>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +95,7 @@ function UserManageDetail({
                                 </button>
                                 <button 
                                     className='btn btn-root-2 btn-add fw-500'
-                                    onClick={() => handleEdit(user)}
+                                    onClick={() => handleEdit(users)}
                                 >
                                     <FontAwesomeIcon className='pe-2' icon={faPenToSquare} />
                                     Edit user
@@ -114,14 +111,11 @@ function UserManageDetail({
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.user.isLoadingUser,
-        user: state.user.users
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getUserByIdRedux: (id) => dispatch(actions.getUserById(id))
     }
 }
 

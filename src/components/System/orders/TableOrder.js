@@ -71,7 +71,7 @@ function TableOrder({option}) {
                                         <td>
                                             <Link 
                                                 className='text-info'
-                                                to={`${path.MANAGE_ORDER_CREATE}?page=${params.get('page') ? params.get('page') : 1}&id=${item.id}`}
+                                                to={`${path.MANAGE_ORDER_DETAIL}?page=${params.get('page') ? params.get('page') : 1}&id=${item.id}`}
                                             >
                                                 <FontAwesomeIcon icon={faEye} />
                                             </Link>

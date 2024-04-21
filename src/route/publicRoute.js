@@ -12,6 +12,8 @@ import Product from '../components/common/product/Product';
 import PageCart from '../components/carts/PageCart';
 import TutorialSize from '../components/tutorialSize/TutorialSize';
 import Payment from '../components/payments/Payment';
+import OrderTracking from '../components/orderTracking/OrderTracking';
+import OrderTrackingDetail from '../components/orderTracking/OrderTrackingDetail';
 
 function PublicRoute() {
 
@@ -61,7 +63,10 @@ function PublicRoute() {
 
                 <Route path={path.TUTORIAL_SIZE} element={<TutorialSize titlePage='Bảng size MLB' />}></Route>
 
-                <Route path={path.CHECKOUT} element={<Payment titlePage='Thanh toán đơn hàng' />}></Route>
+                <Route path={path.CHECKOUT} element={<Payment titlePage='Đặt đơn hàng' />}></Route>
+
+                <Route path={path.ORDER_TRACKING} element={<OrderTracking titlePage='Theo dõi đơn hàng' />}></Route>
+                <Route path={path.ORDER_TRACKING_DETAIL} element={<OrderTrackingDetail titlePage='Chi tiết đơn hàng' />}></Route>
             </Routes>
         </>
     );

@@ -149,7 +149,7 @@ function System() {
                     element={<PrivateRouter Component={OrderMange} />}
                 />
                 <Route 
-                    path={path.MANAGE_ORDER_CREATE}
+                    path={path.MANAGE_ORDER_DETAIL}
                     element={<PrivateRouter Component={OrderMangeDetail} />}
                 />
             </Routes>

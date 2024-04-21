@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Navbar.scss'
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import jwtDecode from 'jwt-decode';
 import OutsideAlerter from '../../../../utils/OutSide';
 import * as actions from '../../../../store/actions'
 import { path } from '../../../../utils';
+import Notification from '../../Bells/Notification';
 
 function Navbar({
     fetLogoutRedux
@@ -47,7 +48,7 @@ function Navbar({
     }
 
     return (
-        <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow py-2">
+        <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
             <a 
                 class="navbar-brand col-md-3 col-lg-2 me-0 px-3" 
                 href="#"
@@ -57,14 +58,15 @@ function Navbar({
             <div className='col-2'>
                 <input class="form-control form-control-dark" type="text" placeholder="Search" aria-label="Search"/>
             </div>
-            <div class="navbar-nav">
+            <div class="d-flex align-items-center gap-1 py-2">
+                <Notification />
                 <div class="nav-item text-nowrap position-relative">
                     <OutsideAlerter handleDrop={handleDrop}>
                         <button 
                             className='btn'
                             onClick={handleDropDownUser}
                         >
-                            <FontAwesomeIcon className='text-white' icon={faUser} />
+                            <FontAwesomeIcon className='border rounded-circle text-white p-2' icon={faUser} />
                         </button>
                         <ul 
                             className={active.user ? 'dropdown-menu position-absolute text-white d-block' : 'dropdown-menu position-absolute text-white'}

@@ -23,14 +23,14 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const user = window.localStorage.getItem('accessToken')
 root.render(
     // <React.StrictMode>
-    <SocketProvider user={user}>
+    // <SocketProvider user={user}>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <App />
                 <ToastContainer />
             </PersistGate>
         </Provider>
-    </SocketProvider>
+    // </SocketProvider>
     // </React.StrictMode>
 );
 reportWebVitals();

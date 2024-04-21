@@ -120,7 +120,7 @@ function Product() {
                                 <div className='mt-4 pt-4'>
                                     <div className='d-flex flex-column align-items-center'>
                                         <Link
-                                            className='product-same text-color-root-bold text-uppercase d-flex align-items-center gap-3'
+                                            className='product-same text-color-root-dark text-uppercase d-flex align-items-center gap-3'
                                         >
                                             <FontAwesomeIcon className='bg-root-solid icon-hover fs-10' icon={faSquare} />
                                             <h2 className='fw-500 mb-0 mb-1'>Cùng bộ sưu tập mlb</h2>

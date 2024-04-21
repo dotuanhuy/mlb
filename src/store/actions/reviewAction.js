@@ -24,39 +24,6 @@ export const refreshStoreReview = () => {
     }
 }
 
-export const changeStateReviewReducer = (reviews) => {
-    return async (dispatch, getState) => {
-        try {
-            if (reviews) {
-                let totalRate = 0
-                const objRate = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-                reviews.map(item => {
-                    if (item?.rate) {
-                        totalRate = item?.rate + totalRate
-                        const temp = objRate[item?.rate] + 1
-                        objRate[item?.rate] = temp
-                    }
-                })
-                dispatch({
-                    type: actionTypes.GET_REVIEW_PRODUCT_SUCCESS,
-                    data: reviews,
-                    rate: reviews.length !== 0 ? (totalRate/reviews.length).toFixed(1) : 0,
-                    totalEachRating: objRate
-                })
-            }
-            else {
-                dispatch({
-                    type: actionTypes.GET_REVIEW_PRODUCT_FAILED
-                })
-            }
-        } catch (e) {
-            console.log('getAllDiscounts error: ', e)
-            dispatch({
-                type: actionTypes.GET_REVIEW_PRODUCT_FAILED
-            })
-        }
-    }
-}
 
 export const getReviewProduct  = (productId) => {
     return async (dispatch, getState) => {

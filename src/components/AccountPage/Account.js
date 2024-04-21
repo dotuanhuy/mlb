@@ -38,7 +38,9 @@ function Account({userLogin, activeType, fetLogoutRedux}) {
                     >Thông tin tài khoản</Link>
                 </li>
                 <li>
-                    <Link>Đơn hàng của bạn</Link>
+                    <Link
+                        to={path.ORDER_TRACKING}
+                    >Đơn hàng của bạn</Link>
                 </li>
                 <li>
                     <Link 

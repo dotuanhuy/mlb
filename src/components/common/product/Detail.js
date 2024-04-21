@@ -218,7 +218,7 @@ function Detail({product, addProductToCartRedux}) {
             </form>
             <div className='mt-2 fw-500 fs-14'>
                 <Link
-                    className='text-color-root-bold'
+                    className='text-color-root-dark'
                     to={path.TUTORIAL_SIZE}
                     target='_blank'
                 >

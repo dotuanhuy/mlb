@@ -3,7 +3,7 @@ const initState = {
     address: [],
     provinces: [],
     roles: [],
-    isLoadingUser: true,
+    isLoading: true,
     count: 0,
     errMessage: '',
     errCode: null,
@@ -18,7 +18,7 @@ const userReducer = (state = initState, action) => {
             state.users = []
             state.provinces = []
             state.roles = []
-            state.isLoadingUser = true
+            state.isLoading = true
             state.count = 0
             state.errMessage = ''
             state.errCode = null
@@ -29,13 +29,13 @@ const userReducer = (state = initState, action) => {
             }
         case 'FETCH_ALL_USERS_SUCCESS':
             state.users = action.data
-            state.isLoadingUser  = false
+            state.isLoading  = false
             return {
                 ...state
             }
         case 'FETCH_ALL_USERS_FAILED':
             state.users = []
-            state.isLoadingUser  = true
+            state.isLoading  = true
             return {
                 ...state
             }
@@ -63,44 +63,44 @@ const userReducer = (state = initState, action) => {
             }
         case 'GET_USER_BY_ID_SUCCESS':
             state.users = action.data
-            state.isLoadingUser = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_USER_BY_ID_FAILED':
             state.users = []
-            state.isLoadingUser = true
+            state.isLoading = true
             return {
                 ...state
             }
         case 'GET_COUNT_USERS_SUCCESS':
             state.count = action.data.count
-            state.isLoadingUser = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_COUNT_USERS_FAILED':
                 state.count = 0
-                state.isLoadingUser = true
+                state.isLoading = true
                 return {
                     ...state
                 }
         case 'LOADING_SUCCESS': 
-            state.isLoadingUser = true
+            state.isLoading = true
             return {
                 ...state
             }
         case 'GET_LIMIT_USERS_SUCCESS': 
             state.users = action.data.rows
             state.count = action.data.count
-            state.isLoadingUser = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'GET_LIMIT_USERS_FAILED': 
             state.users = []
             state.count = 0
-            state.isLoadingUser = true
+            state.isLoading = true
             return {
                 ...state
             }

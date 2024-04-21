@@ -49,14 +49,9 @@ export const createAxios = () => {
         },
         async (error) => {
             const status = error && error.response && error.response.status
-            switch(status) {
-                case 401: {
-                    window.location.href = '/'
-                    return Promise.reject(error)
-                }
-                case 400: {
-                    return Promise.reject(error)
-                }
+            if (status === 401) {
+                window.location.href = '/'
+                return Promise.reject(error)
             }
             return Promise.reject(error)
         }

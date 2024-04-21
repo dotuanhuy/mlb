@@ -142,7 +142,7 @@ function TableCategory({
 const mapStateToProps = state => {
     return {
         users: state.user.users,
-        isLoading: state.user.isLoadingUser
+        isLoading: state.user.isLoading
     }
 }
 

@@ -85,8 +85,6 @@ function PageCart({titlePage}) {
         }, { state: newProduct })
     }
     
-    console.log('check: ', products)
-
     return (
         <>
             {

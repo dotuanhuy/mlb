@@ -44,7 +44,7 @@ export const path = {
     MANAGE_DISCOUNT_EDIT: '/system/manage/discount/edit',
 
     MANAGE_ORDER: '/system/manage/order',
-    MANAGE_ORDER_CREATE: '/system/manage/order/create',
+    MANAGE_ORDER_DETAIL: '/system/manage/order/detail',
 
     // MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     // MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
@@ -88,7 +88,9 @@ export const path = {
 
     PRODUCT: '/product',
 
-    CHECKOUT: '/checkout'
+    CHECKOUT: '/checkout',
+    ORDER_TRACKING: '/order-tracking',
+    ORDER_TRACKING_DETAIL: '/order-tracking/detail'
 }
 
 export const allCode = {
@@ -229,4 +231,20 @@ export const orderStatus = {
     WAIT_CONFIRMATION: 'wait confirmation',
     SHIPPING: 'shipping',
     FINISHED: 'finished',
+}
+
+export const orderStatusObj = {
+    'wait confirmation': 'Chờ xác nhận',
+    'shipping': 'Đang giao',
+    'finished': 'Đã giao',
+}
+
+export const shippingMethod = {
+    'express': 'Giao hàng hỏa tốc',
+    'cod': 'Giao hàng tiêu chuẩn'
+}
+
+export const paymentMethod = {
+    'paypal': 'Thanh toán qua paypal',
+    'cod': 'Thanh toán khi nhận hàng'
 }

@@ -1,10 +1,12 @@
 import actionTypes from "./actionTypes";
 import { 
+    getAllOrdersByUserService,
     getLimitOrderService,
     getOrderbyIdService,
     confirmOrderService,
     cancelOrderService,
-    getListOrderIdService
+    getListOrderIdService,
+    createOrderService
 } from "../../services/orderService";
 
 export const refreshStoreOrder = () => {
@@ -17,6 +19,30 @@ export const refreshStoreOrder = () => {
             console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
+            })
+        }
+    }
+}
+
+export const getAllOrdersByUser  = () => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await getAllOrdersByUserService()
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_ALL_ORDERS_BY_USER_SUCCESS,
+                    data: res.data,
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_ALL_ORDERS_BY_USER_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getAllOrdersByUser error: ', e)
+            dispatch({
+                type: actionTypes.GET_ALL_ORDERS_BY_USER_FAILED
             })
         }
     }
@@ -64,7 +90,7 @@ export const getOrderById  = (id) => {
                 })
             }
         } catch (e) {
-            console.log('getLimitOrder error: ', e)
+            console.log('getOrderById error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_ORDER_FAILED
             })
@@ -110,7 +136,7 @@ export const cancelOrder = (id) => {
     }
 }
 
-export const getLostOrderId  = () => {
+export const getListOrderId  = () => {
     return async (dispatch, getState) => {
         try {
             const res = await getListOrderIdService()
@@ -126,10 +152,31 @@ export const getLostOrderId  = () => {
                 })
             }
         } catch (e) {
-            console.log('getLimitOrder error: ', e)
+            console.log('getListOrderId error: ', e)
             dispatch({
                 type: actionTypes.GET_LIST_ORDER_ID_FAILED
             })
         }
     }
 }
+
+export const createOrder = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await createOrderService(data)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.CREATE_ORDER_SUCCESS,
+                    orderId: res.data.orderId
+                })
+            }
+        } catch (e) {
+            console.log('createOrder error: ', e)
+            dispatch({
+                type: actionTypes.CREATE_ORDER_FAILED,
+                errMessage: e?.response?.data?.errMessage
+            })
+        }
+    }
+}
+

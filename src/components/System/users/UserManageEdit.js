@@ -248,7 +248,7 @@ const mapStateToProps = state => {
         users: state.user.users,
         provinces: state.user.provinces,
         roles: state.user.roles,
-        isLoading: state.user.isLoadingUser
+        isLoading: state.user.isLoading
     }
 }
 
