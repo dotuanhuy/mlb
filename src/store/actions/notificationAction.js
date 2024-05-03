@@ -1,7 +1,8 @@
 import actionTypes from "./actionTypes";
 import { 
     getNotificationsService,
-    createNotificationsService
+    createNotificationsService,
+    updateIsReadService,
 } from "../../services/notificationService";
 
 export const refreshStoreNotification = () => {
@@ -66,3 +67,18 @@ export const createNotification  = (data) => {
         }
     }
 }
+
+export const updateIsRead  = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await updateIsReadService(id)
+            if (res && res.errCode === 0) {
+                dispatch(getNotifications())
+            }
+            
+        } catch (e) {
+            console.log('updateIsRead error: ', e)
+        }
+    }
+}
+

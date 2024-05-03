@@ -9,7 +9,7 @@ import avatart_male_none from '../../../assets/avatar/avatar_male_none.jpg'
 import * as actions from '../../../store/actions'
 import { formatDateVN } from '../../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackward, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 function UserManageDetail() {
@@ -19,6 +19,7 @@ function UserManageDetail() {
     const [params] = useSearchParams()
 
     useEffect(() => {
+        document.title = 'Chi tiết người dùng'
         dispatch(actions.getUserById(params.get('id')))
     }, [])
     
@@ -48,7 +49,7 @@ function UserManageDetail() {
                         </div> 
                         <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                             <div className='d-flex justify-content-between'>
-                                <h2>User detail</h2>
+                                <h2>Chi tiết người dùng</h2>
                             </div>
                             <hr/>
                             <div className='row'>
@@ -61,25 +62,25 @@ function UserManageDetail() {
                                 </div>
                                 <div className='col-8 text-muted border rounded'>
                                     <div className='my-2'>
-                                        <span className='fs-6 fw-500 text-muted'>Full name: <span className='text-black'>{users?.firstName} {users?.lastName}</span></span>    
+                                        <span className='fs-6 fw-500 text-muted'>Họ và tên: <span className='text-black'>{users?.firstName} {users?.lastName}</span></span>    
                                     </div>
                                     <div className='mb-2'>
                                         <span className='fs-6 fw-500 '>Email: <span className='text-black'>{users?.email}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Phone: <span className='text-black'>{users?.phone}</span></span>
+                                        <span className='fs-6 fw-500'>Số điện thoại: <span className='text-black'>{users?.phone}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Address: <span className='text-black'>{users?.address}</span></span>
+                                        <span className='fs-6 fw-500'>Địa chỉ: <span className='text-black'>{users?.address}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Gender: <span className='text-black'>{users?.gender}</span></span>
+                                        <span className='fs-6 fw-500'>Giới tính: <span className='text-black'>{users?.gender}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Role: <span className='text-black'>{users?.dataRole?.name}</span></span>
+                                        <span className='fs-6 fw-500'>Quyền: <span className='text-black'>{users?.dataRole?.name}</span></span>
                                     </div>
                                     <div className='mb-2'>
-                                        <span className='fs-6 fw-500'>Create at: <span className='text-black'>{formatDateVN(users?.createdAt)}</span></span>
+                                        <span className='fs-6 fw-500'>Ngày khởi tạo: <span className='text-black'>{formatDateVN(users?.createdAt)}</span></span>
                                     </div>
                                 </div>
                             </div>
@@ -89,16 +90,14 @@ function UserManageDetail() {
                                         className='text-white fw-500' 
                                         to={path.MANAGE_USER}
                                     >
-                                        <FontAwesomeIcon className='pe-2' icon={faBackward} />
-                                        Back
+                                        <FontAwesomeIcon icon={faArrowLeft} /> Quay lại
                                     </Link>
                                 </button>
                                 <button 
                                     className='btn btn-root-2 btn-add fw-500'
                                     onClick={() => handleEdit(users)}
                                 >
-                                    <FontAwesomeIcon className='pe-2' icon={faPenToSquare} />
-                                    Edit user
+                                    <FontAwesomeIcon icon={faPenToSquare} /> Chỉnh sửa người dùng
                                 </button>
                             </div>
                         </div>

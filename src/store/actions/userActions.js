@@ -139,7 +139,6 @@ export const deleteUser = (id, page) => {
                 dispatch({
                     type: actionTypes.DELTE_USER_SUCCESS
                 })
-                // dispatch(fetAllUsers())
                 dispatch(getLimitUsers(page))
             }
             else {

@@ -1,8 +1,7 @@
-import React, { useEffect, memo, useState } from 'react';
+import React, { useEffect, memo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import Navbar from './Navbar/Navbar'
 import SliderHomePage from './Slider/SliderHomePage';
-import './HomePage.scss'
 import Intro from './Intro/Intro';
 import NewShoes from './NewShoes/NewShoes';
 import MLBBag from './MLBBag/MLBBag';
@@ -10,40 +9,30 @@ import MLBOutfit from './MLBOutfit/MLBOutfit';
 import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
-import jwt_decode from 'jwt-decode';
 import { useDispatch } from 'react-redux';
+import { AES, enc } from 'crypto-js';
+import { KEY_ORDERID } from '../../utils';
+import Loading from '../common/Loading/Loading'
 
-function HomePage({ 
-    titlePage,
-    isLoading,
-    refreshIsloadingStateProductRedux,
-    getAllProductPublicRedux, 
-}) {
-    const accessToken = window.localStorage.getItem('accessToken')
+function HomePage({ titlePage }) {
     const dispatch = useDispatch()
-    const {listId} = useSelector(state => state.order)
+    const { listId } = useSelector(state => state.order)
+    const { products } = useSelector(state => state.product)
     
     useEffect(() => {
         document.title = titlePage
         dispatch(actions.getListOrderId())
-        // refreshIsloadingStateProductRedux()
-        // getAllProductPublicRedux(accessToken)
-        // dispatch(actions.refreshIsloadingStateProduct())
-        // dispatch(actions.getAllProductPublic())
-        
-        let userId = ''
-        if (accessToken) {
-            let tokenDecoded = jwt_decode(accessToken)
-            userId = tokenDecoded?.id
-            
-        }
+        dispatch(actions.getAllProductPublic())
     }, [])
 
     useEffect(() => {
         if (listId) {
-            window.localStorage.setItem('orderId', listId)
+            const encrypted  = AES.encrypt(listId.toString(), KEY_ORDERID)
+            window.localStorage.setItem('orderId', encrypted)
         }
     }, [listId])
+
+    console.log('check products: ', products)
 
     const settings = {
         dots: true,
@@ -65,16 +54,23 @@ function HomePage({
     }
 
     return (
-        <div>
-            <Navbar />
-            <SliderHomePage settings={settings} />
-            <Intro />
-            <NewShoes />
-            <MLBBag />
-            <MLBOutfit />
-            <MLBBackPack />
-            <HomeFooter />
-        </div>
+        <>
+            {
+                !products ? 
+                <Loading />
+                :
+                <div>
+                    <Navbar />
+                    <SliderHomePage settings={settings} />
+                    <Intro />
+                    <NewShoes />
+                    <MLBBag />
+                    <MLBOutfit />
+                    <MLBBackPack />
+                    <HomeFooter />
+                </div>
+            }
+        </>
     );
 }
 

@@ -127,15 +127,14 @@ function TableProducts({categoryType, actives}) {
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Category name</th>
-                                    <th>Code</th>
-                                    <th>Price</th>
-                                    <th>Image</th>
-                                    <th>Logo</th>
-                                    <th>Detail</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th>Tên</th>
+                                    <th>Tên loại</th>
+                                    <th>Mã</th>
+                                    <th>Giá</th>
+                                    <th>Ảnh gốc</th>
+                                    <th>Chi tiết</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -162,7 +161,6 @@ function TableProducts({categoryType, actives}) {
                                                         }}
                                                     ></div>
                                                 </td>
-                                                <td>{item.dataLogos?.name}</td>
                                                 <td>
                                                     <Link 
                                                         className='btn text-info'

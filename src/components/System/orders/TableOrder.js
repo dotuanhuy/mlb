@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../../store/actions'
 import Pagination from '../../Paginations/Pagination';
-import { formatDateTimeVN, formatVND, path } from '../../../utils';
+import { formatDateTimeVN, formatVND, orderStatusObj, path } from '../../../utils';
 import Loading from '../../common/Loading/Loading';
 
 function TableOrder({option}) {
@@ -34,21 +34,21 @@ function TableOrder({option}) {
                                     <Form.Check
                                         type="checkbox"
                                         id="custom-switch"
-                                        label="All"
+                                        label="Tất cả"
                                     />
                                 </th>
-                                <th>Order</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Total money</th>
-                                <th>Detail</th>
+                                <th>ID</th>
+                                <th>Ngày đặt</th>
+                                <th>Trạng thái</th>
+                                <th>Tổng tiền</th>
+                                <th>Chi tiết</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 orders && orders.length > 0 &&
                                 orders.map((item, index) => (
-                                    <tr>
+                                    <tr key={index}>
                                         <td>
                                             <Form.Check
                                                 type="checkbox"
@@ -63,7 +63,7 @@ function TableOrder({option}) {
                                             {formatDateTimeVN(item.createdAt)}
                                         </td>
                                         <td>
-                                            {item.orderStatus}
+                                            {orderStatusObj[item.orderStatus]}
                                         </td>
                                         <td>
                                             {formatVND(item.totalMoney)}

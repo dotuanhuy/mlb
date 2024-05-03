@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinus, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faMinus, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../common/Loading/Loading'
 import Navbar from '../HomePage/Navbar/Navbar'
@@ -18,6 +18,8 @@ function OrderTrucking({ titlePage }) {
     const [option, setOption] = useState('all')
     const [totalMoney, setTotalMoney] = useState(0)
     const navigate = useNavigate()
+    const initialRender  = useRef(true)
+    const body = useRef()
 
     useEffect(() => {
         document.title = titlePage
@@ -27,6 +29,20 @@ function OrderTrucking({ titlePage }) {
         }
         dispatch(actions.getAllOrdersByUser())
     }, [])
+
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            if (body.current) {
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: body.current.offsetTop - 100
+                });
+            }
+        }
+    }, [body.current])
 
     useEffect(() => {
         if (orders && orders.length > 0) {
@@ -75,7 +91,7 @@ function OrderTrucking({ titlePage }) {
                         <div>
                             <Banner categoryProduct={'Theo dõi đơn hàng'} title={'Theo dõi đơn hàng của bạn'} />
                         </div>
-                        <div className='container pt-4'>
+                        <div className='container pt-4' ref={body}>
                             <div className='mb-4 py-2 border rounded shadow-sm'>
                                 <ul className='d-flex m-0 p-0 justify-content-evenly'>
                                     <li
@@ -99,62 +115,75 @@ function OrderTrucking({ titlePage }) {
                             <div className=''>
                                 {
                                     stateOrders && stateOrders.length > 0 ?
-                                        stateOrders.map((item, index) => {
+                                        stateOrders.map(item => {
                                             return (
-                                                <div className='row align-items-center mb-2' key={index}>
-                                                    <Link
-                                                        className='col-1 pe-0 position-relative'
+                                                <div className='border rounded mb-3'>
+                                                    <Link 
+                                                        className='d-flex align-items-center justify-content-end pe-2 pt-1 gap-1 fs-14 fw-500 text-color-root-dark'
                                                         to={`${path.ORDER_TRACKING_DETAIL}?id=${item?.id}`}
                                                     >
-                                                        <img src={item?.dataOrderProduct?.image} className='w-100 ' style={{ objectFit: 'contain' }} height='100px' />
-                                                        {
-                                                            item?.dataOrderProduct?.dataDiscounts?.value !== 0 ?
-                                                                <span
-                                                                    className='text-danger fw-500 fs-14 position-absolute'
-                                                                    style={{
-                                                                        top: '-2px'
-                                                                    }}
+                                                        Chi tiết<FontAwesomeIcon icon={faArrowRight} />
+                                                    </Link>
+                                                    {
+                                                        item?.dataOrderProduct?.map((product, index) => (
+                                                            <div className='row align-items-center pb-2 pt-1' key={index}>
+                                                                <div
+                                                                    className='col-1 pe-0 position-relative'
+                                                                    
                                                                 >
-                                                                    -{+item?.dataOrderProduct?.dataDiscounts?.value * 100}%
-                                                                </span>
-                                                                : ''
-                                                        }
-                                                    </Link>
-                                                    <Link
-                                                        className='col-5 fw-500'
-                                                        to={`${path.ORDER_TRACKING_DETAIL}?id=${item?.id}`}
-                                                    >
-                                                        <span>{item?.dataOrderProduct?.name}</span>
-                                                        <div>
-                                                            {
-                                                                item?.dataOrderProduct?.OrderDetail?.size ?
-                                                                    <span className='text-muted fs-12'>Size: <span className='text-black fs-14'>{item?.dataOrderProduct?.OrderDetail?.size}</span></span>
-                                                                    : ''
-                                                            }
-                                                        </div>
-                                                        <span className='text-muted fs-12'>Số lượng: <span className='text-black fs-14'>{item?.dataOrderProduct?.OrderDetail?.quantity}</span></span>
-                                                    </Link>
-                                                    <div className='col-2 text-danger'>
-                                                        {
-                                                            item?.dataOrderProduct?.dataDiscounts?.value !== 0 ?
-                                                                <>
-                                                                    <span className='fs-14 fw-500 pe-3'>{formatVND(+item?.dataOrderProduct?.price - +item?.dataOrderProduct?.price * +item?.dataOrderProduct?.dataDiscounts?.value)}</span>
-                                                                    <span className='fs-14 fw-500 text-muted text-decoration-line-through'>{formatVND(item?.dataOrderProduct.price)}</span>
-                                                                </>
-                                                                :
-                                                                <div className='fs-14 fw-500'>{formatVND(item?.dataOrderProduct?.price)}</div>
-                                                        }
-                                                    </div>
-                                                    <div className='col-2 fs-14 fw-500 text-muted float-end'>
-                                                        Thành tiền: <span className='text-danger'>{formatVND(item?.totalMoney)}</span>
-                                                    </div>
-                                                    <div className='col-2 fs-14 fw-500'>
-                                                        {
-                                                            item?.isCancelled ? 'Đã hủy'
-                                                                :
-                                                                orderStatusObj[item?.orderStatus]
-                                                        }
-                                                    </div>
+                                                                    <img src={product.image} className='w-100 ' style={{ objectFit: 'contain' }} height='100px' />
+                                                                    {
+                                                                        product.dataDiscounts?.value !== 0 ?
+                                                                            <span
+                                                                                className='text-danger fw-500 fs-14 position-absolute'
+                                                                                style={{
+                                                                                    top: '-2px',
+                                                                                    right: '-8px'
+                                                                                }}
+                                                                            >
+                                                                                -{+product.dataDiscounts?.value * 100}%
+                                                                            </span>
+                                                                            : ''
+                                                                    }
+                                                                </div>
+                                                                <div
+                                                                    className='col-5 fw-500'
+                                                                >
+                                                                    <span>{product.name}</span>
+                                                                    <div>
+                                                                        {
+                                                                            product.OrderDetail?.size ?
+                                                                                <span className='text-muted fs-12'>Size: <span className='text-black fs-14'>{product.OrderDetail?.size}</span></span>
+                                                                                : ''
+                                                                        }
+                                                                    </div>
+                                                                    <span className='text-muted fs-12'>Số lượng: <span className='text-black fs-14'>{product.OrderDetail?.quantity}</span></span>
+                                                                </div>
+                                                                <div className='col-2 text-danger'>
+                                                                    {
+                                                                        product.dataDiscounts?.value !== 0 ?
+                                                                            <>
+                                                                                <span className='fs-14 fw-500 pe-3'>{formatVND(+product.price - +product.price * +product.dataDiscounts?.value)}</span>
+                                                                                <span className='fs-14 fw-500 text-muted text-decoration-line-through'>{formatVND(item?.dataOrderProduct.price)}</span>
+                                                                            </>
+                                                                            :
+                                                                            <div className='fs-14 fw-500'>{formatVND(product.price)}</div>
+                                                                    }
+                                                                </div>
+                                                                <div className='col-2 fs-14 fw-500 text-muted float-end'>
+                                                                    Thành tiền: <span className='text-danger'>{formatVND(item?.totalMoney)}</span>
+                                                                </div>
+                                                                <div className='col-2 fs-14 fw-500'>
+                                                                    {
+                                                                        item?.isCancelled ? 'Đã hủy'
+                                                                            :
+                                                                            orderStatusObj[item?.orderStatus]
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        ))
+
+                                                    }
                                                 </div>
                                             )
                                         })

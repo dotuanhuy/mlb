@@ -105,10 +105,10 @@ export const allCode = {
 }
 
 export const Active = {
-    SHOSE: 'Shoes',
-    BAG_BALO: 'Bag-balo',
-    HAT: 'Hat',
-    CLOTHES: 'Clothes',
+    SHOSE: 'Giày',
+    BAG_BALO: 'Túi-balo',
+    HAT: 'Mũ',
+    CLOTHES: 'Quần-áo',
     CATEGORY: 'Category',
     PRODUCT_TYPE: 'Product type',
 }
@@ -248,3 +248,5 @@ export const paymentMethod = {
     'paypal': 'Thanh toán qua paypal',
     'cod': 'Thanh toán khi nhận hàng'
 }
+
+export const KEY_ORDERID = 'TqbZCDy26E'

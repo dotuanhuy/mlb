@@ -81,7 +81,7 @@ function Favourite({
                             </div>
                             <div className='menu-box'>
                                 <div className='menu-product row row-cols-4'>
-                                    <ListProducts products={productsLimit} images={images} col='col-3' />
+                                    <ListProducts bg='contain' products={productsLimit} images={images} col='col-3' />
                                 </div>
                             </div>
                             <Pagination pathPage={path.FAVOURITE} currentPage={params.get('page') || 1}/>

@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../common/navbar/Navbar'
 import { Link } from 'react-router-dom';
 import TableProduct from './TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function HomeProduct({
     categoryType,
     actives
 }) {
+
+    useEffect(() => {
+        document.title = `Quản lý ${actives.active}`
+    }, [actives])
 
     return (    
         <div className='manage-product'>
@@ -26,8 +30,7 @@ function HomeProduct({
                             className='text-white fw-500 btn btn-root text-center' 
                             to={actives?.pathToCreate}
                         >
-                            <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
-                            Add new
+                            <FontAwesomeIcon icon={faPlus} /> Thêm mới
                         </Link>
                     </div>
                     <hr/>

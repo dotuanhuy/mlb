@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../common/navbar/Navbar';
 import { useSearchParams } from 'react-router-dom';
-import { path } from '../../../utils';
 import Sidebar from '../common/sidebars/Sidebar';
 import TableDiscount from './TableDiscount';
 import { Form } from 'react-bootstrap';
 import { validate } from '../../../validate/valiedate';
 import { useDispatch } from 'react-redux';
 import * as actions from '../../../store/actions'
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const initDataInput = {
@@ -23,6 +22,10 @@ function DiscountCreat() {
     const [dataInput, setDataInput] = useState(initDataInput)
     const [errors, setErrors] = useState({})
     const [params] = useSearchParams()
+
+    useEffect(() => {
+        document.title = 'Thêm mới mã giảm giá'
+    }, [])
 
     const handleCreateDisCount = () => {
         const error = validate(dataInput)
@@ -48,12 +51,12 @@ function DiscountCreat() {
                 </div>
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between'>
-                        <h2>Create new discount</h2>
+                        <h2>Thêm mới mã giảm giá</h2>
                     </div>
                     <hr />
                     <div className='mb-5'>
                         <Form.Group controlId="formCode" className="mb-3">
-                            <Form.Label>Code<span className='text-danger'>*</span></Form.Label>
+                            <Form.Label>Mã<span className='text-danger'>*</span></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Enter code..."
@@ -70,7 +73,7 @@ function DiscountCreat() {
                             }
                         </Form.Group>
                         <Form.Group controlId="formValue" className="mb-3">
-                            <Form.Label>Value<span className='text-danger'>*</span></Form.Label>
+                            <Form.Label>Giá trị<span className='text-danger'>*</span></Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Enter value ...(%)"
@@ -87,7 +90,7 @@ function DiscountCreat() {
                             }
                         </Form.Group>
                         <Form.Group controlId="formDes" className="mb-3">
-                            <Form.Label>Description<span className='text-danger'>*</span></Form.Label>
+                            <Form.Label>Mô tả<span className='text-danger'>*</span></Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={3}
@@ -106,7 +109,7 @@ function DiscountCreat() {
                         <button
                             className='btn btn-root fw-500'
                             onClick={() => handleCreateDisCount()}
-                        ><FontAwesomeIcon icon={faCirclePlus} className='pe-1' />Create</button>
+                        ><FontAwesomeIcon icon={faPlus} /> Tạo mới</button>
                     </div>
                     <TableDiscount />
                 </div>

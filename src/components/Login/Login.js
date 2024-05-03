@@ -55,6 +55,7 @@ function Login({titlePage, user, isLogin, fetLoginRedux}) {
 
     useEffect(() => {
         if (isLogin && user.roleId === 1) {
+            window.localStorage.setItem('notifications', 0)
             navigate(path.MANAGE)
         }
         else if (isLogin && user.roleId === 2) {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions'
-import { formatVND, path } from '../../utils';
+import { BACKEND_URL, formatVND, path } from '../../utils';
 import './Payment.scss'
 import { Form } from 'react-bootstrap';
 import { faAngleLeft, faMinus, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,7 @@ import Paypal from '../paypal/Paypal';
 import Loading from '../common/Loading/Loading';
 import { toast } from 'react-toastify';
 import { CustomToast } from '../../utils/customToast';
+import io from 'socket.io-client';
 
 const initInfo = {
     fullName: '',
@@ -39,6 +40,7 @@ function Payment({ titlePage }) {
     const [note, setNote] = useState('')
     const [errors, setErrors] = useState({})
     const [errorSelect, setErrorSelect] = useState({})
+    const [socket, setSocket] = useState()
 
     useEffect(() => {
         document.title = titlePage
@@ -53,6 +55,9 @@ function Payment({ titlePage }) {
             })
             setTotalPrice(total)
             setProducts(listProducts)
+            const newSocket = io(BACKEND_URL, { autoConnect: true }); // Địa chỉ server
+            setSocket(newSocket);
+            return () => newSocket.disconnect();
         }
     }, [])
 
@@ -69,7 +74,7 @@ function Payment({ titlePage }) {
             setWards(arr)
         }
     }, [codeDistrict])
-
+    
     useEffect(() => {
         if (errorOrder) {
             if (errorOrder === 'none') {
@@ -77,6 +82,9 @@ function Payment({ titlePage }) {
                     typeId: orderId,
                     typeText: 'order'
                 }))
+                if (socket) {
+                    socket.emit('send_notification', { typeText: 'order' })
+                }
                 navigate(path.ORDER_TRACKING)
             }
             else {

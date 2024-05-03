@@ -8,7 +8,7 @@ import { Form } from 'react-bootstrap';
 import { validate } from '../../../validate/valiedate';
 import { useDispatch } from 'react-redux';
 import * as actions from '../../../store/actions'
-import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../common/Loading/Loading';
 
@@ -27,6 +27,7 @@ function DiscountUpdate() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        document.title = 'Chỉnh sửa mã giảm giá'
         if (params.get('id')) {
             dispatch(actions.getDiscountById(+params.get('id')))
         }
@@ -72,7 +73,7 @@ function DiscountUpdate() {
                 </div>
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between'>
-                        <h2>Update discount</h2>
+                        <h2>Chỉnh sửa mã giảm giá</h2>
                     </div>
                     <hr />
                     {
@@ -81,7 +82,7 @@ function DiscountUpdate() {
                         :
                         <div className='mb-5'>
                             <Form.Group controlId="formCode" className="mb-3">
-                                <Form.Label>Code<span className='text-danger'>*</span></Form.Label>
+                                <Form.Label>Mã<span className='text-danger'>*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Enter code..."
@@ -99,7 +100,7 @@ function DiscountUpdate() {
                                 }
                             </Form.Group>
                             <Form.Group controlId="formValue" className="mb-3">
-                                <Form.Label>Value<span className='text-danger'>*</span></Form.Label>
+                                <Form.Label>Giá trị<span className='text-danger'>*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Enter value ...(%)"
@@ -117,7 +118,7 @@ function DiscountUpdate() {
                                 }
                             </Form.Group>
                             <Form.Group controlId="formDes" className="mb-3">
-                                <Form.Label>Description<span className='text-danger'>*</span></Form.Label>
+                                <Form.Label>Mô tả<span className='text-danger'>*</span></Form.Label>
                                 <Form.Control
                                     as="textarea"
                                     rows={3}
@@ -137,7 +138,7 @@ function DiscountUpdate() {
                             <button
                                 className='btn btn-root fw-500'
                                 onClick={() => handleUpdateDisCount()}
-                            ><FontAwesomeIcon icon={faFloppyDisk} className='pe-1' />Save</button>
+                            ><FontAwesomeIcon icon={faBookmark} /> Lưu</button>
                         </div>
                     }
                 </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, memo } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
@@ -17,24 +17,17 @@ const initState = {
     lastName: '',
 }
 
-function Navbar({
-    isLogin, 
-    countFavourite, 
-    countProductsCart, 
-    productTypes,
-    refreshStoreProductType,
-    getAllProductsFavouriteRedux, 
-    fetLogoutRedux,
-    getAllProductTypesRedux,
-    refreshIStateFavouriteProduct
-}) {
+function Navbar() {
+    const dispatch = useDispatch()
+    const { isLogin } = useSelector(state => state.auth)
+    const { productTypes } = useSelector(state => state.productType)
+    const countFavourite = useSelector(state => state.fouriteProduct.countProducts)
+    const countProductsCart = useSelector(state => state.cart.countProducts)
     const [userLogin, setUserLogin] = useState(initState)
-    const [currentActive, setCurrentActive] = useState()
     const [userId, setUserId] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
-        // refreshStoreProductType()
         const token = window.localStorage.getItem('accessToken')
         if (token) {
             let tokenDecoded = jwt_decode(token)
@@ -47,17 +40,17 @@ function Navbar({
         else {
             setUserId('')
         }
-        getAllProductTypesRedux()
+        dispatch(actions.getAllProductTypes())
     }, [])
 
     useEffect(() => {
         if (userId) {
-            getAllProductsFavouriteRedux(userId)
+            dispatch(actions.getAllProductsFavourite(userId))
         }
     }, [userId])
 
     const handleLogout = () => {
-        fetLogoutRedux()
+        dispatch(actions.fetLogout())
         navigate(path.HOMEPAGE)
     }
 
@@ -77,12 +70,6 @@ function Navbar({
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
-                                        <li>
-                                            <Link to={path.GIAY_MLB}>
-                                                {/* <img src={shoes.allShoes}/> */}
-                                            </Link>
-                                            <Link to={path.GIAY_MLB} className='name-shoes' >all shoes</Link>
-                                        </li>
                                         {
                                             productTypes && productTypes.length > 0 &&
                                             productTypes.map((item, index) => {
@@ -115,12 +102,6 @@ function Navbar({
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
-                                        <li>
-                                            <Link to={path.TUI_MLB}>
-                                                {/* <img src={bag.allBag}/> */}
-                                            </Link>
-                                            <Link to={path.TUI_MLB} className='name-shoes' >All bag</Link>
-                                        </li>
                                         {
                                             productTypes && productTypes.length > 0 &&
                                             productTypes.map((item, index) => {
@@ -212,26 +193,6 @@ function Navbar({
                                     </ul>
                                 </div>
                             </li>
-                            {/* <li className='menu-list_item' >
-                                <span className='menu-list_item-name text-white pe-2'>Phụ-kiện</span>                               
-                                <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item bg-white w-100 position-absolute'>
-                                    <ul>
-                                        <li>
-                                            <a href='#'>
-                                                <img src={PK.MASK}/>
-                                            </a>
-                                            <a href='#' className='name-shoes' >MASK</a>
-                                        </li>
-                                        <li>
-                                            <a href='#'>
-                                                <img src={PK.SOCK}/>
-                                            </a>
-                                            <a href='#' className='name-shoes'>SOCKT</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li> */}
                             <li className='menu-list_item' >                              
                                 <span className='menu-list_item-name text-white pe-2'>Logo</span>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
@@ -257,9 +218,6 @@ function Navbar({
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
-                            <li className='menu-list_item' >
-                                <span className='menu-list_item-name text-white pe-2'>Tin mlb</span>                                                             
                             </li>
                         </ul>
                     </div>
@@ -303,20 +261,11 @@ function Navbar({
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
-        productTypes: state.productType.productTypes,
-        countFavourite: state.fouriteProduct.countProducts,
-        countProductsCart: state.cart.countProducts
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshStoreProductType: () => dispatch(actions.refreshStoreProductType()),
-        fetLogoutRedux: () => dispatch(actions.fetLogout()),
-        getAllProductsFavouriteRedux: (userId) => dispatch(actions.getAllProductsFavourite(userId)),
-        getAllProductTypesRedux: () => dispatch(actions.getAllProductTypes()),
-        refreshIStateFavouriteProduct: () => dispatch(actions.refreshIStateFavouriteProduct())
     }
 }
 

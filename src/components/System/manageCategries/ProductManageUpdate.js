@@ -3,16 +3,14 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { path, Role } from '../../../utils';
+import { path } from '../../../utils';
 import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
 import { BuildOptionSelect } from '../../../utils';
-import CommonUtils from '../../../utils/CommonUtils';
-import { Buffer } from 'buffer';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 
 function ProductManageUpdate({actives}) {
     const dispatch = useDispatch()
@@ -29,6 +27,7 @@ function ProductManageUpdate({actives}) {
 
     // ComponentDidMount
     useEffect(() => {
+        document.title = 'Chỉnh sửa kiểu sản phẩm'
         dispatch(actions.refreshStoreProductType())
         dispatch(actions.getAllCategories())
         dispatch(actions.getProductTypeById(params.get('id')))
@@ -131,11 +130,11 @@ function ProductManageUpdate({actives}) {
                         <Navbar />
                         <div className='row gx-0'>
                             <div className='col-2'>
-                                <Sidebar active={'user'} />
+                                <Sidebar active={'category'} activeChild={actives?.active}/>
                             </div>
                             <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                                 <div className='d-flex justify-content-between'>
-                                    <h2>Update {actives?.active}</h2>
+                                    <h2>Chỉnh sửa kiểu sản phẩm</h2>
                                 </div>
                                 <hr />
 
@@ -143,7 +142,7 @@ function ProductManageUpdate({actives}) {
                                     <form>
                                         <div className='form row'>
                                             <div class="col-4 mb-3">
-                                                <label for="exampleInputName" class="form-label fw-500 text-muted">Name product type</label>
+                                                <label for="exampleInputName" class="form-label fw-500 text-muted">Tên<span className='text-danger'>*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
@@ -154,7 +153,7 @@ function ProductManageUpdate({actives}) {
                                                 />
                                             </div>
                                             <div className="col-4 mb-3">
-                                                <label htmlFor="exampleInputBrand" className="form-label">Category name</label>
+                                                <label htmlFor="exampleInputBrand" className="form-label">Loại sản phẩm<span className='text-danger'>*</span></label>
                                                 <Select
                                                     value={selectCategory}
                                                     onChange={handleOnchangeCategory}
@@ -162,7 +161,7 @@ function ProductManageUpdate({actives}) {
                                                 />
                                             </div>
                                             <div className="col-4 mb-3">
-                                                <label htmlFor="exampleInputBrand" className="form-label">Status</label>
+                                                <label htmlFor="exampleInputBrand" className="form-label">Trạng thái<span className='text-danger'>*</span></label>
                                                 <Select
                                                     value={selectStatus}
                                                     onChange={handleOnchangeStatus}
@@ -170,7 +169,7 @@ function ProductManageUpdate({actives}) {
                                                 />
                                             </div>
                                             <div className="mb-3 col-4">
-                                                <label htmlFor="exampleInputImage" className="form-label">Image root</label>
+                                                <label htmlFor="exampleInputImage" className="form-label">Ảnh gốc<span className='text-danger'>*</span></label>
                                                 <input 
                                                     type="file" 
                                                     className="form-control mb-2" 
@@ -196,8 +195,7 @@ function ProductManageUpdate({actives}) {
                                             className="btn btn-root text-white fw-500 mt-2"
                                             onClick={(e) => handleUpdateProductType(e)}
                                         >
-                                            <FontAwesomeIcon icon={faFloppyDisk} className='pe-1'/>
-                                            Save
+                                            <FontAwesomeIcon icon={faBookmark} /> Lưu
                                         </button>
                                     </form>
                                 </div>

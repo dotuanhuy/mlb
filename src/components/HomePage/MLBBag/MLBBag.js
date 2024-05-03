@@ -1,84 +1,68 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import './MLBBag.scss'
-import CrossBag from './CrossBag/CrossBag';
-import Bucketbag from './BucketBag/Bucketbag';
-import HipStack from './HipStack/HipStack';
-import HoboBag from './HoboBag/HoboBag';
-import ToteBag from './ToteBag/ToteBag';
-import PhonePouch from './PhonePouch/PhonePouch';
+import '../styles/mlb.scss'
 import { Link } from 'react-router-dom';
 import { path } from '../../../utils';
+import MLBBagChild from './MLBBagChild';
 
 function MLBBag() {
-    const [type, setType] = useState('CrossBag')
+    const [type, setType] = useState('Cross bag')
 
     return (
-        <div className='mlbbag'>
+        <div className='mlbbag pb-5 mb-5' style={{ background: '#f6f6f6' }}>
             <div className='mlbbag-container px-4'>
-                <div className='title text-center py-5'>
-                    <h2 className='title-mlbbag mb-4'>
-                        <Link to={path.TUI_MLB}>MLB BAG</Link>
+                <div className='text-center py-5'>
+                    <h2 className='title-option-homepage mb-4'>
+                        <Link className='position-relative' to={path.TUI_MLB}>MLB BAG</Link>
                     </h2>
-                    <p>Những bộ sưu tập <Link to={path.TUI_MLB}>Túi MLB</Link> hot nhất</p>
-                    <ul className='mlbbag-tabs row my-4'>
+                    <p className='fw-bolder fs-16 text-muted'>Những bộ sưu tập <Link className='text-decoration-underline text-color-root-dark' to={path.TUI_MLB}>Túi MLB</Link> hot nhất</p>
+                    <ul className='mlb-tabs row mt-4 justify-content-center mb-0 gap-2'>
                         <li 
-                            className={type === 'CrossBag' ? 'tab col-1 tab-current' : 'tab col-1'}
-                            onClick={e => setType('CrossBag')}
+                            className={type === 'Cross bag' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Cross bag')}
                         >
                             <span>Cross Bag</span>
                         </li>
                         <li 
-                            className={type === 'BucketBag' ? 'tab col-1 tab-current' : 'tab col-1'}
-                            onClick={e => setType('BucketBag')}
+                            className={type === 'Bucket bag' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Bucket bag')}
                         >
                             <span>Bucket Bag</span>
                         </li>
                         <li 
-                            className={type === 'HipStack' ? 'tab col-1 tab-current' : 'tab col-1'}
-                            onClick={e => setType('HipStack')}
+                            className={type === 'Hip sack' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Hip sack')}
                         >
-                            <span>Hip Stack</span>
+                            <span>Hip Sack</span>
                         </li>
                         <li 
-                            className={type === 'HoboBag' ? 'tab col-1 tab-current' : 'tab col-1'}
-                            onClick={e => setType('HoboBag')}
+                            className={type === 'Hobo bag' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Hobo bag')}
                         >
                             <span>Hobo Bag</span>
                         </li>
                         <li 
-                            className={type === 'ToteBag' ? 'tab col-1 tab-current' : 'tab col-1'}
-                            onClick={e => setType('ToteBag')}
+                            className={type === 'Tote bag' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Tote bag')}
                         >
                             <span>Tote Bag</span>
                         </li>
                         <li 
-                            className={type === 'PhonePouch' ? 'tab col-1 tab-current' : 'tab col-1'}
-                            onClick={e => setType('PhonePouch')}
+                            className={type === 'Phone pouch' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Phone pouch')}
                         >
                             <span>Phone Pouch</span>
                         </li>
                     </ul>
                 </div>
                 <div className='menu-box'>
-                    {
-                        type === 'CrossBag' ? <CrossBag /> : ''
-                    }
-                    {
-                        type === 'BucketBag' ? <Bucketbag /> : ''
-                    }
-                    {
-                        type === 'HipStack' ? <HipStack /> : ''
-                    }
-                    {
-                        type === 'HoboBag' ? <HoboBag /> : ''
-                    }
-                    {
-                        type === 'ToteBag' ? <ToteBag /> : ''
-                    }
-                    {
-                        type === 'PhonePouch' ? <PhonePouch /> : ''
-                    }
+                    <MLBBagChild productTypeName={type} />
                 </div>  
             </div>
         </div>

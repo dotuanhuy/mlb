@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
-import { Buffer } from 'buffer';
 import CommonUtils from '../../../utils/CommonUtils';
 import { Form, Modal } from 'react-bootstrap';
-import { faFloppyDisk, faImage, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faImage, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { MAX_LENGTH_IMAGE } from '../../../utils';
@@ -156,8 +155,7 @@ function ProductManageImage() {
                 variant="primary" 
                 onClick={handleShow}
             >
-                <FontAwesomeIcon className='pe-1' icon={faImage} />
-                Change image
+                <FontAwesomeIcon icon={faImage} /> Chỉnh sửa ảnh
             </button>
 
             <Modal
@@ -169,12 +167,12 @@ function ProductManageImage() {
                 size="xl"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Manage images</Modal.Title>
+                    <Modal.Title>Quản lý ảnh sản phẩm</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className=''>
                         <div className='col-3 mt-1 mb-2'>
-                            <label className='form-label fw-bold' htmlFor='image'>Choose image main:</label>
+                            <label className='form-label fw-bold' htmlFor='image'>Chọn ảnh gốc:</label>
                             <Form onSubmit={(e) => handleSaveImageMain(e)}>
                                 <Form.Control 
                                     type='file'
@@ -202,8 +200,7 @@ function ProductManageImage() {
                                     className='btn btn-root fw-500 mt-2'
                                     type='submmit'
                                 >
-                                    <FontAwesomeIcon className='pe-1' icon={faFloppyDisk} />
-                                    Save
+                                    <FontAwesomeIcon icon={faBookmark} /> Lưu
                                 </button>
                             </Form>
                         </div>
@@ -212,7 +209,7 @@ function ProductManageImage() {
                     <hr/>
                     <div className='mt-2'>
                         <div className='col-3'>
-                            <label className='form-label fw-bold' htmlFor='addImageItems'>Choose image items:</label>
+                            <label className='form-label fw-bold' htmlFor='addImageItems'>Chọn ảnh con:</label>
                             <input 
                                 type='file' 
                                 className='form-control' 
@@ -254,14 +251,13 @@ function ProductManageImage() {
                             variant="primary"
                             onClick={handleSaveImage}
                         >
-                            <FontAwesomeIcon className='pe-1' icon={faFloppyDisk} />
-                            Save
+                            <FontAwesomeIcon icon={faBookmark} /> Lưu
                         </button>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <button className='btn btn-root-2 fw-500' variant="secondary" onClick={handleClose}>
-                        Close
+                        Đóng
                     </button>
                 </Modal.Footer>
             </Modal>

@@ -56,13 +56,13 @@ function System() {
                 /> 
                 <Route 
                     path={path.MANAGE_PRODUCT_TYPE}
-                    element={<PrivateRouter  active={Active.PRODUCT_TYPE} Component={ProductTypeManage}/>} 
+                    element={<PrivateRouter active={Active.PRODUCT_TYPE} Component={ProductTypeManage}/>} 
                 />
                 <Route 
                     path={path.MANAGE_PRODUCT_TYPE_UPDATE}
                     element={<PrivateRouter  active={Active.PRODUCT_TYPE} Component={ProductManageUpdate}/>} 
                 />
-
+                
                 <Route  
                     path={path.MANAGE_PRODUCTS_SHOES}
                     element={<PrivateRouter active={Active.SHOSE} categoryType={categorieType.SHOES_SANDAL} Component={HomeProduct}/>} 

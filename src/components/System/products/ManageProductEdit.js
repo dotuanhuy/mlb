@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { BuildOptionSelect, BuildOptionSelectDiscount, ListColorsProduct, TitleProduct } from '../../../utils';
+import { BuildOptionSelect, BuildOptionSelectDiscount, ListColorsProduct } from '../../../utils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import _ from 'lodash'
 import Loading from '../../common/Loading/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -67,6 +67,7 @@ function ManageShoesEdit({
 
     // ComponentDidMount
     useEffect(() => {
+        document.title = `Chỉnh sửa ${actives.active}`
         refreshIsloadingStateProductRedux()
         dispatch(actions.getAllCategoriesDetailByType())
         dispatch(actions.getAllDiscounts())
@@ -305,7 +306,7 @@ function ManageShoesEdit({
                 </div>
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>
-                        <h2>Edit {TitleProduct[categoryType]}</h2>
+                        <h2>Chỉnh sửa {actives?.active}</h2>
                     </div>
                     <hr/>
                     {
@@ -316,7 +317,7 @@ function ManageShoesEdit({
                             <form className='px-2'>
                                 <div className='form row'>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputName" className="form-label">Name</label>
+                                        <label htmlFor="exampleInputName" className="form-label">Tên<span className='text-danger'>*</span></label>
                                         <input 
                                             type="text" 
                                             className="form-control" 
@@ -329,7 +330,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label className="form-label">Category name</label>
+                                        <label className="form-label">Loại sản phẩm<span className='text-danger'>*</span></label>
                                         <Select
                                             value={selectCategory}
                                             onChange={handleOnchangeCategories}
@@ -337,7 +338,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label className="form-label">Product type</label>
+                                        <label className="form-label">Kiểu sản phẩm<span className='text-danger'>*</span></label>
                                         <Select
                                             value={selectProductType}
                                             onChange={handleOnchangeProductType}
@@ -345,7 +346,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputCode" className="form-label">Code</label>
+                                        <label htmlFor="exampleInputCode" className="form-label">Mã<span className='text-danger'>*</span></label>
                                         <input 
                                             type="text" 
                                             className="form-control" 
@@ -358,7 +359,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputFirstPrice" className="form-label">Price</label>
+                                        <label htmlFor="exampleInputFirstPrice" className="form-label">Giá<span className='text-danger'>*</span></label>
                                         <input 
                                             type="text" 
                                             className="form-control" 
@@ -371,7 +372,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputLastName" className="form-label">Discount</label>
+                                        <label htmlFor="exampleInputLastName" className="form-label">Mã giảm giá<span className='text-danger'>*</span></label>
                                         <Select
                                             value={selectDiscount}
                                             onChange={handleOnchangeDiscount}
@@ -379,7 +380,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputImage" className="form-label">Image root</label>
+                                        <label htmlFor="exampleInputImage" className="form-label">Ảnh gốc<span className='text-danger'>*</span></label>
                                         <input 
                                             type="file" 
                                             className="form-control" 
@@ -400,7 +401,7 @@ function ManageShoesEdit({
                                         }
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputLastName" className="form-label">Brand</label>
+                                        <label htmlFor="exampleInputLastName" className="form-label">Thương hiệu<span className='text-danger'>*</span></label>
                                         <Select
                                             value={selectBrand}
                                             onChange={handhandleOnchangeBrands}
@@ -408,7 +409,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputSite" className="form-label">Production site</label>
+                                        <label htmlFor="exampleInputSite" className="form-label">Nơi sản xuất<span className='text-danger'>*</span></label>
                                         <input 
                                             type="text" 
                                             className="form-control" 
@@ -421,7 +422,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputReleaseDate" className="form-label">Release date</label>
+                                        <label htmlFor="exampleInputReleaseDate" className="form-label">Ngày phát hành<span className='text-danger'>*</span></label>
                                         <DatePicker 
                                             // value={selectReleaseDate}
                                             className='form-control'
@@ -433,7 +434,7 @@ function ManageShoesEdit({
                                     {
                                         sizes && sizes.length > 0 ? 
                                         <div className="mb-3 col-4">
-                                            <label htmlFor="exampleInputSize" className="form-label">Size</label>
+                                            <label htmlFor="exampleInputSize" className="form-label">Kích thước<span className='text-danger'>*</span></label>
                                             <div className='row'>
                                                 {   
                                                     sizes.map((item, index) => {
@@ -472,7 +473,7 @@ function ManageShoesEdit({
                                             className="form-label"
                                             // style={{ color: '#fff'}}
                                         >   
-                                            Color
+                                            Màu sắc<span className='text-danger'>*</span>
                                         </label>
                                         <div className='row'>
                                             {
@@ -512,7 +513,7 @@ function ManageShoesEdit({
                                         </div>
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputLastName" className="form-label">Logos</label>
+                                        <label htmlFor="exampleInputLastName" className="form-label">Logos<span className='text-danger'>*</span></label>
                                         <Select
                                             value={selectLogo}
                                             onChange={handhandleOnchangeLogos}
@@ -520,7 +521,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputSite" className="form-label">Quantity</label>
+                                        <label htmlFor="exampleInputSite" className="form-label">Số lượng<span className='text-danger'>*</span></label>
                                         <input 
                                             type="text" 
                                             className="form-control" 
@@ -533,7 +534,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlhtmlFor="exampleInputMaterial" className="form-label">Material</label>
+                                        <label htmlhtmlFor="exampleInputMaterial" className="form-label">Chất liệu<span className='text-danger'>*</span></label>
                                         <input 
                                             type="text" 
                                             className="form-control" 
@@ -546,7 +547,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputGender" className="form-label">Gender</label>
+                                        <label htmlFor="exampleInputGender" className="form-label">Giới tính<span className='text-danger'>*</span></label>
                                         <Select
                                             value={selectGender}
                                             onChange={handhandleOnchangeGender}
@@ -554,7 +555,7 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputStatus" className="form-label">Status</label>
+                                    <label htmlFor="exampleInputStatus" className="form-label">Trạng thái<span className='text-danger'>*</span></label>
                                         <Select
                                             value={selectStatus}
                                             onChange={handhandleOnchangeStatus}
@@ -567,8 +568,7 @@ function ManageShoesEdit({
                                     className="btn btn-root fw-500"
                                     onClick={(e) => handleUpdateProduct(e)}
                                 >
-                                    <FontAwesomeIcon className='pe-1' icon={faFloppyDisk} />
-                                    Save
+                                    <FontAwesomeIcon icon={faBookmark} /> Lưu
                                 </button>
                             </form>
                         </div>

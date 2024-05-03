@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Navbar from '../common/navbar/Navbar';
 import TableProducts from './TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
 import Select from 'react-select';
 import * as actions from '../../../store/actions'
 import { useSearchParams } from 'react-router-dom';
-import { BuildOptionSelectDiscount, TitleProduct, ListColorsProduct } from '../../../utils';
+import { BuildOptionSelectDiscount, ListColorsProduct } from '../../../utils';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import { BuildOptionSelect } from '../../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { generateRandomString } from '../../../utils/funcRandom';
 
 const initState = {
@@ -29,26 +29,15 @@ const initStateImage = {
     previewImgURL: ''
 }
 
-
-function ManageShoesCreate({
-    categoryType,
-    actives,
-    categoriesDetail, 
-    discounts, 
-    brands, 
-    colors, 
-    logos, 
-    sizes,
-    productTypes,
-    getAllCategoriesDetailByTypeRedux,
-    getAllDiscountsRedux,
-    getAllBrandsRedux,
-    getAllSizesByTypeRedux,
-    getAllColorsRedux,
-    getAllLogosRedux,
-    getProductTypeByCategoryIdRedux,
-    createNewProductRedux
-}) {
+function ManageShoesCreate({ categoryType, actives }) {
+    const dispatch = useDispatch()
+    const { categoriesDetail } = useSelector(state => state.category)
+    const { discounts } = useSelector(state => state.discount)
+    const { brands } = useSelector(state => state.brand) 
+    const { colors } = useSelector(state => state.color) 
+    const { logos } = useSelector(state => state.logo) 
+    const { sizes } = useSelector(state => state.size) 
+    const { productTypes } = useSelector(state => state.productType) 
     const [selectCategory, setSelectCategory] = useState('')
     const [selectObject, setSelectObject] = useState(initState)
     const [selectDiscount, setSelectDiscount] = useState('')
@@ -69,13 +58,14 @@ function ManageShoesCreate({
 
     // ComponentDidMount
     useEffect(() => {
-        getAllCategoriesDetailByTypeRedux(categoryType)
-        getAllDiscountsRedux()
-        getAllBrandsRedux()
-        getAllSizesByTypeRedux(categoryType)
-        getAllColorsRedux()
-        getAllLogosRedux()
-        getProductTypeByCategoryIdRedux(categoryType)
+        document.title = `Thêm mới ${actives.active}`
+        dispatch(actions.getAllCategoriesDetailByType(categoryType))
+        dispatch(actions.getAllDiscounts())
+        dispatch(actions.getAllBrands())
+        dispatch(actions.getAllSizesByType(categoryType))
+        dispatch(actions.getAllColors())
+        dispatch(actions.getAllLogos())
+        dispatch(actions.getProductTypeByCategoryId(categoryType))
     }, [])
 
     useEffect(() => {
@@ -171,7 +161,7 @@ function ManageShoesCreate({
             const formData = new FormData()
             formData.append('image', selectImage.image)
             formData.append('product', JSON.stringify(product))
-            createNewProductRedux(formData, categoryType, params.get('page') ? params.get('page') : 1)
+            dispatch(actions.createNewProduct(formData, categoryType, params.get('page') ? params.get('page') : 1))
             setSelectObject({
                 ...initState,
                 code: generateRandomString(15)
@@ -191,7 +181,6 @@ function ManageShoesCreate({
         }
     }
     
-
     return (
         <div className='manage-shoes-create'>
             <Navbar />
@@ -201,14 +190,14 @@ function ManageShoesCreate({
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>
-                        <h2>Create new {TitleProduct[categoryType]}</h2>
+                        <h2>Tạo mới {actives.active}</h2>
                     </div>
                     <hr/>
                     <div className='manage-shoes-create-form mx-2 my-4'>
                         <form className='px-2'>
                             <div className='form row'>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputName" className="form-label">Name</label>
+                                    <label htmlFor="exampleInputName" className="form-label">Tên<span className='text-danger'>*</span></label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -221,7 +210,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label className="form-label">Category name</label>
+                                    <label className="form-label">Loại sản phẩm<span className='text-danger'>*</span></label>
                                     <Select
                                         value={selectCategory}
                                         onChange={handleOnchangeCategories}
@@ -229,7 +218,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label className="form-label">Product type</label>
+                                    <label className="form-label">Kiểu sản phẩm<span className='text-danger'>*</span></label>
                                     <Select
                                         value={selectProductType}
                                         onChange={handleOnchangeProductType}
@@ -237,7 +226,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputCode" className="form-label">Code</label>
+                                    <label htmlFor="exampleInputCode" className="form-label">Mã<span className='text-danger'>*</span></label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -251,7 +240,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputFirstPrice" className="form-label">Price</label>
+                                    <label htmlFor="exampleInputFirstPrice" className="form-label">Giá<span className='text-danger'>*</span></label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -264,7 +253,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputLastName" className="form-label">Discount</label>
+                                    <label htmlFor="exampleInputLastName" className="form-label">Mã giảm giá<span className='text-danger'>*</span></label>
                                     <Select
                                         value={selectDiscount}
                                         onChange={handleOnchangeDiscount}
@@ -272,7 +261,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputImage" className="form-label">Image root</label>
+                                    <label htmlFor="exampleInputImage" className="form-label">Ảnh gốc<span className='text-danger'>*</span></label>
                                     <input 
                                         type="file" 
                                         className="form-control" 
@@ -293,7 +282,7 @@ function ManageShoesCreate({
                                     }
                                 </div> 
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputBrand" className="form-label">Brand</label>
+                                    <label htmlFor="exampleInputBrand" className="form-label">Thương hiệu<span className='text-danger'>*</span></label>
                                     <Select
                                         value={selectBrand}
                                         onChange={handhandleOnchangeBrands}
@@ -301,7 +290,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputSite" className="form-label">Production site</label>
+                                    <label htmlFor="exampleInputSite" className="form-label">Nơi sản xuất<span className='text-danger'>*</span></label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -314,7 +303,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputReleaseDate" className="form-label">Release date</label>
+                                    <label htmlFor="exampleInputReleaseDate" className="form-label">Ngày phát hành<span className='text-danger'>*</span></label>
                                     <DatePicker                                   
                                         className='form-control'
                                         dateFormat='MM/dd/yyyy'
@@ -325,7 +314,7 @@ function ManageShoesCreate({
                                 {
                                     sizes && sizes.length > 0 ? 
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputSize" className="form-label">Size</label>
+                                        <label htmlFor="exampleInputSize" className="form-label">Kích thước<span className='text-danger'>*</span></label>
                                         <div className='row'>
                                             {   
                                                 sizes.map((item, index) => {
@@ -364,7 +353,7 @@ function ManageShoesCreate({
                                         className="form-label"
                                         // style={{ color: '#fff'}}
                                     >   
-                                        Color
+                                        Màu sắc<span className='text-danger'>*</span>
                                     </label>
                                     <div className='row'>
                                         {
@@ -404,7 +393,7 @@ function ManageShoesCreate({
                                     </div>
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputLogo" className="form-label">Logo</label>
+                                    <label htmlFor="exampleInputLogo" className="form-label">Logo<span className='text-danger'>*</span></label>
                                     <Select
                                         value={selectLogo}
                                         onChange={handhandleOnchangeLogos}
@@ -412,7 +401,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputSite" className="form-label">Quantity</label>
+                                    <label htmlFor="exampleInputSite" className="form-label">Số lượng<span className='text-danger'>*</span></label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -425,7 +414,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputMaterial" className="form-label">Material</label>
+                                    <label htmlFor="exampleInputMaterial" className="form-label">Chất liệu<span className='text-danger'>*</span></label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -438,7 +427,7 @@ function ManageShoesCreate({
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputGender" className="form-label">Gender</label>
+                                    <label htmlFor="exampleInputGender" className="form-label">Giới tính<span className='text-danger'>*</span></label>
                                     <Select
                                         value={selectGender}
                                         onChange={handhandleOnchangeGender}
@@ -466,7 +455,7 @@ function ManageShoesCreate({
                                 className="btn btn-root fw-500"
                                 onClick={(e) => handleCreateNewProduct(e)}
                             >
-                                Create
+                                <FontAwesomeIcon icon={faPlus} /> Tạo mới
                             </button>
                         </form>
                     </div>
@@ -481,26 +470,11 @@ function ManageShoesCreate({
 
 const mapStateToProps = state => {
     return {
-        categoriesDetail: state.category.categoriesDetail,
-        discounts: state.discount.discounts,
-        brands: state.brand.brands,
-        colors: state.color.colors,
-        logos: state.logo.logos,
-        sizes: state.size.sizes,
-        productTypes: state.productType.productTypes
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCategoriesDetailByTypeRedux: (categoryType) => dispatch(actions.getAllCategoriesDetailByType(categoryType)),
-        getAllDiscountsRedux: () => dispatch(actions.getAllDiscounts()),
-        getAllBrandsRedux: () => dispatch(actions.getAllBrands()),
-        getAllSizesByTypeRedux: (type) => dispatch(actions.getAllSizesByType(type)),
-        getAllColorsRedux: () => dispatch(actions.getAllColors()),
-        getAllLogosRedux: () => dispatch(actions.getAllLogos()),
-        getProductTypeByCategoryIdRedux: (categoryId) => dispatch(actions.getProductTypeByCategoryId(categoryId)),
-        createNewProductRedux: (formData, type, page) => dispatch(actions.createNewProduct(formData, type, page))
     }
 }
 

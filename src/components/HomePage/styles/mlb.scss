@@ -1,0 +1,79 @@
+.title-option-homepage {
+
+    a {
+        font-size: 40px;
+        letter-spacing: 10px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background: #420500;
+            border-radius: 2px;
+            -webkit-transition: all 150ms ease-in-out;
+            -moz-transition: all 150ms ease-in-out;
+            -ms-transition: all 150ms ease-in-out;
+            -o-transition: all 150ms ease-in-out;
+            transition: all 150ms ease-in-out;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background: #420500;
+            border-radius: 2px;
+            -webkit-transition: all 150ms ease-in-out;
+            -moz-transition: all 150ms ease-in-out;
+            -ms-transition: all 150ms ease-in-out;
+            -o-transition: all 150ms ease-in-out;
+            transition: all 150ms ease-in-out;
+        }
+
+        &:hover {
+            color: #942319;
+        }
+    }
+}
+
+.mlb-tabs {
+    .tab {
+        &:hover {
+            color: #fff;
+            background: #420500;
+        }
+    }
+    
+    .tab-current {
+        color: #fff;
+        background: #420500;
+    }
+}
+
+@keyframes showBtnBuy {
+    0% {
+        opacity: 0;
+        transform: translateX(14px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes showimage {
+    0% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}

@@ -4,7 +4,7 @@ import Select from 'react-select';
 import * as actions from '../../../store/actions'
 import { useSearchParams } from 'react-router-dom';
 import { BuildOptionSelect } from '../../../utils';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -93,8 +93,7 @@ function ProductManageCreate() {
                 className='btn btn-root fw-500 me-2'
                 onClick={handleShow}
             >
-                <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
-                Add new
+                <FontAwesomeIcon icon={faPlus} /> Thêm mới
             </button>
 
             <Modal
@@ -106,12 +105,12 @@ function ProductManageCreate() {
                 size="lg"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Create new produt type</Modal.Title>
+                    <Modal.Title>Tạo mới kiểu sản phẩm</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={e => handleOnSubmit(e)}>
                         <div class="mb-3">
-                            <label for="exampleInputName" class="form-label fw-500 text-muted">Name product type</label>
+                            <label for="exampleInputName" class="form-label fw-500 text-muted">Tên<span className='text-danger'>*</span></label>
                             <input 
                                 type="text" 
                                 class="form-control" 
@@ -122,7 +121,7 @@ function ProductManageCreate() {
                             />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="exampleInputBrand" className="form-label">Category name</label>
+                            <label htmlFor="exampleInputBrand" className="form-label">Loại sản phẩm<span className='text-danger'>*</span></label>
                             <Select
                                 value={dataSelect}
                                 onChange={handhandleOnchangeType}
@@ -130,7 +129,7 @@ function ProductManageCreate() {
                             />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="exampleInputImage" className="form-label">Image root</label>
+                            <label htmlFor="exampleInputImage" className="form-label">Ảnh gốc<span className='text-danger'>*</span></label>
                             <input 
                                 type="file" 
                                 className="form-control" 
@@ -154,14 +153,14 @@ function ProductManageCreate() {
                 </Modal.Body>
                 <Modal.Footer>
                     <button className='btn btn-root fw-500' variant="secondary" onClick={handleClose}>
-                        Close
+                        Hủy
                     </button>
                     <button
                         className='btn btn-root-2 fw-500'
                         variant="primary"
                         onClick={handleAdd}
                     >
-                        Add
+                        Tạo
                     </button>
                 </Modal.Footer>
             </Modal>

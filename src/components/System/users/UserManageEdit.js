@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
@@ -9,18 +9,12 @@ import Loading from '../../common/Loading/Loading';
 import Navbar from '../common/navbar/Navbar';
 import Sidebar from '../common/sidebars/Sidebar';
 import { BuildOptionSelectSame, BuildOptionSelect } from '../../../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 
-function UserManageEdit({
-    users, 
-    provinces, 
-    roles, 
-    isLoading, 
-    refreshIsloadingStateRedux, 
-    getUserByIdRedux, 
-    getAllAddressRedux, 
-    getAllRolesRedux,
-    updateUserRedux
-}) {
+function UserManageEdit() {
+    const dispatch = useDispatch()
+    const { users, provinces, roles, isLoading } = useSelector(state => state.user)
     const [dataInput, setDataInput] = useState({})
     const [selectProvine, setSelectProvince] = useState({})
     const [selectGender, setSelectGender] = useState({})
@@ -33,10 +27,11 @@ function UserManageEdit({
 
     // ComponentDidMount
     useEffect(() => {
-        refreshIsloadingStateRedux()
-        getAllAddressRedux()
-        getAllRolesRedux()
-        getUserByIdRedux(params.get('id'))
+        document.title = 'Chỉnh sửa người dùng'
+        dispatch(actions.refreshIsloadingState())
+        dispatch(actions.getAllAddress())
+        dispatch(actions.getAllRoles())
+        dispatch(actions.getUserById(params.get('id')))
     }, [])
 
     // ComponentDidUpdate
@@ -100,7 +95,7 @@ function UserManageEdit({
             avatar: ''
         }
         if (params.get('page')) {
-            updateUserRedux(newUser, params.get('id'), params.get('page'))
+            dispatch(actions.updateUser(newUser, params.get('id'), params.get('page')))
             navigate(
                 {
                     pathname: path.MANAGE_USER, 
@@ -109,7 +104,7 @@ function UserManageEdit({
             )
         }
         else {
-            updateUserRedux(newUser, params.get('id'))
+            dispatch(actions.updateUser(newUser, params.get('id')))
             navigate({
                 pathname: path.MANAGE_USER_DETAIL,
                 search: createSearchParams({ id: users?.id }).toString()
@@ -127,7 +122,7 @@ function UserManageEdit({
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between'>
-                        <h2>Update user</h2>
+                        <h2>Chỉnh sửa người dùng</h2>
                     </div>
                     <hr/>
                     {
@@ -140,7 +135,7 @@ function UserManageEdit({
                                     <form>
                                         <div className='form row'>
                                             <div className="mb-3 col-4">
-                                                <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
+                                                <label htmlFor="exampleInputEmail1" className="form-label">Email<span className='text-danger'>*</span></label>
                                                 <input 
                                                     type="email" 
                                                     className="form-control" 
@@ -151,7 +146,7 @@ function UserManageEdit({
                                                 />
                                             </div>
                                             <div className="mb-3 col-4">
-                                                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                                                <label htmlFor="exampleInputPassword1" className="form-label">Mật khẩu<span className='text-danger'>*</span></label>
                                                 <input 
                                                     type="password" 
                                                     className="form-control" 
@@ -161,7 +156,7 @@ function UserManageEdit({
                                                 />
                                             </div>
                                             <div className="mb-3 col-4">
-                                                <label htmlFor="exampleInputFirstName" className="form-label">First name</label>
+                                                <label htmlFor="exampleInputFirstName" className="form-label">Họ<span className='text-danger'>*</span></label>
                                                 <input 
                                                     type="text" 
                                                     className="form-control" 
@@ -174,7 +169,7 @@ function UserManageEdit({
                                                 />
                                             </div>
                                             <div className="mb-3 col-4">
-                                                <label htmlFor="exampleInputLastName" className="form-label">Last name</label>
+                                                <label htmlFor="exampleInputLastName" className="form-label">Tên<span className='text-danger'>*</span></label>
                                                 <input 
                                                     type="text" 
                                                     className="form-control" 
@@ -187,7 +182,7 @@ function UserManageEdit({
                                                 />
                                             </div>
                                             <div className="mb-3 col-4">
-                                                <label htmlFor="exampleInputphone" className="form-label">Phone number</label>
+                                                <label htmlFor="exampleInputphone" className="form-label">Số điện thoại<span className='text-danger'>*</span></label>
                                                 <input 
                                                     type="text" 
                                                     className="form-control" 
@@ -200,7 +195,7 @@ function UserManageEdit({
                                                 />
                                             </div>
                                             <div className="mb-3 col-4">
-                                                <label className="form-label">Address</label>
+                                                <label className="form-label">Địa chỉ<span className='text-danger'>*</span></label>
                                                 <Select
                                                     onChange={handleOnchangeAddress}
                                                     value={selectProvine}
@@ -208,7 +203,7 @@ function UserManageEdit({
                                                 />
                                             </div>
                                             <div className="mb-3 col-4">
-                                                <label className="form-label">Gender</label>
+                                                <label className="form-label">Giới tính<span className='text-danger'>*</span></label>
                                                 <Select
                                                     value={selectGender}
                                                     onChange={handleOnchangeGender}
@@ -216,7 +211,7 @@ function UserManageEdit({
                                                 />
                                             </div>
                                             <div className="mb-3 col-4">
-                                                <label className="form-label">Role</label>
+                                                <label className="form-label">Quyền<span className='text-danger'>*</span></label>
                                                 <Select
                                                     value={selectRole}
                                                     onChange={handleOnchangeRole}
@@ -229,7 +224,7 @@ function UserManageEdit({
                                             className="btn btn-root text-white fw-500"
                                             onClick={(e) => handleUpdateUser(e)}
                                         >
-                                            Save
+                                            <FontAwesomeIcon icon={faBookmark} /> Lưu
                                         </button>
                                     </form>
                                 </div>
@@ -244,21 +239,11 @@ function UserManageEdit({
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
-        users: state.user.users,
-        provinces: state.user.provinces,
-        roles: state.user.roles,
-        isLoading: state.user.isLoading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllAddressRedux: () => dispatch(actions.getAllAddress()),
-        getAllRolesRedux: (accessToken) => dispatch(actions.getAllRoles(accessToken)),
-        updateUserRedux: (data, page) =>  dispatch(actions.updateUser(data, page)),
-        getUserByIdRedux: (id) => dispatch(actions.getUserById(id)),
-        refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState())
     }
 }
 

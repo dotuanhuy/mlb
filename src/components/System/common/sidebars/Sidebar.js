@@ -23,19 +23,8 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             to={path.MANAGE}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faHouse} />
-                            Dashboard
+                            Trung tâm
                         </Link>
-                    </li>
-                    <li 
-                        class="nav-item"
-                    >   
-                        <a 
-                            className={active === 'report' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
-                            href="#"
-                        >
-                            <FontAwesomeIcon className='pe-2' icon={faChartSimple} />
-                            Report
-                        </a>
                     </li>
                     <li 
                         class="nav-item"
@@ -57,7 +46,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             style={{ cursor: 'pointer' }}                           
                         >
                             <FontAwesomeIcon className='pe-2' icon={faLayerGroup} />
-                            Categoies
+                            Loại sản phẩm
                             <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
                         </div>
                         <ul className={state === true || active === 'category' ? 'd-block' : 'd-none'}>
@@ -66,7 +55,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                                     className={activeChild === Active.CATEGORY ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
                                     to={path.MANAGE_CATEGORY_PRODUCT}
                                 >
-                                    Category product
+                                    Thể loại
                                 </Link>
                             </li>
                             <li className='border-bottom py-2'>
@@ -74,55 +63,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                                     className={activeChild === Active.PRODUCT_TYPE ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
                                     to={path.MANAGE_PRODUCT_TYPE}
                                 >
-                                    Product type
-                                </Link>
-                            </li>
-                        </ul>
-                    </li>
-                    <li 
-                        class="nav-item"
-                    >   
-                        <div
-                            className={isProduct === true || active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
-                            style={{ cursor: 'pointer' }}         
-                            onClick={() => setIsProduct(!isProduct)}
-                        >
-                            <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
-                            Products
-                            <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
-                        </div>
-                        <ul className={isProduct === true || active === 'product' ? 'dbloc' : 'd-none'}>
-                            <li className='border-bottom pb-2'>
-                                <Link 
-                                    className={activeChild === Active.SHOSE ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
-                                    to={path.MANAGE_PRODUCTS_SHOES}
-                                    // state={{ categoryType: categorieType.SHOES_SANDAL }}
-                                >
-                                    Shoes
-                                </Link>
-                            </li>
-                            <li className='border-bottom pb-2'>
-                                <Link 
-                                    className={activeChild === Active.BAG_BALO ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
-                                    to={path.MANAGE_PRODUCTS_BAG_BALO}
-                                >
-                                    Backpack-Bag
-                                </Link>
-                            </li>
-                            <li className='border-bottom pb-2'>
-                                <Link 
-                                    className={activeChild === Active.HAT ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
-                                    to={path.MANAGE_PRODUCTS_HAT}
-                                >
-                                    Hat
-                                </Link>
-                            </li>
-                            <li className='border-bottom pb-2'>
-                                <Link 
-                                    className={activeChild === Active.CLOTHES ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
-                                    to={path.MANAGE_PRODUCTS_CLOTHES}
-                                >
-                                    Clothes
+                                    Các kiểu sản phẩm
                                 </Link>
                             </li>
                         </ul>
@@ -135,8 +76,56 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             to={path.MANAGE_DISCOUNT}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faTag} />
-                            Discount
+                            Giảm giá
                         </Link>
+                    </li>
+                    <li 
+                        class="nav-item"
+                    >   
+                        <div
+                            className={isProduct === true || active === 'product' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
+                            style={{ cursor: 'pointer' }}         
+                            onClick={() => setIsProduct(!isProduct)}
+                        >
+                            <FontAwesomeIcon className='pe-2' icon={faCartShopping} />
+                            Sản phẩm
+                            <FontAwesomeIcon className='ps-1' icon={faCaretDown} />
+                        </div>
+                        <ul className={isProduct === true || active === 'product' ? 'dbloc' : 'd-none'}>
+                            <li className='border-bottom pb-2'>
+                                <Link 
+                                    className={activeChild === Active.SHOSE ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
+                                    to={path.MANAGE_PRODUCTS_SHOES}
+                                    // state={{ categoryType: categorieType.SHOES_SANDAL }}
+                                >
+                                    Giày
+                                </Link>
+                            </li>
+                            <li className='border-bottom pb-2'>
+                                <Link 
+                                    className={activeChild === Active.BAG_BALO ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
+                                    to={path.MANAGE_PRODUCTS_BAG_BALO}
+                                >
+                                    Balo-túi
+                                </Link>
+                            </li>
+                            <li className='border-bottom pb-2'>
+                                <Link 
+                                    className={activeChild === Active.HAT ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
+                                    to={path.MANAGE_PRODUCTS_HAT}
+                                >
+                                    Mũ
+                                </Link>
+                            </li>
+                            <li className='border-bottom pb-2'>
+                                <Link 
+                                    className={activeChild === Active.CLOTHES ? 'text-muted opacity-7 fs-14 fw-500 active-text' : 'text-muted opacity-7 fs-14 fw-500'}
+                                    to={path.MANAGE_PRODUCTS_CLOTHES}
+                                >
+                                    Quần-áo
+                                </Link>
+                            </li>
+                        </ul>
                     </li>
                     <li 
                         class="nav-item"
@@ -146,7 +135,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             to={path.MANAGE_ORDER}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faBasketShopping} />
-                            Order
+                            Đơn hàng
                         </Link>
                     </li>
                     <li 
@@ -157,7 +146,18 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             href="#"
                         >
                             <FontAwesomeIcon className='pe-2' icon={faUsers} />
-                            Customers
+                            Khách hàng
+                        </a>
+                    </li>
+                    <li 
+                        class="nav-item"
+                    >   
+                        <a 
+                            className={active === 'report' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
+                            href="#"
+                        >
+                            <FontAwesomeIcon className='pe-2' icon={faChartSimple} />
+                            Thống kê
                         </a>
                     </li>
                     <li 
@@ -168,7 +168,7 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                             to={path.MANAGE_USER}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faUser} />
-                            User
+                            Người dùng
                         </Link>
                     </li>
                     {/* <li class="nav-item">

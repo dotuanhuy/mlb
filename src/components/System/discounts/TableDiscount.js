@@ -51,21 +51,20 @@ function TableDicount() {
                         <table className="customers table-light table">
                             <thead>
                                 <tr>
-                                    <th scope='col'>Id</th>
-                                    <th>Code</th>
-                                    <th>Value</th>
-                                    <th>Description</th>
-                                    <th>Create at</th>
-                                    <th>Update at</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th scope='col'>ID</th>
+                                    <th>Mã</th>
+                                    <th>Giá trị</th>
+                                    <th>Mô tả</th>
+                                    <th>Thời gian tạo</th>
+                                    <th>Thời gian cập nhật</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
                                     discounts && discounts.length > 0 &&
                                     discounts.map((item, index) => {
-                                        const page = params?.get('page') ? params?.get('page') : 1
                                         return (
                                             <tr key={index}>
                                                 <td scope='row'>{item.id}</td>
@@ -91,18 +90,18 @@ function TableDicount() {
                                                     </button>
                                                     <Modal show={show?.id === item.id || false} onHide={handleClose}>
                                                         <Modal.Header closeButton>
-                                                            <Modal.Title>Delete discount</Modal.Title>
+                                                            <Modal.Title>Xóa mã giảm giá</Modal.Title>
                                                         </Modal.Header>
-                                                        <Modal.Body>Are you sure delete discount code "{item.code}"</Modal.Body>
+                                                        <Modal.Body>Bạn có chắc xóa mã giảm giá có code "{item.code}"</Modal.Body>
                                                         <Modal.Footer>
                                                             <button className='btn btn-secondary' onClick={handleClose}>
-                                                                Close
+                                                                Hủy
                                                             </button>
                                                             <button
                                                                 className='btn btn-root fw-500'
                                                                 onClick={() => handleDeleteDiscount(item.id)}
                                                             >
-                                                                Yes
+                                                                Xóa
                                                             </button>
                                                         </Modal.Footer>
                                                     </Modal>

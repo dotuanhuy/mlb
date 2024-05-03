@@ -1,13 +1,13 @@
 import React, { memo } from "react";
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { formatVND } from "../../../utils";
-import {Buffer} from 'buffer';
 import Toast from "../Actions/Toast";
 import './ListProducts.scss';
 import { Link } from "react-router-dom";
 import { path } from "../../../utils";
 
-function ListProducts({ products, images, col='col-4', productFavourites}) {
+function ListProducts({ bg='cover', products, col='col-4'}) {
+    const productFavourites = useSelector(state => state.fouriteProduct.product)
 
     return (
         <>
@@ -17,7 +17,6 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
                     let size = item?.dataSizeDetail?.at(0)?.name
                     let price = ''
                     let newPrice = ''
-                    // let imageHover = images?.find(image => image?.productId === item?.id)
                     if (item.price) {
                         price = formatVND(item.price)
                     }
@@ -29,7 +28,7 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
                         isFavourite = productFavourites.some(element => element.productId === item.id)
                     }
                     return (
-                        <div className={`list-products ${col}`} key={index}>
+                        <div className={`list-products p-0 ${col}`} key={index}>
                             {
                                 +item?.dataDiscounts?.value !== 0 ?
                                 <div className='discount'>
@@ -57,7 +56,7 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
                                             height: '340px',
                                             backgroundImage: `url(${item?.image})`,
                                             backgroundPosition: '0% 0%',
-                                            backgroundSize: 'contain',
+                                            backgroundSize: bg,
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                     ></div>
@@ -77,7 +76,7 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
                                             height: '340px',
                                             backgroundImage: `url(${item?.dataImageProducts?.at(0)?.image})`,
                                             backgroundPosition: '0% 0%',
-                                            backgroundSize: 'contain',
+                                            backgroundSize: bg,
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                     ></div>
@@ -111,9 +110,6 @@ function ListProducts({ products, images, col='col-4', productFavourites}) {
 
 const mapStateToProps = state => {
     return {
-        // productFavourites: state.product.productFavourtie,
-        productFavourites: state.fouriteProduct.product,
-        images: state.image.images
     }
 }
 

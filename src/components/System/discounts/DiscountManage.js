@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../common/navbar/Navbar';
 import { Link } from 'react-router-dom';
 import { path } from '../../../utils';
 import Sidebar from '../common/sidebars/Sidebar';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TableDiscount from './TableDiscount';
 
 function DiscountManage() {
+
+    useEffect(() => {
+        document.title = 'Quản lý mã giảm giá'
+    }, [])
 
     return (    
         <>
@@ -21,8 +25,7 @@ function DiscountManage() {
                     <div className='d-flex justify-content-between align-items-center'>
                         <h2>Discount</h2>
                         <Link className='text-white fw-500 btn btn-root text-center' to={path.MANAGE_DISCOUNT_CREATE}>
-                            <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
-                            Add new
+                            <FontAwesomeIcon icon={faPlus} /> Thêm mới
                         </Link>
                     </div>
                     <hr/>

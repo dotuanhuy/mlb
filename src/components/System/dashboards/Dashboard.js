@@ -5,20 +5,15 @@ import Loading from '../../common/Loading/Loading'
 import HorizontalBarChart from '../common/charts/HorizontalBarChart';
 import { useDispatch, useSelector } from 'react-redux';
 
-function Dashboard({
-    countProduct,
-    countUser,
-    getCountProductsRedux,
-    getCountUsersRedux
-}) {
-    const accessToken = window.localStorage.getItem('accessToken')
+function Dashboard({ countProduct, countUser }) {
     const dispatch = useDispatch()
-    const {categoriesDetail} = useSelector(state => state.category)
+    const { categoriesDetail } = useSelector(state => state.category)
     const {quantityArr} = useSelector(state => state.product)
 
     useEffect(() => {
-        getCountProductsRedux()
-        getCountUsersRedux()
+        document.title = 'Trung tâm'
+        dispatch(actions.getCountProducts())
+        dispatch(actions.getCountUsers())
 
         dispatch(actions.getAllCategoriesDetail())
         dispatch(actions.getQuantityOfEechProductByCategory())
@@ -27,7 +22,7 @@ function Dashboard({
     return (
         <>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
+                <h1 class="h2">Trung tâm</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group me-2">
                         <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -43,28 +38,28 @@ function Dashboard({
                 <div
                     className='col-3 fw-500 fs-5 text-white bg-root rounded text-center py-5 me-4'
                 >
-                    Total products begin sold: {countProduct}
+                    Tổng số sản phẩm: {countProduct}
                 </div>
                 <div
                     className='col-3 fw-500 fs-5 text-white bg-root rounded text-center py-5'
                 >
-                    Total user: {countUser}
+                    Tổng số người dùng: {countUser}
                 </div>
             </div>
 
             <div className='mb-4'>
                 <HorizontalBarChart
-                    titleText='Horizontal chart statistics the number of products of the type'
+                    titleText='Biểu đồ ngang thống kê số lượng các sản phẩm theo loại sản phẩm'
                     labels={categoriesDetail}
-                    label='Quantity'
+                    label='Số lượng'
                     data={quantityArr}
                 />
             </div>
             <div>
                 <span className='text-muted fw-500'>
-                    Total products: {
+                    Tổng số sản phẩm: {
                         quantityArr.reduce((acc, cur) => acc + +cur.quantity, 0)
-                    } products
+                    } sản phẩm
 
                 </span>
             </div>
@@ -82,8 +77,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getCountProductsRedux: () => dispatch(actions.getCountProducts()),
-        getCountUsersRedux: () => dispatch(actions.getCountUsers())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

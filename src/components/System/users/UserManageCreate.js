@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import './UserManage.scss'
 import * as actions from '../../../store/actions'
@@ -10,6 +10,8 @@ import { validate, validateSelect } from '../../../validate/valiedate';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
 import { BuildOptionSelectSame, BuildOptionSelect } from '../../../utils';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const initState = {
     email: '',
@@ -19,13 +21,9 @@ const initState = {
     phone: ''
 }
 
-function UserManageCreate({
-    provinces, 
-    roles, 
-    getAllAddressRedux, 
-    getAllRolesRedux, 
-    createNewUserRedux
-}) {
+function UserManageCreate() {
+    const dispatch = useDispatch()
+    const { provinces, roles } = useSelector(state => state.user)
     const [dataInput, setDataInput] = useState(initState)
     const [selectProvine, setSelectProvince] = useState([])
     const [selectGender, setSelectGender] = useState([])
@@ -39,8 +37,9 @@ function UserManageCreate({
 
     // ComponentDidMount
     useEffect(() => {
-        getAllAddressRedux()
-        getAllRolesRedux()
+        document.title = 'Thêm mới người dùng'
+        dispatch(actions.getAllAddress())
+        dispatch(actions.getAllRoles())
     }, [])
     
     
@@ -122,7 +121,7 @@ function UserManageCreate({
         }
         
         if (Object.keys(error).length === 0 && errorProvine === '' && errorGender === '' && errorRole === '') {
-            createNewUserRedux(user, params.get('page') ? params.get('page') : 1)
+            dispatch(actions.createNewUser(user, params.get('page') ? params.get('page') : 1))
             setDataInput(initState)
             setSelectProvince([])
             setSelectGender([])
@@ -151,7 +150,7 @@ function UserManageCreate({
                                 <form>
                                     <div className='form row'>
                                         <div className="mb-3 col-4">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">Email<span className='text-danger'>*</span></label>
                                             <input 
                                                 type="email" 
                                                 className="form-control" 
@@ -169,7 +168,7 @@ function UserManageCreate({
                                             }
                                         </div>
                                         <div className="mb-3 col-4">
-                                            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                                            <label htmlFor="exampleInputPassword1" className="form-label">Mật khẩu<span className='text-danger'>*</span></label>
                                             <input 
                                                 type="password" 
                                                 className="form-control" 
@@ -186,7 +185,7 @@ function UserManageCreate({
                                             }
                                         </div>
                                         <div className="mb-3 col-4">
-                                            <label htmlFor="exampleInputFirstName" className="form-label">First name</label>
+                                            <label htmlFor="exampleInputFirstName" className="form-label">Họ<span className='text-danger'>*</span></label>
                                             <input 
                                                 type="text" 
                                                 className="form-control" 
@@ -203,7 +202,7 @@ function UserManageCreate({
                                             }
                                         </div>
                                         <div className="mb-3 col-4">
-                                            <label htmlFor="exampleInputLastName" className="form-label">Last name</label>
+                                            <label htmlFor="exampleInputLastName" className="form-label">Tên<span className='text-danger'>*</span></label>
                                             <input 
                                                 type="text" 
                                                 className="form-control" 
@@ -220,7 +219,7 @@ function UserManageCreate({
                                             }
                                         </div>
                                         <div className="mb-3 col-4">
-                                            <label htmlFor="exampleInputphone" className="form-label">Phone number</label>
+                                            <label htmlFor="exampleInputphone" className="form-label">Số điện thoại<span className='text-danger'>*</span></label>
                                             <input 
                                                 type="text" 
                                                 className="form-control" 
@@ -237,7 +236,7 @@ function UserManageCreate({
                                             }
                                         </div>
                                         <div className="mb-3 col-4">
-                                            <label className="form-label">Address</label>
+                                            <label className="form-label">Địa chỉ<span className='text-danger'>*</span></label>
                                             <Select
                                                 value={selectProvine}
                                                 onChange={handleOnchangeAddress}
@@ -248,7 +247,7 @@ function UserManageCreate({
                                             }
                                         </div>
                                         <div className="mb-3 col-4">
-                                            <label className="form-label">Gender</label>
+                                            <label className="form-label">Giới tính<span className='text-danger'>*</span></label>
                                             <Select
                                                 value={selectGender}
                                                 onChange={handleOnchangeGender}
@@ -259,7 +258,7 @@ function UserManageCreate({
                                             }                          
                                         </div>
                                         <div className="mb-3 col-4">
-                                            <label className="form-label">Role</label>
+                                            <label className="form-label">Quyền<span className='text-danger'>*</span></label>
                                             <Select
                                                 value={selectRole}
                                                 onChange={handleOnchangeRole}
@@ -275,7 +274,7 @@ function UserManageCreate({
                                         className="btn btn-root text-white fw-500"
                                         onClick={(e) => handleCreateNewUser(e)}
                                     >
-                                        Create
+                                        <FontAwesomeIcon icon={faPlus} /> Tạo mới
                                     </button>
                                 </form>
                             </div>
@@ -292,17 +291,12 @@ function UserManageCreate({
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
-        provinces: state.user.provinces,
         roles: state.user.roles
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllAddressRedux: () => dispatch(actions.getAllAddress()),
-        getAllRolesRedux: () => dispatch(actions.getAllRoles()),
-        createNewUserRedux: (data ,page) =>  dispatch(actions.createNewUser(data, page))
     }
 }
 

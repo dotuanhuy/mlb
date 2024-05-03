@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../../store/actions'
 import { useSearchParams } from 'react-router-dom';
-import { formatDateTimeVN } from '../../../utils';
+import { BACKEND_URL, formatDateTimeVN } from '../../../utils';
 import { Form, InputGroup, Modal } from 'react-bootstrap';
 import { validateRequire } from '../../../validate/valiedate';
 import { toast } from 'react-toastify';
 import { useSocket } from '../../../configs/socketContext';
+import io from 'socket.io-client';
 
 const CustomToast = (message) => (
     <span className='fw-light' style={{ fontSize: 14, fontFamily:'serif' }}>
@@ -30,20 +31,29 @@ function ReviewManage() {
     const [show, setShow] = useState({})
     const [stateUpdateReview, setStateUpdateReview] = useState('')
     const [starUpdate, setStarUpdate] = useState('')
-    const socket = useSocket()
+    // const socket = useSocket()
+    const [socket, setSocket] = useState()
     
     const handleClose = () => setShow({});
     const handleShow = (id, type) => setShow({ id, type })
     
     useEffect(() => {
         dispatch(actions.getReviewProduct(params.get('id')))
+        const accessToken = window.localStorage.getItem('accessToken')
+        const newSocket = io(BACKEND_URL, { 
+            autoConnect: true,
+            auth: { token: accessToken }
+        }); // Địa chỉ server
+        setSocket(newSocket);
+        
+        return () => newSocket.disconnect();
     }, [])
 
     useEffect(() => {
         if (socket) {
+            console.log(socket);
             socket.on('receive_review', ({reviews, _productId}) => {
                 if (+_productId === +params.get('id')) {
-                    console.log('check')
                     setStateReview(reviews)
                 }
             })

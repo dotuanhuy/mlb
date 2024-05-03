@@ -1,51 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import './NewShoes.scss'
+import '../styles/mlb.scss'
 import { Link } from 'react-router-dom';
-import { path, categorieType, LIMIT_HOME_SHOES, limit_page } from '../../../utils';
-import { useState } from 'react';
+import { path } from '../../../utils';
 import ListProducts from '../../common/listProducts/ListProducts'
-import { useDispatch, useSelector } from 'react-redux';
-import * as actions from '../../../store/actions'
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useSelector } from 'react-redux';
 
 function NewShoes() {
-    const dispatch = useDispatch()
     const { products } = useSelector(state => state.product)
     const [shoes, setShoes] = useState([])
 
-    // useEffect(() => {
-    //     if (products && products.length > 0) {
-    //         let arr = products.filter(item => item?.dataCategoryDetail?.dataCategory?.type === categorieType.SHOES_SANDAL)
-    //         setShoes(arr)
-    //     }
-    // }, [products])
-
     useEffect(() => {
-        dispatch(actions.getLimitProductByOption({ optionType: categorieType.SHOES_SANDAL }, 1, 'default', LIMIT_HOME_SHOES))
-    }, [])
-
-    // const fetchMoreData = () => {
-    //     console.log('check');
-    //     dispatch(actions.getLimitProductByOption({ optionType: 'GS' }, 1, 'default', 4))
-
-    // }
+        if (products) {
+            setShoes(products?.shoes)
+        }
+    }, [products])
 
     return (
-        <div className='newShoes'>
-            <div className='newShoes-container px-4'>
-                <div className='title text-center'>
-                    <h2 className='title-newshoes mb-4'>
-                        <a href='#'>NEW SHOES</a>
+        <div className='mb-5'>
+            <div className='px-4'>
+                <div className='text-center'>
+                    <h2 className='title-option-homepage mb-4'>
+                        <Link className='position-relative' to={path.GIAY_MLB}>NEW SHOES</Link>
                     </h2>
-                    <p>Những phiên bản <Link to={path.GIAY_MLB}>Giày MLB</Link> mới nhất tại Việt Nam</p>
+                    <p className='fw-bold fs-16 text-muted'>Những phiên bản <Link className='text-decoration-underline text-color-root-dark' to={path.GIAY_MLB}>Giày MLB</Link> mới nhất tại Việt Nam</p>
                 </div>
                 <div className='menu-box'>
                     <div className='menu-product row'>
-                        <ListProducts products={products} col='col-3' />
+                        <ListProducts products={shoes} col='col-3' />
                     </div>
-                    <div className='view-all text-center'>
-                        <Link to={path.GIAY_MLB}>Xem tất cả</Link>
+                    <div className='text-center mt-5'>
+                        <Link 
+                            to={path.GIAY_MLB}
+                            className='btn btn-root py-3 px-5 fw-500 fs-16'
+                        >Xem tất cả</Link>
                     </div>
                 </div>
             </div>

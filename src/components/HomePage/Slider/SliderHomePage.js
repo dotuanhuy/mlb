@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Slider from "react-slick";
 import { sliders } from '../../../utils/images';
+import './sliderHomePage.scss'
 
 function SliderHomePage({settings}) {
 

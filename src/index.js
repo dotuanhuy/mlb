@@ -22,15 +22,15 @@ const { store, persistor } = reduxStore()
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const user = window.localStorage.getItem('accessToken')
 root.render(
-    // <React.StrictMode>
-    // <SocketProvider user={user}>
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <App />
-                <ToastContainer />
-            </PersistGate>
-        </Provider>
-    // </SocketProvider>
-    // </React.StrictMode>
+    <React.StrictMode>
+        {/* <SocketProvider user={user}> */}
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <App />
+                    <ToastContainer />
+                </PersistGate>  
+            </Provider>
+        {/* </SocketProvider> */}
+    </React.StrictMode>
 );
 reportWebVitals();

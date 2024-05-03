@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
 import TableUser from './TableUser';
 import { path } from '../../../utils';
 import { Link } from 'react-router-dom';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function UserManage() {
+
+    useEffect(() => {
+        document.title = 'Quản lý người dùng'
+    }, [])
 
     return (    
         <>
@@ -18,10 +23,14 @@ function UserManage() {
                 </div> 
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between'>
-                        <h2>User</h2>
-                        <button className='btn btn-root btn-add py-1'>
-                            <Link className='text-white fw-500' to={path.MANAGE_USER_CREATE}>Add new</Link>
-                        </button>
+                        <h2>Quản lý người dùng</h2>
+                        <Link 
+                            className='btn btn-root d-flex align-items-center text-white fw-500' 
+                            to={path.MANAGE_USER_CREATE}
+                        >
+                            <FontAwesomeIcon icon={faPlus}  className='pe-1'/>
+                            Thêm mới
+                        </Link>
                     </div>
                     <hr/>
                     <TableUser pathPage={path.MANAGE_USER}/>

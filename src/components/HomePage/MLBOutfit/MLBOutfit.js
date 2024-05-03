@@ -1,70 +1,56 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import './MLBOutfit.scss'
+import '../styles/mlb.scss'
 import { Link } from 'react-router-dom';
-import * as actions from '../../../store/actions'
 import { path } from '../../../utils';
-import TShirt from './TShirt/TShirt';
-import Cap from './Cap/Cap'
-import Shorts from './Shorts/Shorts';
-import SkirtDress from './SkirtDress/SkirtDress';
+import MLBOutfitChild from './MLBOutfitChild';
 
 
 function MLBOutfit() {
-    const [type, setType] = useState('TShirt')
+    const [type, setType] = useState('Tshirt')
 
     return (
-        <div className='mlboutfit'>
+        <div className='mlboutfit pb-5 mb-5' style={{ background: '#f6f6f6' }}>
             <div className='mlboutfit-container px-4'>
-                <div className='title text-center py-5'>
-                    <h2 className='title-mlboutfit mb-4'>
-                        <Link to={path.OUTFIT_MLB}>MLB OUTFIT</Link>
+                <div className='text-center py-5'>
+                    <h2 className='title-option-homepage mb-4'>
+                        <Link className='position-relative' to={path.OUTFIT_MLB}>MLB OUTFIT</Link>
                     </h2>
-                    <p>Những bộ sưu tập <Link to={path.OUTFIT_MLB}>OUTFIT MLB</Link> hot nhất</p>
-                    <ul className='mlboutfit-tabs row my-4'>
-                        <li 
-                            className={type === 'TShirt' ? 'tab col-1 tab-current' : 'tab col-1'}
-                            onClick={e => setType('TShirt')}
+                    <p className='fw-bolder fs-16 text-muted'>Những bộ sưu tập <Link className='text-decoration-underline text-color-root-dark' to={path.OUTFIT_MLB}>OUTFIT MLB</Link> hot nhất</p>
+                    <ul className='mlb-tabs row mt-4 justify-content-center mb-0 gap-2'>
+                        <li
+                            className={type === 'Tshirt' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Tshirt')}
                         >
                             <span>T-Shirt</span>
                         </li>
-                        <li 
-                            className={type === 'Cap' ? 'tab col-1 tab-current' : 'tab col-1'}
+                        <li
+                            className={type === 'Cap' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
                             onClick={e => setType('Cap')}
                         >
                             <span>Cap</span>
                         </li>
-                        <li 
-                            className={type === 'Shorts' ? 'tab col-1 tab-current' : 'tab col-1'}
+                        <li
+                            className={type === 'Shorts' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
                             onClick={e => setType('Shorts')}
                         >
                             <span>Shorts</span>
                         </li>
-                        <li 
-                            className={type === 'SkirtDress' ? 'tab col-1 tab-current' : 'tab col-1'}
-                            onClick={e => setType('SkirtDress')}
+                        <li
+                            className={type === 'SkirtDress' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Skirt dress')}
                         >
                             <span>Skirt-Dress</span>
                         </li>
                     </ul>
                 </div>
                 <div className='menu-box'>
-                    {
-                        type === 'TShirt' ? <TShirt /> : ''
-                    }
-                    {
-                        type === 'Cap' ? <Cap /> : ''
-                    }
-                    {
-                        type === 'Shorts' ? <Shorts /> : ''
-                    }
-                    {
-                        type === 'SkirtDress' ? <SkirtDress /> : ''
-                    }
-                </div>  
+                    <MLBOutfitChild productTypeName={type} />
+                </div>
             </div>
         </div>
     );

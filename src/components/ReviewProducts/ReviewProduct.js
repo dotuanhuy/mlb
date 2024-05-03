@@ -1,24 +1,26 @@
-import { faCircle, faPencil, faStar, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faStar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { memo, useContext, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions'
 import { Form, InputGroup, Modal } from 'react-bootstrap';
 import { validateRequire } from '../../validate/valiedate';
-import { formatDateTimeVN } from '../../utils';
-import jwt_decode from 'jwt-decode'
+import { BACKEND_URL, KEY_ORDERID, formatDateTimeVN } from '../../utils';
 import { useSocket } from '../../configs/socketContext';
 import { toast } from 'react-toastify';
 import { CustomToast } from '../../utils/customToast';
+import io from 'socket.io-client';
+import { AES, enc } from 'crypto-js';
 
 const arrStar = ['Tất cả', 5, 4, 3, 2, 1]
+const decrypted = AES.decrypt(window.localStorage.getItem('orderId'), KEY_ORDERID).toString(enc.Utf8);
+const listOrderId = decrypted.split(',')
 
 function ReviewProduct({ productId }) {
     const dispatch = useDispatch()
     const { reviews, rate, totalEachRating } = useSelector(state => state.review)
-    const listOrderId = window.localStorage.getItem('orderId').split(',')
-    const [curentUser, setCurrentUser] = useState('')
+    // const [curentUser, setCurrentUser] = useState('')
     const [star, setStar] = useState(arrStar[0])
     const [stateReview, setStateReview] = useState([])
     const [contentReview, setContentReview] = useState({ update: '', current: '' })
@@ -27,7 +29,8 @@ function ReviewProduct({ productId }) {
     const [showClient, setShowClient] = useState(false)
     const [contentReviewClient, setContenReviewClient] = useState('')
     const [rateClient, setRateClient] = useState('')
-    const socket = useSocket()
+    // const socket = useSocket()
+    const [socket, setSocket] = useState()
 
     const handleCloseClient = () => {
         setContenReviewClient('')
@@ -37,15 +40,19 @@ function ReviewProduct({ productId }) {
 
     useEffect(() => {
         dispatch(actions.getReviewProduct(productId))
+        const newSocket = io(BACKEND_URL, { autoConnect: true }); // Địa chỉ server
+        setSocket(newSocket);
+        
+        return () => newSocket.disconnect();
     }, [])
 
     useEffect(() => {
         if (reviews.length > 0) {
-            const token = window.localStorage.getItem('accessToken')
-            if (token) {
-                const currentUser = jwt_decode(token)
-                setCurrentUser(currentUser)
-            }
+            // const token = window.localStorage.getItem('accessToken')
+            // if (token) {
+            //     const currentUser = jwt_decode(token)
+            //     setCurrentUser(currentUser)
+            // }
             if (socket) {
                 socket.emit('send_review', {reviews, _productId: productId})
             }

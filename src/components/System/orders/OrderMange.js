@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../common/navbar/Navbar';
 import TableOrder from './TableOrder';
 import Sidebar from '../common/sidebars/Sidebar';
-import { faCirclePlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useSearchParams } from 'react-router-dom';
 import { path } from '../../../utils';
-import {InputGroup, Form, Button} from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import * as actions from '../../../store/actions'
 import { toast } from 'react-toastify';
@@ -18,6 +17,10 @@ function OrderManage() {
     const [params] = useSearchParams()
     const [option, setOption] = useState('all')
     const [searchText, setSearchText] = useState('')
+
+    useEffect(() => {
+        document.title = 'Quản lý đơn hàng'
+    }, [])
 
     const handleClickOption = (option) => {
         dispatch(actions.refreshStoreOrder())
@@ -45,7 +48,7 @@ function OrderManage() {
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>
                         <div>
-                            <h2>Order</h2>
+                            <h2>Đơn hàng</h2>
                             <div>
                                 <ul className='d-flex gap-2 p-0 fw-500 text-muted'>
                                     <li 
@@ -53,35 +56,35 @@ function OrderManage() {
                                         className={option === 'all' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('all')}
                                     >
-                                        All
+                                        Tất cả
                                     </li>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
                                         className={option === 'waitConfirmation' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('waitConfirmation')}
                                     >
-                                        Wait for confirmation
+                                        Chờ xác nhận
                                     </li>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
                                         className={option === 'waitPay' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('waitPay')}
                                     >
-                                        Wait for pay
+                                        Chờ thanh toán
                                     </li>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
                                         className={option === 'shipping' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('shipping')}
                                     >
-                                        Shipping
+                                        Đang giao
                                     </li>
                                     <li 
                                         style={{ cursor: 'pointer' }} 
                                         className={option === 'finished' ? 'fs-14 p-2 text-color-root-dark active-li' : 'fs-14 p-2'}
                                         onClick={() => handleClickOption('finished')}
                                     >
-                                        Finished
+                                        Hoàn thành
                                     </li>
                                 </ul>
                             </div>
@@ -92,14 +95,13 @@ function OrderManage() {
                                     className='text-white fw-500 btn btn-root text-center'
                                     to={path.MANAGE_ORDER_CREATE}
                                 >
-                                    <FontAwesomeIcon className='pe-1' icon={faCirclePlus} />
-                                    Add new
+                                    <FontAwesomeIcon icon={faPlus} /> Thêm mới
                                 </Link>
                             </div>
-                            <div className='mt-2'>
+                            {/* <div className='mt-2'>
                                 <InputGroup size='sm' className="mb-3">
                                     <Form.Control
-                                        placeholder="Enter order"
+                                        placeholder="Nhập đơn hàng"
                                         aria-label="Enter order"
                                         aria-describedby="basic-addon2"
                                         onChange={(e) => setSearchText(e.target.value)}
@@ -112,7 +114,7 @@ function OrderManage() {
                                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                                     </Button>
                                 </InputGroup>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <hr />

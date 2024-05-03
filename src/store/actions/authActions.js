@@ -65,6 +65,7 @@ export const fetLogout = () => {
             if (res && res.errCode === 0) {
                 window.localStorage.removeItem('accessToken')
                 window.localStorage.removeItem('orderId')
+                window.localStorage.removeItem('notifications')
                 dispatch({
                     type: actionTypes.LOGOUT_SUCCESS
                 })

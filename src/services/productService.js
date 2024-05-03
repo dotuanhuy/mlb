@@ -13,9 +13,9 @@ const getAllProductsService = (type) => {
 const getAllProductPublicService = () => {
     const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
-        return axiosJWT.get(`${api}/public`)
+        return axiosJWT.get(`${api}/home_page`)
     }
-    else return axios.get(`${api}/public`)
+    else return axios.get(`${api}/home_page`)
 }
 
 const getQuantityOfEachProductByCategoryService = () => {

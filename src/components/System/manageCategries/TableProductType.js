@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { createSearchParams, useLocation, useSearchParams } from 'react-router-dom';
 import { formatDateVN, path } from '../../../utils'
 import * as actions from '../../../store/actions'
@@ -10,15 +10,10 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { Modal } from 'react-bootstrap';
-import { Buffer } from 'buffer';
 
-function TableProductType({
-    productTypes, 
-    isLoading, 
-    refreshStoreProductTypeRedux, 
-    getLimitProductTypesRedux,
-    deleteProductTypeRedux
-}) {
+function TableProductType() {
+    const dispatch = useDispatch()
+    const { productTypes, isLoading } = useSelector(state => state.productType)
     const navigate = useNavigate()   
     const [params] = useSearchParams()
     const [show, setShow] = useState({})
@@ -28,16 +23,15 @@ function TableProductType({
     const handleShow = (id) => setShow({id})
 
     useEffect(() => {
-        refreshStoreProductTypeRedux()
-        getLimitProductTypesRedux(params?.get('page') ? params?.get('page') : 1)
+        dispatch(actions.refreshStoreProductType())
     }, [])
 
     useEffect(() => {
-        getLimitProductTypesRedux(params?.get('page') ? params?.get('page') : 1)
+        dispatch(actions.getLimitProductTypes(params?.get('page') ? params?.get('page') : 1))
     }, [params?.get('page')])
 
     const handleDeleteProductType = (id) => {
-        deleteProductTypeRedux(id, params.get('page') ? params.get('page') : 1)
+        dispatch(actions.deleteProductType(id, params.get('page') ? params.get('page') : 1))
     }
 
     const handleEdit = (product) => {
@@ -61,13 +55,13 @@ function TableProductType({
                             <thead>
                                 <tr>
                                     <th scope='col'>ID</th>
-                                    <th>Name</th>
-                                    <th>Category name</th>
-                                    <th>Image</th>
-                                    <th>Status</th>
-                                    <th>Date created</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th>Tên</th>
+                                    <th>Tên thể loại</th>
+                                    <th>Ảnh</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -111,18 +105,18 @@ function TableProductType({
                                                     </button>
                                                     <Modal show={show?.id === item.id || false} onHide={handleClose}>
                                                         <Modal.Header closeButton>
-                                                            <Modal.Title>Delete a product type</Modal.Title>
+                                                            <Modal.Title>Xóa kiểu sản phẩm</Modal.Title>
                                                         </Modal.Header>
-                                                        <Modal.Body>Are you sure delete product type "{item.name}"</Modal.Body>
+                                                        <Modal.Body>Bạn có chắc xóa kiểu sản phẩm "{item.name}"</Modal.Body>
                                                         <Modal.Footer>
                                                             <button className='btn btn-secondary' onClick={handleClose}>
-                                                                Close
+                                                                Hủy
                                                             </button>
                                                             <button 
                                                                 className='btn btn-root fw-500' 
                                                                 onClick={() => handleDeleteProductType(item.id)}
                                                             >
-                                                                Yes
+                                                                Xóa
                                                             </button>
                                                         </Modal.Footer>
                                                     </Modal> 
@@ -143,16 +137,12 @@ function TableProductType({
 
 const mapStateToProps = state => {
     return {
-        productTypes: state.productType.productTypes,
-        isLoading: state.productType.isLoading
+
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshStoreProductTypeRedux: () => dispatch(actions.refreshStoreProductType()),
-        getLimitProductTypesRedux: (page) => dispatch(actions.getLimitProductTypes(page)),
-        deleteProductTypeRedux: (id, page) => dispatch(actions.deleteProductType(id, page)),
     }
 }
 

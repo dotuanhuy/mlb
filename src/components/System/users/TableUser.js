@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
 import { path } from '../../../utils'
 import * as actions from '../../../store/actions'
@@ -13,13 +13,10 @@ import { Modal } from 'react-bootstrap';
 
 function TableUsers({
     pathPage,
-    users, 
     isLoading, 
-    refreshIsloadingStateRedux, 
-    getLimitUsersRedux,
-    deleteUserRedux
 }) {
-    const accessToken = window.localStorage.getItem('accessToken')
+    const dispatch = useDispatch()
+    const { users } = useSelector(state => state.user)
     const navigate = useNavigate()   
     const [params] = useSearchParams()
     const [show, setShow] = useState({});
@@ -28,15 +25,15 @@ function TableUsers({
     const handleShow = (id) => setShow({id})
 
     useEffect(() => {
-        refreshIsloadingStateRedux()
+        dispatch(actions.refreshIsloadingState())
     }, [])
 
     useEffect(() => {
-        getLimitUsersRedux(params?.get('page') ? params?.get('page') : 1)
+        dispatch(actions.getLimitUsers(params?.get('page') ? params?.get('page') : 1))
     }, [params?.get('page')])
 
     const handleDeleteUser = (id) => {
-        deleteUserRedux(id, accessToken, params.get('page') ? params.get('page') : 1)
+        dispatch(actions.deleteUser(id, params.get('page') ? params.get('page') : 1))
     }
 
     const handleEdit = (user) => {
@@ -47,6 +44,8 @@ function TableUsers({
             }
         )
     }
+
+    console.log(users);
 
     return (
         <>
@@ -59,14 +58,14 @@ function TableUsers({
                         <table className="customers table-light table">
                             <thead>
                                 <tr>
-                                    <th scope='col'>Id</th>
+                                    <th scope='col'>ID</th>
                                     <th>Email</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>RoleId</th>
-                                    <th>Detail</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th>Họ và tên</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Quyền</th>
+                                    <th>Chi tiết</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,9 +77,9 @@ function TableUsers({
                                             <tr key={index}>
                                                 <td scope='row'>{item.id}</td>
                                                 <td>{item.email}</td>
-                                                <td>{item.firstName}</td>
-                                                <td>{item.lastName}</td>
-                                                <td>{item.roleId}</td>
+                                                <td>{item.firstName} {item.lastName}</td>
+                                                <td>{item.phone}</td>
+                                                <td>{item?.dataRole?.name}</td>
                                                 <td>
                                                     <Link 
                                                         className='btn text-info'
@@ -106,18 +105,18 @@ function TableUsers({
                                                     </button>
                                                     <Modal show={show?.id === item.id || false} onHide={handleClose}>
                                                         <Modal.Header closeButton>
-                                                            <Modal.Title>Delete a user</Modal.Title>
+                                                            <Modal.Title>Xóa người dùng</Modal.Title>
                                                         </Modal.Header>
-                                                        <Modal.Body>Are you sure delete user "{item.email}"</Modal.Body>
+                                                        <Modal.Body>Bạn có chắc xóa người dùng có email "{item.email}"</Modal.Body>
                                                         <Modal.Footer>
                                                             <button className='btn btn-secondary' onClick={handleClose}>
-                                                                Close
+                                                                Hủy
                                                             </button>
                                                             <button 
                                                                 className='btn btn-root fw-500' 
                                                                 onClick={() => handleDeleteUser(item.id)}
                                                             >
-                                                                Yes
+                                                                Xóa
                                                             </button>
                                                         </Modal.Footer>
                                                     </Modal> 
@@ -138,16 +137,12 @@ function TableUsers({
 
 const mapStateToProps = state => {
     return {
-        users: state.user.users,
         isLoading: state.user.isLoading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        deleteUserRedux: (id, accessToken, page) => dispatch(actions.deleteUser(id, accessToken, page)),
-        refreshIsloadingStateRedux: () => dispatch(actions.refreshIsloadingState()),
-        getLimitUsersRedux: (page) => dispatch(actions.getLimitUsers(page))
     }
 }
 
