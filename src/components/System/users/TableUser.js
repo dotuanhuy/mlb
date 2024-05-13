@@ -45,8 +45,6 @@ function TableUsers({
         )
     }
 
-    console.log(users);
-
     return (
         <>
             {

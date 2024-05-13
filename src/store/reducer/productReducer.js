@@ -1,15 +1,14 @@
-import userReducer from "./userReducer"
-
 const initState = {
     products: [],
     count: 0,
+    totalSold: 0,
     descriptions: [],
     isLoading: true,
     countFavouriteProduct: 0,
     productSearch: [],
     productSearchLimit: [],
-    quantityArr: [],
-    productSlider: []
+    statisticalListProductType: [],
+    productSlider: [],
 }
 
 const productReducer = (state = initState, action) => {
@@ -24,6 +23,7 @@ const productReducer = (state = initState, action) => {
             state.descriptions = []
             state.isLoading = true
             state.count = 0
+            state.totalSold = 0
             state.countFavouriteProduct = 0
             state.productSearch = []
             state.productSearchLimit = []
@@ -85,19 +85,21 @@ const productReducer = (state = initState, action) => {
                 ...state
             }
         case 'GET_COUNT_PRODUCTS_SUCCESS':
-            state.count = action.data.count
+            state.count = action.data?.totalProducts
+            state.totalSold = action.data?.totalProductsSold
             state.isLoading = false
             return {
                 ...state
             }
         case 'GET_COUNT_PRODUCTS_FAILED':
                 state.count = 0
+                state.totalSold = 0
                 state.isLoading = true
                 return {
                     ...state
                 }
         case 'GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_SUCCESS':
-            state.quantityArr = action.data
+            state.statisticalListProductType = action.data
             state.isLoading = false
             return {
                 ...state
@@ -187,7 +189,6 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        
         default:
             return state
     }

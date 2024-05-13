@@ -19,6 +19,7 @@ const initState = {
     name: '',
     code: '',
     price: '',
+    originalPrice: '',
     productionSite: '',
     material: '',
     quantity: 0
@@ -85,6 +86,7 @@ function ManageShoesEdit({
                 name: products.name,
                 code: products.code,
                 price: products.price,
+                originalPrice: products?.originalPrice,
                 material: products.material,
                 productionSite: products.productionSite,
                 quantity: products.quantity,
@@ -266,6 +268,7 @@ function ManageShoesEdit({
             name: selectObject?.name,
             code: selectObject?.code,
             price: +(selectObject?.price),
+            originalPrice: +selectObject?.originalPrice,
             categoryDetailId: +selectCategory?.value,
             productTypeId: +selectProductType?.value,
             discountId: +selectDiscount?.value,
@@ -359,7 +362,20 @@ function ManageShoesEdit({
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputFirstPrice" className="form-label">Giá<span className='text-danger'>*</span></label>
+                                        <label htmlFor="exampleInputFirstPrice" className="form-label">Giá gốc<span className='text-danger'>*</span></label>
+                                        <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            id="exampleInputFirstPrice" 
+                                            value={selectObject.originalPrice}
+                                            onChange={(e) => setSelectObject({
+                                                ...selectObject,
+                                                originalPrice: e.target.value
+                                            })}
+                                        />
+                                    </div>
+                                    <div className="mb-3 col-4">
+                                        <label htmlFor="exampleInputFirstPrice" className="form-label">Giá bán<span className='text-danger'>*</span></label>
                                         <input 
                                             type="text" 
                                             className="form-control" 
@@ -377,6 +393,19 @@ function ManageShoesEdit({
                                             value={selectDiscount}
                                             onChange={handleOnchangeDiscount}
                                             options={listDiscount}
+                                        />
+                                    </div>
+                                    <div className="mb-3 col-4">
+                                        <label htmlFor="exampleInputSite" className="form-label">Số lượng<span className='text-danger'>*</span></label>
+                                        <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            id="exampleInputSite" 
+                                            value={selectObject.quantity}
+                                            onChange={(e) => setSelectObject({
+                                                ...selectObject,
+                                                quantity: +e.target.value
+                                            })}
                                         />
                                     </div>
                                     <div className="mb-3 col-4">
@@ -518,19 +547,6 @@ function ManageShoesEdit({
                                             value={selectLogo}
                                             onChange={handhandleOnchangeLogos}
                                             options={listLogos}
-                                        />
-                                    </div>
-                                    <div className="mb-3 col-4">
-                                        <label htmlFor="exampleInputSite" className="form-label">Số lượng<span className='text-danger'>*</span></label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="exampleInputSite" 
-                                            value={selectObject.quantity}
-                                            onChange={(e) => setSelectObject({
-                                                ...selectObject,
-                                                quantity: +e.target.value
-                                            })}
                                         />
                                     </div>
                                     <div className="mb-3 col-4">

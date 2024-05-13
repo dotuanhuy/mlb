@@ -19,7 +19,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch, useSelector } from 'react-redux';
 import { LIMIT_SLIDER_PRODUCT, formatVND, path } from '../../../utils';
 
-
 function Product() {
     const dispatch = useDispatch()
     const { product } = useSelector(state => state.fouriteProduct)
@@ -181,7 +180,7 @@ function Product() {
                                                                                 height: '250px',
                                                                                 backgroundImage: `url(${item?.image})`,
                                                                                 backgroundPosition: '0% 0%',
-                                                                                backgroundSize: 'contain',
+                                                                                backgroundSize: 'cover',
                                                                                 backgroundRepeat: 'no-repeat'
                                                                             }}
                                                                         ></div>
@@ -201,7 +200,7 @@ function Product() {
                                                                                 height: '250px',
                                                                                 backgroundImage: `url(${item?.dataImageProducts?.at(0)?.image})`,
                                                                                 backgroundPosition: '0% 0%',
-                                                                                backgroundSize: 'contain',
+                                                                                backgroundSize: 'cover',
                                                                                 backgroundRepeat: 'no-repeat'
                                                                             }}
                                                                         ></div>

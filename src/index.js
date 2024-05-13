@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -22,15 +22,15 @@ const { store, persistor } = reduxStore()
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const user = window.localStorage.getItem('accessToken')
 root.render(
-    <React.StrictMode>
-        {/* <SocketProvider user={user}> */}
+    // <React.StrictMode>
+        // {/* <SocketProvider user={user}> */}
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <App />
                     <ToastContainer />
                 </PersistGate>  
             </Provider>
-        {/* </SocketProvider> */}
-    </React.StrictMode>
+        // {/* </SocketProvider> */}
+    // </React.StrictMode>
 );
 reportWebVitals();

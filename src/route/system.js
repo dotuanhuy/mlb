@@ -21,6 +21,7 @@ import DiscountCreate from '../components/System/discounts/DiscountCreate';
 import DiscountUpdate from '../components/System/discounts/DiscountUpdate';
 import OrderMange from '../components/System/orders/OrderMange';
 import OrderMangeDetail from '../components/System/orders/OrderMangeDetail';
+import Report from '../components/System/reports/Report'
 
 function System() {
     return (
@@ -151,6 +152,11 @@ function System() {
                 <Route 
                     path={path.MANAGE_ORDER_DETAIL}
                     element={<PrivateRouter Component={OrderMangeDetail} />}
+                />
+
+                <Route 
+                    path={path.MANAGE_REPORT}
+                    element={<PrivateRouter Component={Report} />}
                 />
             </Routes>
        </>

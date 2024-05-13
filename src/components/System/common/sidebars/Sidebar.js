@@ -152,13 +152,13 @@ function Sidebar({active='dashboard', activeChild = ''}) {
                     <li 
                         class="nav-item"
                     >   
-                        <a 
+                        <Link 
                             className={active === 'report' ? "nav-link active_sm"  : "nav-link text-muted opacity-7 fs-14 fw-500"}
-                            href="#"
+                            to={path.MANAGE_REPORT}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faChartSimple} />
                             Thống kê
-                        </a>
+                        </Link>
                     </li>
                     <li 
                         class="nav-item"

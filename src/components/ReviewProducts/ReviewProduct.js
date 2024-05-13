@@ -7,20 +7,18 @@ import * as actions from '../../store/actions'
 import { Form, InputGroup, Modal } from 'react-bootstrap';
 import { validateRequire } from '../../validate/valiedate';
 import { BACKEND_URL, KEY_ORDERID, formatDateTimeVN } from '../../utils';
-import { useSocket } from '../../configs/socketContext';
 import { toast } from 'react-toastify';
 import { CustomToast } from '../../utils/customToast';
 import io from 'socket.io-client';
 import { AES, enc } from 'crypto-js';
 
 const arrStar = ['Tất cả', 5, 4, 3, 2, 1]
-const decrypted = AES.decrypt(window.localStorage.getItem('orderId'), KEY_ORDERID).toString(enc.Utf8);
-const listOrderId = decrypted.split(',')
+const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), KEY_ORDERID).toString(enc.Utf8) : '';
+const listOrderId = decrypted ? decrypted.split(',') : []
 
 function ReviewProduct({ productId }) {
     const dispatch = useDispatch()
     const { reviews, rate, totalEachRating } = useSelector(state => state.review)
-    // const [curentUser, setCurrentUser] = useState('')
     const [star, setStar] = useState(arrStar[0])
     const [stateReview, setStateReview] = useState([])
     const [contentReview, setContentReview] = useState({ update: '', current: '' })
@@ -29,7 +27,6 @@ function ReviewProduct({ productId }) {
     const [showClient, setShowClient] = useState(false)
     const [contentReviewClient, setContenReviewClient] = useState('')
     const [rateClient, setRateClient] = useState('')
-    // const socket = useSocket()
     const [socket, setSocket] = useState()
 
     const handleCloseClient = () => {
@@ -48,11 +45,6 @@ function ReviewProduct({ productId }) {
 
     useEffect(() => {
         if (reviews.length > 0) {
-            // const token = window.localStorage.getItem('accessToken')
-            // if (token) {
-            //     const currentUser = jwt_decode(token)
-            //     setCurrentUser(currentUser)
-            // }
             if (socket) {
                 socket.emit('send_review', {reviews, _productId: productId})
             }
@@ -197,6 +189,7 @@ function ReviewProduct({ productId }) {
                             arrStar.map((item, index) => {
                                 return (
                                     <button
+                                        key={index}
                                         className={item === star ? 'rounded btn-active-star bg-light py-2 px-4 me-2 mt-1' : 'rounded border bg-light text-dark py-2 px-4 me-2 mt-1'}
                                         onClick={() => setStar(item)}
                                     >

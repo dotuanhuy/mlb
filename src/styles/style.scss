@@ -69,6 +69,16 @@ button {
     text-overflow: ellipsis;
 }
 
+.col-sm {
+    flex: 0 0 auto;
+    width: 23%;
+}
+
+.col-6-custom {
+    flex: 0 0 auto;
+    width: 49%;
+}
+
 .z-index-1000 {
     z-index: 1000;
 }

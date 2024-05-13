@@ -32,8 +32,6 @@ function HomePage({ titlePage }) {
         }
     }, [listId])
 
-    console.log('check products: ', products)
-
     const settings = {
         dots: true,
         infinite: false,

@@ -15,6 +15,7 @@ import firebaseReducer from "./firebaseReducer";
 import reviewReducer from "./reviewReducer";
 import errorReducer from "./errorReducer";
 import orderReducer from "./orderReducer";
+import reportReducer from "./reportReducer";
 import notificationReducer from "./notificationReducer";
 import { combineReducers } from "redux";
 import storage from 'redux-persist/lib/storage'
@@ -50,7 +51,8 @@ const rootReducer = combineReducers({
     firebase: firebaseReducer,
     review: reviewReducer,
     order: orderReducer,
-    notification: notificationReducer
+    notification: notificationReducer,
+    report: reportReducer,
 })
 
 export default rootReducer

@@ -32,6 +32,10 @@ const createOrderService = (data) => {
     return axiosJWT.post(`${api}/create`, data)
 }
 
+const getTotalOrderService = () => {
+    return axiosJWT.get(`${api}/total`)
+}
+
 export {
     getAllOrdersByUserService,
     getLimitOrderService,
@@ -39,5 +43,6 @@ export {
     confirmOrderService,
     cancelOrderService,
     getListOrderIdService,
-    createOrderService
+    createOrderService,
+    getTotalOrderService
 }

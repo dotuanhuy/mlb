@@ -9,7 +9,7 @@
 
 // function ProductManage({
 //     categoriesDetail,
-//     quantityArr,
+//     statisticalListProductType,
 //     isLoading,
 //     getAllCategoriesDetailRedux,
 //     getQuantityOfEechProductByCategory
@@ -43,13 +43,13 @@
 //                                     titleText='Horizontal chart statistics the number of products of the type'
 //                                     labels={categoriesDetail}
 //                                     label='Quantity'
-//                                     data={quantityArr}
+//                                     data={statisticalListProductType}
 //                                 />
 //                             </div>
 //                             <div>
 //                                 <span className='text-muted fw-500'>
 //                                     Total products: {
-//                                         quantityArr.reduce((acc, cur) => acc + +cur.quantity, 0)
+//                                         statisticalListProductType.reduce((acc, cur) => acc + +cur.quantity, 0)
 //                                     } products
                                     
 //                                 </span>
@@ -66,7 +66,7 @@
 // const mapStateToProps = state => {
 //     return {
 //         categoriesDetail: state.category.categoriesDetail,
-//         quantityArr: state.product.quantityArr,
+//         statisticalListProductType: state.product.statisticalListProductType,
 //         isLoading: state.product.isLoading
 //     }
 // }

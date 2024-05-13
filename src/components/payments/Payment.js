@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,20 +6,22 @@ import * as actions from '../../store/actions'
 import { BACKEND_URL, formatVND, path } from '../../utils';
 import './Payment.scss'
 import { Form } from 'react-bootstrap';
-import { faAngleLeft, faMinus, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { validate, validateRequire } from '../../validate/valiedate';
 import Paypal from '../paypal/Paypal';
-import Loading from '../common/Loading/Loading';
 import { toast } from 'react-toastify';
 import { CustomToast } from '../../utils/customToast';
 import io from 'socket.io-client';
+import Cookies from 'universal-cookie';
 
 const initInfo = {
     fullName: '',
     phone: '',
     address: ''
 }
+
+const cookies = new Cookies()
 
 function Payment({ titlePage }) {
     const dispatch = useDispatch()
@@ -41,9 +43,20 @@ function Payment({ titlePage }) {
     const [errors, setErrors] = useState({})
     const [errorSelect, setErrorSelect] = useState({})
     const [socket, setSocket] = useState()
+    const stateCookies = cookies.get('info_order') ? cookies.get('info_order') : ''
 
     useEffect(() => {
         document.title = titlePage
+        if (stateCookies) {
+            setInfo({
+                fullName: stateCookies.fullName,
+                phone: stateCookies.phone,
+                address: stateCookies.address
+            })
+            setCodeCity(stateCookies.city)
+            setCodeDistrict(stateCookies.district)
+            setStateWard(stateCookies.ward)
+        }
         dispatch(actions.getAllAddress())
         if (!listProducts || listProducts.length === 0) {
             navigate(path.CART)
@@ -63,18 +76,19 @@ function Payment({ titlePage }) {
 
     useEffect(() => {
         if (codeCity?.code) {
-            const arr = address.find(item => item.code === codeCity.code)?.districts
+            const arr = address?.find(item => item.code === codeCity.code)?.districts
             setDistricts(arr)
         }
-    }, [codeCity])
+    }, [codeCity, address])
 
+    
     useEffect(() => {
         if (codeDistrict?.code) {
-            const arr = districts.find(item => item.code === codeDistrict.code)?.wards
+            const arr = districts?.find(item => item.code === codeDistrict.code)?.wards
             setWards(arr)
         }
-    }, [codeDistrict])
-    
+    }, [codeDistrict, districts])
+
     useEffect(() => {
         if (errorOrder) {
             if (errorOrder === 'none') {
@@ -82,6 +96,14 @@ function Payment({ titlePage }) {
                     typeId: orderId,
                     typeText: 'order'
                 }))
+                cookies.set('info_order', {
+                    fullName: info.fullName,
+                    phone: info.phone,
+                    address: info.address,
+                    city: codeCity,
+                    district: codeDistrict,
+                    ward: stateWard
+                }, { path: '/' })
                 if (socket) {
                     socket.emit('send_notification', { typeText: 'order' })
                 }
@@ -108,7 +130,7 @@ function Payment({ titlePage }) {
         const err = validate(info)
         const errCity = validateRequire('Tỉnh thành', codeCity.name)
         const errDistrict = validateRequire('Quận huyện', codeDistrict.name)
-        const errWard = validateRequire('Phường xã', stateWard)
+        const errWard = validateRequire('Phường xã', stateWard.name)
         const errPayment = validateRequire('Phương thức thanh toán', paymentType)
         if (Object.keys(err).length > 0 || errCity || errDistrict || errWard || errPayment) {
             setErrors(err)
@@ -126,7 +148,7 @@ function Payment({ titlePage }) {
                 address: info.address,
                 city: codeCity.name,
                 district: codeDistrict.name,
-                ward: stateWard,
+                ward: stateWard.name,
                 note,
                 shippingMethod: shippingType.type,
                 paymentType,
@@ -136,6 +158,8 @@ function Payment({ titlePage }) {
             dispatch(actions.createOrder(data))
         }
     }
+
+    console.log(products)
 
     return (
         <div className='container-xl'>
@@ -150,6 +174,7 @@ function Payment({ titlePage }) {
                             <Form.Group className="mb-3">
                                 <Form.Control
                                     placeholder="Họ và tên"
+                                    value={info.fullName} 
                                     onChange={(e) => setInfo({
                                         ...info,
                                         fullName: e.target.value
@@ -162,6 +187,7 @@ function Payment({ titlePage }) {
                             <Form.Group className="mb-3">
                                 <Form.Control
                                     placeholder="Số điện thoại"
+                                    value={info.phone} 
                                     onChange={(e) => setInfo({
                                         ...info,
                                         phone: e.target.value
@@ -174,6 +200,7 @@ function Payment({ titlePage }) {
                             <Form.Group className="mb-3">
                                 <Form.Control
                                     placeholder="Số nhà, ngõ, ngách,..."
+                                    value={info.address} 
                                     onChange={(e) => setInfo({
                                         ...info,
                                         address: e.target.value
@@ -194,7 +221,7 @@ function Payment({ titlePage }) {
                                     {
                                         address && address.length > 0 &&
                                         address.map((item, index) => (
-                                            <option key={index} value={item.code}>{item.name}</option>
+                                            <option key={index} value={item.code} selected={codeCity.code === item.code}>{item.name}</option>
                                         ))
                                     }
                                 </Form.Select>
@@ -214,7 +241,7 @@ function Payment({ titlePage }) {
                                     {
                                         codeCity?.code && districts?.length > 0 &&
                                         districts.map((item, index) => (
-                                            <option key={index} value={item.code}>{item.name}</option>
+                                            <option key={index} value={item.code} selected={codeDistrict.code === item.code}>{item.name}</option>
                                         ))
                                     }
                                 </Form.Select>
@@ -225,13 +252,16 @@ function Payment({ titlePage }) {
                             <Form.Group className="mb-3">
                                 <Form.Select
                                     disabled={codeDistrict ? false : true}
-                                    onChange={(e) => setStateWard(e.target.options[e.target.selectedIndex].text)}
+                                    onChange={(e) => setStateWard({
+                                        code: +e.target.value,
+                                        name: e.target.options[e.target.selectedIndex].text
+                                    })}
                                 >
                                     <option disabled selected>Phường xã</option>
                                     {
                                         codeDistrict?.code && wards?.length > 0 &&
                                         wards.map((item, index) => (
-                                            <option key={index} value={item.code}>{item.name}</option>
+                                            <option key={index} value={item.code} selected={stateWard.code === item.code}>{item.name}</option>
                                         ))
                                     }
                                 </Form.Select>
@@ -266,6 +296,7 @@ function Payment({ titlePage }) {
                                 <div className='d-flex gap-1 align-items-center justify-content-between'>
                                     <Form.Group>
                                         <Form.Check
+                                            disabled={codeCity.name === 'Thành phố Hà Nội' || codeCity.name === 'Thành phố Hồ Chí Minh' ? false : true}
                                             type="radio"
                                             label="Ship nhanh trong ngày(Chỉ áp dụng cho Hà Nội và HCM)"
                                             value='express'
@@ -338,7 +369,7 @@ function Payment({ titlePage }) {
                                     priceNew = +item?.price - +item?.price * +item?.dataDiscounts?.value
                                 }
                                 return (
-                                    <div className='d-flex align-items-center justify-content-center gap-1 mb-4 px-4'>
+                                    <div key={index} className='d-flex align-items-center justify-content-center gap-1 mb-4 px-4 pt-2'>
                                         <div className='col-2 position-relative'>
                                             <div
                                                 className='position-absolute'

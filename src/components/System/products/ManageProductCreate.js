@@ -19,6 +19,7 @@ const initState = {
     name: '',
     code: generateRandomString(15),
     price: '',
+    originalPrice: '',
     productionSite: '',
     material: '',
     quantity: 0
@@ -144,6 +145,7 @@ function ManageShoesCreate({ categoryType, actives }) {
             name: selectObject?.name,
             code: selectObject?.code,
             price: +(selectObject?.price),
+            originalPrice: +selectObject.originalPrice,
             categoryDetailId: +selectCategory?.value,
             productTypeId: +selectProductType?.value,
             discountId: +selectDiscount?.value,
@@ -240,7 +242,20 @@ function ManageShoesCreate({ categoryType, actives }) {
                                     />
                                 </div>
                                 <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputFirstPrice" className="form-label">Giá<span className='text-danger'>*</span></label>
+                                    <label htmlFor="exampleInputFirstPrice" className="form-label">Giá gốc<span className='text-danger'>*</span></label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        id="exampleInputFirstPrice" 
+                                        value={selectObject.originalPrice}
+                                        onChange={(e) => setSelectObject({
+                                            ...selectObject,
+                                            originalPrice: e.target.value
+                                        })}
+                                    />
+                                </div>
+                                <div className="mb-3 col-4">
+                                    <label htmlFor="exampleInputFirstPrice" className="form-label">Giá bán<span className='text-danger'>*</span></label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -249,6 +264,19 @@ function ManageShoesCreate({ categoryType, actives }) {
                                         onChange={(e) => setSelectObject({
                                             ...selectObject,
                                             price: e.target.value
+                                        })}
+                                    />
+                                </div>
+                                <div className="mb-3 col-4">
+                                    <label htmlFor="exampleInputSite" className="form-label">Số lượng<span className='text-danger'>*</span></label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        id="exampleInputSite" 
+                                        value={selectObject.quantity}
+                                        onChange={(e) => setSelectObject({
+                                            ...selectObject,
+                                            quantity: +e.target.value
                                         })}
                                     />
                                 </div>
@@ -400,19 +428,7 @@ function ManageShoesCreate({ categoryType, actives }) {
                                         options={listLogos}
                                     />
                                 </div>
-                                <div className="mb-3 col-4">
-                                    <label htmlFor="exampleInputSite" className="form-label">Số lượng<span className='text-danger'>*</span></label>
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        id="exampleInputSite" 
-                                        value={selectObject.quantity}
-                                        onChange={(e) => setSelectObject({
-                                            ...selectObject,
-                                            quantity: +e.target.value
-                                        })}
-                                    />
-                                </div>
+                                
                                 <div className="mb-3 col-4">
                                     <label htmlFor="exampleInputMaterial" className="form-label">Chất liệu<span className='text-danger'>*</span></label>
                                     <input 

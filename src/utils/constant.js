@@ -46,6 +46,8 @@ export const path = {
     MANAGE_ORDER: '/system/manage/order',
     MANAGE_ORDER_DETAIL: '/system/manage/order/detail',
 
+    MANAGE_REPORT: '/system/manage/report',
+
     // MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     // MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
     
@@ -250,3 +252,6 @@ export const paymentMethod = {
 }
 
 export const KEY_ORDERID = 'TqbZCDy26E'
+
+export const BEGIN_YEAR = 2023
+export const NEXT_YEAR = 2 

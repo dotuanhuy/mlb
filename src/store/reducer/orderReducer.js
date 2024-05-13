@@ -4,7 +4,8 @@ const initState = {
     isLoading: true,
     errorOrder: '',
     listId: [],
-    orderId: ''
+    orderId: '',
+    total: 0
 }
 
 const orderReducer = (state=initState, action) => {
@@ -69,6 +70,16 @@ const orderReducer = (state=initState, action) => {
         case 'CREATE_ORDER_FAILED':
             state.errorOrder = action.errMessage
             state.orderId = ''
+            return {
+                ...state
+            }
+        case 'GET_TOTAL_ORDER_SUCCESS': 
+            state.total = action.data
+            return {
+                ...state
+            }
+        case 'GET_TOTAL_ORDER_FAILED':
+            state.total = []
             return {
                 ...state
             }

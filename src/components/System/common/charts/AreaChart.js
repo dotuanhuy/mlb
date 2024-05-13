@@ -1,61 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
-    BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend
 );
 
-function HorizontalBarChart({labels, titleText, label, data}) {
 
-    return (    
-        <Bar 
+function AreaChart({ labels, titleText, label, data }) {
+
+    return (
+        <Line
             options={
                 {
-                    indexAxis: 'y',
-                    elements: {
-                        bar: {
-                            borderWidth: 2,
-                        },
-                    },
                     responsive: true,
                     plugins: {
-                        // legend: {
-                        //     position: 'right',
-                        // },
+                        legend: {
+                            position: 'top',
+                        },
                         title: {
                             display: true,
                             text: titleText,
                         },
                     },
                 }
-            }       
-            data= {
-               {
+            }
+            data={
+                {
                     labels,
                     datasets: [
                         {
                             label: label.dataSet1,
-                            data: data?.map(item => item?.quantitySold || 0),
+                            data: data?.map(item => item?.revenue || 0),
                             borderColor: 'rgb(255, 99, 132)',
                             backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         },
+                        {
+                            label: label.dataSet2,
+                            data: data?.map(item => item?.profit || 0),
+                            borderColor: 'rgba(53, 162, 235, 0.5)',
+                            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                        },
                     ],
-               }
+                }
             }
         />
     );
@@ -63,7 +66,6 @@ function HorizontalBarChart({labels, titleText, label, data}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin
     }
 }
 
@@ -72,4 +74,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HorizontalBarChart);
+export default connect(mapStateToProps, mapDispatchToProps)(AreaChart);

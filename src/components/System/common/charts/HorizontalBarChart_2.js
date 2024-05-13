@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
     Chart as ChartJS,
@@ -20,7 +20,21 @@ ChartJS.register(
     Legend
 );
 
-function HorizontalBarChart({labels, titleText, label, data}) {
+
+function HorizontalBarChart_2({labels, titleText, label, data}) {
+    const [stateLabels, setStateLabelsLabels] = useState([])
+    const [stateData, setStateData] = useState([])
+
+    useEffect(() => {
+        if (labels.length > 0) {
+            setStateLabelsLabels(labels.map(item => item.name))
+        }
+        if (data.length > 0) {
+            setStateData(labels.map(item => {
+               return data.find(element => element.dataCategoryDetail?.type === item.type)
+            }))
+        }
+    }, [labels, data])
 
     return (    
         <Bar 
@@ -34,9 +48,9 @@ function HorizontalBarChart({labels, titleText, label, data}) {
                     },
                     responsive: true,
                     plugins: {
-                        // legend: {
-                        //     position: 'right',
-                        // },
+                        legend: {
+                            position: 'right',
+                        },
                         title: {
                             display: true,
                             text: titleText,
@@ -46,11 +60,11 @@ function HorizontalBarChart({labels, titleText, label, data}) {
             }       
             data= {
                {
-                    labels,
+                    labels: stateLabels,
                     datasets: [
                         {
-                            label: label.dataSet1,
-                            data: data?.map(item => item?.quantitySold || 0),
+                            label,
+                            data: stateData?.map(item => item?.quantity || 0),
                             borderColor: 'rgb(255, 99, 132)',
                             backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         },
@@ -72,4 +86,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HorizontalBarChart);
+export default connect(mapStateToProps, mapDispatchToProps)(HorizontalBarChart_2);

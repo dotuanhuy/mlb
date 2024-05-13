@@ -98,7 +98,6 @@ export const getAllProductPublic = () => {
     }
 }
 
-//*
 export const getQuantityOfEechProductByCategory = () => {
     return async (dispatch, getSate) => {
         try {

@@ -6,7 +6,8 @@ import {
     confirmOrderService,
     cancelOrderService,
     getListOrderIdService,
-    createOrderService
+    createOrderService,
+    getTotalOrderService
 } from "../../services/orderService";
 
 export const refreshStoreOrder = () => {
@@ -180,3 +181,26 @@ export const createOrder = (data) => {
     }
 }
 
+export const getTotalOrder = () => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await getTotalOrderService()
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.GET_TOTAL_ORDER_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.GET_TOTAL_ORDER_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('getTotalOrder error: ', e)
+            dispatch({
+                type: actionTypes.GET_TOTAL_ORDER_FAILED
+            })
+        }
+    }
+}
