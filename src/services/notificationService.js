@@ -1,9 +1,8 @@
 import axios from "../axios";
-import {createAxios} from '../axiosJWT'
+import axiosJWT from '../axiosJWT'
 import { API_VERSION } from "../utils";
 
 const api = `/api/${API_VERSION}/notification`
-const axiosJWT = createAxios()
 
 const getNotificationsService = () => {
     return axiosJWT.get(`${api}`)

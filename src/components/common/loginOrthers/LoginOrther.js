@@ -10,7 +10,7 @@ function LoginOrther() {
     }
 
     return (
-        <div className='social-register pb-3 d-flex justify-content-center text-align-center gap-2'>
+        <div className='pb-3 d-flex justify-content-center text-align-center gap-2'>
             <button
                 className='btn rounded text-white fw-500 col-3'
                 style={{

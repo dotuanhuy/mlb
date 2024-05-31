@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createAxios } from '../axiosJWT';
+import axiosJWT from '../axiosJWT';
 import { Active, path } from '../utils';
 
-function PrivateRouter({categoryType=null, active=null, Component}) {
+function PrivateRouter({ categoryType = null, active = null, Component }) {
     const [isAdmin, setIsAdmin] = useState(null)
     const [actives, setActives] = useState({})
     const navigate = useNavigate()
@@ -12,8 +12,7 @@ function PrivateRouter({categoryType=null, active=null, Component}) {
         const fetchData = async () => {
             try {
                 const accessToken = window.localStorage.getItem('accessToken')
-                const axiosJWT = createAxios()
-                const res = await axiosJWT.post('/api/v1/auth/authentication', {accessToken});
+                const res = await axiosJWT.post('/api/v1/auth/authentication', { accessToken });
                 setIsAdmin(res?.isAdmin)
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -30,7 +29,7 @@ function PrivateRouter({categoryType=null, active=null, Component}) {
             setActives({
                 active: active,
                 pathToHome: path.MANAGE_PRODUCTS_SHOES,
-                pathToCreate: path.MANAGE_PRODUCTS_SHOES_CREATE, 
+                pathToCreate: path.MANAGE_PRODUCTS_SHOES_CREATE,
                 pathToBack: path.MANAGE_PRODUCTS_SHOES,
                 pathToEdit: path.MANAGE_PRODUCTS_SHOES_EDIT,
                 pathToDetail: path.MANAGE_PRODUCTS_SHOES_DETAIL,
@@ -76,10 +75,10 @@ function PrivateRouter({categoryType=null, active=null, Component}) {
             })
         }
     }, [active])
-    
+
     if (isAdmin) {
-        return ( 
-            isAdmin === 1 ? <Component actives={actives} categoryType={categoryType}/> : <Navigate to='/' />
+        return (
+            isAdmin === 1 ? <Component actives={actives} categoryType={categoryType} /> : <Navigate to='/' />
         );
     }
     return (

@@ -1,28 +1,27 @@
 import axios from "../axios";
-import {createAxios} from '../axiosJWT'
+import axiosJWT from '../axiosJWT'
 import { API_VERSION } from "../utils";
 
-const axiosJWT = createAxios()
 const api = `/api/${API_VERSION}/review`
 
 const getReviewProductService = (productId) => {
     return axios.get(`${api}/product?productId=${productId}`)
 }
 
-const createFeedbackService = ({reviewId, content}) => {
-    return axiosJWT.post(`${api}/feedback/create`, {reviewId, content})
+const createFeedbackService = ({ reviewId, content }) => {
+    return axiosJWT.post(`${api}/feedback/create`, { reviewId, content })
 }
 
-const updateFeedbackService = ({id, content}) => {
-    return axiosJWT.post(`${api}/feedback/update`, {id, content})
+const updateFeedbackService = ({ id, content }) => {
+    return axiosJWT.post(`${api}/feedback/update`, { id, content })
 }
 
 const deleteFeedbackService = (id) => {
     return axiosJWT.delete(`${api}/feedback/delete/${id}`)
 }
 
-const updateReviewService = ({id, userId, content, rate}) => {
-    return axiosJWT.post(`${api}/update`, {id, userId, content, rate})
+const updateReviewService = ({ id, userId, content, rate }) => {
+    return axiosJWT.post(`${api}/update`, { id, userId, content, rate })
 }
 
 const deleteReviewService = (id) => {

@@ -1,8 +1,7 @@
-import { createAxios } from "../axiosJWT";
+import axiosJWT from "../axiosJWT";
 import { API_VERSION } from "../utils";
 
 const api = `api/${API_VERSION}/order`
-const axiosJWT = createAxios()
 
 const getAllOrdersByUserService = () => {
     return axiosJWT.get(`${api}`)

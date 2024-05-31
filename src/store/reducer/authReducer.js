@@ -2,54 +2,73 @@ const initState = {
     user: {},
     isLogin: false,
     token: '',
-    isResetPassword: false
+    isChangePassword: false,
+    message: '',
+    errCode: ''
 }
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'LOGIN_SUCCESS': 
+        case 'REFRESH_STATE_AUTH':
+            state.message = ''
+            state.isChangePassword = false
+            state.errCode = ''
+            return {
+                ...state
+            }
+        case 'LOGIN_SUCCESS':
             state.isLogin = true
             state.token = action?.data?.accessToken
-            let {email, firstName, lastName, phone, gender, address, roleId} = action?.data?.data
+            const { email, firstName, lastName, phone, gender, address, roleId } = action?.data
             state.user = {
                 email,
                 firstName,
                 lastName,
                 phone,
-                gender, 
+                gender,
                 address,
                 roleId
             }
             return {
                 ...state
             }
-        case 'LOGIN_FAILED': 
+        case 'LOGIN_FAILED':
             state.isLogin = false
             state.token = ''
             state.user = {}
+            state.message = action.message
             return {
                 ...state
             }
-        case 'LOGOUT_SUCCESS': 
+        case 'LOGOUT_SUCCESS':
             state.isLogin = false
             state.token = ''
-            state.isResetPassword = false
+            state.isChangePassword = false
             return {
                 ...state,
             }
         case 'LOGOUT_FAILED':
             state.isLogin = true
-            state.isResetPassword = true
+            state.isChangePassword = true
             return {
                 ...state
             }
-        case 'RESET_PASSWORD_SUCCESS':
-            state.isResetPassword = true
+        case 'CHANGE_PASSWORD_SUCCESS':
+            state.isChangePassword = true
+            state.message = action.message
             return {
                 ...state
             }
-        case 'RESET_PASSWORD_FAILED':
-            state.isResetPassword = false
+        case 'CHANGE_PASSWORD_FAILED':
+            state.isChangePassword = false
+            state.message = action.message
+            return {
+                ...state
+            }
+        case 'FORGOT_PASSWORD':
+            console.log(action.message);
+            state.message = action.message
+            state.errCode = action.errCode
             return {
                 ...state
             }

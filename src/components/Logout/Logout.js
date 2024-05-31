@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from 'react'
+import React, { memo, useEffect } from 'react'
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../utils';
@@ -7,15 +7,17 @@ import { useDispatch } from 'react-redux';
 
 function Logout() {
     const navigate = useNavigate()
-    const dispatch = useDispatch()  
+    const dispatch = useDispatch()
     useEffect(() => {
         dispatch(actions.refreshStoreProduct())
         dispatch(actions.refreshStoreUser())
         dispatch(actions.refreshIStateFavouriteProduct())
         dispatch(actions.refreshStateCart())
+        dispatch(actions.refreshStateMessage())
+        dispatch(actions.refreshStateAuth())
         navigate(path.LOGIN)
     }, [])
-    
+
     return (
         <></>
     )

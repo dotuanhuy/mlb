@@ -1,8 +1,7 @@
 import axios from "../axios";
-import {createAxios} from '../axiosJWT'
+import axiosJWT from '../axiosJWT'
 import { API_VERSION } from "../utils";
 
-const axiosJWT = createAxios()
 const api = `/api/${API_VERSION}/cart`
 
 const getProductsInCartByUserService = () => {
@@ -21,14 +20,14 @@ const deleteProductInCartService = (data) => {
     if (accessToken) {
         return axiosJWT.post(`${api}/delete`, { data })
     }
-} 
+}
 
 const changeCartService = (data) => {
     const accessToken = window.localStorage.getItem('accessToken')
     if (accessToken) {
         return axiosJWT.post(`${api}/change`, { data })
     }
-} 
+}
 
 export {
     getProductsInCartByUserService,

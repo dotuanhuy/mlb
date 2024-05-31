@@ -23,6 +23,7 @@ function Navbar() {
     const { productTypes } = useSelector(state => state.productType)
     const countFavourite = useSelector(state => state.fouriteProduct.countProducts)
     const countProductsCart = useSelector(state => state.cart.countProducts)
+    const { message } = useSelector(state => state.user)
     const [userLogin, setUserLogin] = useState(initState)
     const [userId, setUserId] = useState('')
     const navigate = useNavigate()
@@ -44,6 +45,19 @@ function Navbar() {
     }, [])
 
     useEffect(() => {
+        if (message) {
+            const token = window.localStorage.getItem('accessToken')
+            if (token) {
+                let tokenDecoded = jwt_decode(token)
+                setUserLogin({
+                    firstName: tokenDecoded.firstName,
+                    lastName: tokenDecoded.lastName,
+                })
+            }
+        }
+    }, [message])
+
+    useEffect(() => {
         if (userId) {
             dispatch(actions.getAllProductsFavourite(userId))
         }
@@ -60,7 +74,7 @@ function Navbar() {
                 <div className='header-top-nav d-flex justify-content-evenly align-items-center my-0 mx-100'>
                     <Link to={path.HOMEPAGE}>
                         <div className='nav-logo'>
-                            
+
                         </div>
                     </Link>
                     <div className='nav-menu'>
@@ -77,9 +91,9 @@ function Navbar() {
                                                     return (
                                                         <li key={index}>
                                                             <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
-                                                                <div 
-                                                                    style={{ 
-                                                                        width: '100%', 
+                                                                <div
+                                                                    style={{
+                                                                        width: '100%',
                                                                         height: '130px',
                                                                         backgroundImage: `url(${item?.imageRoot})`,
                                                                         backgroundPosition: 'center',
@@ -109,16 +123,16 @@ function Navbar() {
                                                     return (
                                                         <li key={index}>
                                                             <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
-                                                            <div 
-                                                                style={{ 
-                                                                    width: '100%', 
-                                                                    height: '130px',
-                                                                    backgroundImage: `url(${item.imageRoot})`,
-                                                                    backgroundPosition: 'center',
-                                                                    backgroundSize: 'contain',
-                                                                    backgroundRepeat: 'no-repeat'
-                                                                }}
-                                                            ></div>
+                                                                <div
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        height: '130px',
+                                                                        backgroundImage: `url(${item.imageRoot})`,
+                                                                        backgroundPosition: 'center',
+                                                                        backgroundSize: 'contain',
+                                                                        backgroundRepeat: 'no-repeat'
+                                                                    }}
+                                                                ></div>
                                                             </Link>
                                                             <Link to={path[item.name.replace(' ', '_').toUpperCase()]} className='name-shoes' state={{ id: item.id }}>{item.name}</Link>
                                                         </li>
@@ -134,48 +148,16 @@ function Navbar() {
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
-                                    {
+                                        {
                                             productTypes && productTypes.length > 0 &&
                                             productTypes.map((item, index) => {
                                                 if (item.dataProductTypeCategory.type === categorieType.HAT) {
                                                     return (
                                                         <li key={index}>
                                                             <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
-                                                                <div 
-                                                                    style={{ 
-                                                                        width: '100%', 
-                                                                        height: '130px',
-                                                                        backgroundImage: `url(${item.imageRoot})`,
-                                                                        backgroundPosition: 'center',
-                                                                        backgroundSize: 'contain',
-                                                                        backgroundRepeat: 'no-repeat'
-                                                                    }}
-                                                                ></div>
-                                                            </Link>
-                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }} className='name-shoes'>{item.name}</Link>
-                                                        </li>
-                                                    )
-                                                }
-                                            })
-                                        }
-                                    </ul>
-                                </div> 
-                            </li>
-                            <li className='menu-list_item' >
-                                <Link to={path.OUTFIT_MLB} className='menu-list_item-name text-white pe-2'>Áo-quần</Link>
-                                <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item bg-white w-100 position-absolute rounded'>
-                                    <ul>
-                                    {
-                                            productTypes && productTypes.length > 0 &&
-                                            productTypes.map((item, index) => {
-                                                if (item.dataProductTypeCategory.type === categorieType.CLOTHES) {
-                                                    return (
-                                                        <li key={index}>
-                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
-                                                                <div 
-                                                                    style={{ 
-                                                                        width: '100%', 
+                                                                <div
+                                                                    style={{
+                                                                        width: '100%',
                                                                         height: '130px',
                                                                         backgroundImage: `url(${item.imageRoot})`,
                                                                         backgroundPosition: 'center',
@@ -193,26 +175,58 @@ function Navbar() {
                                     </ul>
                                 </div>
                             </li>
-                            <li className='menu-list_item' >                              
+                            <li className='menu-list_item' >
+                                <Link to={path.OUTFIT_MLB} className='menu-list_item-name text-white pe-2'>Áo-quần</Link>
+                                <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
+                                <div className='menu-item bg-white w-100 position-absolute rounded'>
+                                    <ul>
+                                        {
+                                            productTypes && productTypes.length > 0 &&
+                                            productTypes.map((item, index) => {
+                                                if (item.dataProductTypeCategory.type === categorieType.CLOTHES) {
+                                                    return (
+                                                        <li key={index}>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }}>
+                                                                <div
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        height: '130px',
+                                                                        backgroundImage: `url(${item.imageRoot})`,
+                                                                        backgroundPosition: 'center',
+                                                                        backgroundSize: 'contain',
+                                                                        backgroundRepeat: 'no-repeat'
+                                                                    }}
+                                                                ></div>
+                                                            </Link>
+                                                            <Link to={path[item.name.replace(' ', '_').toUpperCase()]} state={{ id: item.id }} className='name-shoes'>{item.name}</Link>
+                                                        </li>
+                                                    )
+                                                }
+                                            })
+                                        }
+                                    </ul>
+                                </div>
+                            </li>
+                            <li className='menu-list_item' >
                                 <span className='menu-list_item-name text-white pe-2'>Logo</span>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
                                 <div className='menu-item bg-white w-100 position-absolute rounded'>
                                     <ul>
                                         <li>
                                             <a href='#'>
-                                                <img src={logo.NY}/>
+                                                <img src={logo.NY} />
                                             </a>
                                             <a href='#' className='name-shoes' >NEW YORK YANKEES (NY)</a>
                                         </li>
                                         <li>
                                             <a href='#'>
-                                                <img src={logo.LA}/>
+                                                <img src={logo.LA} />
                                             </a>
                                             <a href='#' className='name-shoes'>LOS ANGELES DODGERS (LA)</a>
                                         </li>
                                         <li>
                                             <a href='#'>
-                                                <img src={logo.B}/>
+                                                <img src={logo.B} />
                                             </a>
                                             <a href='#' className='name-shoes'>BOSTON RED SOX (B)</a>
                                         </li>
@@ -230,11 +244,11 @@ function Navbar() {
                                 <div className='box-acc text-center rounded position-absolute bg-white'>
                                     {
                                         userLogin && isLogin ? <Link to={path.ACCOUNT}>{`${userLogin.firstName} ${userLogin.lastName}`}</Link>
-                                        : <Link to={path.LOGIN}>Đăng nhập</Link>
+                                            : <Link to={path.LOGIN}>Đăng nhập</Link>
                                     }
                                     {
                                         userLogin && isLogin ? <Link to={path.LOG_OUT} onClick={handleLogout}>Đăng xuất</Link>
-                                        : <Link to={path.REGISTER}>Đăng ký</Link>
+                                            : <Link to={path.REGISTER}>Đăng ký</Link>
                                     }
                                 </div>
                             </Link>
@@ -250,7 +264,7 @@ function Navbar() {
                                 <FontAwesomeIcon className='fz-18' icon={faCartShopping} />
                                 <span className='numberProduct position-absolute rounded-circle text-white text-center'>{countProductsCart}</span>
                             </Link>
-                            <ListCarts />   
+                            <ListCarts />
                         </div>
                     </div>
                 </div>

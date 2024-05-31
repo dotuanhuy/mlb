@@ -1,21 +1,15 @@
 import React, { useEffect, useState, memo } from 'react';
-import { connect } from 'react-redux';
-import './Account.scss'
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../HomePage/Navbar/Navbar';
 import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
-import jwt_decode from 'jwt-decode';
 import Account from './Account';
-import * as action from '../../store/actions'
+import * as actions from '../../store/actions'
 import { validate } from '../../validate/valiedate';
 import Banner from '../common/Banners/Banner';
-import { path } from '../../utils';
-
-const initState = {
-    firstName: '',
-    lastName: '',
-    email: ''
-}
+import { path, CustomToast } from '../../utils';
+import { Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const initInforChangePassword = {
     newPassword: '',
@@ -23,44 +17,39 @@ const initInforChangePassword = {
     rePassword: ''
 }
 
-function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogoutRedux}) {
-    const [userLogin, setUserLogin] = useState(initState)
+function ChangePassword({ titlePage }) {
+    const dispatch = useDispatch()
+    const { isChangePassword, message } = useSelector(state => state.auth)
     const [inforChangePassword, setInforChangePassword] = useState(initInforChangePassword);
     const [error, setError] = useState({})
     const navigate = useNavigate()
 
     useEffect(() => {
         document.title = titlePage
-        const token = window.localStorage.getItem('accessToken')
-        if (token) {
-            let tokenDecoded = jwt_decode(token)
-            setUserLogin({
-                id: tokenDecoded?.id,
-                firstName: tokenDecoded?.firstName,
-                lastName: tokenDecoded?.lastName,
-                email: tokenDecoded?.email
-            })
-        }
-        else {
-            navigate(path.LOGIN)
-        }
+        dispatch(actions.refreshStateAuth())
     }, [])
 
     useEffect(() => {
-        if (isResetPassword) {
-            alert("Đổi mật khẩu thành công, vui lòng đăng nhập lại")
-            fetLogoutRedux()
+        if (isChangePassword && message) {
+            toast.success((
+                <span className='fw-light' style={{ fontSize: 14, fontFamily: 'serif' }}>
+                    {message}
+                </span>
+            ), { autoClose: 3000 })
+            dispatch(actions.refreshStateAuth())
+            dispatch(actions.fetLogout())
             navigate(path.HOMEPAGE)
         }
-    }, [isResetPassword])
+        else if (!isChangePassword && message) {
+            toast.error(CustomToast(message), { autoClose: 3000 })
+        }
+    }, [isChangePassword, message])
 
-    const handleResetPassword = (e) => {
-        e.preventDefault()
+    const handleResetPassword = () => {
         let error = validate(inforChangePassword)
         setError(error)
         if (Object.keys(error).length === 0) {
-            inforChangePassword.id = userLogin.id
-            resetPasswordRedux(inforChangePassword)
+            dispatch(actions.changePassword(inforChangePassword))
         }
     }
 
@@ -68,28 +57,25 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
         <>
             <div className='account'>
                 <Navbar />
-                
-                <Banner categoryProduct='Thay đổi mật khẩu' title='Trang thay đổi mật khẩu'/>
+
+                <Banner categoryProduct='Thay đổi mật khẩu' title='Trang thay đổi mật khẩu' />
                 <div className='account-body p-5'>
                     <div className='container'>
                         <div className='row'>
                             <div className='col-3'>
                                 <div className='list-option'>
-                                    <Account userLogin={userLogin} activeType={'changePassword'}/>
+                                    <Account activeType={'changePassword'} />
                                 </div>
                             </div>
                             <div className='col-9'>
                                 <div className='list-option-select'>
                                     <h5>Đổi mật khẩu</h5>
-                                    <p>Để đảm bảo tính bảo mật vui lòng đặt mật khẩu với ít nhất 8 kí tự</p>
-                                    <form>
-                                        <div className="form-group pb-4">
-                                            <label className='label-input pb-2' htmlFor="exampleInputPassword1">MẬT KHẨU CŨ<span className='text-danger'>*</span></label>
-                                            <input 
-                                                type="password" 
-                                                className="form-control" 
-                                                id="exampleInputPassword1" 
-                                                placeholder="Mật khẩu cũ" 
+                                    <Form>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Mật khẩu cũ<span className='text-danger'>*</span></Form.Label>
+                                            <Form.Control
+                                                type="password"
+                                                placeholder="Nhập mật khẩu cũ"
                                                 onChange={(e) => {
                                                     setError({})
                                                     setInforChangePassword({
@@ -101,14 +87,12 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
                                             {
                                                 error && error.oldPassword ? <span className='error'>{error.oldPassword}</span> : ''
                                             }
-                                        </div>
-                                        <div className="form-group pb-4">
-                                            <label className='label-input pb-2' htmlFor="exampleInputPassword1">MẬT KHẨU MỚI<span className='text-danger'>*</span></label>
-                                            <input 
-                                                type="password" 
-                                                className="form-control" 
-                                                id="exampleInputPassword1" 
-                                                placeholder="Mật khẩu mới" 
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Mật khẩu mới<span className='text-danger'>*</span></Form.Label>
+                                            <Form.Control
+                                                type="password"
+                                                placeholder="Nhập mật khẩu mới"
                                                 onChange={(e) => {
                                                     setError({})
                                                     setInforChangePassword({
@@ -120,14 +104,12 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
                                             {
                                                 error && error.newPassword ? <span className='error'>{error.newPassword}</span> : ''
                                             }
-                                        </div>
-                                        <div className="form-group">
-                                            <label className='label-input pb-2' htmlFor="exampleInputPassword2">XÁC NHẬN LẠI MẬT KHẨU MỚI<span className='text-danger'>*</span></label>
-                                            <input 
-                                                type="password" 
-                                                className="form-control" 
-                                                id="exampleInputPassword2" 
-                                                placeholder="Xác nhận lại mật khẩu mới" 
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Xác nhận lại mật khẩu mới<span className='text-danger'>*</span></Form.Label>
+                                            <Form.Control
+                                                type="password"
+                                                placeholder="Nhập lại mật khẩu mới"
                                                 onChange={(e) => {
                                                     setError({})
                                                     setInforChangePassword({
@@ -139,22 +121,22 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
                                             {
                                                 error && error.rePassword ? <span className='error'>{error.rePassword}</span> : ''
                                             }
-                                        </div>
-                                        <button 
-                                            type="submit" 
-                                            className="btn w-10 mt-4 px-3 py-2 btn-resetPassword"
-                                            onClick={e => handleResetPassword(e)}
-                                        >
-                                            ĐẶT LẠI MẬT KHẨU
-                                        </button>
-                                    </form>
+                                        </Form.Group>
+                                    </Form>
+                                    <button
+                                        type="submit"
+                                        className="btn btn-root fw-500"
+                                        onClick={handleResetPassword}
+                                    >
+                                        Đặt lại mật khẩu
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <HomeFooter />
         </>
     );
@@ -162,14 +144,11 @@ function ChangePassword({titlePage, isResetPassword, resetPasswordRedux, fetLogo
 
 const mapStateToProps = state => {
     return {
-        isResetPassword: state.auth.isResetPassword
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        resetPasswordRedux: (data) => dispatch(action.resetPassword(data)),
-        fetLogoutRedux: () => dispatch(action.fetLogout())
     }
 }
 

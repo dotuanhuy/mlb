@@ -1,16 +1,16 @@
-import { passwordLength } from "../utils"
+import { passwordLength, VARIABLE } from "../utils"
 
-export const validate = (obj, value) => {
+export const validate = (obj) => {
     let arrKeys = Object.keys(obj)
     let errors = {}
     arrKeys.forEach((item, index) => {
         if (obj[item].length === 0) {
-            errors[item] = `Trường này không được để trống`
+            errors[item] = VARIABLE[item] ? `${VARIABLE[item]} không được để trống` : `Trường này không được để trống`
         }
         else if ((item === 'firstName' || item === 'lastName') && !(/[a-zA-Z]{2,}/.test(obj[item]))) {
             if (item === 'firstName')
                 errors[item] = 'Họ không đúng định dạng'
-            else 
+            else
                 errors[item] = 'Tên không đúng định dạng'
         }
         else if ((item === 'fullName') && !(/[a-zA-Z]{2,}/.test(obj[item]))) {
@@ -27,9 +27,14 @@ export const validate = (obj, value) => {
         }
         else if ((item === 'password' || item === 'newPassword' || item === 'rePassword') && !(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(obj[item]))) {
             errors[item] = `Mật khẩu phải có ít nhất 1 chữ thường, 1 chữ hoa, 1 số, 1 ký tự đặc biệt và độ dài tối thiểu ${passwordLength.minLength}`
-        } 
-        else if (item === 'rePassword' && obj[item] !== obj['newPassword']) {
-            errors[item] = 'Mật khẩu không khớp'
+        }
+        else if (item === 'rePassword') {
+            if (obj['newPassword'] && obj[item] !== obj['newPassword']) {
+                errors[item] = 'Mật khẩu không khớp'
+            }
+            else if (obj['password'] && obj[item] !== obj['password']) {
+                errors[item] = 'Mật khẩu không khớp'
+            }
         }
         else if (item === 'value' && !(/^(100|[1-9]?[0-9])$/).test(obj[item])) {
             errors[item] = `Mã giảm giá không hợp lệ, vui lòng nhập số (0-100)`

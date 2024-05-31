@@ -5,9 +5,10 @@ export const path = {
     LOGIN: '/login',
     LOG_OUT: '/logout',
     REGISTER: '/register',
+    FORGOT_PASSWORD: '/forgot-password',
     SYSTEM: '/system',
     LOGIN_SUCCESS: '/login-success',
-    
+
     MANAGE: '/system/manage',
     MANAGE_USER: '/system/manage/user',
     MANAGE_USER_CREATE: '/system/manage/user/create',
@@ -50,7 +51,7 @@ export const path = {
 
     // MANAGE_PRODUCTS_IMAGE_ADD: '/system/manage/products/add-image',
     // MANAGE_PRODUCTS_DESCRIPTION_ADD: '/system/manage/products/add-description',
-    
+
     GIAY_MLB: '/giay-mlb',
     BIGBALL_CHUNKY: '/giay-mlb-bigball-chunky',
     MULE: '/giay-mlb-mule',
@@ -134,7 +135,7 @@ export const categorieType = {
     CLOTHES: 'AQ'
 }
 
-    
+
 export const listShoesSandals = {
     SHOES: 'G1',
     SANDAL: 'G2'
@@ -254,4 +255,16 @@ export const paymentMethod = {
 export const KEY_ORDERID = 'TqbZCDy26E'
 
 export const BEGIN_YEAR = 2023
-export const NEXT_YEAR = 2 
+export const NEXT_YEAR = 2
+
+export const VARIABLE = {
+    email: 'Email',
+    password: 'Mật khẩu',
+    rePassword: 'Mật khẩu',
+    firstName: 'Họ',
+    lastName: 'Tên',
+    fullName: 'Họ và tên',
+    phone: 'Số điện thoại',
+    value: 'Mã giảm giá',
+    price: 'Giá bán',
+} 

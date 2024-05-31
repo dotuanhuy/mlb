@@ -1,8 +1,7 @@
-import { createAxios } from "../axiosJWT";
+import axiosJWT from "../axiosJWT";
 import { API_VERSION } from "../utils";
 
 const api = `/api/${API_VERSION}/report`
-const axiosJWT = createAxios()
 
 const getMonthlyRevenueService = (year) => {
     return axiosJWT.get(`${api}/month?year=${year}`)

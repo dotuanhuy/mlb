@@ -1,69 +1,73 @@
 import axios from "axios";
-import { getRefreshToken, handleLogoutAPI } from "./services/userService";
 import { refreshTokenService } from "./services/authService";
 import { API_VERSION } from "./utils";
 
-const api = `/api/${API_VERSION}/auth`
+const api = `/api/${API_VERSION}`
 
-export const createAxios = () => {
-    const instance = axios.create({
-        baseURL: 'http://localhost:8080',
-        withCredentials: true,
-        timeout: 3*1000, // 3s,
-        // headers: {
-        //     'Content-Type': 'application/json',
-        // }
-    })
-    instance.interceptors.request.use(
-        async (config) => {
-            if (config.url.indexOf(`${api}/refresh`) >= 0) {
-                return config
-            }
-            const token = await instance.getLocalAccessToken()
-            config.headers['X-Token'] = 'Bearer ' + token
+const instance = axios.create({
+    baseURL: 'http://localhost:8080',
+    withCredentials: true,
+    timeout: 3 * 1000, // 3s,
+    // headers: {
+    //     'Content-Type': 'application/json',
+    // }
+})
+instance.interceptors.request.use(
+    async (config) => {
+        if (config.url.indexOf(`${api}/auth/refresh`) >= 0) {
             return config
-        },
-        (err) => {
-            console.log('error: ', err)
-            return Promise.reject(err);
         }
-    )
-    instance.interceptors.response.use(
-        async (response) => {
-            const config = response.config
-            if (config.url.indexOf(`${api}/login`) >= 0 || config.url.indexOf(`${api}/refresh`) >= 0) {
+        const token = await instance.getLocalAccessToken()
+        config.headers['X-Token'] = 'Bearer ' + token
+        return config
+    },
+    (err) => {
+        console.log('error: ', err)
+        return Promise.reject(err);
+    }
+)
+instance.interceptors.response.use(
+    async (response) => {
+        const config = response.config
+        const { errCode, errMessage } = response?.data
+        if (config.url.indexOf(`${api}/auth/login`) >= 0 || config.url.indexOf(`${api}/auth/refresh`) >= 0) {
+            return response.data
+        }
+        else if (config.url.indexOf(`${api}/user/update/name`) >= 0 && errCode === 0) {
+            const { accessToken } = response?.data
+            if (accessToken) {
+                await instance.setLocalAccessToken(accessToken)
                 return response.data
             }
-            const {errCode, errMessage} = response?.data
-            if (errCode && errCode === 401) {
-                if (errMessage && errMessage === 'jwt expired') {
-                    const {accessToken} = await refreshTokenService()
-                    if (accessToken) {
-                        config.headers['X-Token'] = accessToken
-                        await instance.setLocalAccessToken(accessToken)
-                        return instance(config)
-                    }
+        }
+        if (errCode && errCode === 401) {
+            if (errMessage && errMessage === 'jwt expired') {
+                const { accessToken } = await refreshTokenService()
+                if (accessToken) {
+                    config.headers['X-Token'] = accessToken
+                    await instance.setLocalAccessToken(accessToken)
+                    return instance(config)
                 }
             }
-            return response.data
-        },
-        async (error) => {
-            const status = error && error.response && error.response.status
-            if (status === 401) {
-                window.location.href = '/'
-                return Promise.reject(error)
-            }
+        }
+        return response.data
+    },
+    async (error) => {
+        const status = error && error.response && error.response.status
+        if (status === 401) {
+            window.location.href = '/'
             return Promise.reject(error)
         }
-    )
-
-    instance.setLocalAccessToken = async (token) => {
-        window.localStorage.setItem('accessToken', token)
+        return Promise.reject(error)
     }
+)
 
-    instance.getLocalAccessToken = async () => {
-        return window.localStorage.getItem('accessToken') ? window.localStorage.getItem('accessToken') : null
-    }
-
-    return instance
+instance.setLocalAccessToken = async (token) => {
+    window.localStorage.setItem('accessToken', token)
 }
+
+instance.getLocalAccessToken = async () => {
+    return window.localStorage.getItem('accessToken') ? window.localStorage.getItem('accessToken') : null
+}
+
+export default instance

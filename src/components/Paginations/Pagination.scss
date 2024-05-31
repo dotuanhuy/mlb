@@ -6,22 +6,23 @@
     li {
         padding: 0 2px;
 
-        &.active {
+        &.active-pag {
             span {
-                background-color: #420500 !important;  
+                background-color: #420500 !important;
                 border-color: #420500 !important;
                 color: #fff !important;
             }
         }
+
         span {
-            background-color:#cccccc85 !important;  
+            background-color: #cccccc85 !important;
             // border-color: #ccc !important;
             color: #333 !important;
             font-weight: 600 !important;
             cursor: pointer;
 
             &:hover {
-                background-color: #420500 !important;  
+                background-color: #420500 !important;
                 border-color: #420500 !important;
                 color: #fff !important;
             }

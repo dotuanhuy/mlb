@@ -1,8 +1,7 @@
 import axios from "../axios";
-import {createAxios} from '../axiosJWT'
+import axiosJWT from '../axiosJWT'
 import { API_VERSION } from "../utils";
 
-const axiosJWT = createAxios()
 const api = `/api/${API_VERSION}/producttype`
 
 
@@ -47,7 +46,7 @@ const getProductTypeByIdService = (id) => {
 }
 
 const createProductTypeService = (formData, type) => {
-    return axiosJWT.post(`${api}/create?type=${type}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
+    return axiosJWT.post(`${api}/create?type=${type}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
 const deleteProductTypeService = (id) => {
@@ -55,7 +54,7 @@ const deleteProductTypeService = (id) => {
 }
 
 const updateProductTypeService = (formData, id, type) => {
-    return axiosJWT.post(`${api}/update?type=${type}&id=${id}`, formData, { headers : { 'Content-Type': 'multipart/form-data' } })
+    return axiosJWT.post(`${api}/update?type=${type}&id=${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
 export {

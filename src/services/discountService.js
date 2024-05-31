@@ -1,8 +1,7 @@
 import axios from "../axios";
 import { API_VERSION } from "../utils";
-import {createAxios} from '../axiosJWT'
+import axiosJWT from '../axiosJWT'
 
-const axiosJWT = createAxios()
 const api = `/api/${API_VERSION}/discount`
 
 const getAllDiscountsService = () => {
@@ -13,12 +12,12 @@ const getLimitDiscountService = (page) => {
     return axiosJWT.get(`${api}/limit?page=${page}`)
 }
 
-const createDiscountService = ({code, value, description}) => {
-    return axiosJWT.post(`${api}/create`, {code, value, description})
+const createDiscountService = ({ code, value, description }) => {
+    return axiosJWT.post(`${api}/create`, { code, value, description })
 }
 
-const updateDiscountService = ({id, code, value, description}) => {
-    return axiosJWT.post(`${api}/update?id=${id}`, {code, value, description})
+const updateDiscountService = ({ id, code, value, description }) => {
+    return axiosJWT.post(`${api}/update?id=${id}`, { code, value, description })
 }
 
 const deleteDiscountService = (id) => {

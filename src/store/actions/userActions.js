@@ -1,8 +1,8 @@
 import actionTypes from "./actionTypes";
 import { allCode } from "../../utils";
 
-import { 
-    createUserService, 
+import {
+    createUserService,
     updateUserService,
     getCountUsersService,
     getAllUsers,
@@ -13,7 +13,8 @@ import {
     getLimitUserService,
     registerSevice,
     sendMailService,
-    verifyOtpService
+    verifyOtpService,
+    updateNameService
 } from "../../services/userService";
 
 export const refreshStoreUser = () => {
@@ -34,7 +35,7 @@ export const refreshStoreUser = () => {
 export const createNewUser = (data, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await createUserService(data)
+            const res = await createUserService(data)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_NEW_USER_SUCCESS
@@ -47,7 +48,7 @@ export const createNewUser = (data, page) => {
                     type: actionTypes.CREATE_NEW_USER_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('createNewUser error: ', e)
             dispatch({
                 type: actionTypes.CREATE_NEW_USER_FAILED
@@ -59,7 +60,7 @@ export const createNewUser = (data, page) => {
 export const fetAllUsers = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllUsers()  
+            const res = await getAllUsers()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_USERS_SUCCESS,
@@ -71,7 +72,7 @@ export const fetAllUsers = () => {
                     type: actionTypes.FETCH_ALL_USERS_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('fetAllUsers error: ', e)
             dispatch({
                 type: actionTypes.FETCH_ALL_USERS_FAILED
@@ -83,7 +84,7 @@ export const fetAllUsers = () => {
 export const getAllAddress = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllAddressService()
+            const res = await getAllAddressService()
             if (res && res.errCode === 0) {
                 let data = res.data.map(item => item.name)
                 dispatch({
@@ -97,19 +98,19 @@ export const getAllAddress = () => {
                     type: actionTypes.GET_ALL_ADDRESS_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('getAllAddress error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_ADDRESS_FAILED
             })
         }
-    }   
+    }
 }
 
 export const getAllRoles = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getAllRolesService()
+            const res = await getAllRolesService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_ROLES_SUCCESS,
@@ -121,7 +122,7 @@ export const getAllRoles = () => {
                     type: actionTypes.GET_ALL_ROLES_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('getAllRoles error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_ROLES_FAILED
@@ -134,7 +135,7 @@ export const getAllRoles = () => {
 export const deleteUser = (id, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await deleteUserService(id)
+            const res = await deleteUserService(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.DELTE_USER_SUCCESS
@@ -146,7 +147,7 @@ export const deleteUser = (id, page) => {
                     type: actionTypes.DELTE_USER_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('deleteUser error: ', e)
             dispatch({
                 type: actionTypes.DELTE_USER_FAILED
@@ -158,7 +159,7 @@ export const deleteUser = (id, page) => {
 export const updateUser = (data, id, page) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await updateUserService(data, id)
+            const res = await updateUserService(data, id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.EDIT_USER_SUCCESS
@@ -176,7 +177,7 @@ export const updateUser = (data, id, page) => {
                     type: actionTypes.EDIT_USER_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('deleteUser error: ', e)
             dispatch({
                 type: actionTypes.EDIT_USER_FAILED
@@ -188,19 +189,19 @@ export const updateUser = (data, id, page) => {
 export const getCountUsers = () => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getCountUsersService()
+            const res = await getCountUsersService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_COUNT_USERS_SUCCESS,
                     data: res.data
                 })
             }
-            else {  
+            else {
                 dispatch({
                     type: actionTypes.GET_COUNT_USERS_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('getUserById error: ', e)
             dispatch({
                 type: actionTypes.GET_COUNT_USERS_FAILED
@@ -213,20 +214,20 @@ export const getCountUsers = () => {
 export const getUserById = (id) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getUserByIdService(id)
+            const res = await getUserByIdService(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_USER_BY_ID_SUCCESS,
                     data: res.data
                 })
             }
-            else {  
+            else {
                 alert(res.errMessage)
                 dispatch({
                     type: actionTypes.GET_USER_BY_ID_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('getUserById error: ', e)
             dispatch({
                 type: actionTypes.GET_USER_BY_ID_FAILED
@@ -242,7 +243,7 @@ export const refreshIsloadingState = () => {
             dispatch({
                 type: actionTypes.LOADING_SUCCESS
             })
-        } catch(e) {
+        } catch (e) {
             console.log('refreshIsloadingState error: ', e)
             dispatch({
                 type: actionTypes.LOADING_FAILED
@@ -251,11 +252,11 @@ export const refreshIsloadingState = () => {
     }
 }
 
-export const getLimitUsers = (page, ) => {
+export const getLimitUsers = (page,) => {
     return async (dispatch, getState) => {
         try {
             const newPage = +page - 1
-            let res = await getLimitUserService(newPage)
+            const res = await getLimitUserService(newPage)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_LIMIT_USERS_SUCCESS,
@@ -279,70 +280,113 @@ export const getLimitUsers = (page, ) => {
 export const register = (data) => {
     return async (dispatch, getState) => {
         try {
-            let res = await registerSevice(data)
+            const res = await registerSevice(data)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.REGISTER,
-                    data: res
+                    message: res.errMessage,
+                    errCode: res.errCode
                 })
             }
             else {
                 dispatch(refreshStoreUser())
             }
         } catch (e) {
-            console.log('register error: ',e)
+            console.log('register error: ', e)
             dispatch(refreshStoreUser())
+            dispatch({
+                type: actionTypes.REGISTER,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
         }
     }
 }
 
-export const sendMail = (email) => {
+export const sendMail = (email, type) => {
     return async (dispatch, getState) => {
-    try {
-        let res = await sendMailService(email)
-        if (res && res.errCode === 0) {
-            dispatch({
-                type: actionTypes.SEND_MAIL_SUCCESS,
-                data: res.data
-            })
-        }
-        else {
+        try {
+            const res = await sendMailService(email, type)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.SEND_MAIL_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.SEND_MAIL_FAILED,
+                    message: res.errMessage,
+                    errCode: res.errCode
+                })
+            }
+        } catch (e) {
             dispatch({
                 type: actionTypes.SEND_MAIL_FAILED,
-                data: res
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
             })
         }
-    } catch (e) {
-        console.log('sendMail error: ',e)
-        dispatch({
-            type: actionTypes.SEND_MAIL_FAILED,
-        })
-    }
     }
 }
 
-export const verifyOtp = ({otp, email}) => {
+export const verifyOtp = ({ otp, email }) => {
     return async (dispatch, getState) => {
-    try {
-        let res = await verifyOtpService({otp, email})
-        if (res && res.errCode === 0) {
-            dispatch({
-                type: actionTypes.VERIFY_OTP_SUCCESS,
-                isVerify: true,
-                data: res.data 
-            })
-        }
-        else {
+        try {
+            const res = await verifyOtpService({ otp, email })
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.VERIFY_OTP_SUCCESS,
+                    isVerify: res.isVerify,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.VERIFY_OTP_FAILED,
+                    message: res.errMessage
+                })
+            }
+        } catch (e) {
+            console.log('verifyOtp error: ', e)
             dispatch({
                 type: actionTypes.VERIFY_OTP_FAILED,
+                message: e?.response?.data?.errMessage,
             })
-            alert(res.errMessage)
         }
-    } catch (e) {
-        console.log('verifyOtp error: ',e)
-        dispatch({
-            type: actionTypes.VERIFY_OTP_FAILED,
-        })
     }
+}
+
+export const refreshStateMessage = () => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({
+                type: actionTypes.REFRESH_STATE_AUTH
+            })
+        } catch (e) {
+            console.log('refreshStateMessage error: ', e)
+        }
+    }
+}
+
+export const updateName = ({ firstName, lastName }) => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await updateNameService({ firstName, lastName })
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.UPDATE_NAME_USER_SUCCESS,
+                    message: res?.errMessage
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.UPDATE_NAME_USER_FAILED,
+                    message: res?.errMessage
+                })
+            }
+        } catch (e) {
+            console.log('updateName error: ', e)
+        }
     }
 }

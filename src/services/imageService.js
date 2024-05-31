@@ -1,8 +1,7 @@
 import axios from "../axios";
-import {createAxios} from '../axiosJWT'
+import axiosJWT from '../axiosJWT'
 import { API_VERSION } from "../utils";
 
-const axiosJWT = createAxios()
 const api = `/api/${API_VERSION}/image`
 
 const getAllImageProductService = () => {
@@ -24,11 +23,11 @@ const getAllImagesByProductIdService = (id) => {
 }
 
 const addImageProductService = (formData, id, type) => {
-    return axiosJWT.post(`${api}/change?productId=${id}&type=${type}`, formData, { headers : { 'Content-type': 'multipart/form-data' } })
+    return axiosJWT.post(`${api}/change?productId=${id}&type=${type}`, formData, { headers: { 'Content-type': 'multipart/form-data' } })
 }
 
 const deleteImageProductService = (formData, type) => {
-    return axiosJWT.post(`${api}/delete?type=${type}`, formData, { headers : { 'Content-type': 'multipart/form-data' } })
+    return axiosJWT.post(`${api}/delete?type=${type}`, formData, { headers: { 'Content-type': 'multipart/form-data' } })
 }
 
 const getImageProductByCategoryService = (category) => {

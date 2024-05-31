@@ -3,9 +3,9 @@ import './Loading.scss'
 import { RotatingTriangles } from 'react-loader-spinner'
 
 function Loading() {
-    
-    return (    
-        <div className='loading w-100 h-100 z-index-1000 d-flex justify-content-center align-items-center'>
+
+    return (
+        <div className='loading w-100 h-100 d-flex justify-content-center align-items-center'>
             <RotatingTriangles
                 visible={true}
                 height="80"

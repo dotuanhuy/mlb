@@ -1,29 +1,36 @@
 import React, { useEffect, useState, memo, useRef } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Navbar from '../HomePage/Navbar/Navbar';
 import './Login.scss'
 import { Link } from 'react-router-dom';
-import { path,  } from '../../utils'
+import { path, CustomToast } from '../../utils'
 import * as actions from '../../store/actions'
 import { useNavigate } from 'react-router-dom';
 import LoginOrther from '../common/loginOrthers/LoginOrther';
 import Banner from '../common/Banners/Banner';
 import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
+import { toast } from 'react-toastify';
+import { Form } from 'react-bootstrap';
+import { validateRequire } from '../../validate/valiedate';
 
 const initState = {
     email: '',
     password: ''
 }
 
-function Login({titlePage, user, isLogin, fetLoginRedux}) {
+function Login({ titlePage, user, isLogin }) {
+    const dispatch = useDispatch()
+    const { message } = useSelector(state => state.auth)
     const [dataInput, setDataInput] = useState(initState)
+    const [errors, setErrors] = useState({})
     const navigate = useNavigate()
     const body = useRef()
-    const initialRender  = useRef(true)
-    
+    const initialRender = useRef(true)
+
     useEffect(() => {
+        dispatch(actions.refreshStoreUser)
         document.title = titlePage
-        if(isLogin) {
+        if (isLogin) {
             navigate(path.HOMEPAGE)
         }
         if (initialRender.current) {
@@ -47,11 +54,18 @@ function Login({titlePage, user, isLogin, fetLoginRedux}) {
             if (body.current) {
                 window.scrollTo({
                     behavior: "smooth",
-                    top: body.current.offsetTop - 80
+                    top: body.current.offsetTop - 140
                 });
             }
         }
     }, [body.current])
+
+    useEffect(() => {
+        if (message) {
+            toast.error(CustomToast(message), { autoClose: 3000 })
+            dispatch(actions.refreshStateAuth())
+        }
+    }, [message])
 
     useEffect(() => {
         if (isLogin && user.roleId === 1) {
@@ -63,76 +77,94 @@ function Login({titlePage, user, isLogin, fetLoginRedux}) {
         }
     }, [isLogin])
 
-    const handleLogin = (e) => {
-        e.preventDefault()
-        fetLoginRedux(dataInput.email, dataInput.password)
+    const handleLogin = () => {
+        const errorEmail = validateRequire('Email', dataInput.email)
+        const errorPassword = validateRequire('Mật khẩu', dataInput.password)
+        setErrors({
+            email: errorEmail,
+            password: errorPassword
+        })
+        if (!errorEmail && !errorPassword) {
+            dispatch(actions.fetchLogin(dataInput.email, dataInput.password))
+        }
     }
 
     return (
         <div className='container-not'>
-            <Navbar />  
+            <Navbar />
             <div className='login'>
                 <div className='login-container'>
-                    <Banner categoryProduct='Đăng nhập tài khoản' title='Đăng nhập tài khoản'/>
+                    <Banner categoryProduct='Đăng nhập tài khoản' title='Đăng nhập tài khoản' />
                     <div ref={body} className='login-box'>
-                        <div className='login-form-container'>
-                            <div className='login-form-header'>
-                                <div className='title title-login'>
-                                    <Link to='#'>Đăng nhập</Link>
+                        <div className='login-form-container shadow-sm mb-5 bg-body rounded'>
+                            <div className='login-form-header d-flex align-items-center justify-content-around mb-2 border-bottom'>
+                                <div className='title title-login position-relative d-flex align-items-center justify-content-center'>
+                                    <Link className='fs-18' to='#'>Đăng nhập</Link>
                                 </div>
-                                <div className='title'>
-                                    <Link to={path.REGISTER}>Đăng ký</Link>
-                                </div> 
+                                <div className='title d-flex align-items-center justify-content-center'>
+                                    <Link className='fs-18 text-muted' to={path.REGISTER}>Đăng ký</Link>
+                                </div>
                             </div>
-                            <div className='login-form-input'>
-                                <form className='p-4'>
-                                    <div className="form-group pb-4">
-                                        <label className='label-input' htmlFor="exampleInputEmail1">EMAIL<span className='text-danger'>*</span></label>
-                                        <input 
-                                            type="email" 
-                                            className="form-control" 
-                                            id="exampleInputEmail1" 
-                                            aria-describedby="emailHelp" 
-                                            placeholder="Nhập Địa chỉ Email" 
+                            <div className='login-form-input p-4'>
+                                <Form>
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label className='fw-500'>Email<span className='text-danger'>*</span></Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Nhập địa chỉ email..."
                                             value={dataInput.email}
-                                            onChange={(e) => setDataInput({
-                                                ...dataInput,
-                                                email: e.target.value
-                                            })}
+                                            onChange={(e) => {
+                                                setErrors({
+                                                    ...errors,
+                                                    email: ''
+                                                })
+                                                setDataInput({
+                                                    ...dataInput,
+                                                    email: e.target.value
+                                                })
+                                            }}
                                         />
-                                    </div>
-                                    <div className="form-group">
-                                        <label className='label-input' htmlFor="exampleInputPassword1">MẬT KHẨU<span className='text-danger'>*</span></label>
-                                        <input 
-                                            type="password" 
-                                            className="form-control" 
-                                            id="exampleInputPassword1" 
-                                            placeholder="Nhập Mật khẩu" 
+                                        {
+                                            errors && errors.email ? <span className='error'>{errors.email}</span> : ''
+                                        }
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label className='fw-500'>Mật khẩu<span className='text-danger'>*</span></Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Nhập mật khẩu..."
                                             value={dataInput.password}
-                                            onChange={(e) => setDataInput({
-                                                ...dataInput,
-                                                password: e.target.value
-                                            })}
+                                            onChange={(e) => {
+                                                setErrors({
+                                                    ...errors,
+                                                    password: ''
+                                                })
+                                                setDataInput({
+                                                    ...dataInput,
+                                                    password: e.target.value
+                                                })
+                                            }}
                                         />
-                                    </div>
-                                    <div className="form-group py-2">
-                                        <label >
-                                            <a href='#' className="form-forgot-label" >Quên mật khẩu?</a>
-                                        </label>
-                                    </div>
-                                    <button 
-                                        type="submit" 
-                                        className="btn btn-primary w-100 btn-login"
-                                        onClick={(e) => handleLogin(e)}
-                                    >
-                                        ĐĂNG NHẬP
-                                    </button>
-                                    <div className='commit'>
-                                        MLB Việt Nam cam kết bảo mật và sẽ không bao giờ đăng
-                                        <br></br>
-                                        hay chia sẻ thông tin mà chưa có được sự đồng ý của bạn.
-                                    </div>
-                                </form>
+                                        {
+                                            errors && errors.password ? <span className='error'>{errors.password}</span> : ''
+                                        }
+                                    </Form.Group>
+                                </Form>
+                                <div className="form-group mb-2">
+                                    <Link to={path.FORGOT_PASSWORD} className="text-sm-hover" >Quên mật khẩu?</Link>
+                                </div>
+                                <button
+                                    className="btn btn-root w-100 fw-500"
+                                    onClick={handleLogin}
+                                >
+                                    ĐĂNG NHẬP
+                                </button>
+                                <div className='my-2 fs-12 fw-500 text-muted text-center'>
+                                    MLB Việt Nam cam kết bảo mật và sẽ không bao giờ đăng
+                                    <br></br>
+                                    hay chia sẻ thông tin mà chưa có được sự đồng ý của bạn.
+                                </div>
                                 <div className='line-break'>
                                     <span>hoặc đăng nhập qua</span>
                                 </div>
@@ -156,7 +188,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetLoginRedux: (email, password) => dispatch(actions.fetLogin(email, password))
     }
 }
 

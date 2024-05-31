@@ -1,8 +1,7 @@
 import axios from "../axios";
-import {createAxios} from '../axiosJWT'
+import axiosJWT from '../axiosJWT'
 import { API_VERSION } from "../utils";
 
-const axiosJWT = createAxios()
 const api = `/api/${API_VERSION}/user`
 
 const createUserService = (data) => {
@@ -11,7 +10,7 @@ const createUserService = (data) => {
 
 const updateUserService = (data, id) => {
     return axiosJWT.post(`${api}/update?id=${id}`, data)
-}   
+}
 
 const getCountUsersService = () => {
     return axiosJWT.get(`${api}/count`)
@@ -28,7 +27,7 @@ const getAllAddressService = () => {
 const getAllRolesService = () => {
     return axiosJWT.get(`${api}/roles`)
 }
- 
+
 const deleteUserService = (id) => {
     return axiosJWT.delete(`${api}/delete?id=${id}`)
 }
@@ -45,12 +44,16 @@ const registerSevice = (data) => {
     return axios.post(`${api}/register`, data)
 }
 
-const sendMailService = (email) => {
-    return axios.post(`${api}/send-mail`, { email })
+const sendMailService = (email, type) => {
+    return axios.post(`${api}/send-mail`, { email, type })
 }
 
-const verifyOtpService = ({otp, email}) => {
-    return axios.post(`${api}/verifyotp`, {otp, email})
+const verifyOtpService = ({ otp, email }) => {
+    return axios.post(`${api}/verifyotp`, { otp, email })
+}
+
+const updateNameService = ({ firstName, lastName }) => {
+    return axiosJWT.post(`${api}/update/name`, { firstName, lastName })
 }
 
 export {
@@ -65,5 +68,6 @@ export {
     getLimitUserService,
     registerSevice,
     sendMailService,
-    verifyOtpService
+    verifyOtpService,
+    updateNameService
 }

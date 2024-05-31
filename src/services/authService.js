@@ -1,8 +1,7 @@
 import axios from "../axios";
-import {createAxios} from '../axiosJWT'
+import axiosJWT from '../axiosJWT'
 import { API_VERSION } from "../utils";
 
-const axiosJWT = createAxios()
 const api = `/api/${API_VERSION}/auth`
 
 const refreshTokenService = () => {
@@ -25,8 +24,12 @@ const handleLogoutAPI = () => {
     return axiosJWT.post(`${api}/logout`)
 }
 
-const resetPasswordService = (data) => {
-    return axiosJWT.post(`${api}/password/reset`, data)
+const changePasswordService = ({ newPassword, oldPassword }) => {
+    return axiosJWT.post(`${api}/password/change`, { newPassword, oldPassword })
+}
+
+const forgotPasswordService = ({ email, password }) => {
+    return axios.post(`${api}/password/forgot`, { email, password })
 }
 
 export {
@@ -35,5 +38,6 @@ export {
     handleLoginAPI,
     loginWithGoogleService,
     handleLogoutAPI,
-    resetPasswordService
+    changePasswordService,
+    forgotPasswordService
 }

@@ -5,12 +5,12 @@ import { useNavigate, createSearchParams, useLocation } from 'react-router-dom';
 import { path, limit_page } from '../../utils';
 
 function Pagination({
-    countProduct, 
-    countUser, 
-    pathPage, 
-    currentPage, 
+    countProduct,
+    countUser,
+    pathPage,
+    currentPage,
     countProductType,
-    pname=null,
+    pname = null,
     countProductsFavourite,
     countDiscount,
     countOrder
@@ -22,28 +22,28 @@ function Pagination({
     const [isHidenEnd, setIsHidenEnd] = useState(false)
     const [isHidenPrev, setIsHidenPrev] = useState(true)
     const [isHidenBack, setIsHidenBack] = useState(false)
-    const location = useLocation()  
-    
+    const location = useLocation()
+
     useEffect(() => {
         // let maxPage = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_USER_CREATE  ? countUser : countProduct)  / +limit_page)
         let maxPage = 0
         if (pathPage === path.MANAGE_USER || pathPage === path.MANAGE_USER_CREATE) {
-            maxPage =  Math.ceil(countUser / +limit_page)
+            maxPage = Math.ceil(countUser / +limit_page)
         }
         else if (pathPage === path.FAVOURITE) {
-            maxPage =  Math.ceil(countProductsFavourite / +limit_page)
+            maxPage = Math.ceil(countProductsFavourite / +limit_page)
         }
         else if (pathPage === path.MANAGE_PRODUCT_TYPE) {
-            maxPage =  Math.ceil(countProductType / +limit_page)
+            maxPage = Math.ceil(countProductType / +limit_page)
         }
         else if (pathPage === path.MANAGE_DISCOUNT || pathPage === path.MANAGE_DISCOUNT_CREATE) {
-            maxPage =  Math.ceil(countDiscount / +limit_page)
+            maxPage = Math.ceil(countDiscount / +limit_page)
         }
         else if (pathPage === path.MANAGE_ORDER) {
-            maxPage =  Math.ceil(countOrder / +limit_page)
+            maxPage = Math.ceil(countOrder / +limit_page)
         }
         else {
-            maxPage =  Math.ceil(countProduct / +limit_page)
+            maxPage = Math.ceil(countProduct / +limit_page)
         }
         let end = (+currentPageP + 2) > maxPage ? maxPage : (+currentPageP + 2)
         let start = (+currentPageP - 2) <= 0 ? 1 : (+currentPageP - 2)
@@ -89,7 +89,7 @@ function Pagination({
         navigate({
             pathname: pathPage,
             search: createSearchParams(object).toString(),
-        }, {state: location.state})
+        }, { state: location.state })
     }
 
     const handleToBegin = () => {
@@ -103,31 +103,31 @@ function Pagination({
         navigate({
             pathname: pathPage,
             search: createSearchParams(object).toString()
-        }, {state: location.state})
-    }   
+        }, { state: location.state })
+    }
 
     const handleToEnd = () => {
         // let end = Math.ceil((pathPage === path.MANAGE || pathPage === path.MANAGE_USER_CREATE ?  countUser : countProduct) / +limit_page)
         let end = 0
         if (pathPage === path.MANAGE_USER || pathPage === path.MANAGE_USER_CREATE) {
-            end =  Math.ceil(countUser / +limit_page)
+            end = Math.ceil(countUser / +limit_page)
         }
         else if (pathPage === path.FAVOURITE) {
-            end =  Math.ceil(countProductsFavourite / +limit_page)
+            end = Math.ceil(countProductsFavourite / +limit_page)
         }
         else if (pathPage === path.MANAGE_PRODUCT_TYPE) {
-            end =  Math.ceil(countProductType / +limit_page)
+            end = Math.ceil(countProductType / +limit_page)
         }
         else if (pathPage === path.MANAGE_DISCOUNT || pathPage === path.MANAGE_DISCOUNT_CREATE) {
-            end =  Math.ceil(countDiscount / +limit_page)
+            end = Math.ceil(countDiscount / +limit_page)
         }
         else if (pathPage === path.MANAGE_ORDER) {
             end = Math.ceil(countOrder / +limit_page)
         }
         else {
-            end =  Math.ceil(countProduct / +limit_page)
+            end = Math.ceil(countProduct / +limit_page)
         }
-        
+
         setCurrentPageP(end)
         let object = pname ? {
             page: end,
@@ -138,66 +138,66 @@ function Pagination({
         navigate({
             pathname: pathPage,
             search: createSearchParams(object).toString()
-        }, {state: location.state})
+        }, { state: location.state })
     }
 
     return (
         <>
             {
-                arrPage.length === 0 ? 
-                <div className='not-product'>Không có sản phẩm thỏa mãn</div>
-                :
-                <nav aria-label="...">
-                    <ul className="pagination">
-                        {   
-                            isHidenBegin ? '' :
-                            <li 
-                                className='page-item'
-                                onClick={handleToBegin}
-                            >
-                                <span className="page-link" aria-disabled="true">&laquo;</span>
-                            </li>
-                        }
-                        {
-                            isHidenPrev ? '' : 
-                            <li className="page-item">
-                                <span className="page-link" >...</span>
-                            </li>
-                        }
-                        {
-                            arrPage.length > 0 && arrPage.map((item, index) => {
-                                return (
-                                    <li 
-                                        key={index} 
-                                        className={item === +currentPage ? 'page-item active' : 'page-item'} 
-                                        aria-current='1'
+                arrPage.length === 0 ?
+                    <div className='not-product'>Không có sản phẩm thỏa mãn</div>
+                    :
+                    <nav aria-label="...">
+                        <ul className="pagination">
+                            {
+                                isHidenBegin ? '' :
+                                    <li
+                                        className='page-item'
+                                        onClick={handleToBegin}
                                     >
-                                        <span 
-                                            className="page-link" 
-                                            data-page={item}
-                                            onClick={(e) => handleChangePage(e)}
-                                        >{item}</span>
+                                        <span className="page-link" aria-disabled="true">&laquo;</span>
                                     </li>
-                                )
-                            })
-                        }
-                        {
-                            isHidenBack ? '' : 
-                            <li className="page-item">
-                                <span className="page-link" >...</span>
-                            </li>
-                        }
-                        {
-                            isHidenEnd || arrPage.length === 0  ? '' :
-                            <li 
-                                className='page-item'
-                                onClick={handleToEnd}
-                            >
-                                <span className="page-link" >&raquo;</span>
-                            </li>
-                        }
-                    </ul>
-                </nav>
+                            }
+                            {
+                                isHidenPrev ? '' :
+                                    <li className="page-item">
+                                        <span className="page-link" >...</span>
+                                    </li>
+                            }
+                            {
+                                arrPage.length > 0 && arrPage.map((item, index) => {
+                                    return (
+                                        <li
+                                            key={index}
+                                            className={item === +currentPage ? 'page-item active-pag' : 'page-item'}
+                                            aria-current='1'
+                                        >
+                                            <span
+                                                className="page-link"
+                                                data-page={item}
+                                                onClick={(e) => handleChangePage(e)}
+                                            >{item}</span>
+                                        </li>
+                                    )
+                                })
+                            }
+                            {
+                                isHidenBack ? '' :
+                                    <li className="page-item">
+                                        <span className="page-link" >...</span>
+                                    </li>
+                            }
+                            {
+                                isHidenEnd || arrPage.length === 0 ? '' :
+                                    <li
+                                        className='page-item'
+                                        onClick={handleToEnd}
+                                    >
+                                        <span className="page-link" >&raquo;</span>
+                                    </li>
+                            }
+                        </ul>
+                    </nav>
             }
         </>
     );

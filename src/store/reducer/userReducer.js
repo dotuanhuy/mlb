@@ -5,37 +5,38 @@ const initState = {
     roles: [],
     isLoading: true,
     count: 0,
-    errMessage: '',
     errCode: null,
     otp: '',
     isVerify: false,
-    email: ''
+    email: '',
+    message: ''
 }
 
 const userReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'REFRESH_STORE_SUCCESS': 
+        case 'REFRESH_STORE_SUCCESS':
             state.users = []
             state.provinces = []
             state.roles = []
             state.isLoading = true
             state.count = 0
-            state.errMessage = ''
             state.errCode = null
             state.otp = ''
             state.address = []
+            state.message = ''
+            state.isVerify = false
             return {
                 ...state
             }
         case 'FETCH_ALL_USERS_SUCCESS':
             state.users = action.data
-            state.isLoading  = false
+            state.isLoading = false
             return {
                 ...state
             }
         case 'FETCH_ALL_USERS_FAILED':
             state.users = []
-            state.isLoading  = true
+            state.isLoading = true
             return {
                 ...state
             }
@@ -56,7 +57,7 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'GET_ALL_ROLES_FAILED': 
+        case 'GET_ALL_ROLES_FAILED':
             state.roles = []
             return {
                 ...state
@@ -80,24 +81,24 @@ const userReducer = (state = initState, action) => {
                 ...state
             }
         case 'GET_COUNT_USERS_FAILED':
-                state.count = 0
-                state.isLoading = true
-                return {
-                    ...state
-                }
-        case 'LOADING_SUCCESS': 
+            state.count = 0
             state.isLoading = true
             return {
                 ...state
             }
-        case 'GET_LIMIT_USERS_SUCCESS': 
+        case 'LOADING_SUCCESS':
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case 'GET_LIMIT_USERS_SUCCESS':
             state.users = action.data.rows
             state.count = action.data.count
             state.isLoading = false
             return {
                 ...state
             }
-        case 'GET_LIMIT_USERS_FAILED': 
+        case 'GET_LIMIT_USERS_FAILED':
             state.users = []
             state.count = 0
             state.isLoading = true
@@ -105,20 +106,20 @@ const userReducer = (state = initState, action) => {
                 ...state
             }
         case 'REGISTER':
-            state.errMessage = action?.data?.errMessage
-            state.errCode = action?.data?.errCode
+            state.message = action?.message
+            state.errCode = action?.errCode
             return {
                 ...state
             }
-        case 'SEND_MAIL_SUCCESS': 
+        case 'SEND_MAIL_SUCCESS':
             state.otp = action.data
             return {
                 ...state
             }
-        case 'SEND_MAIL_FAILED': 
+        case 'SEND_MAIL_FAILED':
             state.otp = ''
-            state.errMessage = action?.data?.errMessage
-            state.errCode = action?.data?.errCode
+            state.message = action?.message
+            state.errCode = action?.errCode
             return {
                 ...state
             }
@@ -129,12 +130,27 @@ const userReducer = (state = initState, action) => {
                 ...state
             }
         case 'VERIFY_OTP_FAILED':
-            state.isVerify = false
             state.email = ''
+            state.message = action.message
             return {
                 ...state
             }
-        default: 
+        case 'UPDATE_NAME_USER_SUCCESS':
+            state.message = action.message
+            return {
+                ...state
+            }
+        case 'UPDATE_NAME_USER_FAILED':
+            state.message = action.message
+            return {
+                ...state
+            }
+        case 'REFRESH_STATE_AUTH':
+            state.message = ''
+            return {
+                ...state
+            }
+        default:
             return state
     }
 }
