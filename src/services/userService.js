@@ -52,8 +52,12 @@ const verifyOtpService = ({ otp, email }) => {
     return axios.post(`${api}/verifyotp`, { otp, email })
 }
 
-const updateNameService = ({ firstName, lastName }) => {
-    return axiosJWT.post(`${api}/update/name`, { firstName, lastName })
+const updateInfoUserService = (infoUser) => {
+    return axiosJWT.post(`${api}/update/info`, infoUser)
+}
+
+const searchUserService = (userName) => {
+    return axiosJWT.get(`${api}/name?userName=${userName}`)
 }
 
 export {
@@ -69,5 +73,6 @@ export {
     registerSevice,
     sendMailService,
     verifyOtpService,
-    updateNameService
+    updateInfoUserService,
+    searchUserService
 }

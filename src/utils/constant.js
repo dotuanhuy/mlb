@@ -252,7 +252,22 @@ export const paymentMethod = {
     'cod': 'Thanh toán khi nhận hàng'
 }
 
+export const GENDERS = [
+    {
+        value: 'Nam',
+        label: 'Nam'
+    },
+    {
+        value: 'Nữ',
+        label: 'Nữ'
+    },
+    {
+        value: 'Khác',
+        label: 'Khác'
+    }
+]
 export const KEY_ORDERID = 'TqbZCDy26E'
+export const KEY_AES = 'hgfhfgsaadgf'
 
 export const BEGIN_YEAR = 2023
 export const NEXT_YEAR = 2
@@ -267,4 +282,6 @@ export const VARIABLE = {
     phone: 'Số điện thoại',
     value: 'Mã giảm giá',
     price: 'Giá bán',
+    birthDate: 'Ngày sinh',
+    gender: 'Giới tính'
 } 

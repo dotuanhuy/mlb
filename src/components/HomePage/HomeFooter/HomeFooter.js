@@ -11,7 +11,7 @@ import { path } from '../../../utils';
 import { LOGO_MLB } from '../../../utils/images';
 
 function HomeFooter() {
-    
+
     return (
         <div className='homeFooter'>
             <div className='pt-5 pb-2'>
@@ -20,7 +20,7 @@ function HomeFooter() {
                         <div className='contact col-4'>
                             <div className='homeFooter-logo'>
                                 <Link to='/'>
-                                    <img src={LOGO_MLB.logo_mlb}/>
+                                    <img src={LOGO_MLB.logo_mlb} />
                                 </Link>
                             </div>
                             <ul className='contact-menu'>
@@ -51,11 +51,11 @@ function HomeFooter() {
                             <div className='suport-menu general-menu row'>
                                 <Link to={`${path.SEARCH_PRODUCT}?pname=`} className='mb-3'>Tìm kiếm sản phẩm</Link>
                                 <Link to={path.CART} className='mb-3'>Giỏ hàng</Link>
-                                <a href='#' className='mb-3'>Kiểm tra tình trạng đơn hàng</a>
+                                <Link to={path.ORDER_TRACKING} className='mb-3'>Kiểm tra tình trạng đơn hàng</Link>
                             </div>
                         </div>
                         <div className='policy general col-2'>
-                        <p>Chính sách mlb</p>
+                            <p>Chính sách mlb</p>
                             <div className='policy-menu general-menu row'>
                                 <a href='#' className='mb-3'>Chính sách đổi trả</a>
                                 <a href='#' className='mb-3'>Chính sách bảo mật</a>
@@ -80,7 +80,7 @@ function HomeFooter() {
                                         <br></br>
                                         PERSONAL INFOR MANAGER : LE THANH NGHIEM
                                     </p>
-                                    <div className='socail-footer-menu row'>                             
+                                    <div className='socail-footer-menu row'>
                                         <a href='#' className='socail-footer-item col-3'>
                                             <FontAwesomeIcon className='socail-footer-icon' icon={faYoutube} />
                                         </a>

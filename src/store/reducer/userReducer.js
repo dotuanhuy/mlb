@@ -5,7 +5,7 @@ const initState = {
     roles: [],
     isLoading: true,
     count: 0,
-    errCode: null,
+    errCode: '',
     otp: '',
     isVerify: false,
     email: '',
@@ -20,7 +20,7 @@ const userReducer = (state = initState, action) => {
             state.roles = []
             state.isLoading = true
             state.count = 0
-            state.errCode = null
+            state.errCode = ''
             state.otp = ''
             state.address = []
             state.message = ''
@@ -137,16 +137,30 @@ const userReducer = (state = initState, action) => {
             }
         case 'UPDATE_NAME_USER_SUCCESS':
             state.message = action.message
+            state.errCode = action.errCode
             return {
                 ...state
             }
         case 'UPDATE_NAME_USER_FAILED':
             state.message = action.message
+            state.errCode = action.errCode
             return {
                 ...state
             }
-        case 'REFRESH_STATE_AUTH':
+        case 'REFRESH_STATE_INFO_RESPONE':
             state.message = ''
+            state.errCode = ''
+            return {
+                ...state
+            }
+        case 'FIND_USER_BY_NAME_SUCCESS':
+            state.users = action.users
+            return {
+                ...state
+            }
+        case 'FIND_USER_BY_NAME_FAILED':
+            state.users = []
+            state.message = action.message
             return {
                 ...state
             }

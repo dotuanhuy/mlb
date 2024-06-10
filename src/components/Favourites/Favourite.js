@@ -21,10 +21,10 @@ function Favourite({
 }) {
     const [params] = useSearchParams()
     const body = useRef()
-    const initialRender  = useRef(true)
+    const initialRender = useRef(true)
     const accessToken = window.localStorage.getItem('accessToken')
     const navigate = useNavigate()
-    
+
     useEffect(() => {
         document.title = titlePage
         refreshIStateFavouriteProductRedux()
@@ -43,7 +43,7 @@ function Favourite({
             }
         }
     }, [body.current])
-    
+
     useEffect(() => {
         let userId = ''
         if (accessToken) {
@@ -63,32 +63,32 @@ function Favourite({
             });
         }
     }, [params.get('page')])
-    
+
     return (
         <>
             {
-                isLoading ? 
-                <Loading />
-                :
-                <div className='product-search-by-name'>
-                    <Navbar />
-                    <Banner categoryProduct='Yêu thích' title='Yêu thích' />
-                   
-                    <div ref={body} className='product-search-by-name-container px-4'>
-                        <div className='container'>
-                            <div className='product-count pt-5 pb-5 text-center h4 fw-normal'>
-                                Danh sách yêu thích của tôi
-                            </div>
-                            <div className='menu-box'>
-                                <div className='menu-product row row-cols-4'>
-                                    <ListProducts bg='contain' products={productsLimit} images={images} col='col-3' />
+                isLoading ?
+                    <Loading />
+                    :
+                    <div className='product-search-by-name'>
+                        <Navbar />
+                        <Banner categoryProduct='Yêu thích' title='Yêu thích' />
+
+                        <div ref={body} className='product-search-by-name-container px-4'>
+                            <div className='container mb-4'>
+                                <h4 className='product-count pt-5 fs-5 pb-5 text-center fw-500'>
+                                    Danh sách yêu thích của tôi
+                                </h4>
+                                <div className='menu-box'>
+                                    <div className='menu-product row row-cols-4'>
+                                        <ListProducts bg='contain' products={productsLimit} images={images} col='col-3' />
+                                    </div>
                                 </div>
+                                <Pagination pathPage={path.FAVOURITE} currentPage={params.get('page') || 1} />
                             </div>
-                            <Pagination pathPage={path.FAVOURITE} currentPage={params.get('page') || 1}/>
                         </div>
+                        <HomeFooter />
                     </div>
-                    <HomeFooter />
-                </div>
             }
         </>
     );

@@ -18,7 +18,7 @@ function OrderTrucking({ titlePage }) {
     const [option, setOption] = useState('all')
     const [totalMoney, setTotalMoney] = useState(0)
     const navigate = useNavigate()
-    const initialRender  = useRef(true)
+    const initialRender = useRef(true)
     const body = useRef()
 
     useEffect(() => {
@@ -91,7 +91,7 @@ function OrderTrucking({ titlePage }) {
                         <div>
                             <Banner categoryProduct={'Theo dõi đơn hàng'} title={'Theo dõi đơn hàng của bạn'} />
                         </div>
-                        <div className='container pt-4' ref={body}>
+                        <div className='container py-4' ref={body}>
                             <div className='mb-4 py-2 border rounded shadow-sm'>
                                 <ul className='d-flex m-0 p-0 justify-content-evenly'>
                                     <li
@@ -118,7 +118,7 @@ function OrderTrucking({ titlePage }) {
                                         stateOrders.map(item => {
                                             return (
                                                 <div className='border rounded mb-3'>
-                                                    <Link 
+                                                    <Link
                                                         className='d-flex align-items-center justify-content-end pe-2 pt-1 gap-1 fs-14 fw-500 text-color-root-dark'
                                                         to={`${path.ORDER_TRACKING_DETAIL}?id=${item?.id}`}
                                                     >
@@ -129,7 +129,7 @@ function OrderTrucking({ titlePage }) {
                                                             <div className='row align-items-center pb-2 pt-1' key={index}>
                                                                 <div
                                                                     className='col-1 pe-0 position-relative'
-                                                                    
+
                                                                 >
                                                                     <img src={product.image} className='w-100 ' style={{ objectFit: 'contain' }} height='100px' />
                                                                     {
@@ -187,7 +187,7 @@ function OrderTrucking({ titlePage }) {
                                                 </div>
                                             )
                                         })
-                                        : <div className='text-danger'>Bạn chưa có đơn hàng nào</div>
+                                        : <div className='text-danger text-center'>Bạn chưa có đơn hàng nào</div>
                                 }
                             </div>
                             {

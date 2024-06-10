@@ -36,20 +36,19 @@ function ReviewProduct({ productId }) {
     }
 
     useEffect(() => {
+        console.log('check review');
         dispatch(actions.getReviewProduct(productId))
         const newSocket = io(BACKEND_URL, { autoConnect: true }); // Địa chỉ server
         setSocket(newSocket);
-        
+
         return () => newSocket.disconnect();
-    }, [])
+    }, [productId])
 
     useEffect(() => {
-        if (reviews.length > 0) {
-            if (socket) {
-                socket.emit('send_review', {reviews, _productId: productId})
-            }
-            setStateReview(reviews)
+        if (socket) {
+            socket.emit('send_review', { reviews, _productId: productId })
         }
+        setStateReview(reviews)
     }, [reviews])
 
     useEffect(() => {
@@ -66,7 +65,7 @@ function ReviewProduct({ productId }) {
 
     useEffect(() => {
         if (socket) {
-            socket.on('receive_review', ({reviews, _productId}) => {
+            socket.on('receive_review', ({ reviews, _productId }) => {
                 if (+_productId === +productId) {
                     setStateReview(reviews)
                 }
@@ -94,12 +93,12 @@ function ReviewProduct({ productId }) {
         const message = validateRequire('Phản hồi', contentReviewClient.trim())
         const rate = validateRequire('Đánh giá sao', rateClient)
         if (message || rate) {
-            toast.error(CustomToast(rate ? rate : message ), { autoClose: 3000 })
+            toast.error(CustomToast(rate ? rate : message), { autoClose: 3000 })
         }
         else {
             dispatch(actions.createReview({
-                productId, 
-                rate: rateClient, 
+                productId,
+                rate: rateClient,
                 content: contentReviewClient
             }))
             handleCloseClient()
@@ -140,27 +139,27 @@ function ReviewProduct({ productId }) {
                                             <div className='mb-2'>
                                                 <span className='pe-2 fs-14'>Đánh giá</span>
                                                 {
-                                                    [1, 2, 3, 4, 5].map((number, index) => 
-                                                        number <= +rateClient ? 
-                                                        <FontAwesomeIcon
-                                                            key={index} className='me-1'
-                                                            style={{ fontSize: '12px', cursor: 'pointer' }}
-                                                            color='#ff4d00'
-                                                            icon={faStar}
-                                                            onClick={() => setRateClient(number)}
-                                                        />
-                                                        :
-                                                        <FontAwesomeIcon
-                                                            key={index} className='me-1'
-                                                            style={{ fontSize: '12px', cursor: 'pointer' }}
-                                                            icon={faStar}
-                                                            onClick={() => setRateClient(number)}
-                                                        />
+                                                    [1, 2, 3, 4, 5].map((number, index) =>
+                                                        number <= +rateClient ?
+                                                            <FontAwesomeIcon
+                                                                key={index} className='me-1'
+                                                                style={{ fontSize: '12px', cursor: 'pointer' }}
+                                                                color='#ff4d00'
+                                                                icon={faStar}
+                                                                onClick={() => setRateClient(number)}
+                                                            />
+                                                            :
+                                                            <FontAwesomeIcon
+                                                                key={index} className='me-1'
+                                                                style={{ fontSize: '12px', cursor: 'pointer' }}
+                                                                icon={faStar}
+                                                                onClick={() => setRateClient(number)}
+                                                            />
                                                     )
                                                 }
                                             </div>
-                                            <Form.Control as="textarea" 
-                                                rows={5} 
+                                            <Form.Control as="textarea"
+                                                rows={5}
                                                 placeholder="Nhập phản hồi"
                                                 onChange={(e) => setContenReviewClient(e.target.value)}
                                             />
@@ -302,19 +301,19 @@ function ReviewProduct({ productId }) {
                             </div>
                             {
                                 item?.dataFeedbackReview ?
-                                <div className='ps-5'>
-                                    <div className='d-flex align-items-center'>
-                                        <FontAwesomeIcon className='border p-2 rounded-circle' icon={faUser} />
-                                        <span className='ps-2 fw-500'>MLB</span>
-                                        <span className='border px-2 ms-2 rounded text-light' style={{ background: '#b835bb', fontSize: '12px' }}>Quản trị viên</span>
+                                    <div className='ps-5'>
+                                        <div className='d-flex align-items-center'>
+                                            <FontAwesomeIcon className='border p-2 rounded-circle' icon={faUser} />
+                                            <span className='ps-2 fw-500'>MLB</span>
+                                            <span className='border px-2 ms-2 rounded text-light' style={{ background: '#b835bb', fontSize: '12px' }}>Quản trị viên</span>
+                                        </div>
+                                        <p className='ps-5 mb-0'>{item?.dataFeedbackReview?.content}</p>
+                                        <span className='ps-5 text-muted fw-500 d-flex align-items-center gap-1' style={{ fontSize: '12px' }}>
+                                            <FontAwesomeIcon style={{ fontSize: '4px' }} icon={faCircle} />
+                                            {formatDateTimeVN(item?.dataFeedbackReview?.updatedAt)}
+                                        </span>
                                     </div>
-                                    <p className='ps-5 mb-0'>{item?.dataFeedbackReview?.content}</p>
-                                    <span className='ps-5 text-muted fw-500 d-flex align-items-center gap-1' style={{ fontSize: '12px' }}>
-                                        <FontAwesomeIcon style={{ fontSize: '4px' }} icon={faCircle} />
-                                        {formatDateTimeVN(item?.dataFeedbackReview?.updatedAt)}
-                                    </span>
-                                </div>
-                                : ''
+                                    : ''
                             }
                         </div>
 

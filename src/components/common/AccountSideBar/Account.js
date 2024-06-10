@@ -1,9 +1,10 @@
 import React, { useEffect, useState, memo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { path } from '../../utils';
-import * as action from '../../store/actions'
-import jwt_decode from 'jwt-decode';
+import { KEY_AES, path } from '../../../utils';
+import * as action from '../../../store/actions'
+import Cookies from 'js-cookie'
+import { AES, enc } from 'crypto-js';
 
 const initState = {
     firstName: '',
@@ -18,16 +19,16 @@ function Account({ activeType, fetLogoutRedux }) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        const token = window.localStorage.getItem('accessToken')
-        if (!token) {
+        const infoUser = Cookies.get('info')
+        if (!infoUser) {
             navigate(path.LOGIN)
         }
         else {
-            let tokenDecoded = jwt_decode(token)
+            const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
             setUserLogin({
-                firstName: tokenDecoded?.firstName,
-                lastName: tokenDecoded?.lastName,
-                email: tokenDecoded?.email
+                firstName: infoDecoded?.firstName,
+                lastName: infoDecoded?.lastName,
+                email: infoDecoded?.email
             })
             setActive(activeType)
         }
@@ -35,14 +36,18 @@ function Account({ activeType, fetLogoutRedux }) {
 
     useEffect(() => {
         if (message) {
-            const token = window.localStorage.getItem('accessToken')
-            if (token) {
-                let tokenDecoded = jwt_decode(token)
+            const infoUser = Cookies.get('info')
+            if (!infoUser) {
+                navigate(path.LOGIN)
+            }
+            else {
+                const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
                 setUserLogin({
-                    firstName: tokenDecoded?.firstName,
-                    lastName: tokenDecoded?.lastName,
-                    email: tokenDecoded?.email
+                    firstName: infoDecoded?.firstName,
+                    lastName: infoDecoded?.lastName,
+                    email: infoDecoded?.email
                 })
+                setActive(activeType)
             }
         }
     }, [message])
@@ -53,7 +58,7 @@ function Account({ activeType, fetLogoutRedux }) {
     }
 
     return (
-        <>
+        <div className='col-3'>
             <h5 className='text-uppercase'>Trang tài khoản</h5>
             <p className='fw-500'>{`Xin chào, ${userLogin.firstName} ${userLogin.lastName} !`}</p>
             <ul className='p-0 m-0'>
@@ -85,7 +90,7 @@ function Account({ activeType, fetLogoutRedux }) {
                     >Đăng xuất</Link>
                 </li>
             </ul>
-        </>
+        </div>
     );
 }
 

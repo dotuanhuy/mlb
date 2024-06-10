@@ -1,5 +1,4 @@
 import actionTypes from "./actionTypes";
-import { allCode } from "../../utils";
 
 import {
     createUserService,
@@ -14,7 +13,8 @@ import {
     registerSevice,
     sendMailService,
     verifyOtpService,
-    updateNameService
+    updateInfoUserService,
+    searchUserService
 } from "../../services/userService";
 
 export const refreshStoreUser = () => {
@@ -361,7 +361,7 @@ export const refreshStateMessage = () => {
     return async (dispatch, getState) => {
         try {
             dispatch({
-                type: actionTypes.REFRESH_STATE_AUTH
+                type: actionTypes.REFRESH_STATE_INFO_RESPONE
             })
         } catch (e) {
             console.log('refreshStateMessage error: ', e)
@@ -369,24 +369,57 @@ export const refreshStateMessage = () => {
     }
 }
 
-export const updateName = ({ firstName, lastName }) => {
+export const updateInfoUser = (infoUser) => {
     return async (dispatch, getState) => {
         try {
-            const res = await updateNameService({ firstName, lastName })
+            const res = await updateInfoUserService(infoUser)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.UPDATE_NAME_USER_SUCCESS,
-                    message: res?.errMessage
+                    message: res?.errMessage,
+                    errCode: res?.errCode
                 })
             }
             else {
                 dispatch({
                     type: actionTypes.UPDATE_NAME_USER_FAILED,
-                    message: res?.errMessage
+                    message: res?.errMessage,
+                    errCode: res?.errCode
                 })
             }
         } catch (e) {
-            console.log('updateName error: ', e)
+            console.log('updateInfoUser error: ', e)
+            dispatch({
+                type: actionTypes.UPDATE_NAME_USER_FAILED,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode,
+            })
+        }
+    }
+}
+
+export const searchUser = (userName) => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await searchUserService(userName)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FIND_USER_BY_NAME_SUCCESS,
+                    users: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.FIND_USER_BY_NAME_FAILED,
+                    message: res?.errMessage,
+                })
+            }
+        } catch (e) {
+            console.log('searchUser error: ', e)
+            dispatch({
+                type: actionTypes.FIND_USER_BY_NAME_FAILED,
+                message: e?.response?.data?.errMessage,
+            })
         }
     }
 }

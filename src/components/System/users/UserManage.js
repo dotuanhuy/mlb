@@ -1,19 +1,35 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
 import TableUser from './TableUser';
 import { path } from '../../../utils';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { CustomToast } from '../../../utils';
+import * as actions from '../../../store/actions'
 
 function UserManage() {
+    const dispatch = useDispatch()
+    const [textSearch, setTextSearch] = useState('')
+    const [error, setError] = useState('')
 
     useEffect(() => {
         document.title = 'Quản lý người dùng'
     }, [])
+
+    const handleSerachUserName = (e) => {
+        e.preventDefault()
+        if (!textSearch) {
+            toast.warn(CustomToast('Vui lòng nhập tên người dùng!'), { autoClose: 3000 })
+        }
+        else {
+            dispatch(actions.searchUser(textSearch))
+        }
+    }
 
     return (
         <>
@@ -25,17 +41,22 @@ function UserManage() {
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <h2>Quản lý người dùng</h2>
                     <div className='d-flex justify-content-end gap-3'>
-                        <div className='col-6'>
-                            <InputGroup className="">
-                                <Form.Control
-                                    placeholder="Recipient's username"
-                                    aria-label="Recipient's username"
-                                    aria-describedby="basic-addon2"
-                                />
-                                <Button variant="outline-secondary" id="button-addon2">
-                                    Button
-                                </Button>
-                            </InputGroup>
+                        <div className='col-5'>
+                            <Form onSubmit={handleSerachUserName}>
+                                <InputGroup className="">
+                                    <Form.Control
+                                        placeholder="Nhập tên người dùng"
+                                        aria-label="Nhập tên người dùng"
+                                        aria-describedby="basic-addon2"
+                                        onChange={e => setTextSearch(e.target.value.trim())}
+                                    />
+                                    <button
+                                        className='btn btn-root'
+                                    >
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                    </button>
+                                </InputGroup>
+                            </Form>
                         </div>
                         <Link
                             className='btn btn-root d-flex align-items-center text-white fw-500'

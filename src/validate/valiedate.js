@@ -4,7 +4,7 @@ export const validate = (obj) => {
     let arrKeys = Object.keys(obj)
     let errors = {}
     arrKeys.forEach((item, index) => {
-        if (obj[item].length === 0) {
+        if (obj[item]?.length === 0) {
             errors[item] = VARIABLE[item] ? `${VARIABLE[item]} không được để trống` : `Trường này không được để trống`
         }
         else if ((item === 'firstName' || item === 'lastName') && !(/[a-zA-Z]{2,}/.test(obj[item]))) {

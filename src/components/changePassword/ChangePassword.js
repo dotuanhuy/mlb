@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../HomePage/Navbar/Navbar';
 import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
-import Account from './Account';
+import Account from '../common/AccountSideBar/Account';
 import * as actions from '../../store/actions'
 import { validate } from '../../validate/valiedate';
 import Banner from '../common/Banners/Banner';
@@ -62,11 +62,7 @@ function ChangePassword({ titlePage }) {
                 <div className='account-body p-5'>
                     <div className='container'>
                         <div className='row'>
-                            <div className='col-3'>
-                                <div className='list-option'>
-                                    <Account activeType={'changePassword'} />
-                                </div>
-                            </div>
+                            <Account activeType={'changePassword'} />
                             <div className='col-9'>
                                 <div className='list-option-select'>
                                     <h5>Đổi mật khẩu</h5>

@@ -10,7 +10,7 @@ import MLBBackPack from './MLBBackPack/MLBBackPack';
 import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
 import { useDispatch } from 'react-redux';
-import { AES, enc } from 'crypto-js';
+import { AES } from 'crypto-js';
 import { KEY_ORDERID } from '../../utils';
 import Loading from '../common/Loading/Loading'
 
@@ -18,16 +18,20 @@ function HomePage({ titlePage }) {
     const dispatch = useDispatch()
     const { listId } = useSelector(state => state.order)
     const { products } = useSelector(state => state.product)
-    
+
     useEffect(() => {
         document.title = titlePage
         dispatch(actions.getListOrderId())
         dispatch(actions.getAllProductPublic())
+        window.scrollTo({
+            behavior: "smooth",
+            top: 0
+        });
     }, [])
 
     useEffect(() => {
         if (listId) {
-            const encrypted  = AES.encrypt(listId.toString(), KEY_ORDERID)
+            const encrypted = AES.encrypt(listId.toString(), KEY_ORDERID)
             window.localStorage.setItem('orderId', encrypted)
         }
     }, [listId])
@@ -41,9 +45,9 @@ function HomePage({ titlePage }) {
         appendDots: dots => (
             <div
                 style={{
-                borderRadius: "10px",
-                padding: "10px",
-                transform: "translateY(10px)"
+                    borderRadius: "10px",
+                    padding: "10px",
+                    transform: "translateY(10px)"
                 }}
             >
                 <ul style={{ margin: "0px" }}> {dots} </ul>
@@ -54,19 +58,19 @@ function HomePage({ titlePage }) {
     return (
         <>
             {
-                !products ? 
-                <Loading />
-                :
-                <div>
-                    <Navbar />
-                    <SliderHomePage settings={settings} />
-                    <Intro />
-                    <NewShoes />
-                    <MLBBag />
-                    <MLBOutfit />
-                    <MLBBackPack />
-                    <HomeFooter />
-                </div>
+                !products ?
+                    <Loading />
+                    :
+                    <div>
+                        <Navbar />
+                        <SliderHomePage settings={settings} />
+                        <Intro />
+                        <NewShoes />
+                        <MLBBag />
+                        <MLBOutfit />
+                        <MLBBackPack />
+                        <HomeFooter />
+                    </div>
             }
         </>
     );

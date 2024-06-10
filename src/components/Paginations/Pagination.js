@@ -145,7 +145,7 @@ function Pagination({
         <>
             {
                 arrPage.length === 0 ?
-                    <div className='not-product'>Không có sản phẩm thỏa mãn</div>
+                    <div className='not-product fs-18 fw-500'>Không tồn tại sản phẩm</div>
                     :
                     <nav aria-label="...">
                         <ul className="pagination">
