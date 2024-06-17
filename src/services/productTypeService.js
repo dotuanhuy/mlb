@@ -46,15 +46,19 @@ const getProductTypeByIdService = (id) => {
 }
 
 const createProductTypeService = (formData, type) => {
-    return axiosJWT.post(`${api}/create?type=${type}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return axiosJWT.post(`${api}/create?type=${type}&found=productType`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
 const deleteProductTypeService = (id) => {
     return axiosJWT.delete(`${api}/delete?id=${id}&type=single`)
 }
 
-const updateProductTypeService = (formData, id, type) => {
-    return axiosJWT.post(`${api}/update?type=${type}&id=${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+const updateProductTypeService = (formData, id, type, found) => {
+    return axiosJWT.post(`${api}/update?type=${type}&id=${id}&found=${found}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+}
+
+const getLimitProductTypesByNameService = (page, name) => {
+    return axiosJWT.get(`${api}/limit/name?page=${page}&name=${name}`)
 }
 
 export {
@@ -64,5 +68,6 @@ export {
     getProductTypeByIdService,
     createProductTypeService,
     deleteProductTypeService,
-    updateProductTypeService
+    updateProductTypeService,
+    getLimitProductTypesByNameService
 }

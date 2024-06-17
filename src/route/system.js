@@ -1,16 +1,16 @@
 import React from 'react';
-import {Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import UserManageEdit from '../components/System/users/UserManageEdit';
-import UserManageCreate from '../components/System/users/UserManageCreate';
+import CreateUser from '../components/System/users/CreateUser';
 import UserManageDetail from '../components/System/users/UserManageDetail';
 import Manage from '../components/System/Manage/manage';
 import CategoryManage from '../components/System/manageCategries/CategoryManage';
 import ProductTypeManage from '../components/System/manageCategries/ProductTypeManage';
-import ProductManageUpdate from '../components/System/manageCategries/ProductManageUpdate';
-import HomeProduct from '../components/System/products/HomeProduct';
-import ManageProductCreate from '../components/System/products/ManageProductCreate';
-import ManageProductEdit from '../components/System/products/ManageProductEdit';
+import UpdateProductType from '../components/System/manageCategries/UpdateProductType';
+import ProductManage from '../components/System/products/ProductManage';
+import CreateProduct from '../components/System/products/CreateProduct';
+import EditProduct from '../components/System/products/EditProduct';
 import ProductManageDetail from '../components/System/products/ProductManageDetail';
 import AddDescriptionProduc from '../components/System/Manage/Products/HandleAddDescriptions/AddDescriptionProduc';
 import { Active, categorieType, path } from '../utils';
@@ -25,141 +25,141 @@ import Report from '../components/System/reports/Report'
 
 function System() {
     return (
-       <>
+        <>
             <Routes>
-                <Route path={path.MANAGE} element={<PrivateRouter Component={Manage}/>}/> 
+                <Route path={path.MANAGE} element={<PrivateRouter Component={Manage} />} />
                 {/* <Route path={path.MANAGE} element={isLogin && <Manage /> }/> */}
-                <Route 
+                <Route
                     path={path.MANAGE_USER}
                     element={<PrivateRouter Component={UserManage} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_USER_CREATE}
-                    element={<PrivateRouter Component={UserManageCreate}/>}
+                    element={<PrivateRouter Component={CreateUser} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_USER_EDIT}
-                    element={<PrivateRouter Component={UserManageEdit}/>} 
+                    element={<PrivateRouter Component={UserManageEdit} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_USER_DETAIL}
-                    element={<PrivateRouter Component={UserManageDetail} />} 
+                    element={<PrivateRouter Component={UserManageDetail} />}
                 />
-                
+
                 {/* <Route 
                     path={path.MANAGE_PRODUCTS}
                     // element={<PrivateRouter Component={ProductManage}/>} 
                 />   */}
 
-                <Route  
+                <Route
                     path={path.MANAGE_CATEGORY_PRODUCT}
-                    element={<PrivateRouter active={Active.CATEGORY} Component={CategoryManage}/>} 
-                /> 
-                <Route 
+                    element={<PrivateRouter active={Active.CATEGORY} Component={CategoryManage} />}
+                />
+                <Route
                     path={path.MANAGE_PRODUCT_TYPE}
-                    element={<PrivateRouter active={Active.PRODUCT_TYPE} Component={ProductTypeManage}/>} 
+                    element={<PrivateRouter active={Active.PRODUCT_TYPE} Component={ProductTypeManage} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCT_TYPE_UPDATE}
-                    element={<PrivateRouter  active={Active.PRODUCT_TYPE} Component={ProductManageUpdate}/>} 
+                    element={<PrivateRouter active={Active.PRODUCT_TYPE} Component={UpdateProductType} />}
                 />
-                
-                <Route  
+
+                <Route
                     path={path.MANAGE_PRODUCTS_SHOES}
-                    element={<PrivateRouter active={Active.SHOSE} categoryType={categorieType.SHOES_SANDAL} Component={HomeProduct}/>} 
-                /> 
-                <Route 
+                    element={<PrivateRouter active={Active.SHOSE} categoryType={categorieType.SHOES_SANDAL} Component={ProductManage} />}
+                />
+                <Route
                     path={path.MANAGE_PRODUCTS_SHOES_CREATE}
-                    element={<PrivateRouter active={Active.SHOSE} categoryType={categorieType.SHOES_SANDAL} Component={ManageProductCreate}/>} 
+                    element={<PrivateRouter active={Active.SHOSE} categoryType={categorieType.SHOES_SANDAL} Component={CreateProduct} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCTS_SHOES_EDIT}
-                    element={<PrivateRouter active={Active.SHOSE} categoryType={categorieType.SHOES_SANDAL} Component={ManageProductEdit}/>} 
+                    element={<PrivateRouter active={Active.SHOSE} categoryType={categorieType.SHOES_SANDAL} Component={EditProduct} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCTS_SHOES_DETAIL}
-                    element={<PrivateRouter active={Active.SHOSE} Component={ProductManageDetail}/>} 
+                    element={<PrivateRouter active={Active.SHOSE} Component={ProductManageDetail} />}
                 />
-            
-                <Route 
+
+                <Route
                     path={path.MANAGE_PRODUCTS_BAG_BALO}
-                    element={<PrivateRouter active={Active.BAG_BALO} categoryType={categorieType.BAG_BALO} Component={HomeProduct}/>} 
-                /> 
-                <Route 
+                    element={<PrivateRouter active={Active.BAG_BALO} categoryType={categorieType.BAG_BALO} Component={ProductManage} />}
+                />
+                <Route
                     path={path.MANAGE_PRODUCTS_BAG_BALO_CREATE}
-                    element={<PrivateRouter active={Active.BAG_BALO} categoryType={categorieType.BAG_BALO} Component={ManageProductCreate}/>} 
+                    element={<PrivateRouter active={Active.BAG_BALO} categoryType={categorieType.BAG_BALO} Component={CreateProduct} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCTS_BAG_BALO_EDIT}
-                    element={<PrivateRouter active={Active.BAG_BALO} categoryType={categorieType.BAG_BALO} Component={ManageProductEdit}/>} 
+                    element={<PrivateRouter active={Active.BAG_BALO} categoryType={categorieType.BAG_BALO} Component={EditProduct} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCTS_BAG_BALO_DETAIL}
-                    element={<PrivateRouter active={Active.BAG_BALO} Component={ProductManageDetail}/>} 
+                    element={<PrivateRouter active={Active.BAG_BALO} Component={ProductManageDetail} />}
                 />
-                
-                <Route 
+
+                <Route
                     path={path.MANAGE_PRODUCTS_HAT}
-                    element={<PrivateRouter active={Active.HAT} categoryType={categorieType.HAT} Component={HomeProduct}/>} 
-                /> 
-                <Route 
+                    element={<PrivateRouter active={Active.HAT} categoryType={categorieType.HAT} Component={ProductManage} />}
+                />
+                <Route
                     path={path.MANAGE_PRODUCTS_HAT_CREATE}
-                    element={<PrivateRouter active={Active.HAT} categoryType={categorieType.HAT} Component={ManageProductCreate}/>} 
+                    element={<PrivateRouter active={Active.HAT} categoryType={categorieType.HAT} Component={CreateProduct} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCTS_HAT_EDIT}
-                    element={<PrivateRouter active={Active.HAT} categoryType={categorieType.HAT} Component={ManageProductEdit}/>} 
+                    element={<PrivateRouter active={Active.HAT} categoryType={categorieType.HAT} Component={EditProduct} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCTS_HAT_DETAIL}
-                    element={<PrivateRouter active={Active.HAT} Component={ProductManageDetail}/>} 
+                    element={<PrivateRouter active={Active.HAT} Component={ProductManageDetail} />}
                 />
-                
-                <Route 
+
+                <Route
                     path={path.MANAGE_PRODUCTS_CLOTHES}
-                    element={<PrivateRouter active={Active.CLOTHES} categoryType={categorieType.CLOTHES} Component={HomeProduct}/>} 
-                /> 
-                <Route 
+                    element={<PrivateRouter active={Active.CLOTHES} categoryType={categorieType.CLOTHES} Component={ProductManage} />}
+                />
+                <Route
                     path={path.MANAGE_PRODUCTS_CLOTHES_CREATE}
-                    element={<PrivateRouter active={Active.CLOTHES} categoryType={categorieType.CLOTHES} Component={ManageProductCreate}/>} 
+                    element={<PrivateRouter active={Active.CLOTHES} categoryType={categorieType.CLOTHES} Component={CreateProduct} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCTS_CLOTHES_EDIT}
-                    element={<PrivateRouter active={Active.CLOTHES} categoryType={categorieType.CLOTHES} Component={ManageProductEdit}/>} 
+                    element={<PrivateRouter active={Active.CLOTHES} categoryType={categorieType.CLOTHES} Component={EditProduct} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_PRODUCTS_CLOTHES_DETAIL}
-                    element={<PrivateRouter active={Active.CLOTHES} Component={ProductManageDetail}/>} 
+                    element={<PrivateRouter active={Active.CLOTHES} Component={ProductManageDetail} />}
                 />
-                
-                <Route 
+
+                <Route
                     path={path.MANAGE_DISCOUNT}
                     element={<PrivateRouter Component={DiscountManage} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_DISCOUNT_CREATE}
                     element={<PrivateRouter Component={DiscountCreate} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_DISCOUNT_EDIT}
                     element={<PrivateRouter Component={DiscountUpdate} />}
                 />
 
-                <Route 
+                <Route
                     path={path.MANAGE_ORDER}
                     element={<PrivateRouter Component={OrderMange} />}
                 />
-                <Route 
+                <Route
                     path={path.MANAGE_ORDER_DETAIL}
                     element={<PrivateRouter Component={OrderMangeDetail} />}
                 />
 
-                <Route 
+                <Route
                     path={path.MANAGE_REPORT}
                     element={<PrivateRouter Component={Report} />}
                 />
             </Routes>
-       </>
+        </>
     );
 }
 

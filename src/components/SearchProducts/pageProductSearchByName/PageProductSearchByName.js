@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import './PageProductSearchByName.scss'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
@@ -11,16 +11,9 @@ import Pagination from '../../Paginations/Pagination';
 import ListProducts from '../../common/listProducts/ListProducts';
 import Banner from '../../common/Banners/Banner';
 
-function PageProductSearchByName({
-    titlePage,
-    productSearch,
-    countProduct,
-    isLoading,
-    refreshIsloadingStateProductRedux,
-    searchProductByNameLimitRedux,
-    getAllImagesProductRedux
-}) {
-    const accessToken = window.localStorage.getItem('accessToken')
+function PageProductSearchByName({ titlePage }) {
+    const dispatch = useDispatch()
+    const { productSearchLimit, count, isLoading } = useSelector(state => state.product)
     const [params] = useSearchParams()
     const [searchParams] = useSearchParams();
     const productName = searchParams.get('pname')
@@ -31,15 +24,15 @@ function PageProductSearchByName({
 
     useEffect(() => {
         document.title = titlePage
-        refreshIsloadingStateProductRedux()
+        dispatch(actions.refreshIsloadingStateProduct())
         if (productName) {
-            getAllImagesProductRedux()
+            dispatch(actions.getAllImagesProduct())
         }
     }, [])
 
     useEffect(() => {
         if (productName) {
-            searchProductByNameLimitRedux(productName, params.get('page') || 1)
+            dispatch(actions.searchProductByNameLimit(productName, params.get('page') || 1))
         }
         if (body.current) {
             window.scrollTo({
@@ -86,11 +79,11 @@ function PageProductSearchByName({
                                     <div ref={body} className='product-search-by-name-container px-4'>
                                         <div className='container'>
                                             <div className='product-count pt-5 pb-3'>
-                                                <span>Tìm thấy {countProduct} kết quả với từ khóa "{productName}"</span>
+                                                <span>Tìm thấy {count} kết quả với từ khóa "{productName}"</span>
                                             </div>
                                             <div className='menu-box'>
                                                 <div className='menu-product row row-cols-4'>
-                                                    <ListProducts bg='contain' products={productSearch} col='col-3' />
+                                                    <ListProducts bg='contain' products={productSearchLimit} col='col-3' />
                                                 </div>
                                             </div>
                                             <Pagination pathPage={path.SEARCH_PRODUCT} pname={productName} currentPage={params.get('page') || 1} />
@@ -123,17 +116,11 @@ function PageProductSearchByName({
 
 const mapStateToProps = state => {
     return {
-        productSearch: state.product.productSearchLimit,
-        countProduct: state.product.count,
-        isLoading: state.product.isLoading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        searchProductByNameLimitRedux: (productName, offset) => dispatch(actions.searchProductByNameLimit(productName, offset)),
-        getAllImagesProductRedux: () => dispatch(actions.getAllImagesProduct()),
     }
 }
 

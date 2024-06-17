@@ -155,12 +155,14 @@ const userReducer = (state = initState, action) => {
             }
         case 'FIND_USER_BY_NAME_SUCCESS':
             state.users = action.users
+            state.count = action.count
             return {
                 ...state
             }
         case 'FIND_USER_BY_NAME_FAILED':
             state.users = []
             state.message = action.message
+            state.count = 0
             return {
                 ...state
             }

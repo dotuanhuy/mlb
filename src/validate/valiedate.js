@@ -4,7 +4,7 @@ export const validate = (obj) => {
     let arrKeys = Object.keys(obj)
     let errors = {}
     arrKeys.forEach((item, index) => {
-        if (obj[item]?.length === 0) {
+        if (!obj[item]) {
             errors[item] = VARIABLE[item] ? `${VARIABLE[item]} không được để trống` : `Trường này không được để trống`
         }
         else if ((item === 'firstName' || item === 'lastName') && !(/[a-zA-Z]{2,}/.test(obj[item]))) {
@@ -16,8 +16,8 @@ export const validate = (obj) => {
         else if ((item === 'fullName') && !(/[a-zA-Z]{2,}/.test(obj[item]))) {
             errors[item] = 'Họ và tên không đúng định dạng'
         }
-        else if (item === 'price' && (typeof obj[item] === 'string' || obj[item] <= 0)) {
-            errors[item] = 'Giá bán không đúng định dạng'
+        else if ((item === 'price' || item === 'originalPrice' || item === 'quantity') && !(/^(?!0(\.0+)?$)\d+(\.\d+)?$/).test(obj[item])) {
+            errors[item] = `${VARIABLE[item]} không đúng định dạng`
         }
         else if (item === 'email' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(obj[item]))) {
             errors[item] = `Email không hợp lệ`

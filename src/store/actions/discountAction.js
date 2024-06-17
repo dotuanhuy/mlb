@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getAllDiscountsService,
     getLimitDiscountService,
     createDiscountService,
@@ -23,7 +23,15 @@ export const refreshStoreDiscount = () => {
     }
 }
 
-export const getAllDiscounts  = () => {
+export const refreshInfoResDiscount = () => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: actionTypes.REFRESH_INFO_RES_DISCOUNT
+        })
+    }
+}
+
+export const getAllDiscounts = () => {
     return async (dispatch, getState) => {
         try {
             let res = await getAllDiscountsService()
@@ -47,10 +55,10 @@ export const getAllDiscounts  = () => {
     }
 }
 
-export const getLimitDiscount  = (page) => {
+export const getLimitDiscount = (page) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getLimitDiscountService(page-1)
+            let res = await getLimitDiscountService(page - 1)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_LIMIT_DISCOUNT_SUCCESS,
@@ -71,46 +79,94 @@ export const getLimitDiscount  = (page) => {
     }
 }
 
-export const createDiscount = ({code, value, description, page}) => {
+export const createDiscount = ({ code, value, description, page }) => {
     return async (dispatch, getState) => {
         try {
-            let res = await createDiscountService({code, value, description})
+            let res = await createDiscountService({ code, value, description })
             if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                    message: res.errMessage
+                })
                 dispatch(getLimitDiscount(page))
+            }
+            else {
+                dispatch({
+                    type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                    errCode: res.errCode,
+                    message: res.errMessage
+                })
             }
         } catch (e) {
             console.log('createDiscount error: ', e)
+            dispatch({
+                type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
         }
     }
 }
 
-export const updateDiscount = ({id, code, value, description, page}) => {
+export const updateDiscount = ({ id, code, value, description, page }) => {
     return async (dispatch, getState) => {
         try {
-            let res = await updateDiscountService({id, code, value, description})
+            let res = await updateDiscountService({ id, code, value, description })
             if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                    message: res.errMessage
+                })
                 dispatch(getLimitDiscount(page))
+            }
+            else {
+                dispatch({
+                    type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                    message: res.errMessage,
+                    errCode: res.errCode
+                })
             }
         } catch (e) {
             console.log('updateDiscount error: ', e)
+            dispatch({
+                type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
         }
     }
 }
 
-export const deleteDiscount = ({id, page}) => {
+export const deleteDiscount = ({ id, page }) => {
     return async (dispatch, getState) => {
         try {
             let res = await deleteDiscountService(id)
             if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                    message: res.errMessage
+                })
                 dispatch(getLimitDiscount(page))
+            }
+            else {
+                dispatch({
+                    type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                    message: res.errMessage,
+                    errCode: res.errCode
+                })
             }
         } catch (e) {
             console.log('deleteDiscount error: ', e)
+            dispatch({
+                type: actionTypes.RESPONSE_INFO_DISSCOUNT,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
         }
     }
 }
 
-export const getDiscountById  = (id) => {
+export const getDiscountById = (id) => {
     return async (dispatch, getState) => {
         try {
             let res = await getDiscountByIdService(id)

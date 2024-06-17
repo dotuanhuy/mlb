@@ -1,10 +1,12 @@
 const initState = {
     productTypes: [],
     count: 0,
-    isLoading: true
+    isLoading: true,
+    message: '',
+    errCode: null
 }
 
-const productTypeReducer = (state=initState, action) => {
+const productTypeReducer = (state = initState, action) => {
     switch (action.type) {
         case 'REFRESH_STORE_SUCCESS':
             state.productTypes = []
@@ -13,7 +15,13 @@ const productTypeReducer = (state=initState, action) => {
             return {
                 ...state
             }
-        case 'GET_ALL_PRODUCT_TYPES_SUCCESS': 
+        case 'REFRESH_INFO_PRODUCT_TYPE':
+            state.message = ''
+            state.errCode = null
+            return {
+                ...state
+            }
+        case 'GET_ALL_PRODUCT_TYPES_SUCCESS':
             state.productTypes = action.data
             state.isLoading = false
             return {
@@ -25,9 +33,9 @@ const productTypeReducer = (state=initState, action) => {
             return {
                 ...state
             }
-        case 'GET_LIMIT_PRODUCT_TYPES_SUCCESS': 
-            state.productTypes = action.data.rows
-            state.count = action.data.count
+        case 'GET_LIMIT_PRODUCT_TYPES_SUCCESS':
+            state.productTypes = action.productTypes
+            state.count = action.count
             state.isLoading = false
             return {
                 ...state
@@ -36,10 +44,12 @@ const productTypeReducer = (state=initState, action) => {
             state.productTypes = []
             state.count = 0
             state.isLoading = true
+            state.errCode = action.errCode
+            state.message = action.message
             return {
                 ...state
             }
-        case 'GET_PRODUCT_TYPES_BY_CATEGORYID_SUCCESS': 
+        case 'GET_PRODUCT_TYPES_BY_CATEGORYID_SUCCESS':
             state.productTypes = action.data
             state.isLoading = false
             return {
@@ -51,7 +61,7 @@ const productTypeReducer = (state=initState, action) => {
             return {
                 ...state
             }
-        case 'GET_PRODUCT_TYPES_BY_ID_SUCCESS': 
+        case 'GET_PRODUCT_TYPES_BY_ID_SUCCESS':
             state.productTypes = action.data
             state.isLoading = false
             return {
@@ -60,6 +70,12 @@ const productTypeReducer = (state=initState, action) => {
         case 'GET_PRODUCT_TYPES_BY_ID_FAILED':
             state.productTypes = []
             state.isLoading = true
+            return {
+                ...state
+            }
+        case 'CREATE_PRODUCT_TYPE':
+            state.message = action.message
+            state.errCode = action?.errCode || 0
             return {
                 ...state
             }

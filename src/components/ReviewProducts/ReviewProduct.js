@@ -13,7 +13,8 @@ import io from 'socket.io-client';
 import { AES, enc } from 'crypto-js';
 
 const arrStar = ['Tất cả', 5, 4, 3, 2, 1]
-const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), KEY_ORDERID).toString(enc.Utf8) : '';
+// const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), KEY_ORDERID).toString(enc.Utf8) : '';
+const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), process.env.REACT_APP_KEY_ORDERID).toString(enc.Utf8) : '';
 const listOrderId = decrypted ? decrypted.split(',') : []
 
 function ReviewProduct({ productId }) {

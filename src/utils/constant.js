@@ -283,5 +283,11 @@ export const VARIABLE = {
     value: 'Mã giảm giá',
     price: 'Giá bán',
     birthDate: 'Ngày sinh',
-    gender: 'Giới tính'
+    gender: 'Giới tính',
+    name: 'Tên sản phẩm',
+    code: 'Mã sản phẩm',
+    originalPrice: 'Giá gốc',
+    material: 'Chất liệu',
+    quantity: 'Số lượng',
+    productionSite: 'Nơi sản xuất'
 } 

@@ -6,10 +6,12 @@ import Sidebar from '../common/sidebars/Sidebar';
 import TableDiscount from './TableDiscount';
 import { Form } from 'react-bootstrap';
 import { validate } from '../../../validate/valiedate';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../../store/actions'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toast } from 'react-toastify';
+import { CustomToast } from '../../../utils';
 
 const initDataInput = {
     code: '',
@@ -19,6 +21,7 @@ const initDataInput = {
 
 function DiscountCreat() {
     const dispatch = useDispatch()
+    const { message, errCode } = useSelector(state => state.discount)
     const [dataInput, setDataInput] = useState(initDataInput)
     const [errors, setErrors] = useState({})
     const [params] = useSearchParams()
@@ -27,15 +30,27 @@ function DiscountCreat() {
         document.title = 'Thêm mới mã giảm giá'
     }, [])
 
+    useEffect(() => {
+        if (message) {
+            if (errCode == 0) {
+                toast.success(CustomToast(message), { autoClose: 1000 })
+            }
+            else {
+                toast.error(CustomToast(message), { autoClose: 1000 })
+            }
+            dispatch(actions.refreshInfoResDiscount())
+        }
+    }, [message])
+
     const handleCreateDisCount = () => {
         const error = validate(dataInput)
         setErrors(error)
 
         if (Object.keys(error).length === 0) {
             dispatch(actions.createDiscount({
-                code: dataInput?.code, 
-                value: +dataInput?.value, 
-                description: dataInput?.description, 
+                code: dataInput?.code,
+                value: +dataInput?.value,
+                description: dataInput?.description,
                 page: params?.get('page') ? +params?.get('page') : 1
             }))
             setDataInput(initDataInput)
@@ -58,6 +73,7 @@ function DiscountCreat() {
                         <Form.Group controlId="formCode" className="mb-3">
                             <Form.Label>Mã<span className='text-danger'>*</span></Form.Label>
                             <Form.Control
+                                value={dataInput.code}
                                 type="text"
                                 placeholder="Enter code..."
                                 onChange={(e) => {
@@ -75,8 +91,9 @@ function DiscountCreat() {
                         <Form.Group controlId="formValue" className="mb-3">
                             <Form.Label>Giá trị<span className='text-danger'>*</span></Form.Label>
                             <Form.Control
-                                type="text"
-                                placeholder="Enter value ...(%)"
+                                value={dataInput.value}
+                                type="type"
+                                placeholder="Enter value (%)"
                                 onChange={(e) => {
                                     setDataInput({
                                         ...dataInput,
@@ -94,6 +111,7 @@ function DiscountCreat() {
                             <Form.Control
                                 as="textarea"
                                 rows={3}
+                                value={dataInput.description}
                                 onChange={(e) => {
                                     setDataInput({
                                         ...dataInput,

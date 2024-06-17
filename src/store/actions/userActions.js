@@ -398,14 +398,15 @@ export const updateInfoUser = (infoUser) => {
     }
 }
 
-export const searchUser = (userName) => {
+export const searchUser = (userName, page) => {
     return async (dispatch, getState) => {
         try {
-            const res = await searchUserService(userName)
+            const res = await searchUserService(userName, +page - 1)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FIND_USER_BY_NAME_SUCCESS,
-                    users: res.data
+                    users: res.data?.rows,
+                    count: res.data?.count
                 })
             }
             else {

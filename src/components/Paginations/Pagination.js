@@ -76,7 +76,7 @@ function Pagination({
         else {
             setIsHidenBack(false)
         }
-    }, [countProduct, countUser, countProductsFavourite, currentPageP])
+    }, [countProduct, countUser, countProductsFavourite, countDiscount, countProductType, currentPageP])
 
     const handleChangePage = (e) => {
         setCurrentPageP(e.target.getAttribute('data-page'))

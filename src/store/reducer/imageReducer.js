@@ -1,20 +1,23 @@
 const initState = {
     images: [],
     isLoadingImage: true,
-    infoResponse: ''
+    message: '',
+    errCode: '',
 }
 
-const imageReducer = (state=initState, action) => {
+const imageReducer = (state = initState, action) => {
     switch (action.type) {
         case 'REFRESH_STORE_SUCCESS':
             state.images = []
             state.isLoadingImage = true
-            state.infoResponse = ''
+            state.message = ''
+            state.errCode = ''
             return {
                 ...state
             }
-        case 'REFRESH_ERROR_IMAGE': 
-            state.infoResponse = ''
+        case 'REFRESH_INFO_RESPONSE_IMAGE':
+            state.message = ''
+            state.errCode = ''
             return {
                 ...state
             }
@@ -54,8 +57,9 @@ const imageReducer = (state=initState, action) => {
             return {
                 ...state
             }
-        case 'ADD_IMAGE_PRODUCT':
-            state.infoResponse = action.infoResponse
+        case 'CHANGE_IMAGE_PRODUCT':
+            state.message = action.message
+            state.errCode = action.errCode || 0
             return {
                 ...state
             }

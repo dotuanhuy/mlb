@@ -55,7 +55,8 @@ function AccountInfor({ titlePage }) {
             navigate(path.LOGIN)
         }
         else {
-            const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
+            // const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
+            const infoDecoded = JSON.parse(AES.decrypt(infoUser, process.env.REACT_APP_KEY_AES).toString(enc.Utf8))
             setNewUser({
                 firstName: infoDecoded?.firstName,
                 lastName: infoDecoded?.lastName,
@@ -169,7 +170,7 @@ function AccountInfor({ titlePage }) {
                                                             placeholder="Họ"
                                                             onChange={(e) => setNewUser({
                                                                 ...newUser,
-                                                                firstName: e.target.value.trim()
+                                                                firstName: e.target.value
                                                             })}
                                                         />
                                                     </FloatingLabel>
@@ -183,7 +184,7 @@ function AccountInfor({ titlePage }) {
                                                             value={newUser.lastName}
                                                             onChange={(e) => setNewUser({
                                                                 ...newUser,
-                                                                lastName: e.target.value.trim()
+                                                                lastName: e.target.value
                                                             })}
                                                         />
                                                     </FloatingLabel>
@@ -309,7 +310,7 @@ function AccountInfor({ titlePage }) {
                                                 <span className='fw-500 text-muted'>Ngày sinh</span>
                                             </div>
                                             <div className='col-8'>
-                                                {currentUser.birthDate ? currentUser.birthDate : 'None'}
+                                                {currentUser.birthDate ? moment(currentUser.birthDate).format('DD/MM/YYYY') : 'None'}
                                                 <FontAwesomeIcon
                                                     data-toggle="tooltip"
                                                     title='Sửa'
@@ -332,12 +333,14 @@ function AccountInfor({ titlePage }) {
                                                 <div className='mt-2'>
                                                     <DatePicker
                                                         className='border rounded py-1 px-2'
-                                                        placeholderText='dd/MM/yyyy'
-                                                        dateFormat="dd/MM/yyyy"
-                                                        selected={moment(newUser.birthDate, 'DD/MM/YYYY').toDate()}
+                                                        placeholderText='MM/dd/yyyy'
+                                                        // dateFormat="dd/MM/yyyy"
+                                                        // selected={moment(newUser?.birthDate, 'YYYY/MM/DD').toDate()}
+                                                        selected={moment(newUser?.birthDate).toDate()}
                                                         onChange={(date) => setNewUser({
                                                             ...newUser,
-                                                            birthDate: moment(date).format('DD/MM/YYYY')
+                                                            // birthDate: moment(date).format('DD/MM/YYYY')
+                                                            birthDate: date
                                                         })}
                                                     />
                                                     {

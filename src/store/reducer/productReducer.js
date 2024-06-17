@@ -9,6 +9,8 @@ const initState = {
     productSearchLimit: [],
     statisticalListProductType: [],
     productSlider: [],
+    message: '',
+    errCode: null
 }
 
 const productReducer = (state = initState, action) => {
@@ -28,6 +30,14 @@ const productReducer = (state = initState, action) => {
             state.productSearch = []
             state.productSearchLimit = []
             state.productSlider = []
+            state.message = ''
+            state.errCode = null
+            return {
+                ...state
+            }
+        case 'REFRESH_INFO_RESPONSE_PRODUCT':
+            state.message = ''
+            state.errCode = null
             return {
                 ...state
             }
@@ -37,7 +47,7 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'FETCH_ALL_PRODUCTS_FAILED': 
+        case 'FETCH_ALL_PRODUCTS_FAILED':
             state.products = []
             state.isLoading = true
             return {
@@ -72,13 +82,13 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'FETCH_DESCRIPTION_PRODUCT_SUCCESS': 
+        case 'FETCH_DESCRIPTION_PRODUCT_SUCCESS':
             state.descriptions = action.data
             state.isLoading = false
             return {
                 ...state
             }
-        case 'FETCH_DESCRIPTION_PRODUCT_FAILED': 
+        case 'FETCH_DESCRIPTION_PRODUCT_FAILED':
             state.descriptions = []
             state.isLoading = false
             return {
@@ -92,12 +102,12 @@ const productReducer = (state = initState, action) => {
                 ...state
             }
         case 'GET_COUNT_PRODUCTS_FAILED':
-                state.count = 0
-                state.totalSold = 0
-                state.isLoading = true
-                return {
-                    ...state
-                }
+            state.count = 0
+            state.totalSold = 0
+            state.isLoading = true
+            return {
+                ...state
+            }
         case 'GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_SUCCESS':
             state.statisticalListProductType = action.data
             state.isLoading = false
@@ -134,24 +144,24 @@ const productReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'GET_PRODUCT_BY_CATEGORY_DETAIL_SUCCESS': 
+        case 'GET_PRODUCT_BY_CATEGORY_DETAIL_SUCCESS':
             state.productSlider = action.productSlider
             return {
                 ...state
             }
-        case 'GET_PRODUCT_BY_CATEGORY_DETAIL_FAILED': 
+        case 'GET_PRODUCT_BY_CATEGORY_DETAIL_FAILED':
             state.productSlider = []
             return {
                 ...state
             }
-        case 'GET_LIMIT_PRODUCTS_BY_OPTION_SORT_SUCCESS': 
+        case 'GET_LIMIT_PRODUCTS_BY_OPTION_SORT_SUCCESS':
             state.products = action.data.rows
             state.count = action.data.count
             state.isLoading = false
             return {
                 ...state
             }
-        case 'GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED': 
+        case 'GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED':
             state.products = []
             state.count = 0
             state.isLoading = true
@@ -186,6 +196,24 @@ const productReducer = (state = initState, action) => {
             state.productSearchLimit = []
             state.isLoading = true
             state.count = 0
+            return {
+                ...state
+            }
+        case 'FIND_PRODUCT_BY_NAME_SUCCESS':
+            state.products = action.data
+            state.count = action.count
+            return {
+                ...state
+            }
+        case 'FIND_PRODUCT_BY_NAME_FAILED':
+            state.products = []
+            state.count = 0
+            return {
+                ...state
+            }
+        case 'CUD_PRODUCT':
+            state.message = action.message
+            state.errCode = action.errCode || 0
             return {
                 ...state
             }

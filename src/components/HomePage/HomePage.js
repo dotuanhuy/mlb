@@ -19,6 +19,8 @@ function HomePage({ titlePage }) {
     const { listId } = useSelector(state => state.order)
     const { products } = useSelector(state => state.product)
 
+    console.log('check evn: ', process.env.REACT_APP_KEY_AES);
+
     useEffect(() => {
         document.title = titlePage
         dispatch(actions.getListOrderId())
@@ -31,7 +33,8 @@ function HomePage({ titlePage }) {
 
     useEffect(() => {
         if (listId) {
-            const encrypted = AES.encrypt(listId.toString(), KEY_ORDERID)
+            // const encrypted = AES.encrypt(listId.toString(), KEY_ORDERID)
+            const encrypted = AES.encrypt(listId.toString(), process.env.REACT_APP_KEY_ORDERID)
             window.localStorage.setItem('orderId', encrypted)
         }
     }, [listId])

@@ -13,7 +13,6 @@ import fouriteProductReducer from './favouriteProductReducer'
 import cartReducer from "./cartReducer";
 import firebaseReducer from "./firebaseReducer";
 import reviewReducer from "./reviewReducer";
-import errorReducer from "./errorReducer";
 import orderReducer from "./orderReducer";
 import reportReducer from "./reportReducer";
 import notificationReducer from "./notificationReducer";
@@ -35,7 +34,6 @@ const authConfig = {
 
 const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReducer),   // Lưu dưới storage
-    error: errorReducer,
     user: userReducer,
     category: categoryReducer,
     productType: productTypeReducer,

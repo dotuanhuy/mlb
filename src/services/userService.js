@@ -56,8 +56,8 @@ const updateInfoUserService = (infoUser) => {
     return axiosJWT.post(`${api}/update/info`, infoUser)
 }
 
-const searchUserService = (userName) => {
-    return axiosJWT.get(`${api}/name?userName=${userName}`)
+const searchUserService = (userName, page) => {
+    return axiosJWT.get(`${api}/name?userName=${userName}&page=${page}`)
 }
 
 export {

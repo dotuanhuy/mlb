@@ -21,7 +21,7 @@ const initDataInput = {
 function DiscountUpdate() {
     const dispatch = useDispatch()
     const [dataInput, setDataInput] = useState(initDataInput)
-    const { discount, isLoading } = useSelector(state => state.discount) 
+    const { discount, isLoading } = useSelector(state => state.discount)
     const [errors, setErrors] = useState({})
     const [params] = useSearchParams()
     const navigate = useNavigate()
@@ -50,15 +50,15 @@ function DiscountUpdate() {
         if (Object.keys(error).length === 0) {
             dispatch(actions.updateDiscount({
                 id: discount?.id,
-                code: dataInput?.code, 
-                value: +dataInput?.value, 
-                description: dataInput?.description, 
+                code: dataInput?.code,
+                value: +dataInput?.value,
+                description: dataInput?.description,
                 page: params?.get('page') ? +params?.get('page') : 1
             }))
             navigate(
                 {
-                    pathname: path.MANAGE_DISCOUNT, 
-                    search: createSearchParams({page: params.get('page') ? params.get('page') : 1}).toString(),
+                    pathname: path.MANAGE_DISCOUNT,
+                    search: createSearchParams({ page: params.get('page') || 1 }).toString(),
                 }
             )
         }
@@ -77,69 +77,69 @@ function DiscountUpdate() {
                     </div>
                     <hr />
                     {
-                        isLoading ? 
-                        <Loading />
-                        :
-                        <div className='mb-5'>
-                            <Form.Group controlId="formCode" className="mb-3">
-                                <Form.Label>Mã<span className='text-danger'>*</span></Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Enter code..."
-                                    value={dataInput?.code}
-                                    onChange={(e) => {
-                                        setDataInput({
-                                            ...dataInput,
-                                            code: e.target.value
-                                        })
-                                        setErrors({})
-                                    }}
-                                />
-                                {
-                                    errors && errors.code ? <span className='error'>{errors.code}</span> : ''
-                                }
-                            </Form.Group>
-                            <Form.Group controlId="formValue" className="mb-3">
-                                <Form.Label>Giá trị<span className='text-danger'>*</span></Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Enter value ...(%)"
-                                    value={dataInput?.value}
-                                    onChange={(e) => {
-                                        setDataInput({
-                                            ...dataInput,
-                                            value: +e.target.value
-                                        })
-                                        setErrors({})
-                                    }}
-                                />
-                                {
-                                    errors && errors.value ? <span className='error'>{errors.value}</span> : ''
-                                }
-                            </Form.Group>
-                            <Form.Group controlId="formDes" className="mb-3">
-                                <Form.Label>Mô tả<span className='text-danger'>*</span></Form.Label>
-                                <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    value={dataInput?.description}
-                                    onChange={(e) => {
-                                        setDataInput({
-                                            ...dataInput,
-                                            description: e.target.value
-                                        })
-                                        setErrors({})
-                                    }}
-                                />
-                                {
-                                    errors && errors.description ? <span className='error'>{errors.description}</span> : ''
-                                }
-                            </Form.Group>
-                            <button
-                                className='btn btn-root fw-500'
-                                onClick={() => handleUpdateDisCount()}
-                            ><FontAwesomeIcon icon={faBookmark} /> Lưu</button>
-                        </div>
+                        isLoading ?
+                            <Loading />
+                            :
+                            <div className='mb-5'>
+                                <Form.Group controlId="formCode" className="mb-3">
+                                    <Form.Label>Mã<span className='text-danger'>*</span></Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Enter code..."
+                                        value={dataInput?.code}
+                                        onChange={(e) => {
+                                            setDataInput({
+                                                ...dataInput,
+                                                code: e.target.value
+                                            })
+                                            setErrors({})
+                                        }}
+                                    />
+                                    {
+                                        errors && errors.code ? <span className='error'>{errors.code}</span> : ''
+                                    }
+                                </Form.Group>
+                                <Form.Group controlId="formValue" className="mb-3">
+                                    <Form.Label>Giá trị<span className='text-danger'>*</span></Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Enter value ...(%)"
+                                        value={dataInput?.value}
+                                        onChange={(e) => {
+                                            setDataInput({
+                                                ...dataInput,
+                                                value: +e.target.value
+                                            })
+                                            setErrors({})
+                                        }}
+                                    />
+                                    {
+                                        errors && errors.value ? <span className='error'>{errors.value}</span> : ''
+                                    }
+                                </Form.Group>
+                                <Form.Group controlId="formDes" className="mb-3">
+                                    <Form.Label>Mô tả<span className='text-danger'>*</span></Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        rows={3}
+                                        value={dataInput?.description}
+                                        onChange={(e) => {
+                                            setDataInput({
+                                                ...dataInput,
+                                                description: e.target.value
+                                            })
+                                            setErrors({})
+                                        }}
+                                    />
+                                    {
+                                        errors && errors.description ? <span className='error'>{errors.description}</span> : ''
+                                    }
+                                </Form.Group>
+                                <button
+                                    className='btn btn-root fw-500'
+                                    onClick={() => handleUpdateDisCount()}
+                                ><FontAwesomeIcon icon={faBookmark} /> Lưu</button>
+                            </div>
                     }
                 </div>
             </div>

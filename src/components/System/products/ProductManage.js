@@ -1,44 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Navbar from '../common/navbar/Navbar'
+import { Link, useSearchParams } from 'react-router-dom';
+import TableProduct from './TableProducts';
 import Sidebar from '../common/sidebars/Sidebar';
-import TableProductType from './TableProductType';
-import CreateProductType from './CreateProductType';
-import { Form, InputGroup } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Form, InputGroup } from 'react-bootstrap';
 import * as actions from '../../../store/actions'
-import { useSearchParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { CustomToast } from '../../../utils';
 
 let timerId
-function ProductTypeManage({ categoryType, actives }) {
+function ProductManage({ categoryType, actives }) {
     const dispatch = useDispatch()
+    const { message } = useSelector(state => state.product)
     const [textSearch, setTextSearch] = useState('')
     const [params] = useSearchParams()
 
     useEffect(() => {
-        document.title = 'Quản lý kiểu sản phẩm'
-    }, [])
+        document.title = `Quản lý ${actives.active}`
+    }, [actives])
 
     useEffect(() => {
         if (!textSearch) {
-            dispatch(actions.getLimitProductTypes(params?.get('page') || 1))
+            dispatch(actions.getProductByCategoryLimit(categoryType, params?.get('page') ? params?.get('page') : 1))
         }
         else {
             searchAPI(1000, textSearch)
         }
     }, [textSearch])
 
-    const searchAPI = (delay, productTypeName) => {
+    useEffect(() => {
+        if (message) {
+            toast.success(CustomToast(message), { autoClose: 2000 })
+            dispatch(actions.refreshInfoReponseProduct())
+        }
+    }, [message])
+
+    const searchAPI = (delay, productName) => {
         delay = delay || 0
         if (timerId) {
             clearTimeout(timerId)
             timerId = null
         }
         timerId = setTimeout(() => {
-            if (productTypeName.trim()) {
-                dispatch(actions.getLimitProductTypesByName(params?.get('page') || 1, productTypeName))
+            if (productName.trim()) {
+                dispatch(actions.findNameProductByCategory(productName, categoryType, params.get('page') || 1))
             }
         }, delay)
     }
@@ -52,19 +61,19 @@ function ProductTypeManage({ categoryType, actives }) {
             <Navbar />
             <div className='row gx-0'>
                 <div className='col-2'>
-                    <Sidebar active='category' activeChild={actives?.active} />
+                    <Sidebar active='product' activeChild={actives?.active} />
                 </div>
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
-                    <h2>Các kiểu sản phẩm</h2>
-                    <div className='d-flex justify-content-end gap-3 align-items-center'>
+                    <h2>Quản lý {actives?.active?.toLowerCase()}</h2>
+                    <div className='d-flex justify-content-end gap-3'>
                         <div className='col-5'>
                             <InputGroup>
                                 <InputGroup.Text className=''><FontAwesomeIcon icon={faMagnifyingGlass} /></InputGroup.Text>
                                 <Form.Control
                                     value={textSearch}
                                     className='rounded-end position-relative'
-                                    placeholder={'Nhập tên kiểu sản phẩm'}
-                                    aria-label={'Nhập tên kiểu sản phẩm'}
+                                    placeholder={`Nhập tên ${actives?.active?.toLowerCase()}`}
+                                    aria-label={`Nhập tên ${actives?.active?.toLowerCase()}`}
                                     aria-describedby="basic-addon2"
                                     onChange={e => setTextSearch(e.target.value)}
                                 />
@@ -85,10 +94,15 @@ function ProductTypeManage({ categoryType, actives }) {
 
                             </InputGroup>
                         </div>
-                        <CreateProductType />
+                        <Link
+                            className='text-white fw-500 btn btn-root text-center'
+                            to={actives?.pathToCreate}
+                        >
+                            <FontAwesomeIcon icon={faPlus} /> Thêm mới
+                        </Link>
                     </div>
                     <hr />
-                    <TableProductType textSearch={textSearch} />
+                    <TableProduct textSearch={textSearch} categoryType={categoryType} actives={actives} />
                 </div>
             </div>
         </div>
@@ -97,6 +111,7 @@ function ProductTypeManage({ categoryType, actives }) {
 
 const mapStateToProps = state => {
     return {
+        isLogin: state.auth.isLogin,
     }
 }
 
@@ -105,4 +120,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductTypeManage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductManage);

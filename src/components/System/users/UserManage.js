@@ -4,31 +4,46 @@ import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
 import TableUser from './TableUser';
 import { path } from '../../../utils';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Button, Form, InputGroup } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { CustomToast } from '../../../utils';
+import { Form, InputGroup } from 'react-bootstrap';
 import * as actions from '../../../store/actions'
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+
+let timerId
 
 function UserManage() {
     const dispatch = useDispatch()
+    const [params] = useSearchParams()
     const [textSearch, setTextSearch] = useState('')
-    const [error, setError] = useState('')
 
     useEffect(() => {
         document.title = 'Quản lý người dùng'
     }, [])
 
-    const handleSerachUserName = (e) => {
-        e.preventDefault()
+    useEffect(() => {
         if (!textSearch) {
-            toast.warn(CustomToast('Vui lòng nhập tên người dùng!'), { autoClose: 3000 })
+            dispatch(actions.getLimitUsers(params?.get('page') || 1))
         }
         else {
-            dispatch(actions.searchUser(textSearch))
+            searchAPI(1000, textSearch)
         }
+    }, [textSearch])
+
+    const searchAPI = (delay, userName) => {
+        delay = delay || 0
+        if (timerId) {
+            clearTimeout(timerId)
+            timerId = null
+        }
+        timerId = setTimeout(() => {
+            dispatch(actions.searchUser(userName, params.get('page') || 1))
+        }, delay)
+    }
+
+    const handleClearTextSearch = () => {
+        setTextSearch('')
     }
 
     return (
@@ -42,21 +57,32 @@ function UserManage() {
                     <h2>Quản lý người dùng</h2>
                     <div className='d-flex justify-content-end gap-3'>
                         <div className='col-5'>
-                            <Form onSubmit={handleSerachUserName}>
-                                <InputGroup className="">
-                                    <Form.Control
-                                        placeholder="Nhập tên người dùng"
-                                        aria-label="Nhập tên người dùng"
-                                        aria-describedby="basic-addon2"
-                                        onChange={e => setTextSearch(e.target.value.trim())}
-                                    />
-                                    <button
-                                        className='btn btn-root'
-                                    >
-                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                    </button>
-                                </InputGroup>
-                            </Form>
+                            <InputGroup>
+                                <InputGroup.Text><FontAwesomeIcon icon={faMagnifyingGlass} /></InputGroup.Text>
+                                <Form.Control
+                                    value={textSearch}
+                                    className='rounded-end position-relative'
+                                    placeholder={`Nhập tên người dùng`}
+                                    aria-label={`Nhập tên người dùng`}
+                                    aria-describedby="basic-addon2"
+                                    onChange={e => setTextSearch(e.target.value.trim())}
+                                />
+                                {
+                                    textSearch ?
+                                        <FontAwesomeIcon
+                                            className='position-absolute'
+                                            style={{
+                                                cursor: 'pointer',
+                                                zIndex: '10',
+                                                right: '6px',
+                                                top: '10px'
+                                            }}
+                                            onClick={handleClearTextSearch}
+                                            icon={faCircleXmark}
+                                        /> : ''
+                                }
+
+                            </InputGroup>
                         </div>
                         <Link
                             className='btn btn-root d-flex align-items-center text-white fw-500'
@@ -67,7 +93,7 @@ function UserManage() {
                         </Link>
                     </div>
                     <hr />
-                    <TableUser pathPage={path.MANAGE_USER} />
+                    <TableUser textSearch={textSearch} pathPage={path.MANAGE_USER} />
                 </div>
             </div>
         </>

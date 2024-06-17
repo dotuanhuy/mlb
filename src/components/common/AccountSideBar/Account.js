@@ -24,7 +24,8 @@ function Account({ activeType, fetLogoutRedux }) {
             navigate(path.LOGIN)
         }
         else {
-            const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
+            // const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
+            const infoDecoded = JSON.parse(AES.decrypt(infoUser, process.env.REACT_APP_KEY_AES).toString(enc.Utf8))
             setUserLogin({
                 firstName: infoDecoded?.firstName,
                 lastName: infoDecoded?.lastName,
@@ -41,7 +42,8 @@ function Account({ activeType, fetLogoutRedux }) {
                 navigate(path.LOGIN)
             }
             else {
-                const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
+                // const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
+                const infoDecoded = JSON.parse(AES.decrypt(infoUser, process.env.REACT_APP_KEY_AES).toString(enc.Utf8))
                 setUserLogin({
                     firstName: infoDecoded?.firstName,
                     lastName: infoDecoded?.lastName,

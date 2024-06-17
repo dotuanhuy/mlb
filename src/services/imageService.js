@@ -22,8 +22,8 @@ const getAllImagesByProductIdService = (id) => {
     }
 }
 
-const addImageProductService = (formData, id, type) => {
-    return axiosJWT.post(`${api}/change?productId=${id}&type=${type}`, formData, { headers: { 'Content-type': 'multipart/form-data' } })
+const addImageProductService = (formData, id, type, found) => {
+    return axiosJWT.post(`${api}/change?productId=${id}&type=${type}&found=${found}&name=edit`, formData, { headers: { 'Content-type': 'multipart/form-data' } })
 }
 
 const deleteImageProductService = (formData, type) => {

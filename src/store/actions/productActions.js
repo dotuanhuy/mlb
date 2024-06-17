@@ -1,6 +1,6 @@
 import actionTypes from "./actionTypes";
-import { 
-    getAllProductsService, 
+import {
+    getAllProductsService,
     getAllProductPublicService,
     getQuantityOfEachProductByCategoryService,
     createNewProductService,
@@ -17,6 +17,7 @@ import {
     getLimitProductByOptionSortService,
     searchProductByNameService,
     searchProductByNameServiceLimit,
+    findNameProductByCategoryService
 
 } from "../../services/productService";
 
@@ -26,12 +27,21 @@ export const refreshIsloadingStateProduct = () => {
             dispatch({
                 type: actionTypes.LOADING_PRODUCT_SUCCESS
             })
-        } catch(e) {
+        } catch (e) {
             console.log('refreshIsloadingState error: ', e)
             dispatch({
                 type: actionTypes.LOADING_PRODUCT_FAILED
             })
         }
+    }
+}
+
+export const refreshInfoReponseProduct = () => {
+    return async (dispatch, getSate) => {
+        dispatch({
+            type: actionTypes.REFRESH_INFO_RESPONSE_PRODUCT
+        })
+
     }
 }
 
@@ -65,7 +75,7 @@ export const getAllProducts = (type) => {
                     type: actionTypes.FETCH_ALL_PRODUCTS_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('getAllProducts error: ', e)
             dispatch({
                 type: actionTypes.FETCH_ALL_PRODUCTS_FAILED
@@ -113,8 +123,8 @@ export const getQuantityOfEechProductByCategory = () => {
                     type: actionTypes.GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_FAILED
                 })
             }
-        } catch(e) {
-            console.log('getQuantityOfEechProductByCategory error: ' ,e)
+        } catch (e) {
+            console.log('getQuantityOfEechProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_FAILED
             })
@@ -122,56 +132,59 @@ export const getQuantityOfEechProductByCategory = () => {
     }
 }
 
-//*
-export const createNewProduct = (formData, type, page) => {
+export const createNewProduct = (formData, type, found, categoryType, page) => {
     return async (dispatch, getState) => {
         try {
-            let res = await createNewProductService(formData)
+            let res = await createNewProductService(formData, type, found)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.CREATE_NEW_PRODUCT_SUCCESS
+                    type: actionTypes.CUD_PRODUCT,
+                    message: res.errMessage
                 })
-                dispatch(getProductByCategoryLimit(type, page))
-            }
-            else if (res && res.errCode === 1) {
-                alert('Sản phẩm đã tồn tại')
-                dispatch({
-                    type: actionTypes.CREATE_NEW_PRODUCT_FAILED
-                })
+                dispatch(getProductByCategoryLimit(categoryType, page))
             }
             else {
                 dispatch({
-                    type: actionTypes.CREATE_NEW_PRODUCT_FAILED
+                    type: actionTypes.CUD_PRODUCT,
+                    message: res.errMessage,
+                    errCode: res.errCode
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('createNewProduct eror: ', e)
             dispatch({
-                type: actionTypes.CREATE_NEW_PRODUCT_FAILED
+                type: actionTypes.CUD_PRODUCT,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
             })
         }
     }
 }
 
-export const deleteProduct = (id, type, page) => {
+export const deleteProduct = (id, categoryType, page, type) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await deleteProductService(id)
+            let res = await deleteProductService(id, type)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.DELETE_PRODUCT_SUCCESS
+                    type: actionTypes.CUD_PRODUCT,
+                    message: res.errMessage
                 })
-                dispatch(getProductByCategoryLimit(type, page))
+                dispatch(getProductByCategoryLimit(categoryType, page))
             }
             else {
                 dispatch({
-                    type: actionTypes.DELETE_PRODUCT_FAILED
+                    type: actionTypes.CUD_PRODUCT,
+                    message: res.errMessage,
+                    errCode: res.errCode
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('deleteProduct error: ', e)
             dispatch({
-                type: actionTypes.DELETE_PRODUCT_FAILED
+                type: actionTypes.CUD_PRODUCT,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
             })
         }
     }
@@ -180,7 +193,7 @@ export const deleteProduct = (id, type, page) => {
 export const getProductById = (id) => {
     return async (dispatch, getSate) => {
         try {
-            let res = await getProductByIdService(id) 
+            let res = await getProductByIdService(id)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_PRODUCT_BY_ID_SUCCESS,
@@ -192,8 +205,8 @@ export const getProductById = (id) => {
                     type: actionTypes.GET_PRODUCT_BY_ID_FAILED
                 })
             }
-        } catch(e) {
-            console.log('getProductById error: ', e) 
+        } catch (e) {
+            console.log('getProductById error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_BY_ID_FAILED
             })
@@ -201,16 +214,32 @@ export const getProductById = (id) => {
     }
 }
 
-export const updateProduct = (id, fromData, categoryType, page, type) => {
+export const updateProduct = (id, fromData, categoryType, page, type, found) => {
     return async (dispatch, getState) => {
         try {
-            const res = await updateProductService(id, fromData, type)
+            const res = await updateProductService(id, fromData, type, found)
             if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.CUD_PRODUCT,
+                    message: res.errMessage,
+                })
                 dispatch(getProductByCategoryLimit(categoryType, page))
+            }
+            else {
+                dispatch({
+                    type: actionTypes.CUD_PRODUCT,
+                    message: res.errMessage,
+                    errCode: res.errCode
+                })
             }
         } catch (e) {
             console.log('updateProduct error: ', e)
-        } 
+            dispatch({
+                type: actionTypes.CUD_PRODUCT,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
+        }
     }
 }
 
@@ -238,18 +267,31 @@ export const getCountProducts = () => {
     }
 }
 
-export const changeImageProductById = (id, formData, type) => {
+export const changeImageProductById = (id, formData, type, found) => {
     return async (dispatch, getState) => {
         try {
-            let res = await changeImageProductByIdService(id, formData, type)
+            const res = await changeImageProductByIdService(id, formData, type, found)
             if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.CUD_PRODUCT,
+                    message: res.errMessage,
+                })
                 dispatch(getProductById(id))
             }
             else {
-                console.log(res)
+                dispatch({
+                    type: actionTypes.CUD_PRODUCT,
+                    message: res.errMessage,
+                    errCode: res.errCode
+                })
             }
         } catch (e) {
             console.log('changeImageProductById error: ', e)
+            dispatch({
+                type: actionTypes.CUD_PRODUCT,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
         }
     }
 }
@@ -257,7 +299,7 @@ export const changeImageProductById = (id, formData, type) => {
 export const fetchDescriptionProduct = (productId) => {
     return async (dispatch, getState) => {
         try {
-            let res = await fetchDescriptionProductService(productId) 
+            let res = await fetchDescriptionProductService(productId)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_DESCRIPTION_PRODUCT_SUCCESS,
@@ -281,7 +323,7 @@ export const fetchDescriptionProduct = (productId) => {
 export const addDescriptionProduct = (data) => {
     return async (dispatch, getState) => {
         try {
-            let res = await addDescriptionProductService(data) 
+            let res = await addDescriptionProductService(data)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.ADD_DESCRIPTION_PRODUCT_SUCCESS
@@ -305,7 +347,7 @@ export const addDescriptionProduct = (data) => {
 export const getProductByCategory = (type) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getProductByCategoryService(type) 
+            let res = await getProductByCategoryService(type)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_PRODUCT_BY_CATEGORY_SUCCESS,
@@ -329,7 +371,7 @@ export const getProductByCategory = (type) => {
 export const getProductByCategoryLimit = (type, offset) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getProductByCategoryLimitService(type, +offset - 1) 
+            let res = await getProductByCategoryLimitService(type, +offset - 1)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_PRODUCT_BY_CATEGORY_LIMIT_SUCCESS,
@@ -353,8 +395,8 @@ export const getProductByCategoryLimit = (type, offset) => {
 
 export const getProductByCategoryDetailLimit = (id, limit) => {
     return async (dispatch, getState) => {
-        try {   
-            let res = await getProductByCategoryDetailLimitService(id, limit) 
+        try {
+            let res = await getProductByCategoryDetailLimitService(id, limit)
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_PRODUCT_BY_CATEGORY_DETAIL_SUCCESS,
@@ -378,7 +420,7 @@ export const getProductByCategoryDetailLimit = (id, limit) => {
 export const getLimitProductByOption = (optionData, page, option, limit) => {
     return async (dispatch, getState) => {
         try {
-            const newPage = +page - 1 
+            const newPage = +page - 1
             let res = await getLimitProductByOptionSortService(optionData, newPage, option, limit)
             if (res && res.errCode === 0) {
                 dispatch({
@@ -392,7 +434,7 @@ export const getLimitProductByOption = (optionData, page, option, limit) => {
                 })
             }
         } catch (e) {
-            console.log('getLimitProductByOption error: ', e) 
+            console.log('getLimitProductByOption error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED
             })
@@ -403,7 +445,7 @@ export const getLimitProductByOption = (optionData, page, option, limit) => {
 export const searchProductByName = (productName, offset) => {
     return async (dispatch, getState) => {
         try {
-            const newPage = +offset - 1 
+            const newPage = +offset - 1
             let res = await searchProductByNameService(productName, newPage)
             if (res && res.errCode === 0) {
                 dispatch({
@@ -456,11 +498,36 @@ export const searchProductByNameLimit = (productName, offset) => {
                     type: actionTypes.SEARCH_PRODUCT_BY_NAME_LIMIT_FAILED
                 })
             }
-        } catch(e) {
+        } catch (e) {
             console.log('searchProductByNameLimit error: ', e)
             dispatch({
                 type: actionTypes.SEARCH_PRODUCT_BY_NAME_LIMIT_FAILED
             })
-        } 
+        }
+    }
+}
+
+export const findNameProductByCategory = (productName, type, offset) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await findNameProductByCategoryService(productName, type, +offset - 1)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FIND_PRODUCT_BY_NAME_SUCCESS,
+                    data: res?.data?.rows,
+                    count: res?.data?.count
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.FIND_PRODUCT_BY_NAME_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('findNameProductByCategory error: ', e)
+            dispatch({
+                type: actionTypes.FIND_PRODUCT_BY_NAME_FAILED
+            })
+        }
     }
 }

@@ -15,22 +15,20 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
-import { SocketProvider } from './configs/socketContext';
+
 
 const { store, persistor } = reduxStore()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const user = window.localStorage.getItem('accessToken')
+
 root.render(
     // <React.StrictMode>
-        // {/* <SocketProvider user={user}> */}
-            <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <App />
-                    <ToastContainer />
-                </PersistGate>  
-            </Provider>
-        // {/* </SocketProvider> */}
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <App />
+            <ToastContainer />
+        </PersistGate>
+    </Provider>
     // </React.StrictMode>
 );
 reportWebVitals();

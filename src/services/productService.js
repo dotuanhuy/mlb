@@ -21,12 +21,12 @@ const getQuantityOfEachProductByCategoryService = () => {
     return axiosJWT.get(`${api}/category/count`)
 }
 
-const createNewProductService = (formData) => {
-    return axiosJWT.post(`${api}/create?type=single`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+const createNewProductService = (formData, type, found) => {
+    return axiosJWT.post(`${api}/create?type=${type}&found=${found}&name=add`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
-const deleteProductService = (id) => {
-    return axiosJWT.delete(`${api}/delete?id=${id}&type=single`)
+const deleteProductService = (id, type) => {
+    return axiosJWT.delete(`${api}/delete?id=${id}&type=${type}&name=delete`)
 }
 
 const getProductByIdService = (id) => {
@@ -43,12 +43,12 @@ const getCountProductsService = () => {
     return axiosJWT.get(`${api}/count`)
 }
 
-const updateProductService = (id, formData, type) => {
-    return axiosJWT.post(`${api}/update?id=${id}&type=${type}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+const updateProductService = (id, formData, type, found) => {
+    return axiosJWT.post(`${api}/update?id=${id}&type=${type}&found=${found}&name=edit`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
-const changeImageProductByIdService = (id, formData, type) => {
-    return axiosJWT.post(`${api}/image/change?id=${id}&type=${type}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+const changeImageProductByIdService = (id, formData, type, found) => {
+    return axiosJWT.post(`${api}/image/change?id=${id}&type=${type}&found=${found}&name=edit`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
 const fetchDescriptionProductService = (id) => {
@@ -98,6 +98,10 @@ const searchProductByNameServiceLimit = (productName, offset) => {
     return axios.get(`${api}/search/name/limit?productName=${productName}&offset=${offset}`)
 }
 
+const findNameProductByCategoryService = (productName, type, offset) => {
+    return axiosJWT.get(`${api}/search/name/category?productName=${productName}&type=${type}&offset=${offset}`)
+}
+
 export {
     getAllProductsService,
     getAllProductPublicService,
@@ -116,4 +120,5 @@ export {
     getLimitProductByOptionSortService,
     searchProductByNameService,
     searchProductByNameServiceLimit,
+    findNameProductByCategoryService
 }
