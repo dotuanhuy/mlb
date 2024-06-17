@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import UserManageEdit from '../components/System/users/UserManageEdit';
+import EditUser from '../components/System/users/EditUser';
 import CreateUser from '../components/System/users/CreateUser';
 import UserManageDetail from '../components/System/users/UserManageDetail';
 import Manage from '../components/System/Manage/manage';
@@ -17,13 +17,13 @@ import { Active, categorieType, path } from '../utils';
 import PrivateRouter from './PrivateRouter';
 import UserManage from '../components/System/users/UserManage';
 import DiscountManage from '../components/System/discounts/DiscountManage';
-import DiscountCreate from '../components/System/discounts/DiscountCreate';
-import DiscountUpdate from '../components/System/discounts/DiscountUpdate';
+import CreateDiscount from '../components/System/discounts/CreateDiscount';
+import EditDiscount from '../components/System/discounts/EditDiscount';
 import OrderMange from '../components/System/orders/OrderMange';
 import OrderMangeDetail from '../components/System/orders/OrderMangeDetail';
 import Report from '../components/System/reports/Report'
 
-function System() {
+function SystemRoute() {
     return (
         <>
             <Routes>
@@ -39,7 +39,7 @@ function System() {
                 />
                 <Route
                     path={path.MANAGE_USER_EDIT}
-                    element={<PrivateRouter Component={UserManageEdit} />}
+                    element={<PrivateRouter Component={EditUser} />}
                 />
                 <Route
                     path={path.MANAGE_USER_DETAIL}
@@ -138,11 +138,11 @@ function System() {
                 />
                 <Route
                     path={path.MANAGE_DISCOUNT_CREATE}
-                    element={<PrivateRouter Component={DiscountCreate} />}
+                    element={<PrivateRouter Component={CreateDiscount} />}
                 />
                 <Route
                     path={path.MANAGE_DISCOUNT_EDIT}
-                    element={<PrivateRouter Component={DiscountUpdate} />}
+                    element={<PrivateRouter Component={EditDiscount} />}
                 />
 
                 <Route
@@ -174,4 +174,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(System);
+export default connect(mapStateToProps, mapDispatchToProps)(SystemRoute);

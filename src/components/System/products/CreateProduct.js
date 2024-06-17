@@ -455,7 +455,7 @@ function CreateProduct({ categoryType, actives }) {
                                 }
                             </Form.Group>
                             <div className="mb-3 col-6">
-                                <label htmlFor="exampleInputReleaseDate" className="form-label">Ngày phát hành<span className='text-danger'>*</span></label>
+                                <label htmlFor="exampleInputReleaseDate" className="form-label text-muted fw-500">Ngày phát hành<span className='text-danger'>*</span></label>
                                 <br></br>
                                 <DatePicker
                                     className='form-control'

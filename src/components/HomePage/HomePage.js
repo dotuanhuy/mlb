@@ -11,15 +11,12 @@ import HomeFooter from './HomeFooter/HomeFooter';
 import * as actions from '../../store/actions'
 import { useDispatch } from 'react-redux';
 import { AES } from 'crypto-js';
-import { KEY_ORDERID } from '../../utils';
 import Loading from '../common/Loading/Loading'
 
 function HomePage({ titlePage }) {
     const dispatch = useDispatch()
     const { listId } = useSelector(state => state.order)
     const { products } = useSelector(state => state.product)
-
-    console.log('check evn: ', process.env.REACT_APP_KEY_AES);
 
     useEffect(() => {
         document.title = titlePage
@@ -33,7 +30,6 @@ function HomePage({ titlePage }) {
 
     useEffect(() => {
         if (listId) {
-            // const encrypted = AES.encrypt(listId.toString(), KEY_ORDERID)
             const encrypted = AES.encrypt(listId.toString(), process.env.REACT_APP_KEY_ORDERID)
             window.localStorage.setItem('orderId', encrypted)
         }
@@ -87,8 +83,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
-        getAllProductPublicRedux: () => dispatch(actions.getAllProductPublic()),
     }
 }
 

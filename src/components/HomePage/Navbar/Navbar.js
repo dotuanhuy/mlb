@@ -64,7 +64,7 @@ function Navbar() {
     }, [userId])
 
     const handleLogout = () => {
-        dispatch(actions.fetLogout())
+        dispatch(actions.logout())
         navigate(path.HOMEPAGE)
     }
 

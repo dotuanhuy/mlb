@@ -1,20 +1,18 @@
-import React, { memo, Suspense, useContext, useEffect } from 'react';
-import './App.css';
+import React, { memo, Suspense } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { connect } from 'react-redux';
-import System from './route/system';
-import AuthRoute from './route/authRoute';
+import SystemRoute from './route/SystemRoute';
+import AuthRoute from './route/AuthRoute';
 import PublicRoute from './route/publicRoute';
-import NoMatch from './route/NoMatch';
 import Loading from './components/common/Loading/Loading';
 
 function App() {
     return (
         <React.Fragment>
-            <Suspense  fallback={<Loading />}>
+            <Suspense fallback={<Loading />}>
                 <Router>
                     <AuthRoute />
-                    <System />
+                    <SystemRoute />
                     <PublicRoute />
                 </Router>
             </Suspense>
@@ -24,7 +22,6 @@ function App() {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
     }
 }
 

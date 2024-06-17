@@ -1,12 +1,9 @@
 import React, { useEffect, useState, memo } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import './ListProductOption.scss'
 import { useLocation, useSearchParams } from 'react-router-dom';
 import * as actions from '../../store/actions'
-import { 
-    path, 
-    limit_page
-} from '../../utils';
+import { path, limit_page } from '../../utils';
 import Navbar from '../HomePage/Navbar/Navbar';
 import Pagination from '../Paginations/Pagination'
 import { useRef } from 'react';
@@ -18,24 +15,12 @@ import OptionType from '../common/options/OptionType';
 import OptionColor from '../common/options/OptionColor';
 import OptionLogo from '../common/options/OptionLogo';
 import HomeFooter from '../HomePage/HomeFooter/HomeFooter';
-import jwt_decode from 'jwt-decode';
 
-function Shoes({
-    productType,
-    type,
-    categoryActive,
-    titlePage,
-    categories, 
-    images,
-    products,
-    isLoading,
-    getAllColorsRedux, 
-    getAllLogosRedux,
-    getImageProductByCategoryRedux,
-    getLimitProductByOptionRedux,
-    refreshIsloadingStateProductRedux,
-}) {
-    const accessToken = window.localStorage.getItem('accessToken')
+function ListProductOption({ productType, type, categoryActive, titlePage }) {
+    const dispatch = useDispatch()
+    const { categoryType } = useSelector(state => state.category)
+    const { images } = useSelector(state => state.image)
+    const { products, isLoading } = useSelector(state => state.product)
     const [optionSort, setOptionSort] = useState('default')
     const [optionType, setOptionType] = useState([])
     const [optionColor, setOptionColor] = useState([])
@@ -43,12 +28,12 @@ function Shoes({
     const [params] = useSearchParams()
     const listRef = useRef()
     const initialRender = useRef(true)
-    const { state, pathname } = useLocation();
+    const { state } = useLocation();
 
     useEffect(() => {
-        refreshIsloadingStateProductRedux()
-        getAllColorsRedux()
-        getAllLogosRedux()
+        dispatch(actions.refreshIsloadingStateProduct())
+        dispatch(actions.getAllColors())
+        dispatch(actions.getAllLogos())
     }, [])
 
     useEffect(() => {
@@ -64,7 +49,7 @@ function Shoes({
             }
         }
     }, [listRef.current])
-    
+
     useEffect(() => {
         document.title = titlePage
         const data = {
@@ -74,13 +59,13 @@ function Shoes({
             // typeName: state?.id ? state?.id : '',
             typeName: productType
         }
-
-        getLimitProductByOptionRedux(
-            data, 
-            params.get('page') ? params.get('page') : 1, 
-            optionSort, 
+        dispatch(actions.getLimitProductByOption(
+            data,
+            params.get('page') ? params.get('page') : 1,
+            optionSort,
             limit_page
-        )
+        ))
+
         if (listRef.current) {
             window.scrollTo({
                 behavior: "smooth",
@@ -94,8 +79,8 @@ function Shoes({
         setOptionType([])
         setOptionColor([])
         setOptionLogo([])
-        refreshIsloadingStateProductRedux()
-        getImageProductByCategoryRedux(categoryActive)
+        dispatch(actions.refreshIsloadingStateProduct())
+        dispatch(actions.getImageProductByCategory(categoryActive))
         const data = {
             optionType: optionType?.toString(',').length === 0 ? categoryActive : optionType?.toString(','),
             colors: optionColor?.toString(','),
@@ -104,12 +89,12 @@ function Shoes({
             typeName: productType
         }
 
-        getLimitProductByOptionRedux(
-            data, 
-            params.get('page') ? params.get('page') : 1, 
-            optionSort, 
+        dispatch(actions.getLimitProductByOption(
+            data,
+            params.get('page') ? params.get('page') : 1,
+            optionSort,
             limit_page
-        )
+        ))
     }, [categoryActive])
 
     const handleOnchangeTypeType = (e, typeId) => {
@@ -122,7 +107,7 @@ function Shoes({
         }
         setOptionType(arr)
     }
-    
+
     const handleOnchangeColor = (colorId) => {
         let arr = [...optionColor]
         if (optionColor.some(item => item === colorId)) {
@@ -133,7 +118,7 @@ function Shoes({
         }
         setOptionColor(arr)
     }
-    
+
     const handleOnchangeLogo = (logoId) => {
         let arr = [...optionLogo]
         if (optionLogo.some(item => item === logoId)) {
@@ -148,44 +133,44 @@ function Shoes({
     return (
         <>
             {
-                isLoading ? 
-                <Loading />
-                :
-                <>
-                    <div className='shoes'>
-                        <Navbar />
-                        <Banner 
-                            categoryProduct={categories?.at(0)?.name}
-                            title={`mlb việt nam | ${categories?.at(0)?.name} chính hãng tại việt nam`}
-                        />
+                isLoading ?
+                    <Loading />
+                    :
+                    <>
+                        <div className='shoes'>
+                            <Navbar />
+                            <Banner
+                                categoryProduct={categoryType?.at(0)?.name}
+                                title={`mlb việt nam | ${categoryType?.at(0)?.name} chính hãng tại việt nam`}
+                            />
 
-                        <div ref={listRef} className='shoes-body pt-5'>
-                            <div className='shoes-container'>
-                                <div className='row'>
-                                    <div className='options col-3'>
-                                        <div className='options-list ps-3'>
-                                            <OptionSort handleSetOptionSort={setOptionSort} optionSort={optionSort} />
-                                            <OptionType type={type} optionType={optionType} handleOnchangeTypeType={handleOnchangeTypeType} />
-                                            <OptionColor handleOnchangeColor={handleOnchangeColor} optionColor={optionColor} />
-                                            <OptionLogo handleOnchangeLogo={handleOnchangeLogo} optionType={optionType} />
+                            <div ref={listRef} className='shoes-body pt-5'>
+                                <div className='shoes-container'>
+                                    <div className='row'>
+                                        <div className='options col-3'>
+                                            <div className='options-list position-sticky ps-3'>
+                                                <OptionSort handleSetOptionSort={setOptionSort} optionSort={optionSort} />
+                                                <OptionType type={type} optionType={optionType} handleOnchangeTypeType={handleOnchangeTypeType} />
+                                                <OptionColor handleOnchangeColor={handleOnchangeColor} optionColor={optionColor} />
+                                                <OptionLogo handleOnchangeLogo={handleOnchangeLogo} optionType={optionType} />
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div className='shoes-list col-9'>
-                                        <div className='shoes-list-container'>
-                                            <div className='menu-product row'>
-                                                <ListProducts products={products} images={images} />
+
+                                        <div className='shoes-list col-9'>
+                                            <div className='shoes-list-container'>
+                                                <div className='menu-product row'>
+                                                    <ListProducts products={products} images={images} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <Pagination pathPage={path.GIAY_MLB} currentPage={params.get('page') || 1} />
                                 </div>
-                                
-                                <Pagination pathPage={path.GIAY_MLB} currentPage={params.get('page') || 1}/>
                             </div>
                         </div>
-                    </div>
-                    <HomeFooter />
-                </>
+                        <HomeFooter />
+                    </>
             }
         </>
     );
@@ -193,21 +178,12 @@ function Shoes({
 
 const mapStateToProps = state => {
     return {
-        categories: state.category.categoryType,
-        images: state.image.images,
-        products: state.product.products,
-        isLoading: state.product.isLoading,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllColorsRedux: () => dispatch(actions.getAllColors()),
-        getAllLogosRedux: () => dispatch(actions.getAllLogos()),
-        getImageProductByCategoryRedux: (category) => dispatch(actions.getImageProductByCategory(category)),
-        getLimitProductByOptionRedux: (optionData, page, option, limit) => dispatch(actions.getLimitProductByOption(optionData, page, option, limit)),
-        refreshIsloadingStateProductRedux: () => dispatch(actions.refreshIsloadingStateProduct()),
     }
 }
 
-export default memo(connect(mapStateToProps, mapDispatchToProps)(Shoes));
+export default memo(connect(mapStateToProps, mapDispatchToProps)(ListProductOption));

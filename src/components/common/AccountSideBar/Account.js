@@ -1,8 +1,7 @@
 import React, { useEffect, useState, memo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { KEY_AES, path } from '../../../utils';
-import * as action from '../../../store/actions'
+import { path } from '../../../utils';
 import Cookies from 'js-cookie'
 import { AES, enc } from 'crypto-js';
 
@@ -12,7 +11,7 @@ const initState = {
     email: ''
 }
 
-function Account({ activeType, fetLogoutRedux }) {
+function Account({ activeType }) {
     const [active, setActive] = useState('infor')
     const { message } = useSelector(state => state.user)
     const [userLogin, setUserLogin] = useState(initState)
@@ -42,7 +41,6 @@ function Account({ activeType, fetLogoutRedux }) {
                 navigate(path.LOGIN)
             }
             else {
-                // const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
                 const infoDecoded = JSON.parse(AES.decrypt(infoUser, process.env.REACT_APP_KEY_AES).toString(enc.Utf8))
                 setUserLogin({
                     firstName: infoDecoded?.firstName,
@@ -53,11 +51,6 @@ function Account({ activeType, fetLogoutRedux }) {
             }
         }
     }, [message])
-
-    const handleLogout = () => {
-        fetLogoutRedux()
-        navigate(path.HOMEPAGE)
-    }
 
     return (
         <div className='col-3'>
@@ -88,7 +81,7 @@ function Account({ activeType, fetLogoutRedux }) {
                 <li className='mb-2'>
                     <Link
                         to={path.LOG_OUT}
-                        onClick={handleLogout}
+                        className='fs-16 text-muted text-sm-hover'
                     >Đăng xuất</Link>
                 </li>
             </ul>
@@ -103,7 +96,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetLogoutRedux: () => dispatch(action.fetLogout())
     }
 }
 

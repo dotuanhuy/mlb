@@ -14,11 +14,9 @@ import Loading from '../common/Loading/Loading';
 
 function ForgotPassword({ titlePage }) {
     const dispatch = useDispatch()
-    const { message, isLogin, errCode } = useSelector(state => state.auth)
-    const { isVerify, email } = useSelector(state => state.user)
+    const { message, isLogin, errCode, isVerify, email } = useSelector(state => state.auth)
     const messageUser = useSelector(state => state.user.message)
     const [password, setPassword] = useState({ password: '', rePassword: '' })
-    const [isverifyState, setIsverifyState] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
@@ -27,6 +25,7 @@ function ForgotPassword({ titlePage }) {
 
     useEffect(() => {
         document.title = titlePage
+        dispatch(actions.refreshStateAuth())
         if (isLogin) {
             navigate(path.HOMEPAGE)
         }
@@ -65,6 +64,7 @@ function ForgotPassword({ titlePage }) {
             }
             else {
                 toast.error(CustomToast(message), { autoClose: 3000 })
+                setIsLoading(false)
             }
             dispatch(actions.refreshStateAuth())
         }
@@ -76,12 +76,6 @@ function ForgotPassword({ titlePage }) {
             dispatch(actions.refreshStateMessage())
         }
     }, [messageUser])
-
-    useEffect(() => {
-        if (isVerify) {
-            setIsverifyState(isVerify)
-        }
-    }, [isVerify])
 
     const handleConfirmPassword = (e) => {
         e.preventDefault()
@@ -124,7 +118,7 @@ function ForgotPassword({ titlePage }) {
                                 <div className='p-4'>
                                     <Form>
                                         {
-                                            !isverifyState ?
+                                            !isVerify ?
                                                 <VerifyOtp type='forgot password' setIsLoading={setIsLoading} />
                                                 :
                                                 <>

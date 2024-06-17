@@ -10,9 +10,6 @@ import {
     deleteUserService,
     getUserByIdService,
     getLimitUserService,
-    registerSevice,
-    sendMailService,
-    verifyOtpService,
     updateInfoUserService,
     searchUserService
 } from "../../services/userService";
@@ -32,26 +29,54 @@ export const refreshStoreUser = () => {
     }
 }
 
-export const createNewUser = (data, page) => {
+export const refreshInfoResponse = () => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: actionTypes.REFRESH_INFO_RESPONSE
+        })
+
+    }
+}
+
+export const refreshIsloadingState = () => {
     return async (dispatch, getSate) => {
         try {
-            const res = await createUserService(data)
+            dispatch({
+                type: actionTypes.LOADING_SUCCESS
+            })
+        } catch (e) {
+            console.log('refreshIsloadingState error: ', e)
+            dispatch({
+                type: actionTypes.LOADING_FAILED
+            })
+        }
+    }
+}
+
+export const createNewUser = (newUser, page) => {
+    return async (dispatch, getSate) => {
+        try {
+            const res = await createUserService(newUser)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.CREATE_NEW_USER_SUCCESS
+                    type: actionTypes.CUD_USER,
+                    message: res.errMessage
                 })
                 dispatch(getLimitUsers(page))
             }
             else {
-                alert(res.errMessage)
                 dispatch({
-                    type: actionTypes.CREATE_NEW_USER_FAILED
+                    type: actionTypes.CUD_USER,
+                    message: res.errMessage,
+                    errCode: res.errCode
                 })
             }
         } catch (e) {
             console.log('createNewUser error: ', e)
             dispatch({
-                type: actionTypes.CREATE_NEW_USER_FAILED
+                type: actionTypes.CUD_USER,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
             })
         }
     }
@@ -138,49 +163,53 @@ export const deleteUser = (id, page) => {
             const res = await deleteUserService(id)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.DELTE_USER_SUCCESS
+                    type: actionTypes.CUD_USER,
+                    message: res.errMessage,
                 })
                 dispatch(getLimitUsers(page))
             }
             else {
                 dispatch({
-                    type: actionTypes.DELTE_USER_FAILED
+                    type: actionTypes.CUD_USER,
+                    message: res.errMessage,
+                    errCode: res.errCode
                 })
             }
         } catch (e) {
             console.log('deleteUser error: ', e)
             dispatch({
-                type: actionTypes.DELTE_USER_FAILED
+                type: actionTypes.CUD_USER,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
             })
         }
     }
 }
 
-export const updateUser = (data, id, page) => {
+export const updateUser = (newUser, id, page) => {
     return async (dispatch, getSate) => {
         try {
-            const res = await updateUserService(data, id)
+            const res = await updateUserService(newUser, id)
             if (res && res.errCode === 0) {
                 dispatch({
-                    type: actionTypes.EDIT_USER_SUCCESS
+                    type: actionTypes.CUD_USER,
+                    message: res.errMessage,
                 })
-                if (page) {
-                    dispatch(getLimitUsers(page, page))
-                }
-                else {
-                    dispatch(getUserById(data?.id))
-                }
+                dispatch(getLimitUsers(page, page))
             }
             else {
-                alert(res.errMessage)
                 dispatch({
-                    type: actionTypes.EDIT_USER_FAILED
+                    type: actionTypes.CUD_USER,
+                    message: res.errMessage,
+                    errCode: res.errCode
                 })
             }
         } catch (e) {
-            console.log('deleteUser error: ', e)
+            console.log('updateUser error: ', e)
             dispatch({
-                type: actionTypes.EDIT_USER_FAILED
+                type: actionTypes.CUD_USER,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
             })
         }
     }
@@ -210,7 +239,6 @@ export const getCountUsers = () => {
     }
 }
 
-
 export const getUserById = (id) => {
     return async (dispatch, getSate) => {
         try {
@@ -236,22 +264,6 @@ export const getUserById = (id) => {
     }
 }
 
-
-export const refreshIsloadingState = () => {
-    return async (dispatch, getSate) => {
-        try {
-            dispatch({
-                type: actionTypes.LOADING_SUCCESS
-            })
-        } catch (e) {
-            console.log('refreshIsloadingState error: ', e)
-            dispatch({
-                type: actionTypes.LOADING_FAILED
-            })
-        }
-    }
-}
-
 export const getLimitUsers = (page,) => {
     return async (dispatch, getState) => {
         try {
@@ -272,86 +284,6 @@ export const getLimitUsers = (page,) => {
             console.log('getLimitUsers error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_USERS_FAILED
-            })
-        }
-    }
-}
-
-export const register = (data) => {
-    return async (dispatch, getState) => {
-        try {
-            const res = await registerSevice(data)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.REGISTER,
-                    message: res.errMessage,
-                    errCode: res.errCode
-                })
-            }
-            else {
-                dispatch(refreshStoreUser())
-            }
-        } catch (e) {
-            console.log('register error: ', e)
-            dispatch(refreshStoreUser())
-            dispatch({
-                type: actionTypes.REGISTER,
-                message: e?.response?.data?.errMessage,
-                errCode: e?.response?.data?.errCode
-            })
-        }
-    }
-}
-
-export const sendMail = (email, type) => {
-    return async (dispatch, getState) => {
-        try {
-            const res = await sendMailService(email, type)
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.SEND_MAIL_SUCCESS,
-                    data: res.data
-                })
-            }
-            else {
-                dispatch({
-                    type: actionTypes.SEND_MAIL_FAILED,
-                    message: res.errMessage,
-                    errCode: res.errCode
-                })
-            }
-        } catch (e) {
-            dispatch({
-                type: actionTypes.SEND_MAIL_FAILED,
-                message: e?.response?.data?.errMessage,
-                errCode: e?.response?.data?.errCode
-            })
-        }
-    }
-}
-
-export const verifyOtp = ({ otp, email }) => {
-    return async (dispatch, getState) => {
-        try {
-            const res = await verifyOtpService({ otp, email })
-            if (res && res.errCode === 0) {
-                dispatch({
-                    type: actionTypes.VERIFY_OTP_SUCCESS,
-                    isVerify: res.isVerify,
-                    data: res.data
-                })
-            }
-            else {
-                dispatch({
-                    type: actionTypes.VERIFY_OTP_FAILED,
-                    message: res.errMessage
-                })
-            }
-        } catch (e) {
-            console.log('verifyOtp error: ', e)
-            dispatch({
-                type: actionTypes.VERIFY_OTP_FAILED,
-                message: e?.response?.data?.errMessage,
             })
         }
     }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-function error({isLogin}) {
+function error() {
   return (
     <div>error</div>
   )
@@ -9,15 +9,14 @@ function error({isLogin}) {
 
 
 const mapStateToProps = state => {
-    return {
-        isLogin: state.auth.isLogin
-    }
+  return {
+  }
 }
 
 const mapDispatchToProps = dispatch => {
-    return {
+  return {
 
-    }
+  }
 }
 
 

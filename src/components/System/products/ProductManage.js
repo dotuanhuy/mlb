@@ -111,7 +111,6 @@ function ProductManage({ categoryType, actives }) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin,
     }
 }
 

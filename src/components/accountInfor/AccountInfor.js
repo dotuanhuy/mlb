@@ -17,6 +17,7 @@ import { validate } from '../../validate/valiedate';
 import DatePicker from "react-datepicker";
 import moment from 'moment';
 import Select from 'react-select';
+import { CustomToast } from '../../utils';
 
 function AccountInfor({ titlePage }) {
     const dispatch = useDispatch()
@@ -86,18 +87,10 @@ function AccountInfor({ titlePage }) {
     useEffect(() => {
         if (message) {
             if (errCode === 0) {
-                toast.success((
-                    <span className='fw-light' style={{ fontSize: 14, fontFamily: 'serif' }}>
-                        {message}
-                    </span>
-                ), { autoClose: 3000 })
+                toast.success(CustomToast(message), { autoClose: 2000 })
             }
             else {
-                toast.error((
-                    <span className='fw-light' style={{ fontSize: 14, fontFamily: 'serif' }}>
-                        {message}
-                    </span>
-                ), { autoClose: 3000 })
+                toast.error(CustomToast(message), { autoClose: 2000 })
             }
             setCurrentUser({
                 ...currentUser,
@@ -334,8 +327,6 @@ function AccountInfor({ titlePage }) {
                                                     <DatePicker
                                                         className='border rounded py-1 px-2'
                                                         placeholderText='MM/dd/yyyy'
-                                                        // dateFormat="dd/MM/yyyy"
-                                                        // selected={moment(newUser?.birthDate, 'YYYY/MM/DD').toDate()}
                                                         selected={moment(newUser?.birthDate).toDate()}
                                                         onChange={(date) => setNewUser({
                                                             ...newUser,

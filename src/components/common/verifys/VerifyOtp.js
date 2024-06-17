@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
-import { validate } from '../../../validate/valiedate';
+import { validate, validateRequire } from '../../../validate/valiedate';
 import OtpInput from 'react-otp-input';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { CustomToast } from '../../../utils';
-import Loading from '../Loading/Loading';
 
 function VerifyOtp({ type, setIsLoading }) {
     const dispatch = useDispatch()
-    const { otp, message } = useSelector(state => state.user)
+    const { otp } = useSelector(state => state.auth)
     const [otpClient, setOtpClient] = useState('');
     const [isShowVerify, setIsShowVerify] = useState(false)
     const [dataInput, setDataInput] = useState({ email: '' })
@@ -28,19 +25,13 @@ function VerifyOtp({ type, setIsLoading }) {
         }
     }, [otp])
 
-    // useEffect(() => {
-    //     if (message) {
-    //         console.log('check err');
-    //         toast.error(CustomToast(message), { autoClose: 3000 })
-    //         dispatch(actions.refreshStateMessage())
-    //     }
-    // }, [message])
-
     const handleSendEmail = (e) => {
         e.preventDefault()
-        let error = validate(dataInput)
-        setErrors(error)
-        if (Object.keys(error).length === 0) {
+        const error = validate(dataInput)
+        if (Object.keys(error).length > 0) {
+            setErrors(error)
+        }
+        else {
             setIsLoading(true)
             dispatch(actions.sendMail(dataInput.email, type))
         }
@@ -48,10 +39,18 @@ function VerifyOtp({ type, setIsLoading }) {
 
     const handleVerifyOtp = (e) => {
         e.preventDefault()
-        dispatch(actions.verifyOtp({
-            otp: otpClient,
-            email: dataInput.email
-        }))
+        const error = validateRequire('Mã xác minh', otpClient)
+        if (error) {
+            setErrors({
+                otp: error
+            })
+        }
+        else {
+            dispatch(actions.verifyOtp({
+                otp: otpClient,
+                email: dataInput.email
+            }))
+        }
     }
 
     return (
@@ -102,6 +101,9 @@ function VerifyOtp({ type, setIsLoading }) {
                                 justifyContent: 'center'
                             }}
                         />
+                        {
+                            errors && errors.otp ? <div className='error text-center mt-2'>{errors.otp}</div> : ''
+                        }
                         <div className='text-center mt-3'>
                             <button
                                 className='btn button-auth'

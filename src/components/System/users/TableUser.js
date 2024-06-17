@@ -34,19 +34,19 @@ function TableUsers({
             dispatch(actions.searchUser(textSearch, params.get('page') || 1))
         }
         else {
-            dispatch(actions.getLimitUsers(params?.get('page') ? params?.get('page') : 1))
+            dispatch(actions.getLimitUsers(params?.get('page') || 1))
         }
     }, [params?.get('page')])
 
     const handleDeleteUser = (id) => {
-        dispatch(actions.deleteUser(id, params.get('page') ? params.get('page') : 1))
+        dispatch(actions.deleteUser(id, params.get('page') || 1))
     }
 
     const handleEdit = (user) => {
         navigate(
             {
                 pathname: path.MANAGE_USER_EDIT,
-                search: createSearchParams({ id: user.id, page: params.get('page') ? params.get('page') : 1 }).toString(),
+                search: createSearchParams({ id: user.id, page: params.get('page') || 1 }).toString(),
             }
         )
     }

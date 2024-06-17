@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../common/sidebars/Sidebar';
 import Navbar from '../common/navbar/Navbar';
 import TableUser from './TableUser';
-import { path } from '../../../utils';
+import { CustomToast, path } from '../../../utils';
 import { Link, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Form, InputGroup } from 'react-bootstrap';
 import * as actions from '../../../store/actions'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { toast } from 'react-toastify';
 
 let timerId
 
 function UserManage() {
+    const { message, errCode } = useSelector(state => state.user)
     const dispatch = useDispatch()
     const [params] = useSearchParams()
     const [textSearch, setTextSearch] = useState('')
@@ -23,6 +25,18 @@ function UserManage() {
     }, [])
 
     useEffect(() => {
+        if (message) {
+            if (errCode === 0) {
+                toast.success(CustomToast(message), { autoClose: 2000 })
+            }
+            else {
+                toast.error(CustomToast(message), { autoClose: 2000 })
+            }
+            dispatch(actions.refreshInfoResponse())
+        }
+    }, [message])
+
+    useEffect(() => {
         if (!textSearch) {
             dispatch(actions.getLimitUsers(params?.get('page') || 1))
         }
@@ -30,6 +44,7 @@ function UserManage() {
             searchAPI(1000, textSearch)
         }
     }, [textSearch])
+
 
     const searchAPI = (delay, userName) => {
         delay = delay || 0

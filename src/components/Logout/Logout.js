@@ -1,13 +1,15 @@
 import React, { memo, useEffect } from 'react'
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../utils';
 import * as actions from '../../store/actions'
 import { useDispatch } from 'react-redux';
 
 function Logout() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { errCode } = useSelector(state => state.auth)
+    const navigate = useNavigate()
+
     useEffect(() => {
         dispatch(actions.refreshStoreProduct())
         dispatch(actions.refreshStoreUser())
@@ -15,8 +17,14 @@ function Logout() {
         dispatch(actions.refreshStateCart())
         dispatch(actions.refreshStateMessage())
         dispatch(actions.refreshStateAuth())
-        navigate(path.LOGIN)
+        dispatch(actions.logout())
     }, [])
+
+    useEffect(() => {
+        if (errCode === 0) {
+            navigate(path.HOMEPAGE)
+        }
+    }, [errCode])
 
     return (
         <></>

@@ -182,7 +182,7 @@ function EditProduct({ categoryType, actives }) {
                 navigate({
                     pathname: actives.pathToHome,
                     search: createSearchParams({
-                        page: params.get('page') ? params.get('page') : 1
+                        page: params.get('page') || 1
                     }).toString()
                 })
             }

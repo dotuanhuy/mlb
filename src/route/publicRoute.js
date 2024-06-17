@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { categorieType, listBag, listClothes, listHat, listShoesSandals, path, typeShoesSandanl } from '.././utils'
+import Logout from '../components/Logout/Logout';
 import HomePage from '../components/HomePage/HomePage';
 import ListProductOption from '../components/Products/ListProductOption';
 import AccountInfor from '../components/accountInfor/AccountInfor';
@@ -14,12 +15,15 @@ import TutorialSize from '../components/tutorialSize/TutorialSize';
 import Payment from '../components/payments/Payment';
 import OrderTracking from '../components/orderTracking/OrderTracking';
 import OrderTrackingDetail from '../components/orderTracking/OrderTrackingDetail';
+import NotFound from '../pages/404/404'
 
 function PublicRoute() {
 
     return (
         <>
             <Routes>
+                <Route path={path.LOG_OUT} element={<Logout titlePage='Đăng xuất' />}></Route>
+
                 <Route path={path.HOMEPAGE} element={<HomePage titlePage='Trang chủ' />} />
 
                 <Route path={path.GIAY_MLB} element={<ListProductOption categoryActive={categorieType.SHOES_SANDAL} type={[listShoesSandals.SANDAL, listShoesSandals.SHOES]} titlePage='Giày dép MLB' />} />
@@ -67,6 +71,8 @@ function PublicRoute() {
 
                 <Route path={path.ORDER_TRACKING} element={<OrderTracking titlePage='Theo dõi đơn hàng' />}></Route>
                 <Route path={path.ORDER_TRACKING_DETAIL} element={<OrderTrackingDetail titlePage='Chi tiết đơn hàng' />}></Route>
+
+                <Route path='*' element={<NotFound />}></Route>
             </Routes>
         </>
     );

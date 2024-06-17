@@ -39,7 +39,7 @@ function DiscountManage() {
                 </div>
                 <div className='col-10 container bg-light mt-4 px-5 py-3 rounded'>
                     <div className='d-flex justify-content-between align-items-center'>
-                        <h2>Discount</h2>
+                        <h2>Quản lý mã giảm giá</h2>
                         <Link className='text-white fw-500 btn btn-root text-center' to={path.MANAGE_DISCOUNT_CREATE}>
                             <FontAwesomeIcon icon={faPlus} /> Thêm mới
                         </Link>

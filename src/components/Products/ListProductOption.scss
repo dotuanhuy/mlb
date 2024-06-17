@@ -2,11 +2,10 @@
 
     .shoes-container {
         overflow-x: clip;
-        
+
         .options {
 
             .options-list {
-                position: sticky;
                 top: 90px;
 
             }
@@ -18,6 +17,7 @@
     100% {
         transform: translateY(0);
     }
+
     0% {
         transform: translateY(20px);
     }

@@ -30,7 +30,7 @@ const inforUserNotValue = {
 
 function Register({ titlePage }) {
     const dispatch = useDispatch()
-    const { message, errCode, isVerify, email } = useSelector(state => state.user)
+    const { message, errCode, isVerify, email } = useSelector(state => state.auth)
     const [inforUser, setInforUser] = useState(inintState)
     const [errors, setErrors] = useState({})
     const [isVerifyState, setIsverifyState] = useState(false)

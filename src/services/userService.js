@@ -4,12 +4,12 @@ import { API_VERSION } from "../utils";
 
 const api = `/api/${API_VERSION}/user`
 
-const createUserService = (data) => {
-    return axiosJWT.post(`${api}/create`, data)
+const createUserService = (newUser) => {
+    return axiosJWT.post(`${api}/create`, { newUser })
 }
 
-const updateUserService = (data, id) => {
-    return axiosJWT.post(`${api}/update?id=${id}`, data)
+const updateUserService = (newUser, id) => {
+    return axiosJWT.post(`${api}/update?id=${id}`, { newUser })
 }
 
 const getCountUsersService = () => {
@@ -40,18 +40,6 @@ const getLimitUserService = (page) => {
     return axiosJWT.get(`${api}/limit?page=${page}`)
 }
 
-const registerSevice = (data) => {
-    return axios.post(`${api}/register`, data)
-}
-
-const sendMailService = (email, type) => {
-    return axios.post(`${api}/send-mail`, { email, type })
-}
-
-const verifyOtpService = ({ otp, email }) => {
-    return axios.post(`${api}/verifyotp`, { otp, email })
-}
-
 const updateInfoUserService = (infoUser) => {
     return axiosJWT.post(`${api}/update/info`, infoUser)
 }
@@ -70,9 +58,6 @@ export {
     deleteUserService,
     getUserByIdService,
     getLimitUserService,
-    registerSevice,
-    sendMailService,
-    verifyOtpService,
     updateInfoUserService,
     searchUserService
 }

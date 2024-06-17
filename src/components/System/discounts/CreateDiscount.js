@@ -19,7 +19,7 @@ const initDataInput = {
     description: ''
 }
 
-function DiscountCreat() {
+function CreateDiscount() {
     const dispatch = useDispatch()
     const { message, errCode } = useSelector(state => state.discount)
     const [dataInput, setDataInput] = useState(initDataInput)
@@ -71,7 +71,7 @@ function DiscountCreat() {
                     <hr />
                     <div className='mb-5'>
                         <Form.Group controlId="formCode" className="mb-3">
-                            <Form.Label>Mã<span className='text-danger'>*</span></Form.Label>
+                            <Form.Label className='text-muted fw-500'>Mã<span className='text-danger'>*</span></Form.Label>
                             <Form.Control
                                 value={dataInput.code}
                                 type="text"
@@ -89,7 +89,7 @@ function DiscountCreat() {
                             }
                         </Form.Group>
                         <Form.Group controlId="formValue" className="mb-3">
-                            <Form.Label>Giá trị<span className='text-danger'>*</span></Form.Label>
+                            <Form.Label className='text-muted fw-500'>Giá trị<span className='text-danger'>*</span></Form.Label>
                             <Form.Control
                                 value={dataInput.value}
                                 type="type"
@@ -107,7 +107,7 @@ function DiscountCreat() {
                             }
                         </Form.Group>
                         <Form.Group controlId="formDes" className="mb-3">
-                            <Form.Label>Mô tả<span className='text-danger'>*</span></Form.Label>
+                            <Form.Label className='text-muted fw-500'>Mô tả<span className='text-danger'>*</span></Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={3}
@@ -148,4 +148,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DiscountCreat);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateDiscount);

@@ -15,18 +15,8 @@ const initState = {
 const userReducer = (state = initState, action) => {
     switch (action.type) {
         case 'REFRESH_STORE_SUCCESS':
-            state.users = []
-            state.provinces = []
-            state.roles = []
-            state.isLoading = true
-            state.count = 0
-            state.errCode = ''
-            state.otp = ''
-            state.address = []
-            state.message = ''
-            state.isVerify = false
             return {
-                ...state
+                ...initState
             }
         case 'FETCH_ALL_USERS_SUCCESS':
             state.users = action.data
@@ -105,36 +95,6 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state
             }
-        case 'REGISTER':
-            state.message = action?.message
-            state.errCode = action?.errCode
-            return {
-                ...state
-            }
-        case 'SEND_MAIL_SUCCESS':
-            state.otp = action.data
-            return {
-                ...state
-            }
-        case 'SEND_MAIL_FAILED':
-            state.otp = ''
-            state.message = action?.message
-            state.errCode = action?.errCode
-            return {
-                ...state
-            }
-        case 'VERIFY_OTP_SUCCESS':
-            state.isVerify = action.isVerify
-            state.email = action.data
-            return {
-                ...state
-            }
-        case 'VERIFY_OTP_FAILED':
-            state.email = ''
-            state.message = action.message
-            return {
-                ...state
-            }
         case 'UPDATE_NAME_USER_SUCCESS':
             state.message = action.message
             state.errCode = action.errCode
@@ -163,6 +123,18 @@ const userReducer = (state = initState, action) => {
             state.users = []
             state.message = action.message
             state.count = 0
+            return {
+                ...state
+            }
+        case 'CUD_USER':
+            state.message = action.message
+            state.errCode = action.errCode || 0
+            return {
+                ...state
+            }
+        case 'REFRESH_INFO_RESPONSE':
+            state.message = ''
+            state.errCode = ''
             return {
                 ...state
             }

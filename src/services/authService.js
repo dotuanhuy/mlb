@@ -12,7 +12,7 @@ const getRefreshToken = () => {
     return axios.get('/api/get-refresh-token')
 }
 
-const handleLoginAPI = (email, password) => {
+const LoginService = (email, password) => {
     return axios.post(`${api}/login`, { email, password })
 }
 
@@ -20,8 +20,20 @@ const loginWithGoogleService = (id, token) => {
     return axios.post(`${api}/google/success`, { id, token })
 }
 
-const handleLogoutAPI = () => {
+const logoutService = () => {
     return axiosJWT.post(`${api}/logout`)
+}
+
+const registerSevice = (data) => {
+    return axios.post(`${api}/register`, data)
+}
+
+const sendMailService = (email, type) => {
+    return axios.post(`${api}/send-mail`, { email, type })
+}
+
+const verifyOtpService = ({ otp, email }) => {
+    return axios.post(`${api}/verifyotp`, { otp, email })
 }
 
 const changePasswordService = ({ newPassword, oldPassword }) => {
@@ -35,9 +47,12 @@ const forgotPasswordService = ({ email, password }) => {
 export {
     refreshTokenService,
     getRefreshToken,
-    handleLoginAPI,
+    LoginService,
     loginWithGoogleService,
-    handleLogoutAPI,
+    logoutService,
+    registerSevice,
+    sendMailService,
+    verifyOtpService,
     changePasswordService,
     forgotPasswordService
 }

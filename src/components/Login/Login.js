@@ -18,9 +18,9 @@ const initState = {
     password: ''
 }
 
-function Login({ titlePage, user, isLogin }) {
+function Login({ titlePage }) {
     const dispatch = useDispatch()
-    const { message } = useSelector(state => state.auth)
+    const { message, roleId, isLogin } = useSelector(state => state.auth)
     const [dataInput, setDataInput] = useState(initState)
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
@@ -68,11 +68,11 @@ function Login({ titlePage, user, isLogin }) {
     }, [message])
 
     useEffect(() => {
-        if (isLogin && user.roleId === 1) {
+        if (isLogin && roleId === 1) {
             window.localStorage.setItem('notifications', 0)
             navigate(path.MANAGE)
         }
-        else if (isLogin && user.roleId === 2) {
+        else if (isLogin && roleId === 2) {
             navigate(path.HOMEPAGE)
         }
     }, [isLogin])
@@ -85,7 +85,7 @@ function Login({ titlePage, user, isLogin }) {
             password: errorPassword
         })
         if (!errorEmail && !errorPassword) {
-            dispatch(actions.fetchLogin(dataInput.email, dataInput.password))
+            dispatch(actions.login(dataInput.email, dataInput.password))
         }
     }
 
@@ -181,8 +181,6 @@ function Login({ titlePage, user, isLogin }) {
 
 const mapStateToProps = state => {
     return {
-        user: state.auth.user,
-        isLogin: state.auth.isLogin,
     }
 }
 

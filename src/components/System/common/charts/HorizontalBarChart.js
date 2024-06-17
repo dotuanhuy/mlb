@@ -20,10 +20,10 @@ ChartJS.register(
     Legend
 );
 
-function HorizontalBarChart({labels, titleText, label, data}) {
+function HorizontalBarChart({ labels, titleText, label, data }) {
 
-    return (    
-        <Bar 
+    return (
+        <Bar
             options={
                 {
                     indexAxis: 'y',
@@ -43,9 +43,9 @@ function HorizontalBarChart({labels, titleText, label, data}) {
                         },
                     },
                 }
-            }       
-            data= {
-               {
+            }
+            data={
+                {
                     labels,
                     datasets: [
                         {
@@ -55,7 +55,7 @@ function HorizontalBarChart({labels, titleText, label, data}) {
                             backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         },
                     ],
-               }
+                }
             }
         />
     );
@@ -63,7 +63,6 @@ function HorizontalBarChart({labels, titleText, label, data}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin
     }
 }
 

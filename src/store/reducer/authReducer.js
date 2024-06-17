@@ -1,10 +1,12 @@
 const initState = {
-    user: {},
+    roleId: '',
     isLogin: false,
-    token: '',
     isChangePassword: false,
     message: '',
-    errCode: ''
+    errCode: '',
+    otp: '',
+    isVerify: '',
+    email: ''
 }
 
 const authReducer = (state = initState, action) => {
@@ -13,43 +15,66 @@ const authReducer = (state = initState, action) => {
             state.message = ''
             state.isChangePassword = false
             state.errCode = ''
+            state.isVerify = ''
+            state.email = ''
+            state.otp = ''
             return {
                 ...state
             }
         case 'LOGIN_SUCCESS':
             state.isLogin = true
-            state.token = action?.data?.accessToken
-            const { email, firstName, lastName, phone, gender, address, roleId } = action?.data
-            state.user = {
-                email,
-                firstName,
-                lastName,
-                phone,
-                gender,
-                address,
-                roleId
-            }
+            state.roleId = action?.data?.roleId
             return {
                 ...state
             }
         case 'LOGIN_FAILED':
             state.isLogin = false
-            state.token = ''
-            state.user = {}
             state.message = action.message
+            state.roleId = ''
             return {
                 ...state
             }
         case 'LOGOUT_SUCCESS':
             state.isLogin = false
-            state.token = ''
             state.isChangePassword = false
+            state.errCode = action.errCode || 0
             return {
                 ...state,
             }
         case 'LOGOUT_FAILED':
             state.isLogin = true
             state.isChangePassword = true
+            state.errCode = action.errCode
+            return {
+                ...state
+            }
+        case 'REGISTER':
+            state.message = action?.message
+            state.errCode = action?.errCode
+            return {
+                ...state
+            }
+        case 'SEND_MAIL_SUCCESS':
+            state.otp = action.data
+            return {
+                ...state
+            }
+        case 'SEND_MAIL_FAILED':
+            state.otp = ''
+            state.message = action?.message
+            state.errCode = action?.errCode
+            return {
+                ...state
+            }
+        case 'VERIFY_OTP_SUCCESS':
+            state.isVerify = action.isVerify
+            state.email = action.data
+            return {
+                ...state
+            }
+        case 'VERIFY_OTP_FAILED':
+            state.email = ''
+            state.message = action.message
             return {
                 ...state
             }
@@ -66,7 +91,6 @@ const authReducer = (state = initState, action) => {
                 ...state
             }
         case 'FORGOT_PASSWORD':
-            console.log(action.message);
             state.message = action.message
             state.errCode = action.errCode
             return {

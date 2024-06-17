@@ -37,7 +37,7 @@ function ChangePassword({ titlePage }) {
                 </span>
             ), { autoClose: 3000 })
             dispatch(actions.refreshStateAuth())
-            dispatch(actions.fetLogout())
+            dispatch(actions.logout())
             navigate(path.HOMEPAGE)
         }
         else if (!isChangePassword && message) {

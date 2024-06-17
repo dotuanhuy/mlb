@@ -18,7 +18,7 @@ const initDataInput = {
     description: ''
 }
 
-function DiscountUpdate() {
+function EditDiscount() {
     const dispatch = useDispatch()
     const [dataInput, setDataInput] = useState(initDataInput)
     const { discount, isLoading } = useSelector(state => state.discount)
@@ -82,7 +82,7 @@ function DiscountUpdate() {
                             :
                             <div className='mb-5'>
                                 <Form.Group controlId="formCode" className="mb-3">
-                                    <Form.Label>Mã<span className='text-danger'>*</span></Form.Label>
+                                    <Form.Label className='text-muted fw-500'>Mã<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control
                                         type="text"
                                         placeholder="Enter code..."
@@ -100,7 +100,7 @@ function DiscountUpdate() {
                                     }
                                 </Form.Group>
                                 <Form.Group controlId="formValue" className="mb-3">
-                                    <Form.Label>Giá trị<span className='text-danger'>*</span></Form.Label>
+                                    <Form.Label className='text-muted fw-500'>Giá trị<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control
                                         type="text"
                                         placeholder="Enter value ...(%)"
@@ -118,7 +118,7 @@ function DiscountUpdate() {
                                     }
                                 </Form.Group>
                                 <Form.Group controlId="formDes" className="mb-3">
-                                    <Form.Label>Mô tả<span className='text-danger'>*</span></Form.Label>
+                                    <Form.Label className='text-muted fw-500'>Mô tả<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={3}
@@ -159,4 +159,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DiscountUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(EditDiscount);

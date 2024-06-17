@@ -1,16 +1,28 @@
 import actionTypes from "./actionTypes";
 import {
-    handleLoginAPI,
+    LoginService,
     loginWithGoogleService,
-    handleLogoutAPI,
+    logoutService,
     changePasswordService,
-    forgotPasswordService
+    forgotPasswordService,
+    registerSevice,
+    sendMailService,
+    verifyOtpService
 } from "../../services/authService";
 
-export const fetchLogin = (email, password) => {
+export const refreshStateAuth = () => {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: actionTypes.REFRESH_STATE_AUTH
+        })
+    }
+}
+
+
+export const login = (email, password) => {
     return async (dispatch, getSate) => {
         try {
-            const res = await handleLoginAPI(email, password)
+            const res = await LoginService(email, password)
             if (res && res.errCode === 0) {
                 window.localStorage.setItem('accessToken', res?.data?.accessToken)
                 dispatch({
@@ -32,10 +44,11 @@ export const loginWithGoogle = (id, token) => {
         try {
             const res = await loginWithGoogleService(id, token)
             if (res && res.errCode === 0) {
-                window.localStorage.setItem('accessToken', res.accessToken)
+                console.log('check res: ', res);
+                window.localStorage.setItem('accessToken', res.data?.accessToken)
                 dispatch({
                     type: actionTypes.LOGIN_SUCCESS,
-                    data: res
+                    data: res?.data
                 })
             }
             else {
@@ -52,10 +65,10 @@ export const loginWithGoogle = (id, token) => {
     }
 }
 
-export const fetLogout = () => {
+export const logout = () => {
     return async (dispatch, getSate) => {
         try {
-            const res = await handleLogoutAPI()
+            const res = await logoutService()
             if (res && res.errCode === 0) {
                 window.localStorage.removeItem('accessToken')
                 window.localStorage.removeItem('orderId')
@@ -66,12 +79,98 @@ export const fetLogout = () => {
             }
             else {
                 dispatch({
-                    type: actionTypes.LOGOUT_FAILED
+                    type: actionTypes.LOGOUT_FAILED,
+                    errCode: res.errCode,
                 })
             }
         } catch (e) {
             dispatch({
-                type: actionTypes.LOGOUT_FAILED
+                type: actionTypes.LOGOUT_FAILED,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
+        }
+    }
+}
+
+export const register = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await registerSevice(data)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.REGISTER,
+                    message: res.errMessage,
+                    errCode: res.errCode
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.REGISTER,
+                    message: res.errMessage,
+                    errCode: res.errCode
+                })
+            }
+        } catch (e) {
+            console.log('register error: ', e)
+            dispatch({
+                type: actionTypes.REGISTER,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
+        }
+    }
+}
+
+export const sendMail = (email, type) => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await sendMailService(email, type)
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.SEND_MAIL_SUCCESS,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.SEND_MAIL_FAILED,
+                    message: res.errMessage,
+                    errCode: res.errCode
+                })
+            }
+        } catch (e) {
+            dispatch({
+                type: actionTypes.SEND_MAIL_FAILED,
+                message: e?.response?.data?.errMessage,
+                errCode: e?.response?.data?.errCode
+            })
+        }
+    }
+}
+
+export const verifyOtp = ({ otp, email }) => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await verifyOtpService({ otp, email })
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.VERIFY_OTP_SUCCESS,
+                    isVerify: res.isVerify,
+                    data: res.data
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.VERIFY_OTP_FAILED,
+                    message: res.errMessage
+                })
+            }
+        } catch (e) {
+            console.log('verifyOtp error: ', e)
+            dispatch({
+                type: actionTypes.VERIFY_OTP_FAILED,
+                message: e?.response?.data?.errMessage,
             })
         }
     }
@@ -121,13 +220,5 @@ export const forgotPassword = ({ email, password }) => {
                 errCode: e?.response?.data?.errCode,
             })
         }
-    }
-}
-
-export const refreshStateAuth = () => {
-    return async (dispatch, getState) => {
-        dispatch({
-            type: actionTypes.REFRESH_STATE_AUTH
-        })
     }
 }

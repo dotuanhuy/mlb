@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 
-function HorizontalBarChart_2({labels, titleText, label, data}) {
+function HorizontalBarChart_2({ labels, titleText, label, data }) {
     const [stateLabels, setStateLabelsLabels] = useState([])
     const [stateData, setStateData] = useState([])
 
@@ -31,13 +31,13 @@ function HorizontalBarChart_2({labels, titleText, label, data}) {
         }
         if (data.length > 0) {
             setStateData(labels.map(item => {
-               return data.find(element => element.dataCategoryDetail?.type === item.type)
+                return data.find(element => element.dataCategoryDetail?.type === item.type)
             }))
         }
     }, [labels, data])
 
-    return (    
-        <Bar 
+    return (
+        <Bar
             options={
                 {
                     indexAxis: 'y',
@@ -57,9 +57,9 @@ function HorizontalBarChart_2({labels, titleText, label, data}) {
                         },
                     },
                 }
-            }       
-            data= {
-               {
+            }
+            data={
+                {
                     labels: stateLabels,
                     datasets: [
                         {
@@ -69,7 +69,7 @@ function HorizontalBarChart_2({labels, titleText, label, data}) {
                             backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         },
                     ],
-               }
+                }
             }
         />
     );
@@ -77,7 +77,6 @@ function HorizontalBarChart_2({labels, titleText, label, data}) {
 
 const mapStateToProps = state => {
     return {
-        isLogin: state.auth.isLogin
     }
 }
 
