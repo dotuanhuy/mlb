@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getAllProductsFavouriteService,
     getAllProductsFavouriteLimitService,
     changeProductFavouriteService
@@ -49,10 +49,9 @@ export const getAllProductsFavourite = (userId) => {
 export const getAllProductsFavouriteLimit = (userId, offset) => {
     return async (dispatch, getState) => {
         try {
-            let newOffset = +offset - 1
-            let res = await getAllProductsFavouriteLimitService(userId, newOffset)
+            const res = await getAllProductsFavouriteLimitService(userId, +offset - 1)
             if (res && res.errCode === 0) {
-                let data = res.data.rows.map(item => {
+                const data = res.data.rows.map(item => {
                     return item.dataProductFavourite
                 })
                 dispatch({
@@ -75,7 +74,7 @@ export const getAllProductsFavouriteLimit = (userId, offset) => {
     }
 }
 
-export const changeProductFavourite = (data, offset=null) => {
+export const changeProductFavourite = (data, offset = null) => {
     return async (dispatch, getState) => {
         try {
             let res = await changeProductFavouriteService(data)

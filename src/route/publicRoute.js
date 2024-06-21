@@ -1,20 +1,20 @@
 import React, { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { categorieType, listBag, listClothes, listHat, listShoesSandals, path, typeShoesSandanl } from '.././utils'
-import Logout from '../components/Logout/Logout';
-import HomePage from '../components/HomePage/HomePage';
-import ListProductOption from '../components/Products/ListProductOption';
-import AccountInfor from '../components/accountInfor/AccountInfor';
-import ChangePassword from '../components/changePassword/ChangePassword';
-import PageProductSearchByName from '../components/SearchProducts/pageProductSearchByName/PageProductSearchByName';
-import Favourite from '../components/Favourites/Favourite';
-import Product from '../components/common/product/Product';
-import PageCart from '../components/carts/PageCart';
-import TutorialSize from '../components/tutorialSize/TutorialSize';
-import Payment from '../components/payments/Payment';
-import OrderTracking from '../components/orderTracking/OrderTracking';
-import OrderTrackingDetail from '../components/orderTracking/OrderTrackingDetail';
+import { categorieType, listBag, listClothes, listHat, listShoesSandals, path } from '.././utils'
+import Logout from '../pages/client/logout/Logout';
+import HomePage from '../pages/client/hompage/HomePage';
+import ListProductOption from '../pages/client/listProduct/ListProductOption';
+import AccountInfor from '../pages/client/accountInfor/AccountInfor';
+import ChangePassword from '../pages/client/changePassword/ChangePassword';
+import PageProductSearchByName from '../pages/client/searchProduct/PageProductSearchByName';
+import Favourite from '../pages/client/favourite/Favourite';
+import Product from '../pages/client/detailProduct/Product';
+import PageCart from '../pages/client/cart/PageCart';
+import TutorialSize from '../pages/client/tutorialSize/TutorialSize';
+import Payment from '../pages/client/payment/Payment';
+import OrderTracking from '../pages/client/orderTrackings/OrderTracking';
+import OrderTrackingDetail from '../pages/client/orderTrackings/OrderTrackingDetail';
 import NotFound from '../pages/404/404'
 
 function PublicRoute() {

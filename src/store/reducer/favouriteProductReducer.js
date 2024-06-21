@@ -5,7 +5,7 @@ const initState = {
     isLoading: true
 }
 
-const fouriteProductReducer = (state=initState, action) => {
+const fouriteProductReducer = (state = initState, action) => {
     switch (action.type) {
         case 'REFRESH_STORE_SUCCESS':
             state.countProducts = 0
@@ -15,14 +15,14 @@ const fouriteProductReducer = (state=initState, action) => {
             return {
                 ...state
             }
-        case 'GET_ALL_PRODUCTS_FAVOURITE_SUCCESS': 
+        case 'GET_ALL_PRODUCTS_FAVOURITE_SUCCESS':
             state.product = action?.data
             state.countProducts = action?.data?.length
             state.isLoading = false
             return {
                 ...state
             }
-        case 'GET_ALL_PRODUCTS_FAVOURITE_FAILED': 
+        case 'GET_ALL_PRODUCTS_FAVOURITE_FAILED':
             state.product = []
             state.countProducts = 0
             state.isLoading = true
@@ -31,6 +31,8 @@ const fouriteProductReducer = (state=initState, action) => {
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_SUCCESS':
             state.productLimit = action?.data
+            console.log('check ress: ', action?.data);
+
             state.countProducts = action?.count
             state.isLoading = false
             return {

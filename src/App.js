@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import SystemRoute from './route/SystemRoute';
 import AuthRoute from './route/AuthRoute';
 import PublicRoute from './route/publicRoute';
-import Loading from './components/common/Loading/Loading';
+import Loading from './components/loading/Loading';
 
 function App() {
     return (

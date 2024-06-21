@@ -2,10 +2,10 @@ import React, { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { path } from '../utils'
-import Login from '../components/Login/Login';
-import Register from '../components/Register/Register';
-import LoginSuccess from '../components/Login/loginSuccess';
-import ForgotPassword from '../components/fofgotPassword/ForgotPassword';
+import Login from '../pages/client/login/Login'
+import Register from '../pages/client/register/Register';
+import LoginSuccess from '../pages/client/login/loginSuccess';
+import ForgotPassword from '../pages/client/forgotPassword/ForgotPassword';
 
 function AuthRoute() {
 

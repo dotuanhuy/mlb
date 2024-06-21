@@ -1,27 +1,27 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import EditUser from '../components/System/users/EditUser';
-import CreateUser from '../components/System/users/CreateUser';
-import UserManageDetail from '../components/System/users/UserManageDetail';
-import Manage from '../components/System/Manage/manage';
-import CategoryManage from '../components/System/manageCategries/CategoryManage';
-import ProductTypeManage from '../components/System/manageCategries/ProductTypeManage';
-import UpdateProductType from '../components/System/manageCategries/UpdateProductType';
-import ProductManage from '../components/System/products/ProductManage';
-import CreateProduct from '../components/System/products/CreateProduct';
-import EditProduct from '../components/System/products/EditProduct';
-import ProductManageDetail from '../components/System/products/ProductManageDetail';
-import AddDescriptionProduc from '../components/System/Manage/Products/HandleAddDescriptions/AddDescriptionProduc';
+import UserManage from '../pages/server/users/UserManage';
+import EditUser from '../pages/server/users/EditUser';
+import CreateUser from '../pages/server/users/CreateUser';
+import UserManageDetail from '../pages/server/users/UserManageDetail';
+import Manage from '../pages/server/manage';
+import CategoryManage from '../pages/server/categories/CategoryManage';
+import ProductTypeManage from '../pages/server/productType/ProductTypeManage';
+import UpdateProductType from '../pages/server/productType/UpdateProductType';
+import ProductManage from '../pages/server/products/ProductManage';
+import CreateProduct from '../pages/server/products/CreateProduct';
+import EditProduct from '../pages/server/products/EditProduct';
+import ProductManageDetail from '../pages/server/products/ProductManageDetail';
+// import AddDescriptionProduc from '../components/System/Manage/Products/HandleAddDescriptions/AddDescriptionProduc';
 import { Active, categorieType, path } from '../utils';
 import PrivateRouter from './PrivateRouter';
-import UserManage from '../components/System/users/UserManage';
-import DiscountManage from '../components/System/discounts/DiscountManage';
-import CreateDiscount from '../components/System/discounts/CreateDiscount';
-import EditDiscount from '../components/System/discounts/EditDiscount';
-import OrderMange from '../components/System/orders/OrderMange';
-import OrderMangeDetail from '../components/System/orders/OrderMangeDetail';
-import Report from '../components/System/reports/Report'
+import DiscountManage from '../pages/server/discounts/DiscountManage';
+import CreateDiscount from '../pages/server/discounts/CreateDiscount';
+import EditDiscount from '../pages/server/discounts/EditDiscount';
+import OrderMange from '../pages/server/orders/OrderMange';
+import OrderMangeDetail from '../pages/server/orders/OrderMangeDetail';
+import Report from '../pages/server/reports/Report'
 
 function SystemRoute() {
     return (
