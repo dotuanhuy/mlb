@@ -70,7 +70,9 @@ function Navbar() {
                                 right: '10px'
                             }}
                         >
-                            <li className='dropdown-item'>{nameUser}</li>
+                            <li className='dropdown-item'>
+                                <Link to={path.MANAGE_INFO}>{nameUser}</Link>
+                            </li>
                             <li
                                 className='dropdown-item fw-500 pe-auto'
                                 style={{ cursor: 'pointer' }}

@@ -1,5 +1,5 @@
 export const API_VERSION = 'v1'
-export const BACKEND_URL = 'http://localhost:8080'
+export const BACKEND_URL = process.env.REACT_APP_URL_BACKEND
 export const path = {
     HOMEPAGE: '/',
     LOGIN: '/login',
@@ -8,6 +8,8 @@ export const path = {
     FORGOT_PASSWORD: '/forgot-password',
     SYSTEM: '/system',
     LOGIN_SUCCESS: '/login-success',
+
+    MANAGE_INFO: '/system/manage/info',
 
     MANAGE: '/system/manage',
     MANAGE_USER: '/system/manage/user',
@@ -271,6 +273,9 @@ export const KEY_AES = 'hgfhfgsaadgf'
 
 export const BEGIN_YEAR = 2023
 export const NEXT_YEAR = 2
+
+export const DELETE = 1
+export const CREATE = 2
 
 export const VARIABLE = {
     email: 'Email',

@@ -16,7 +16,7 @@ import { faProductHunt } from '@fortawesome/free-brands-svg-icons';
 
 function OrderManageDetail() {
     const dispatch = useDispatch()
-    const { orders, errorOrder } = useSelector(state => state.order)
+    const { orders, message } = useSelector(state => state.order)
     const [params] = useSearchParams()
     const [totalPrice, setTotalPrice] = useState(0)
     const [show, setShow] = useState('')
@@ -42,10 +42,10 @@ function OrderManageDetail() {
     }, [orders])
 
     useEffect(() => {
-        if (errorOrder) {
-            toast.error(CustomToast(errorOrder), { autoClose: 3000 })
+        if (message) {
+            toast.error(CustomToast(message), { autoClose: 3000 })
         }
-    }, [errorOrder])
+    }, [message])
 
     const handleClose = () => setShow('');
 

@@ -5,6 +5,7 @@ import {
     changeProductFavouriteService
 
 } from "../../services/favouriteProductService";
+import { DELETE } from "../../utils";
 
 export const refreshIStateFavouriteProduct = () => {
     return (dispatch, getState) => {
@@ -18,14 +19,22 @@ export const refreshIStateFavouriteProduct = () => {
     }
 }
 
-export const getAllProductsFavourite = (userId) => {
+export const refreshIStatusFavouriteProduct = () => {
+    return (dispatch, getState) => {
+        try {
+            dispatch({
+                type: actionTypes.REFRESH_STATUS_FAVOURITE
+            })
+        } catch (e) {
+            console.log('refreshIStatusFavouriteProduct error: ', e)
+        }
+    }
+}
+
+export const getAllProductsFavourite = () => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllProductsFavouriteService(userId)
-            // let data = []
-            // res?.data?.map(item => {
-            //     data?.push(item.productFavourites)
-            // })
+            const res = await getAllProductsFavouriteService()
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_PRODUCTS_FAVOURITE_SUCCESS,
@@ -46,10 +55,10 @@ export const getAllProductsFavourite = (userId) => {
     }
 }
 
-export const getAllProductsFavouriteLimit = (userId, offset) => {
+export const getAllProductsFavouriteLimit = (offset) => {
     return async (dispatch, getState) => {
         try {
-            const res = await getAllProductsFavouriteLimitService(userId, +offset - 1)
+            const res = await getAllProductsFavouriteLimitService(+offset - 1)
             if (res && res.errCode === 0) {
                 const data = res.data.rows.map(item => {
                     return item.dataProductFavourite
@@ -74,22 +83,27 @@ export const getAllProductsFavouriteLimit = (userId, offset) => {
     }
 }
 
-export const changeProductFavourite = (data, offset = null) => {
+export const changeProductFavourite = ({ productId }, offset = '') => {
     return async (dispatch, getState) => {
         try {
-            let res = await changeProductFavouriteService(data)
+            const res = await changeProductFavouriteService({ productId })
             if (res && res.errCode === 0) {
-                // Nếu là xóa
-                if (res.status === 1 && offset) {
-                    dispatch(getAllProductsFavouriteLimit(data.userId, offset))
-                    dispatch(getAllProductsFavourite(data.userId))
+                dispatch({
+                    type: actionTypes.CHANGE_PRODUCT_FAVOURITE,
+                    status: res.status
+                })
+                if (res.status === DELETE) {
+                    if (offset !== '') {
+                        dispatch(getAllProductsFavouriteLimit(offset))
+                    }
                 }
-                else {
-                    dispatch(getAllProductsFavourite(data.userId))
-                }
+                dispatch(getAllProductsFavourite())
             }
         } catch (e) {
             console.log('changeProductFavourite error: ', e)
+            dispatch({
+                type: actionTypes.CHANGE_PRODUCT_FAVOURITE,
+            })
         }
     }
 }

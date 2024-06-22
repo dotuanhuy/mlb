@@ -208,7 +208,7 @@ const mapStateToProps = state => {
         isLoading: state.product.isLoading,
         countProduct: state.product.count,
         countUser: state.user.count,
-        countProductsFavourite: state.fouriteProduct.countProducts,
+        countProductsFavourite: state.favouriteProduct.countProducts,
         countProductType: state.productType.count,
         countDiscount: state.discount.count,
         countOrder: state.order.count

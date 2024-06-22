@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import './ListProductOption.scss'
 import { useLocation, useSearchParams } from 'react-router-dom';
 import * as actions from '../../../store/actions'
-import { path, limit_page } from '../../../utils';
+import { path, limit_page, DELETE, CustomToast } from '../../../utils';
 import Navbar from '../../../components/clients/navbar/Navbar';
 import Pagination from '../../../components/pagination/Pagination'
 import { useRef } from 'react';
@@ -15,12 +15,14 @@ import OptionType from '../../../components/clients/options/OptionType';
 import OptionColor from '../../../components/clients/options/OptionColor';
 import OptionLogo from '../../../components/clients/options/OptionLogo';
 import Footer from '../../../components/clients/footer/Footer';
+import { toast } from 'react-toastify';
 
 function ListProductOption({ productType, type, categoryActive, titlePage }) {
     const dispatch = useDispatch()
     const { categoryType } = useSelector(state => state.category)
     const { images } = useSelector(state => state.image)
     const { products, isLoading } = useSelector(state => state.product)
+    const { status } = useSelector(state => state.favouriteProduct)
     const [optionSort, setOptionSort] = useState('default')
     const [optionType, setOptionType] = useState([])
     const [optionColor, setOptionColor] = useState([])
@@ -96,6 +98,18 @@ function ListProductOption({ productType, type, categoryActive, titlePage }) {
             limit_page
         ))
     }, [categoryActive])
+
+    useEffect(() => {
+        if (status) {
+            if (status === DELETE) {
+                toast.info(CustomToast('Bạn vừa bỏ sản phẩm ra khỏi mục yêu thích'), { autoClose: 2000 })
+            }
+            else {
+                toast.info(CustomToast('Bạn vừa thêm 1 sản phẩm vào mục yêu thích'), { autoClose: 2000 })
+            }
+            dispatch(actions.refreshIStatusFavouriteProduct())
+        }
+    }, [status])
 
     const handleOnchangeTypeType = (e, typeId) => {
         let arr = [...optionType]

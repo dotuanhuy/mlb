@@ -2,16 +2,23 @@ const initState = {
     countProducts: 0,
     product: [],
     productLimit: [],
-    isLoading: true
+    isLoading: true,
+    status: ''
 }
 
-const fouriteProductReducer = (state = initState, action) => {
+const favouriteProdudctReducer = (state = initState, action) => {
     switch (action.type) {
         case 'REFRESH_STORE_SUCCESS':
             state.countProducts = 0
             state.product = []
             state.productLimit = []
             state.isLoading = true
+            state.status = ''
+            return {
+                ...state
+            }
+        case 'REFRESH_STATUS_FAVOURITE':
+            state.status = ''
             return {
                 ...state
             }
@@ -31,8 +38,6 @@ const fouriteProductReducer = (state = initState, action) => {
             }
         case 'GET_ALL_PRODUCTS_FAVOURITE_LIMIT_SUCCESS':
             state.productLimit = action?.data
-            console.log('check ress: ', action?.data);
-
             state.countProducts = action?.count
             state.isLoading = false
             return {
@@ -45,9 +50,14 @@ const fouriteProductReducer = (state = initState, action) => {
             return {
                 ...state
             }
+        case 'CHANGE_PRODUCT_FAVOURITE':
+            state.status = action.status || ''
+            return {
+                ...state
+            }
         default:
             return state
     }
 }
 
-export default fouriteProductReducer
+export default favouriteProdudctReducer

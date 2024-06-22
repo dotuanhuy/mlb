@@ -23,19 +23,19 @@ function Sidebar({ active = 'dashboard', activeChild = '' }) {
                             to={path.MANAGE}
                         >
                             <FontAwesomeIcon className='pe-2' icon={faHouse} />
-                            Trung tâm
+                            Trang chủ
                         </Link>
                     </li>
                     <li
                         class="nav-item"
                     >
-                        <a
-                            className={active === 'firebase' ? "nav-link active_sm" : "nav-link text-muted opacity-7 fs-14 fw-500"}
-                            href="#"
+                        <Link
+                            className={active === 'info' ? "nav-link active_sm" : "nav-link text-muted opacity-7 fs-14 fw-500"}
+                            to={path.MANAGE_INFO}
                         >
-                            <FontAwesomeIcon className='pe-2' icon={faDatabase} />
-                            Firebase
-                        </a>
+                            <FontAwesomeIcon className='pe-2' icon={faUser} />
+                            Thông tin
+                        </Link>
                     </li>
                     <li
                         class="nav-item"
@@ -167,7 +167,7 @@ function Sidebar({ active = 'dashboard', activeChild = '' }) {
                             className={active === 'user' ? "nav-link active_sm" : "nav-link text-muted opacity-7 fs-14 fw-500"}
                             to={path.MANAGE_USER}
                         >
-                            <FontAwesomeIcon className='pe-2' icon={faUser} />
+                            <FontAwesomeIcon className='pe-2' icon={faUsers} />
                             Người dùng
                         </Link>
                     </li>

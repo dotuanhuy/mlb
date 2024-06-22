@@ -12,6 +12,15 @@ const getImageSizesService = () => {
     return axios.get(`${api}/image/size`)
 }
 
+const getImageLogoWebService = () => {
+    const accessToken = window.localStorage.getItem('accessToken')
+    if (accessToken) {
+        return axiosJWT.get(`${api}/image/logo`)
+    }
+    return axios.get(`${api}/image/logo`)
+}
+
 export {
     getImageSizesService,
+    getImageLogoWebService
 }

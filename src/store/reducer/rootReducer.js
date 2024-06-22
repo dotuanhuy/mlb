@@ -9,7 +9,7 @@ import colorReducer from './colorReducer'
 import logoReducer from "./logoReducer";
 import productReducer from "./productReducer";
 import imageReducer from "./imageReducer";
-import fouriteProductReducer from './favouriteProductReducer'
+import favouriteProdudctReducer from './favouriteProductReducer'
 import cartReducer from "./cartReducer";
 import firebaseReducer from "./firebaseReducer";
 import reviewReducer from "./reviewReducer";
@@ -44,7 +44,7 @@ const rootReducer = combineReducers({
     logo: logoReducer,
     product: productReducer,
     image: imageReducer,
-    fouriteProduct: fouriteProductReducer,
+    favouriteProduct: favouriteProdudctReducer,
     cart: cartReducer,
     firebase: firebaseReducer,
     review: reviewReducer,

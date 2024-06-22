@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getAllOrdersByUserService,
     getLimitOrderService,
     getOrderbyIdService,
@@ -25,7 +25,7 @@ export const refreshStoreOrder = () => {
     }
 }
 
-export const getAllOrdersByUser  = () => {
+export const getAllOrdersByUser = () => {
     return async (dispatch, getState) => {
         try {
             const res = await getAllOrdersByUserService()
@@ -49,7 +49,7 @@ export const getAllOrdersByUser  = () => {
     }
 }
 
-export const getLimitOrder  = (page, option) => {
+export const getLimitOrder = (page, option) => {
     return async (dispatch, getState) => {
         try {
             const res = await getLimitOrderService(+page - 1, option)
@@ -74,7 +74,7 @@ export const getLimitOrder  = (page, option) => {
     }
 }
 
-export const getOrderById  = (id) => {
+export const getOrderById = (id) => {
     return async (dispatch, getState) => {
         try {
             const res = await getOrderbyIdService(id)
@@ -137,7 +137,7 @@ export const cancelOrder = (id) => {
     }
 }
 
-export const getListOrderId  = () => {
+export const getListOrderId = () => {
     return async (dispatch, getState) => {
         try {
             const res = await getListOrderIdService()
@@ -168,7 +168,9 @@ export const createOrder = (data) => {
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.CREATE_ORDER_SUCCESS,
-                    orderId: res.data.orderId
+                    orderId: res.data.orderId,
+                    errCode: 0,
+                    errMessage: res.errMessage
                 })
             }
         } catch (e) {

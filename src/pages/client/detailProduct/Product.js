@@ -2,9 +2,8 @@ import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../../../components/clients/navbar/Navbar';
 import * as actions from '../../../store/actions'
-import jwt_decode from 'jwt-decode';
 import Banner from '../../../components/clients/banner/Banner'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import SliderProduct from '../../../components/clients/slider/SliderProduct';
 import Footer from '../../../components/clients/footer/Footer'
 import Toast from '../../../components/clients/action/Toast';
@@ -13,15 +12,16 @@ import Detail from './Detail';
 import Loading from '../../../components/loading/Loading';
 import DescriptionProduct from '../../../components/clients/descriptionProduct/DescriptionProduct'
 import ReviewProduct from '../../../components/clients/review/ReviewProduct';
-import { faSquare } from '@fortawesome/free-regular-svg-icons';
+import { faSquare, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch, useSelector } from 'react-redux';
-import { LIMIT_SLIDER_PRODUCT, formatVND, path } from '../../../utils';
+import { CustomToast, DELETE, LIMIT_SLIDER_PRODUCT, formatVND, path } from '../../../utils';
+import { toast } from 'react-toastify';
 
 function Product() {
     const dispatch = useDispatch()
-    const { product } = useSelector(state => state.fouriteProduct)
+    const { product, status } = useSelector(state => state.favouriteProduct)
     const { isLoading, products, productSlider } = useSelector(state => state.product)
     const { productId, productName } = useLocation().state
     const [isFavourite, setIsFavourite] = useState(false)
@@ -39,13 +39,8 @@ function Product() {
     }, [products])
 
     useEffect(() => {
-        let userId = ''
         if (accessToken) {
-            let tokenDecoded = jwt_decode(accessToken)
-            userId = tokenDecoded?.id
-        }
-        if (userId) {
-            dispatch(actions.getAllProductsFavourite(userId))
+            dispatch(actions.getAllProductsFavourite())
         }
         dispatch(actions.getProductById(productId))
         dispatch(actions.getAllImagesByProductId(productId))
@@ -53,9 +48,29 @@ function Product() {
 
     useEffect(() => {
         if (product.length > 0) {
-            setIsFavourite(product.some(element => element.id === productId))
+            setIsFavourite(product.some(element => element.productId === productId))
+        }
+        else {
+            setIsFavourite(false)
         }
     }, [product])
+
+    useEffect(() => {
+        if (status) {
+            if (status === DELETE) {
+                toast.info(CustomToast('Bạn vừa bỏ sản phẩm ra khỏi mục yêu thích'), { autoClose: 2000 })
+            }
+            else {
+                toast.info(CustomToast('Bạn vừa thêm 1 sản phẩm vào mục yêu thích'), { autoClose: 2000 }
+                )
+            }
+            dispatch(actions.refreshIStatusFavouriteProduct())
+        }
+    }, [status])
+
+    const handleChangeFavourite = () => {
+        dispatch(actions.changeProductFavourite({ productId }))
+    }
 
     return (
         <>
@@ -71,7 +86,18 @@ function Product() {
                                 <div className='row mb-5 pb-4'>
                                     <div className='col-7 position-relative'>
                                         <SliderProduct />
-                                        <Toast productId={productId} isFavourite={isFavourite} isCart={false} />
+                                        <div className='actions text-center'>
+                                            <button className='tym mb-2 px-3 text-black-50'>
+                                                <FontAwesomeIcon
+                                                    className={isFavourite ? 'text-danger' : ''}
+                                                    icon={faHeart}
+                                                    onClick={handleChangeFavourite}
+                                                    data-toggle="tooltip"
+                                                    title={isFavourite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}
+                                                />
+                                            </button>
+                                        </div>
+                                        {/* <Toast productId={productId} isFavourite={isFavourite} isCart={false} /> */}
                                     </div>
                                     <div className='col-5'>
                                         <Detail />

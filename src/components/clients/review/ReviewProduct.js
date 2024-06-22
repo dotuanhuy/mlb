@@ -10,16 +10,16 @@ import { BACKEND_URL, formatDateTimeVN } from '../../../utils';
 import { toast } from 'react-toastify';
 import { CustomToast } from '../../../utils/customToast';
 import io from 'socket.io-client';
-import { AES, enc } from 'crypto-js';
 
 const arrStar = ['Tất cả', 5, 4, 3, 2, 1]
 // const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), KEY_ORDERID).toString(enc.Utf8) : '';
-const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), process.env.REACT_APP_KEY_ORDERID).toString(enc.Utf8) : '';
-const listOrderId = decrypted ? decrypted.split(',') : []
+// const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), process.env.REACT_APP_KEY_ORDERID).toString(enc.Utf8) : '';
+// const listOrderId = decrypted ? decrypted.split(',') : []
 
 function ReviewProduct({ productId }) {
     const dispatch = useDispatch()
     const { reviews, rate, totalEachRating } = useSelector(state => state.review)
+    const listOrderId = useSelector(state => state.order.listId)
     const [star, setStar] = useState(arrStar[0])
     const [stateReview, setStateReview] = useState([])
     const [contentReview, setContentReview] = useState({ update: '', current: '' })
@@ -30,14 +30,14 @@ function ReviewProduct({ productId }) {
     const [rateClient, setRateClient] = useState('')
     const [socket, setSocket] = useState()
 
-    const handleCloseClient = () => {
-        setContenReviewClient('')
-        setRateClient('')
-        setShowClient(false)
-    }
+    console.log('check: ', listOrderId);
+    console.log('productId: ', productId);
 
     useEffect(() => {
-        console.log('check review');
+        dispatch(actions.getListOrderId())
+    }, [])
+
+    useEffect(() => {
         dispatch(actions.getReviewProduct(productId))
         const newSocket = io(BACKEND_URL, { autoConnect: true }); // Địa chỉ server
         setSocket(newSocket);
@@ -74,6 +74,12 @@ function ReviewProduct({ productId }) {
         }
     }, [socket])
 
+    const handleCloseClient = () => {
+        setContenReviewClient('')
+        setRateClient('')
+        setShowClient(false)
+    }
+
     const handOnKeyDownUpdateReview = (e, id, userId) => {
         if (e.key === 'Enter') {
             handleUpdateReview(id, userId)
@@ -100,7 +106,7 @@ function ReviewProduct({ productId }) {
             dispatch(actions.createReview({
                 productId,
                 rate: rateClient,
-                content: contentReviewClient
+                content: contentReviewClient.trim()
             }))
             handleCloseClient()
         }

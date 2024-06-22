@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { path } from '../../../utils';
+import { CustomToast, DELETE, path } from '../../../utils';
 import Loading from '../../../components/loading/Loading';
 import * as actions from '../../../store/actions';
 import Pagination from '../../../components/pagination/Pagination';
@@ -10,17 +10,18 @@ import Banner from '../../../components/clients/banner/Banner'
 import Footer from '../../../components/clients/footer/Footer';
 import jwt_decode from 'jwt-decode';
 import ListProducts from '../../../components/clients/listProducts/ListProducts';
+import { toast } from 'react-toastify';
 
 function Favourite({ titlePage }) {
     const dispatch = useDispatch()
-    const { productLimit, isLoading } = useSelector(state => state.fouriteProduct)
+    const { productLimit, isLoading, status } = useSelector(state => state.favouriteProduct)
     const { images } = useSelector(state => state.product)
     const [params] = useSearchParams()
     const body = useRef()
     const initialRender = useRef(true)
     const accessToken = window.localStorage.getItem('accessToken')
     const navigate = useNavigate()
-    console.log('check: ', productLimit);
+
     useEffect(() => {
         document.title = titlePage
         dispatch(actions.refreshIStateFavouriteProduct())
@@ -50,7 +51,7 @@ function Favourite({ titlePage }) {
             navigate(path.LOGIN)
         }
         if (userId) {
-            dispatch(actions.getAllProductsFavouriteLimit(userId, params.get('page') || 1))
+            dispatch(actions.getAllProductsFavouriteLimit(params.get('page') || 1))
         }
         if (body.current) {
             window.scrollTo({
@@ -59,6 +60,18 @@ function Favourite({ titlePage }) {
             });
         }
     }, [params.get('page')])
+
+    useEffect(() => {
+        if (status) {
+            if (status === DELETE) {
+                toast.info(CustomToast('Bạn vừa bỏ sản phẩm ra khỏi mục yêu thích'), { autoClose: 2000 })
+            }
+            else {
+                toast.info(CustomToast('Bạn vừa thêm 1 sản phẩm vào mục yêu thích'), { autoClose: 2000 })
+            }
+            dispatch(actions.refreshIStatusFavouriteProduct())
+        }
+    }, [status])
 
     return (
         <>

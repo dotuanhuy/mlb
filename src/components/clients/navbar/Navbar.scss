@@ -6,18 +6,8 @@
         .header-top-nav {
             margin: 0 100px;
 
-            .nav-logo {
-                width: 165px;
-                height: 55px;
-                background: url('../../../assets/logo/logo.png');
-                background-repeat: no-repeat;
-                background-size: cover;
-                margin-top: 20px;
-            }
-
             .nav-menu {
-                width: 700px;
-                
+
                 .menu-list {
                     width: 100%;
                     list-style: none;
@@ -98,12 +88,12 @@
             }
 
             .user {
-            
+
                 &:hover {
                     cursor: pointer;
-                    
+
                     .user-link {
-                        
+
                         .box-acc {
                             display: grid;
                         }
@@ -116,23 +106,23 @@
                         width: 130px;
                         right: -10px;
                         top: calc(100% + 15px);
-                        box-shadow: 0 1px 5px 2px rgba(0,0,0,0.1);
+                        box-shadow: 0 1px 5px 2px rgba(0, 0, 0, 0.1);
                         z-index: 99;
                         animation: hiddenShow ease-in .3s;
                         display: none;
-    
+
                         a {
                             padding: 4px;
-    
+
                             &:hover {
                                 color: #942319 !important;
                             }
                         }
-    
+
                         a:first-child {
                             border-bottom: 1px solid #ebebeb;
                         }
-    
+
                         &::before {
                             content: "";
                             position: absolute;
@@ -142,7 +132,7 @@
                             top: -9px;
                             right: 12px;
                         }
-    
+
                         &::after {
                             content: "";
                             width: 80px;
@@ -170,7 +160,7 @@
 
             .cart {
                 cursor: pointer;
-                
+
                 &:hover {
                     .list-items-cart {
                         opacity: 1;

@@ -22,6 +22,8 @@ import EditDiscount from '../pages/server/discounts/EditDiscount';
 import OrderMange from '../pages/server/orders/OrderMange';
 import OrderMangeDetail from '../pages/server/orders/OrderMangeDetail';
 import Report from '../pages/server/reports/Report'
+import Account from '../pages/server/account/Account'
+import NotFound from '../pages/404/404'
 
 function SystemRoute() {
     return (
@@ -45,11 +47,6 @@ function SystemRoute() {
                     path={path.MANAGE_USER_DETAIL}
                     element={<PrivateRouter Component={UserManageDetail} />}
                 />
-
-                {/* <Route 
-                    path={path.MANAGE_PRODUCTS}
-                    // element={<PrivateRouter Component={ProductManage}/>} 
-                />   */}
 
                 <Route
                     path={path.MANAGE_CATEGORY_PRODUCT}
@@ -157,6 +154,11 @@ function SystemRoute() {
                 <Route
                     path={path.MANAGE_REPORT}
                     element={<PrivateRouter Component={Report} />}
+                />
+
+                <Route
+                    path={path.MANAGE_INFO}
+                    element={<PrivateRouter Component={Account} />}
                 />
             </Routes>
         </>

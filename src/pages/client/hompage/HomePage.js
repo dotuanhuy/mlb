@@ -10,17 +10,17 @@ import MLBBackPack from './MLBBackPack/MLBBackPack';
 import Footer from '../../../components/clients/footer/Footer';
 import * as actions from '../../../store/actions'
 import { useDispatch } from 'react-redux';
-import { AES } from 'crypto-js';
 import Loading from '../../../components/loading/Loading'
+import { toast } from 'react-toastify';
+import { CustomToast, DELETE } from '../../../utils';
 
 function HomePage({ titlePage }) {
     const dispatch = useDispatch()
-    const { listId } = useSelector(state => state.order)
+    const { status } = useSelector(state => state.favouriteProduct)
     const { products } = useSelector(state => state.product)
 
     useEffect(() => {
         document.title = titlePage
-        dispatch(actions.getListOrderId())
         dispatch(actions.getAllProductPublic())
         window.scrollTo({
             behavior: "smooth",
@@ -29,11 +29,17 @@ function HomePage({ titlePage }) {
     }, [])
 
     useEffect(() => {
-        if (listId) {
-            const encrypted = AES.encrypt(listId.toString(), process.env.REACT_APP_KEY_ORDERID)
-            window.localStorage.setItem('orderId', encrypted)
+        if (status) {
+            if (status === DELETE) {
+                toast.info(CustomToast('Bạn vừa bỏ sản phẩm ra khỏi mục yêu thích'), { autoClose: 2000 })
+            }
+            else {
+                toast.info(CustomToast('Bạn vừa thêm 1 sản phẩm vào mục yêu thích'), { autoClose: 2000 })
+            }
+            dispatch(actions.refreshIStatusFavouriteProduct())
         }
-    }, [listId])
+    }, [status])
+
 
     const settings = {
         dots: true,

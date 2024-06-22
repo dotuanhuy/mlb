@@ -72,7 +72,6 @@ function PublicRoute() {
                 <Route path={path.ORDER_TRACKING} element={<OrderTracking titlePage='Theo dõi đơn hàng' />}></Route>
                 <Route path={path.ORDER_TRACKING_DETAIL} element={<OrderTrackingDetail titlePage='Chi tiết đơn hàng' />}></Route>
 
-                <Route path='*' element={<NotFound />}></Route>
             </Routes>
         </>
     );

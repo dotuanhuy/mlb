@@ -8,10 +8,11 @@ import Navbar from '../../../components/clients/navbar/Navbar';
 import Footer from '../../../components/clients/footer/Footer';
 import jwtDecode from 'jwt-decode';
 import Banner from '../../../components/clients/banner/Banner';
-import { formatVND, path, typeStep } from '../../../utils';
+import { CustomToast, formatVND, path, typeStep } from '../../../utils';
 import { Link, useNavigate } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function PageCart({ titlePage }) {
     const dispatch = useDispatch()
@@ -19,6 +20,7 @@ function PageCart({ titlePage }) {
     const accessToken = window.localStorage.getItem('accessToken')
     const [userId, setUserId] = useState('')
     const [show, setShow] = useState({})
+    const [valueCheck, setValueCheck] = useState([])
     const body = useRef()
     const initialRender = useRef(true)
     const navigate = useNavigate()
@@ -69,20 +71,43 @@ function PageCart({ titlePage }) {
         dispatch(actions.deleteProductInCart({ cartDetailId }))
     }
 
-    const handleOnchangeQuantity = e => {
-        console.log(+e.target.value)
+    const handleOnchangeCheck = (e) => {
+        const arr = [...valueCheck]
+        if (e.target.value === 'all' && e.target.checked) {
+            setValueCheck(products)
+        }
+        else if (e.target.value === 'all' && !e.target.checked) {
+            setValueCheck([])
+        }
+        else if (e.target.checked) {
+            products.map(item => {
+                if (item.dataCartProduct.id === +e.target.value) {
+                    arr.push(item)
+                }
+            })
+            setValueCheck(arr)
+        }
+        else {
+            const temp = arr.filter(item => item.dataCartProduct.id !== +e.target.value)
+            setValueCheck(temp)
+        }
     }
 
     const handlePayment = () => {
-        const newProduct = products.map(item => item.dataCartProduct)
-        products.map((item, index) => {
-            newProduct[index].quantityBuy = item.dataCartProduct.CartDetail.quantity
-            newProduct[index].size = item.dataCartProduct.CartDetail.size
-            newProduct[index].dataDiscounts = item.dataCartProduct.dataDiscounts
-        })
-        navigate({
-            pathname: path.CHECKOUT
-        }, { state: newProduct })
+        if (valueCheck.length === 0) {
+            toast.error(CustomToast('Vui lòng chọn sản phẩm'), { autoClose: 2000 })
+        }
+        else {
+            const newProduct = valueCheck.map(item => item.dataCartProduct)
+            valueCheck.map((item, index) => {
+                newProduct[index].quantityBuy = item.dataCartProduct.CartDetail.quantity
+                newProduct[index].size = item.dataCartProduct.CartDetail.size
+                newProduct[index].dataDiscounts = item.dataCartProduct.dataDiscounts
+            })
+            navigate({
+                pathname: path.CHECKOUT
+            }, { state: newProduct })
+        }
     }
 
     return (
@@ -104,6 +129,7 @@ function PageCart({ titlePage }) {
                                         <table class="table">
                                             <thead>
                                                 <tr>
+                                                    <th scope="col">Chọn</th>
                                                     <th scope="col">Thông tin sản phẩm</th>
                                                     <th scope="col">Đơn giá</th>
                                                     <th scope="col">Số lượng</th>
@@ -119,6 +145,16 @@ function PageCart({ titlePage }) {
                                                         }
                                                         return (
                                                             <tr key={index}>
+                                                                <td>
+                                                                    <Form.Check
+                                                                        checked={
+                                                                            valueCheck.some(element => element?.dataCartProduct?.id === item?.dataCartProduct?.id)
+                                                                        }
+                                                                        type="checkbox"
+                                                                        value={item?.dataCartProduct?.id}
+                                                                        onChange={handleOnchangeCheck}
+                                                                    />
+                                                                </td>
                                                                 <td scope="row" className='col-6'>
                                                                     <div className='row d-flex align-items-center'>
                                                                         <div className='col-2 position-relative'>
@@ -222,7 +258,6 @@ function PageCart({ titlePage }) {
                                                                             type="number"
                                                                             className="form-control form-control-sm py-0"
                                                                             value={+item.dataCartProduct.CartDetail.quantity}
-                                                                            onChange={e => handleOnchangeQuantity(e)}
                                                                             disabled
                                                                         />
 
@@ -244,6 +279,15 @@ function PageCart({ titlePage }) {
 
                                             </tbody>
                                         </table>
+                                        <div className='text-muted fw-500'>
+                                            <Form.Check
+                                                type="checkbox"
+                                                label="Chọn tất cả"
+                                                value='all'
+                                                checked={valueCheck.length === products.length}
+                                                onChange={handleOnchangeCheck}
+                                            />
+                                        </div>
                                         <div className='my-4 col-4 offset-xl-8' style={{ cursor: 'default' }}>
                                             <div className='my-3'>
                                                 <span className='text-muted fw-500'>Tổng tiền: </span>

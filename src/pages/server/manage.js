@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './manage.scss'
-import Sidebar from '../../components/server/navbar/Navbar';
+import Sidebar from '../../components/server/sidebars/Sidebar';
 import Dashboard from './dashboards/Dashboard';
 import Navbar from '../../components/server/navbar/Navbar';
 

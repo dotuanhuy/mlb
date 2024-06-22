@@ -1,13 +1,27 @@
 import React, { memo } from "react";
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { formatVND } from "../../../utils";
-import Toast from "../action/Toast";
 import './ListProducts.scss';
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { path } from "../../../utils";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as actions from '../../../store/actions'
+import Cart from "../action/Cart";
 
 function ListProducts({ bg = 'cover', products, col = 'col-4' }) {
-    const productFavourites = useSelector(state => state.fouriteProduct.product)
+    const dispatch = useDispatch()
+    const productFavourites = useSelector(state => state.favouriteProduct.product)
+    const [params] = useSearchParams()
+
+    const handleChangeFavourite = (productId) => {
+        if (bg === 'cover') {
+            dispatch(actions.changeProductFavourite({ productId }))
+        }
+        else {
+            dispatch(actions.changeProductFavourite({ productId }, params.get('page') || 1))
+        }
+    }
 
     return (
         <>
@@ -36,12 +50,18 @@ function ListProducts({ bg = 'cover', products, col = 'col-4' }) {
                                     </div>
                                     : ''
                             }
-                            <Toast
-                                productId={item.id}
-                                productFavourites={productFavourites}
-                                isFavourite={isFavourite}
-                                size={size}
-                            />
+                            <div className='actions text-center'>
+                                <button className='tym mb-2 px-3 text-black-50'>
+                                    <FontAwesomeIcon
+                                        className={isFavourite ? 'text-danger' : ''}
+                                        icon={faHeart}
+                                        onClick={() => handleChangeFavourite(item?.id)}
+                                        data-toggle="tooltip"
+                                        title='Thêm vào yêu thích'
+                                    />
+                                </button>
+                                <Cart productId={item?.id} size={size} />
+                            </div>
                             <div className='product-img product-img-first'>
                                 <Link
                                     to={`${path.PRODUCT}/${item.name}`}

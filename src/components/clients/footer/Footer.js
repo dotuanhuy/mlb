@@ -7,19 +7,17 @@ import { faYoutube, faFacebookF, faInstagram } from '@fortawesome/free-brands-sv
 import './Footer.scss'
 import { Link } from 'react-router-dom';
 import { path } from '../../../utils';
-import { LOGO_MLB } from '../../../utils/images';
 
 function Footer() {
-
     return (
-        <div className='Footer bg-dark'>
+        <div className='Footer'>
             <div className='pt-5 pb-2'>
                 <div className='container'>
                     <div className='row Footer-menu pb-5'>
                         <div className='contact col-4 text-white fs-14'>
                             <div className='Footer-logo'>
                                 <Link to='/'>
-                                    <img src={LOGO_MLB.logo_mlb} />
+                                    <img src='https://firebasestorage.googleapis.com/v0/b/imagemlb.appspot.com/o/logoWeb%2Flogo.webp?alt=media&token=d36d28eb-3d7e-44a3-b1a0-48e1a5571f72' />
                                 </Link>
                             </div>
                             <ul className='contact-menu'>

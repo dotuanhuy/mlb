@@ -6,7 +6,7 @@ import { path } from '../../../../utils';
 import MLBBagChild from './MLBBagChild';
 
 function MLBBag() {
-    const [type, setType] = useState('Cross bag')
+    const [type, setType] = useState('Hobo bag')
 
     return (
         <div className='mlbbag pb-5 mb-5' style={{ background: '#f6f6f6' }}>
@@ -17,6 +17,13 @@ function MLBBag() {
                     </h2>
                     <p className='fw-bolder fs-16 text-muted'>Những bộ sưu tập <Link className='text-decoration-underline text-color-root-dark' to={path.TUI_MLB}>Túi MLB</Link> hot nhất</p>
                     <ul className='mlb-tabs row mt-4 justify-content-center mb-0 gap-2'>
+                        <li
+                            className={type === 'Hobo bag' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
+                            style={{ cursor: 'pointer' }}
+                            onClick={e => setType('Hobo bag')}
+                        >
+                            <span>Hobo Bag</span>
+                        </li>
                         <li
                             className={type === 'Cross bag' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
                             style={{ cursor: 'pointer' }}
@@ -37,13 +44,6 @@ function MLBBag() {
                             onClick={e => setType('Hip sack')}
                         >
                             <span>Hip Sack</span>
-                        </li>
-                        <li
-                            className={type === 'Hobo bag' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}
-                            style={{ cursor: 'pointer' }}
-                            onClick={e => setType('Hobo bag')}
-                        >
-                            <span>Hobo Bag</span>
                         </li>
                         <li
                             className={type === 'Tote bag' ? 'text-center py-2 col-1 tab-current rounded' : 'tab rounded text-center py-2 col-1'}

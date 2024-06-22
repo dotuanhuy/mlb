@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './Toast.scss';
 import * as actions from '../../../store/actions'
 import jwt_decode from 'jwt-decode'
 import { path } from '../../../utils';
@@ -42,7 +41,7 @@ function Action({
                 setIsSateFavourite(!isSateFavourite)
             }
             isSateFavourite ? toast.warn(CustomToast, { autoClose: 3000 }) : toast.info(CustomToast, { autoClose: 3000 })
-            changeProductFavouriteRedux({ productId, userId }, page)
+            changeProductFavouriteRedux({ productId }, page)
         }
         else {
             setShow({ id: productId })

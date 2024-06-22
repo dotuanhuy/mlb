@@ -3,7 +3,6 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faCaretDown, faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import { logo } from '../../../utils/images';
 import './Navbar.scss'
 import { Link, useNavigate } from 'react-router-dom';
 import * as actions from '../../../store/actions'
@@ -21,9 +20,10 @@ function Navbar() {
     const dispatch = useDispatch()
     const { isLogin } = useSelector(state => state.auth)
     const { productTypes } = useSelector(state => state.productType)
-    const countFavourite = useSelector(state => state.fouriteProduct.countProducts)
+    const countFavourite = useSelector(state => state.favouriteProduct.countProducts)
     const countProductsCart = useSelector(state => state.cart.countProducts)
     const { message } = useSelector(state => state.user)
+    const { imageLogoWeb } = useSelector(state => state.firebase)
     const [userLogin, setUserLogin] = useState(initState)
     const [userId, setUserId] = useState('')
     const navigate = useNavigate()
@@ -41,6 +41,7 @@ function Navbar() {
         else {
             setUserId('')
         }
+        dispatch(actions.getImageLogoWeb())
         dispatch(actions.getAllProductTypes())
     }, [])
 
@@ -59,7 +60,7 @@ function Navbar() {
 
     useEffect(() => {
         if (userId) {
-            dispatch(actions.getAllProductsFavourite(userId))
+            dispatch(actions.getAllProductsFavourite())
         }
     }, [userId])
 
@@ -73,12 +74,20 @@ function Navbar() {
             <div className='nav-container'>
                 <div className='header-top-nav d-flex justify-content-evenly align-items-center my-0 mx-100'>
                     <Link to={path.HOMEPAGE}>
-                        <div className='nav-logo'>
-
+                        <div
+                            style={{
+                                width: '150px',
+                                height: '55px',
+                                backgroundImage: `url(${imageLogoWeb})`,
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: 'contain',
+                                marginTop: '20px'
+                            }}
+                        >
                         </div>
                     </Link>
-                    <div className='nav-menu'>
-                        <ul className='menu-list w-100 d-flex justify-content-around align-items-center text-uppercase position-relative m-0'>
+                    <div className='nav-menu col-6'>
+                        <ul className='menu-list w-100 d-flex justify-content-evenly align-items-center text-uppercase position-relative m-0'>
                             <li className='menu-list_item'>
                                 <Link to={path.GIAY_MLB} className='menu-list_item-name text-white pe-2'>Giày-dép</Link>
                                 <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
@@ -204,32 +213,6 @@ function Navbar() {
                                                 }
                                             })
                                         }
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className='menu-list_item' >
-                                <span className='menu-list_item-name text-white pe-2'>Logo</span>
-                                <FontAwesomeIcon className='icon-down' icon={faCaretDown} />
-                                <div className='menu-item bg-white w-100 position-absolute rounded'>
-                                    <ul>
-                                        <li>
-                                            <a href='#'>
-                                                <img src={logo.NY} />
-                                            </a>
-                                            <a href='#' className='name-shoes' >NEW YORK YANKEES (NY)</a>
-                                        </li>
-                                        <li>
-                                            <a href='#'>
-                                                <img src={logo.LA} />
-                                            </a>
-                                            <a href='#' className='name-shoes'>LOS ANGELES DODGERS (LA)</a>
-                                        </li>
-                                        <li>
-                                            <a href='#'>
-                                                <img src={logo.B} />
-                                            </a>
-                                            <a href='#' className='name-shoes'>BOSTON RED SOX (B)</a>
-                                        </li>
                                     </ul>
                                 </div>
                             </li>

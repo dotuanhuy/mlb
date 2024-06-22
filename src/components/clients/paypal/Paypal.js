@@ -11,7 +11,7 @@ import * as action from '../../../store/actions'
 const style = { "layout": "vertical" };
 
 // Custom component to wrap the PayPalButtons and show loading spinner
-const ButtonWrapper = ({ currency, amount, orders, showSpinner }) => {
+const ButtonWrapper = ({ currency, amount, orders, setIsLoading, showSpinner }) => {
     const [{ isPending, options }, dispath] = usePayPalScriptReducer();
     const dispatchRedux = useDispatch()
 
@@ -32,6 +32,7 @@ const ButtonWrapper = ({ currency, amount, orders, showSpinner }) => {
                 onApprove={(data, actions) => {
                     actions.order.capture().then(async (reponse) => {
                         if (reponse.status === 'COMPLETED') {
+                            setIsLoading(true)
                             dispatchRedux(action.createOrder(orders))
                         }
                     })
@@ -41,11 +42,11 @@ const ButtonWrapper = ({ currency, amount, orders, showSpinner }) => {
     );
 }
 
-export default function Paypal({ amount, orders }) {
+export default function Paypal({ amount, orders, setIsLoading }) {
     return (
         <div>
             <PayPalScriptProvider options={{ clientId: "test", components: "buttons", currency: "USD" }}>
-                <ButtonWrapper currency={'USD'} amount={amount} orders={orders} showSpinner={false} />
+                <ButtonWrapper currency={'USD'} amount={amount} orders={orders} setIsLoading={setIsLoading} showSpinner={false} />
             </PayPalScriptProvider>
         </div>
     );

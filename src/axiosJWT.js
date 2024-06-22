@@ -5,7 +5,7 @@ import { API_VERSION } from "./utils";
 const api = `/api/${API_VERSION}`
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: process.env.REACT_APP_URL_BACKEND,
     withCredentials: true,
     timeout: 8000, // 8s,
     // headers: {
