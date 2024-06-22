@@ -2,19 +2,19 @@ const initState = {
     sizes: [],
 }
 
-const sizeReducer = (state=initState, action) => {
+const sizeReducer = (state = initState, action) => {
     switch (action.type) {
         case 'REFRESH_STORE_SUCCESS':
             state.sizes = []
             return {
                 ...state
             }
-        case 'GET_ALL_SIZES_BY_TYPE_SUCCESS': 
+        case 'GET_ALL_SIZES_BY_TYPE_SUCCESS':
             state.sizes = action.data
             return {
                 ...state
             }
-        case 'GET_ALL_SIZES_BY_TYPE_FAILED': 
+        case 'GET_ALL_SIZES_BY_TYPE_FAILED':
             state.sizes = []
             return {
                 ...state
