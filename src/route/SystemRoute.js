@@ -15,7 +15,7 @@ import EditProduct from '../pages/server/products/EditProduct';
 import ProductManageDetail from '../pages/server/products/ProductManageDetail';
 // import AddDescriptionProduc from '../components/System/Manage/Products/HandleAddDescriptions/AddDescriptionProduc';
 import { Active, categorieType, path } from '../utils';
-import PrivateRouter from './PrivateRouter';
+import PrivateRouter from './privateRouter';
 import DiscountManage from '../pages/server/discounts/DiscountManage';
 import CreateDiscount from '../pages/server/discounts/CreateDiscount';
 import EditDiscount from '../pages/server/discounts/EditDiscount';
@@ -23,7 +23,6 @@ import OrderMange from '../pages/server/orders/OrderMange';
 import OrderMangeDetail from '../pages/server/orders/OrderMangeDetail';
 import Report from '../pages/server/reports/Report'
 import Account from '../pages/server/account/Account'
-import NotFound from '../pages/404/404'
 
 function SystemRoute() {
     return (
