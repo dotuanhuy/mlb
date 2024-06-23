@@ -17,7 +17,6 @@ export const refreshStoreOrder = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -41,7 +40,6 @@ export const getAllOrdersByUser = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllOrdersByUser error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_ORDERS_BY_USER_FAILED
             })
@@ -66,7 +64,6 @@ export const getLimitOrder = (page, option) => {
                 })
             }
         } catch (e) {
-            console.log('getLimitOrder error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_ORDER_FAILED
             })
@@ -91,7 +88,6 @@ export const getOrderById = (id) => {
                 })
             }
         } catch (e) {
-            console.log('getOrderById error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_ORDER_FAILED
             })
@@ -113,7 +109,6 @@ export const confirmOrder = (id) => {
                 })
             }
         } catch (e) {
-            console.log('confirmOrder error: ', e)
         }
     }
 }
@@ -132,7 +127,6 @@ export const cancelOrder = (id) => {
                 })
             }
         } catch (e) {
-            console.log('cancelOrder error: ', e)
         }
     }
 }
@@ -153,7 +147,6 @@ export const getListOrderId = () => {
                 })
             }
         } catch (e) {
-            console.log('getListOrderId error: ', e)
             dispatch({
                 type: actionTypes.GET_LIST_ORDER_ID_FAILED
             })
@@ -174,7 +167,6 @@ export const createOrder = (data) => {
                 })
             }
         } catch (e) {
-            console.log('createOrder error: ', e)
             dispatch({
                 type: actionTypes.CREATE_ORDER_FAILED,
                 errMessage: e?.response?.data?.errMessage
@@ -199,7 +191,6 @@ export const getTotalOrder = () => {
                 })
             }
         } catch (e) {
-            console.log('getTotalOrder error: ', e)
             dispatch({
                 type: actionTypes.GET_TOTAL_ORDER_FAILED
             })

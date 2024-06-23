@@ -9,28 +9,17 @@ import {
 
 export const refreshStoreImages = () => {
     return (dispatch, getState) => {
-        try {
-            dispatch({
-                type: actionTypes.REFRESH_STORE_SUCCESS
-            })
-        } catch (e) {
-            console.log('refreshStore error: ', e)
-            dispatch({
-                type: actionTypes.REFRESH_STORE_FAILED
-            })
-        }
+        dispatch({
+            type: actionTypes.REFRESH_STORE_SUCCESS
+        })
     }
 }
 
 export const refreshInfoResponseImage = () => {
     return (dispatch, getState) => {
-        try {
-            dispatch({
-                type: actionTypes.REFRESH_INFO_RESPONSE_IMAGE
-            })
-        } catch (e) {
-            console.log('refreshInfoResponseImage error: ', e)
-        }
+        dispatch({
+            type: actionTypes.REFRESH_INFO_RESPONSE_IMAGE
+        })
     }
 }
 
@@ -50,7 +39,6 @@ export const getAllImagesProduct = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllImagesProduct error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_IMAGES_PRODUCT_FAILED
             })
@@ -74,7 +62,6 @@ export const getAllImagesByProductId = (id) => {
                 })
             }
         } catch (e) {
-            console.log('getAllImagesByProductId error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_IMAGES_BY_PRODUCTID_FAILED
             })
@@ -101,7 +88,6 @@ export const addImageProduct = (formData, id, type, found) => {
                 })
             }
         } catch (e) {
-            console.log('addImageProduct error: ', e)
             dispatch({
                 type: actionTypes.CHANGE_IMAGE_PRODUCT,
                 message: e?.response?.data?.errMessage,
@@ -135,7 +121,6 @@ export const deleteImageProduct = (formData, productId, type) => {
                 message: e?.response?.data?.errMessage,
                 errCode: e?.response?.data?.errCode,
             })
-            console.log('deleteImageProduct error: ', e)
         }
     }
 }
@@ -156,7 +141,6 @@ export const getImageProductByCategory = (category) => {
                 })
             }
         } catch (e) {
-            console.log('getImageProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_IMAGES_PRODUCT_BY_CATEGORY_FAILED
             })

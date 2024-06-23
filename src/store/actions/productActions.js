@@ -28,7 +28,6 @@ export const refreshIsloadingStateProduct = () => {
                 type: actionTypes.LOADING_PRODUCT_SUCCESS
             })
         } catch (e) {
-            console.log('refreshIsloadingState error: ', e)
             dispatch({
                 type: actionTypes.LOADING_PRODUCT_FAILED
             })
@@ -52,7 +51,6 @@ export const refreshStoreProduct = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -76,7 +74,6 @@ export const getAllProducts = (type) => {
                 })
             }
         } catch (e) {
-            console.log('getAllProducts error: ', e)
             dispatch({
                 type: actionTypes.FETCH_ALL_PRODUCTS_FAILED
             })
@@ -100,7 +97,6 @@ export const getAllProductPublic = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllProductPublic error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_PRODUCTS_PUBLIC_FAILED
             })
@@ -124,7 +120,6 @@ export const getQuantityOfEechProductByCategory = () => {
                 })
             }
         } catch (e) {
-            console.log('getQuantityOfEechProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_QUANTITY_OF_EACH_PRODUCT_BY_CATEGORY_FAILED
             })
@@ -151,7 +146,6 @@ export const createNewProduct = (formData, type, found, categoryType, page) => {
                 })
             }
         } catch (e) {
-            console.log('createNewProduct eror: ', e)
             dispatch({
                 type: actionTypes.CUD_PRODUCT,
                 message: e?.response?.data?.errMessage,
@@ -180,7 +174,6 @@ export const deleteProduct = (id, categoryType, page, type) => {
                 })
             }
         } catch (e) {
-            console.log('deleteProduct error: ', e)
             dispatch({
                 type: actionTypes.CUD_PRODUCT,
                 message: e?.response?.data?.errMessage,
@@ -206,7 +199,6 @@ export const getProductById = (id) => {
                 })
             }
         } catch (e) {
-            console.log('getProductById error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_BY_ID_FAILED
             })
@@ -233,7 +225,6 @@ export const updateProduct = (id, fromData, categoryType, page, type, found) => 
                 })
             }
         } catch (e) {
-            console.log('updateProduct error: ', e)
             dispatch({
                 type: actionTypes.CUD_PRODUCT,
                 message: e?.response?.data?.errMessage,
@@ -259,7 +250,6 @@ export const getCountProducts = () => {
                 })
             }
         } catch (e) {
-            console.log('getCountProducts error: ', e)
             dispatch({
                 type: actionTypes.GET_COUNT_PRODUCTS_FAILED,
             })
@@ -286,7 +276,6 @@ export const changeImageProductById = (id, formData, type, found) => {
                 })
             }
         } catch (e) {
-            console.log('changeImageProductById error: ', e)
             dispatch({
                 type: actionTypes.CUD_PRODUCT,
                 message: e?.response?.data?.errMessage,
@@ -312,7 +301,6 @@ export const fetchDescriptionProduct = (productId) => {
                 })
             }
         } catch (e) {
-            console.log('fetchDescriptionProduct error: ', e)
             dispatch({
                 type: actionTypes.FETCH_DESCRIPTION_PRODUCT_FAILED
             })
@@ -336,7 +324,6 @@ export const addDescriptionProduct = (data) => {
                 })
             }
         } catch (e) {
-            console.log('addDescriptionProduct error: ', e)
             dispatch({
                 type: actionTypes.ADD_DESCRIPTION_PRODUCT_FAILED
             })
@@ -360,7 +347,6 @@ export const getProductByCategory = (type) => {
                 })
             }
         } catch (e) {
-            console.log('getProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_BY_CATEGORY_FAILED
             })
@@ -385,7 +371,6 @@ export const getProductByCategoryLimit = (type, offset) => {
                 })
             }
         } catch (e) {
-            console.log('getProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_BY_CATEGORY_LIMIT_FAILED
             })
@@ -409,7 +394,6 @@ export const getProductByCategoryDetailLimit = (id, limit) => {
                 })
             }
         } catch (e) {
-            console.log('getProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_BY_CATEGORY_DETAIL_FAILED
             })
@@ -434,7 +418,6 @@ export const getLimitProductByOption = (optionData, page, option, limit) => {
                 })
             }
         } catch (e) {
-            console.log('getLimitProductByOption error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_PRODUCTS_BY_OPTION_SORT_FAILED
             })
@@ -459,7 +442,6 @@ export const searchProductByName = (productName, offset) => {
                 })
             }
         } catch (e) {
-            console.log('searchProductByName error: ', e)
             dispatch({
                 type: actionTypes.SEARCH_PRODUCT_BY_NAME_FAILED
             })
@@ -474,7 +456,6 @@ export const refreshProductSearch = () => {
                 type: 'REFRESH PRODUCT SEARCH'
             })
         } catch (e) {
-            console.log('refreshProductSearch error: ', e)
             dispatch({
                 type: 'REFRESH PRODUCT SEARCH'
             })
@@ -499,7 +480,6 @@ export const searchProductByNameLimit = (productName, offset) => {
                 })
             }
         } catch (e) {
-            console.log('searchProductByNameLimit error: ', e)
             dispatch({
                 type: actionTypes.SEARCH_PRODUCT_BY_NAME_LIMIT_FAILED
             })
@@ -524,7 +504,6 @@ export const findNameProductByCategory = (productName, type, offset) => {
                 })
             }
         } catch (e) {
-            console.log('findNameProductByCategory error: ', e)
             dispatch({
                 type: actionTypes.FIND_PRODUCT_BY_NAME_FAILED
             })

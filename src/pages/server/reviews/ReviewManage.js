@@ -50,7 +50,6 @@ function ReviewManage() {
 
     useEffect(() => {
         if (socket) {
-            console.log(socket);
             socket.on('receive_review', ({ reviews, _productId }) => {
                 if (+_productId === +params.get('id')) {
                     setStateReview(reviews)

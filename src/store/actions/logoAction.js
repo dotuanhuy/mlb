@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getAllLogosService,
 } from "../../services/logoService";
 
@@ -10,7 +10,6 @@ export const refreshStoreLogos = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -18,7 +17,7 @@ export const refreshStoreLogos = () => {
     }
 }
 
-export const getAllLogos  = () => {
+export const getAllLogos = () => {
     return async (dispatch, getState) => {
         try {
             let res = await getAllLogosService()
@@ -34,7 +33,6 @@ export const getAllLogos  = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllLogos error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_LOGOS_FAILED
             })

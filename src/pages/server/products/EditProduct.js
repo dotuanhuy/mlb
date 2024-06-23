@@ -258,7 +258,6 @@ function EditProduct({ categoryType, actives }) {
     }
 
     const handleUpdateProduct = () => {
-        console.log('img: ', selectImage);
         const errObj = validate(selectObject)
         const errCategory = validateRequire('Thể loại', selectCategory?.value)
         const errProductType = validateRequire('Kiểu sản phẩm', selectProductType?.value)

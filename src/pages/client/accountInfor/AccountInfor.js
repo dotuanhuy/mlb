@@ -52,6 +52,7 @@ function AccountInfor({ titlePage }) {
         document.title = titlePage
         const infoUser = Cookies.get('info')
         if (!infoUser) {
+            alert('not info')
             navigate(path.LOGIN)
         }
         else {

@@ -64,11 +64,6 @@ function Navbar() {
         }
     }, [userId])
 
-    const handleLogout = () => {
-        dispatch(actions.logout())
-        navigate(path.HOMEPAGE)
-    }
-
     return (
         <div className='header-top text-light sticky-top'>
             <div className='nav-container'>
@@ -230,7 +225,7 @@ function Navbar() {
                                             : <Link to={path.LOGIN}>Đăng nhập</Link>
                                     }
                                     {
-                                        userLogin && isLogin ? <Link to={path.LOG_OUT} onClick={handleLogout}>Đăng xuất</Link>
+                                        userLogin && isLogin ? <Link to={path.LOG_OUT}>Đăng xuất</Link>
                                             : <Link to={path.REGISTER}>Đăng ký</Link>
                                     }
                                 </div>

@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getAllCategoriesService,
     getAllCategoriesDetailService,
     getCategoriesByTypeService,
@@ -13,7 +13,6 @@ export const refreshStoreCategory = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -37,7 +36,6 @@ export const getAllCategories = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllCategories error: ', e)
             dispatch({
                 type: actionTypes.FETCH_ALL_CATEGORIES_FAILED
             })
@@ -61,7 +59,6 @@ export const getAllCategoriesDetail = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllCategories error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_CATEGORIES_DETAIL_FAILED
             })
@@ -85,7 +82,6 @@ export const getAllCategoriesDetailByType = (categoryType) => {
                 })
             }
         } catch (e) {
-            console.log('getAllCategories error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_CATEGORIES_DETAIL_BY_TYPE_FAILED
             })
@@ -108,8 +104,7 @@ export const getCategoriesByType = (type) => {
                     type: actionTypes.GET_CATEGORIES_BY_TYPE_FAILED
                 })
             }
-        } catch(e) {
-            console.log('getCategoriesByType error: ' ,e)
+        } catch (e) {
             dispatch({
                 type: actionTypes.GET_CATEGORIES_BY_TYPE_FAILED
             })

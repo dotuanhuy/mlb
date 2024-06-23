@@ -12,9 +12,6 @@ import { CustomToast } from '../../../utils/customToast';
 import io from 'socket.io-client';
 
 const arrStar = ['Tất cả', 5, 4, 3, 2, 1]
-// const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), KEY_ORDERID).toString(enc.Utf8) : '';
-// const decrypted = window.localStorage.getItem('orderId') ? AES.decrypt(window.localStorage.getItem('orderId'), process.env.REACT_APP_KEY_ORDERID).toString(enc.Utf8) : '';
-// const listOrderId = decrypted ? decrypted.split(',') : []
 
 function ReviewProduct({ productId }) {
     const dispatch = useDispatch()
@@ -29,9 +26,6 @@ function ReviewProduct({ productId }) {
     const [contentReviewClient, setContenReviewClient] = useState('')
     const [rateClient, setRateClient] = useState('')
     const [socket, setSocket] = useState()
-
-    console.log('check: ', listOrderId);
-    console.log('productId: ', productId);
 
     useEffect(() => {
         dispatch(actions.getListOrderId())

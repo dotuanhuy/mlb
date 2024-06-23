@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getProductsInCartByUserService,
     addProductToCartService,
     deleteProductInCartService,
@@ -24,7 +24,7 @@ export const getProductsInCartByUser = () => {
                 let data = []
                 res?.data?.map(item => {
                     data.push(item)
-                    totalMoney += (+item.dataCartProduct.price - +item.dataCartProduct.price*item.dataCartProduct.dataDiscounts.value)*+item.dataCartProduct.CartDetail.quantity
+                    totalMoney += (+item.dataCartProduct.price - +item.dataCartProduct.price * item.dataCartProduct.dataDiscounts.value) * +item.dataCartProduct.CartDetail.quantity
                     count += +item.dataCartProduct.CartDetail.quantity
                 })
                 dispatch({

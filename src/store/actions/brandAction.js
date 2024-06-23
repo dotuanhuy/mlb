@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getAllBrandsService,
 } from "../../services/brandService";
 
@@ -10,7 +10,6 @@ export const refreshStoreBrands = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -18,7 +17,7 @@ export const refreshStoreBrands = () => {
     }
 }
 
-export const getAllBrands  = () => {
+export const getAllBrands = () => {
     return async (dispatch, getState) => {
         try {
             let res = await getAllBrandsService()
@@ -34,7 +33,6 @@ export const getAllBrands  = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllDiscounts error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_BRANDS_FAILED
             })

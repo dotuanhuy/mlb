@@ -4,7 +4,7 @@ const initState = {
     totalEachRating: {}
 }
 
-const reviewReducer = (state=initState, action) => {
+const reviewReducer = (state = initState, action) => {
     switch (action.type) {
         case 'REFRESH_STORE_SUCCESS':
             state.reviews = []
@@ -13,14 +13,14 @@ const reviewReducer = (state=initState, action) => {
             return {
                 ...state
             }
-        case 'GET_REVIEW_PRODUCT_SUCCESS': 
+        case 'GET_REVIEW_PRODUCT_SUCCESS':
             state.reviews = action.data
             state.rate = action.rate
             state.totalEachRating = action.totalEachRating
             return {
                 ...state
             }
-        case 'GET_REVIEW_PRODUCT_FAILED': 
+        case 'GET_REVIEW_PRODUCT_FAILED':
             state.reviews = []
             state.rate = 0
             state.totalEachRating = {}
@@ -28,7 +28,6 @@ const reviewReducer = (state=initState, action) => {
                 ...state
             }
         case 'CHANGE_STATE':
-            console.log('check reducer')
             state.rate = action.rate
             state.totalEachRating = action.totalEachRating
             return {

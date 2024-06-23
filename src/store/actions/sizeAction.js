@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getAllSizesByTypeService,
 } from "../../services/sizeService";
 
@@ -10,7 +10,6 @@ export const refreshStoreSizes = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -18,7 +17,7 @@ export const refreshStoreSizes = () => {
     }
 }
 
-export const getAllSizesByType  = (type) => {
+export const getAllSizesByType = (type) => {
     return async (dispatch, getState) => {
         try {
             let res = await getAllSizesByTypeService(type)
@@ -34,7 +33,6 @@ export const getAllSizesByType  = (type) => {
                 })
             }
         } catch (e) {
-            console.log('getAllSizesByType error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_SIZES_BY_TYPE_FAILED
             })

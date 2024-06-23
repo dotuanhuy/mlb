@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { 
+import {
     getNotificationsService,
     createNotificationsService,
     updateIsReadService,
@@ -12,7 +12,6 @@ export const refreshStoreNotification = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -20,7 +19,7 @@ export const refreshStoreNotification = () => {
     }
 }
 
-export const getNotifications  = () => {
+export const getNotifications = () => {
     return async (dispatch, getState) => {
         try {
             let res = await getNotificationsService()
@@ -36,7 +35,6 @@ export const getNotifications  = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllDiscounts error: ', e)
             dispatch({
                 type: actionTypes.GET_NOTIFICATIONS_FAILED
             })
@@ -44,7 +42,7 @@ export const getNotifications  = () => {
     }
 }
 
-export const createNotification  = (data) => {
+export const createNotification = (data) => {
     return async (dispatch, getState) => {
         try {
             let res = await createNotificationsService(data)
@@ -60,7 +58,6 @@ export const createNotification  = (data) => {
                 })
             }
         } catch (e) {
-            console.log('createNotification error: ', e)
             dispatch({
                 type: actionTypes.CREATE_NOTIFICATION_FAILED
             })
@@ -68,16 +65,15 @@ export const createNotification  = (data) => {
     }
 }
 
-export const updateIsRead  = (id) => {
+export const updateIsRead = (id) => {
     return async (dispatch, getState) => {
         try {
             let res = await updateIsReadService(id)
             if (res && res.errCode === 0) {
                 dispatch(getNotifications())
             }
-            
+
         } catch (e) {
-            console.log('updateIsRead error: ', e)
         }
     }
 }

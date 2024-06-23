@@ -28,7 +28,6 @@ export const getSizeFirebase = () => {
                 })
             }
         } catch (e) {
-            console.log('getSizeFirebase error: ', e)
             dispatch({
                 type: actionTypes.GET_SIZES_FIREBASE_FAILED
             })
@@ -52,7 +51,6 @@ export const getImageLogoWeb = () => {
                 })
             }
         } catch (e) {
-            console.log('getImageLogoWeb error: ', e)
             dispatch({
                 type: actionTypes.GET_LOGO_WEB_FIREBASE_FAILED
             })

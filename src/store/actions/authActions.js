@@ -44,7 +44,6 @@ export const loginWithGoogle = (id, token) => {
         try {
             const res = await loginWithGoogleService(id, token)
             if (res && res.errCode === 0) {
-                console.log('check res: ', res);
                 window.localStorage.setItem('accessToken', res.data?.accessToken)
                 dispatch({
                     type: actionTypes.LOGIN_SUCCESS,
@@ -57,7 +56,6 @@ export const loginWithGoogle = (id, token) => {
                 })
             }
         } catch (e) {
-            console.log('handleLoginWithGoogle error: ', e)
             dispatch({
                 type: actionTypes.LOGIN_FAILED
             })
@@ -112,7 +110,6 @@ export const register = (data) => {
                 })
             }
         } catch (e) {
-            console.log('register error: ', e)
             dispatch({
                 type: actionTypes.REGISTER,
                 message: e?.response?.data?.errMessage,
@@ -167,7 +164,6 @@ export const verifyOtp = ({ otp, email }) => {
                 })
             }
         } catch (e) {
-            console.log('verifyOtp error: ', e)
             dispatch({
                 type: actionTypes.VERIFY_OTP_FAILED,
                 message: e?.response?.data?.errMessage,
@@ -193,7 +189,6 @@ export const changePassword = ({ newPassword, oldPassword }) => {
                 })
             }
         } catch (e) {
-            console.log('resetPassword error: ', e)
             dispatch({
                 type: actionTypes.CHANGE_PASSWORD_FAILED
             })
@@ -213,7 +208,6 @@ export const forgotPassword = ({ email, password }) => {
                 })
             }
         } catch (e) {
-            console.log('forgotPassword error: ', e)
             dispatch({
                 type: actionTypes.FORGOT_PASSWORD,
                 message: e?.response?.data?.errMessage,

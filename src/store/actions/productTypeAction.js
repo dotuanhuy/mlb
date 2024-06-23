@@ -17,7 +17,6 @@ export const refreshStoreProductType = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStoreProductType error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -50,7 +49,6 @@ export const getAllProductTypes = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllProductTypes error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_PRODUCT_TYPES_FAILED
             })
@@ -77,7 +75,6 @@ export const getLimitProductTypes = (page) => {
                 })
             }
         } catch (e) {
-            console.log('getLimitProductTypes error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_PRODUCT_TYPES_FAILED,
                 message: e?.response?.data?.errMessage,
@@ -103,7 +100,6 @@ export const getProductTypeByCategoryId = (categoryId) => {
                 })
             }
         } catch (e) {
-            console.log('getProductTypeByCategoryId error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_TYPES_BY_CATEGORYID_FAILED
             })
@@ -127,7 +123,6 @@ export const getProductTypeById = (id) => {
                 })
             }
         } catch (e) {
-            console.log('getProductTypeById error: ', e)
             dispatch({
                 type: actionTypes.GET_PRODUCT_TYPES_BY_ID_FAILED
             })
@@ -154,7 +149,6 @@ export const createProductType = (formData, page, type) => {
                 })
             }
         } catch (e) {
-            console.log('createProductType error: ', e)
             dispatch({
                 type: actionTypes.CREATE_PRODUCT_TYPE,
                 message: e?.response?.data?.errMessage,
@@ -172,7 +166,6 @@ export const deleteProductType = (id, page) => {
                 dispatch(getLimitProductTypes(page))
             }
         } catch (e) {
-            console.log('deleteProductType error: ', e)
         }
     }
 }
@@ -185,7 +178,6 @@ export const updateProductType = (formData, id, page, type, found) => {
                 dispatch(getLimitProductTypes(page))
             }
         } catch (e) {
-            console.log('updateProductType error: ', e)
         }
     }
 }
@@ -209,7 +201,6 @@ export const getLimitProductTypesByName = (page, name) => {
                 })
             }
         } catch (e) {
-            console.log('getLimitProductTypesByName error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_PRODUCT_TYPES_FAILED,
                 message: e?.response?.data?.errMessage,

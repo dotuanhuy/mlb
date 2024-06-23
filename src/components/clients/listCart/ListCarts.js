@@ -49,10 +49,6 @@ function ListCarts({
         deleteProductInCartRedux({ cartDetailId, userId })
     }
 
-    const handleOnchangeQuantity = e => {
-        console.log(+e.target.value)
-    }
-
     return (
         <div className='list-items-cart'>
             <section class="h-100 h-custom">
@@ -145,7 +141,6 @@ function ListCarts({
                                                                                 type="number"
                                                                                 className="form-control form-control-sm py-0"
                                                                                 value={+item.dataCartProduct.CartDetail.quantity}
-                                                                                onChange={e => handleOnchangeQuantity(e)}
                                                                                 disabled
                                                                             />
 

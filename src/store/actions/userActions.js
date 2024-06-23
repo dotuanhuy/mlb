@@ -21,7 +21,6 @@ export const refreshStoreUser = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -45,7 +44,6 @@ export const refreshIsloadingState = () => {
                 type: actionTypes.LOADING_SUCCESS
             })
         } catch (e) {
-            console.log('refreshIsloadingState error: ', e)
             dispatch({
                 type: actionTypes.LOADING_FAILED
             })
@@ -72,7 +70,6 @@ export const createNewUser = (newUser, page) => {
                 })
             }
         } catch (e) {
-            console.log('createNewUser error: ', e)
             dispatch({
                 type: actionTypes.CUD_USER,
                 message: e?.response?.data?.errMessage,
@@ -98,7 +95,6 @@ export const fetAllUsers = () => {
                 })
             }
         } catch (e) {
-            console.log('fetAllUsers error: ', e)
             dispatch({
                 type: actionTypes.FETCH_ALL_USERS_FAILED
             })
@@ -124,7 +120,6 @@ export const getAllAddress = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllAddress error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_ADDRESS_FAILED
             })
@@ -148,7 +143,6 @@ export const getAllRoles = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllRoles error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_ROLES_FAILED
             })
@@ -176,7 +170,6 @@ export const deleteUser = (id, page) => {
                 })
             }
         } catch (e) {
-            console.log('deleteUser error: ', e)
             dispatch({
                 type: actionTypes.CUD_USER,
                 message: e?.response?.data?.errMessage,
@@ -205,7 +198,6 @@ export const updateUser = (newUser, id, page) => {
                 })
             }
         } catch (e) {
-            console.log('updateUser error: ', e)
             dispatch({
                 type: actionTypes.CUD_USER,
                 message: e?.response?.data?.errMessage,
@@ -231,7 +223,6 @@ export const getCountUsers = () => {
                 })
             }
         } catch (e) {
-            console.log('getUserById error: ', e)
             dispatch({
                 type: actionTypes.GET_COUNT_USERS_FAILED
             })
@@ -256,7 +247,6 @@ export const getUserById = (id) => {
                 })
             }
         } catch (e) {
-            console.log('getUserById error: ', e)
             dispatch({
                 type: actionTypes.GET_USER_BY_ID_FAILED
             })
@@ -281,7 +271,6 @@ export const getLimitUsers = (page,) => {
                 })
             }
         } catch (e) {
-            console.log('getLimitUsers error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_USERS_FAILED
             })
@@ -296,7 +285,6 @@ export const refreshStateMessage = () => {
                 type: actionTypes.REFRESH_STATE_INFO_RESPONE
             })
         } catch (e) {
-            console.log('refreshStateMessage error: ', e)
         }
     }
 }
@@ -320,7 +308,6 @@ export const updateInfoUser = (infoUser) => {
                 })
             }
         } catch (e) {
-            console.log('updateInfoUser error: ', e)
             dispatch({
                 type: actionTypes.UPDATE_NAME_USER_FAILED,
                 message: e?.response?.data?.errMessage,
@@ -348,7 +335,6 @@ export const searchUser = (userName, page) => {
                 })
             }
         } catch (e) {
-            console.log('searchUser error: ', e)
             dispatch({
                 type: actionTypes.FIND_USER_BY_NAME_FAILED,
                 message: e?.response?.data?.errMessage,

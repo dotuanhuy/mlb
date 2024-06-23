@@ -9,25 +9,17 @@ import { DELETE } from "../../utils";
 
 export const refreshIStateFavouriteProduct = () => {
     return (dispatch, getState) => {
-        try {
-            dispatch({
-                type: actionTypes.REFRESH_STORE_SUCCESS
-            })
-        } catch (e) {
-            console.log('refreshIStateFavouriteProduct error: ', e)
-        }
+        dispatch({
+            type: actionTypes.REFRESH_STORE_SUCCESS
+        })
     }
 }
 
 export const refreshIStatusFavouriteProduct = () => {
     return (dispatch, getState) => {
-        try {
-            dispatch({
-                type: actionTypes.REFRESH_STATUS_FAVOURITE
-            })
-        } catch (e) {
-            console.log('refreshIStatusFavouriteProduct error: ', e)
-        }
+        dispatch({
+            type: actionTypes.REFRESH_STATUS_FAVOURITE
+        })
     }
 }
 
@@ -47,7 +39,6 @@ export const getAllProductsFavourite = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllProductsFavourite error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_PRODUCTS_FAVOURITE_FAILED
             })
@@ -75,7 +66,6 @@ export const getAllProductsFavouriteLimit = (offset) => {
                 })
             }
         } catch (e) {
-            console.log('getAllProductsFavourite error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_PRODUCTS_FAVOURITE_LIMIT_FAILED
             })
@@ -100,7 +90,6 @@ export const changeProductFavourite = ({ productId }, offset = '') => {
                 dispatch(getAllProductsFavourite())
             }
         } catch (e) {
-            console.log('changeProductFavourite error: ', e)
             dispatch({
                 type: actionTypes.CHANGE_PRODUCT_FAVOURITE,
             })

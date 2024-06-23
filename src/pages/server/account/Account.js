@@ -51,8 +51,6 @@ function Manage() {
         inputFileRef.current?.click()
     }
 
-    console.log(imageLogoWeb);
-
     return (
         <>
             <Navbar />

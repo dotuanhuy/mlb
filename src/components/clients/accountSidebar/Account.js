@@ -20,6 +20,7 @@ function Account({ activeType }) {
     useEffect(() => {
         const infoUser = Cookies.get('info')
         if (!infoUser) {
+            alert('not info')
             navigate(path.LOGIN)
         }
         else {

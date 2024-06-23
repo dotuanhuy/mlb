@@ -11,13 +11,13 @@ function Logout() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        dispatch(actions.logout())
         dispatch(actions.refreshStoreProduct())
         dispatch(actions.refreshStoreUser())
         dispatch(actions.refreshIStateFavouriteProduct())
         dispatch(actions.refreshStateCart())
         dispatch(actions.refreshStateMessage())
         dispatch(actions.refreshStateAuth())
-        dispatch(actions.logout())
     }, [])
 
     useEffect(() => {

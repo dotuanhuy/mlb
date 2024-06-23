@@ -15,7 +15,6 @@ export const refreshStoreDiscount = () => {
                 type: actionTypes.REFRESH_STORE_SUCCESS
             })
         } catch (e) {
-            console.log('refreshStore error: ', e)
             dispatch({
                 type: actionTypes.REFRESH_STORE_FAILED
             })
@@ -47,7 +46,6 @@ export const getAllDiscounts = () => {
                 })
             }
         } catch (e) {
-            console.log('getAllDiscounts error: ', e)
             dispatch({
                 type: actionTypes.GET_ALL_DISCOUNTS_FAILED
             })
@@ -71,7 +69,6 @@ export const getLimitDiscount = (page) => {
                 })
             }
         } catch (e) {
-            console.log('getLimitDiscount error: ', e)
             dispatch({
                 type: actionTypes.GET_LIMIT_DISCOUNT_FAILED
             })
@@ -98,7 +95,6 @@ export const createDiscount = ({ code, value, description, page }) => {
                 })
             }
         } catch (e) {
-            console.log('createDiscount error: ', e)
             dispatch({
                 type: actionTypes.RESPONSE_INFO_DISSCOUNT,
                 message: e?.response?.data?.errMessage,
@@ -127,7 +123,6 @@ export const updateDiscount = ({ id, code, value, description, page }) => {
                 })
             }
         } catch (e) {
-            console.log('updateDiscount error: ', e)
             dispatch({
                 type: actionTypes.RESPONSE_INFO_DISSCOUNT,
                 message: e?.response?.data?.errMessage,
@@ -156,7 +151,6 @@ export const deleteDiscount = ({ id, page }) => {
                 })
             }
         } catch (e) {
-            console.log('deleteDiscount error: ', e)
             dispatch({
                 type: actionTypes.RESPONSE_INFO_DISSCOUNT,
                 message: e?.response?.data?.errMessage,
@@ -182,7 +176,6 @@ export const getDiscountById = (id) => {
                 })
             }
         } catch (e) {
-            console.log('getDiscountById error: ', e)
             dispatch({
                 type: actionTypes.GET_DISCOUNT_BY_ID_FAILED
             })

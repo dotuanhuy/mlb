@@ -24,7 +24,6 @@ export const getMonthlyRevenue = (year) => {
                 })
             }
         } catch (e) {
-            console.log('getMonthlyRevenue error: ', e)
             dispatch({
                 type: actionTypes.GET_MONTHLY_REVENUE_FAILED,
             })
@@ -48,7 +47,6 @@ export const getDailyRevenue = (day) => {
                 })
             }
         } catch (e) {
-            console.log('getDailyRevenue error: ', e)
             dispatch({
                 type: actionTypes.GET_DAILY_REVENUE_FAILED,
             })
@@ -72,7 +70,6 @@ export const getWeeklyRevenue = (startDate, endDate) => {
                 })
             }
         } catch (e) {
-            console.log('getDailyRevenue error: ', e)
             dispatch({
                 type: actionTypes.GET_WEEK_REVENUE_FAILED,
             })
@@ -96,7 +93,6 @@ export const getYearRevenue = (day) => {
                 })
             }
         } catch (e) {
-            console.log('getYearRevenue error: ', e)
             dispatch({
                 type: actionTypes.GET_YEAR_REVENUE_FAILED,
             })
@@ -120,7 +116,6 @@ export const getTotalRevenue = () => {
                 })
             }
         } catch (e) {
-            console.log('getTotalRevenue error: ', e)
             dispatch({
                 type: actionTypes.GET_TOTAL_REVENUE_FAILED,
             })
@@ -144,7 +139,6 @@ export const getTopTenBestSellingProductsYear = (year) => {
                 })
             }
         } catch (e) {
-            console.log('getTotalRevenue error: ', e)
             dispatch({
                 type: actionTypes.GET_TOP_10_BEST_SELLING_PRODUCTS_FAILED,
             })
