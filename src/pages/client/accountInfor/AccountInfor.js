@@ -50,13 +50,13 @@ function AccountInfor({ titlePage }) {
 
     useEffect(() => {
         document.title = titlePage
-        const infoUser = Cookies.get('info')
+        const infoUser = window.localStorage.getItem('info')
+        // const infoUser = Cookies.get('info')
         if (!infoUser) {
             alert('not info')
             navigate(path.LOGIN)
         }
         else {
-            // const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
             const infoDecoded = JSON.parse(AES.decrypt(infoUser, process.env.REACT_APP_KEY_AES).toString(enc.Utf8))
             setNewUser({
                 firstName: infoDecoded?.firstName,

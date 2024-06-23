@@ -1,4 +1,3 @@
-import axios from "../axios";
 import axiosJWT from '../axiosJWT'
 import { API_VERSION } from "../utils";
 

@@ -2,25 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../../../components/server/sidebars/Sidebar';
 import Navbar from '../../../components/server/navbar/Navbar';
-import Cookies from 'js-cookie'
 import { AES, enc } from 'crypto-js';
 import { formatDateVN, path } from '../../../utils';
 import { useNavigate } from 'react-router-dom';
 import avatart_male_none from '../../../assets/avatar/avatar_male_none.jpg'
-import Loading from '../../../components/loading/Loading';
 import * as actions from '../../../store/actions'
 
 function Manage() {
     const dispatch = useDispatch()
     const { imageLogoWeb } = useSelector(state => state.firebase)
     const [account, setAccount] = useState()
-    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const inputFileRef = useRef()
     const [imgLogo, setImgLogo] = useState({ url: '', value: '' })
 
     useEffect(() => {
-        const infoUser = Cookies.get('info')
+        const infoUser = window.localStorage.getItem('info')
+        // const infoUser = Cookies.get('info')
         if (!infoUser) {
             navigate(path.LOGIN)
         }

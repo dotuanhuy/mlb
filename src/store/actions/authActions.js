@@ -25,6 +25,7 @@ export const login = (email, password) => {
             const res = await LoginService(email, password)
             if (res && res.errCode === 0) {
                 window.localStorage.setItem('accessToken', res?.data?.accessToken)
+                window.localStorage.setItem('info', res?.data?.info)
                 dispatch({
                     type: actionTypes.LOGIN_SUCCESS,
                     data: res.data
@@ -45,6 +46,7 @@ export const loginWithGoogle = (id, token) => {
             const res = await loginWithGoogleService(id, token)
             if (res && res.errCode === 0) {
                 window.localStorage.setItem('accessToken', res.data?.accessToken)
+                window.localStorage.setItem('info', res?.data?.info)
                 dispatch({
                     type: actionTypes.LOGIN_SUCCESS,
                     data: res?.data
@@ -71,6 +73,7 @@ export const logout = () => {
                 window.localStorage.removeItem('accessToken')
                 window.localStorage.removeItem('orderId')
                 window.localStorage.removeItem('notifications')
+                window.localStorage.removeItem('info')
                 dispatch({
                     type: actionTypes.LOGOUT_SUCCESS
                 })

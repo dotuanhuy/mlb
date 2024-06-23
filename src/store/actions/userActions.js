@@ -294,6 +294,7 @@ export const updateInfoUser = (infoUser) => {
         try {
             const res = await updateInfoUserService(infoUser)
             if (res && res.errCode === 0) {
+                window.localStorage.setItem('info', res?.info)
                 dispatch({
                     type: actionTypes.UPDATE_NAME_USER_SUCCESS,
                     message: res?.errMessage,

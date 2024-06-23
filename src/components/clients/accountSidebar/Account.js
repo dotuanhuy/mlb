@@ -2,7 +2,6 @@ import React, { useEffect, useState, memo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { path } from '../../../utils';
-import Cookies from 'js-cookie'
 import { AES, enc } from 'crypto-js';
 
 const initState = {
@@ -18,13 +17,13 @@ function Account({ activeType }) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        const infoUser = Cookies.get('info')
+        const infoUser = window.localStorage.getItem('info')
+        // const infoUser = Cookies.get('info')
         if (!infoUser) {
             alert('not info')
             navigate(path.LOGIN)
         }
         else {
-            // const infoDecoded = JSON.parse(AES.decrypt(infoUser, KEY_AES).toString(enc.Utf8))
             const infoDecoded = JSON.parse(AES.decrypt(infoUser, process.env.REACT_APP_KEY_AES).toString(enc.Utf8))
             setUserLogin({
                 firstName: infoDecoded?.firstName,
@@ -37,7 +36,8 @@ function Account({ activeType }) {
 
     useEffect(() => {
         if (message) {
-            const infoUser = Cookies.get('info')
+            const infoUser = window.localStorage.getItem('info')
+            // const infoUser = Cookies.get('info')
             if (!infoUser) {
                 navigate(path.LOGIN)
             }

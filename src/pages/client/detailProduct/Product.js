@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch, useSelector } from 'react-redux';
 import { LIMIT_SLIDER_PRODUCT, formatVND, path } from '../../../utils';
+import Cart from '../../../components/clients/action/Cart';
 
 function Product() {
     const dispatch = useDispatch()
@@ -160,11 +161,14 @@ function Product() {
                                                                         </div>
                                                                         : ''
                                                                 }
-                                                                <FavouritePosition
-                                                                    productId={item.id}
-                                                                    productFavourites={product}
-                                                                    isFavourite={isFavourite}
-                                                                />
+                                                                <div className='actions text-center'>
+                                                                    <FavouritePosition
+                                                                        productId={item.id}
+                                                                        isFavourite={isFavourite}
+                                                                        bg='cover'
+                                                                    />
+                                                                    <Cart productId={item?.id} size={size} />
+                                                                </div>
                                                                 <div className='product-img product-img-first'>
                                                                     <Link
                                                                         to={`${path.PRODUCT}/${item.name}`}

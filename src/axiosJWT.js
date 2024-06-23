@@ -12,6 +12,7 @@ const instance = axios.create({
     //     'Content-Type': 'application/json',
     // }
 })
+
 instance.interceptors.request.use(
     async (config) => {
         if (config.url.indexOf(`${api}/auth/refresh`) >= 0) {
@@ -31,13 +32,6 @@ instance.interceptors.response.use(
         const { errCode, errMessage } = response?.data
         if (config.url.indexOf(`${api}/auth/login`) >= 0 || config.url.indexOf(`${api}/auth/refresh`) >= 0) {
             return response.data
-        }
-        else if (config.url.indexOf(`${api}/user/update/name`) >= 0 && errCode === 0) {
-            const { accessToken } = response?.data
-            if (accessToken) {
-                await instance.setLocalAccessToken(accessToken)
-                return response.data
-            }
         }
         if (errCode && errCode === 401) {
             if (errMessage && errMessage === 'jwt expired') {

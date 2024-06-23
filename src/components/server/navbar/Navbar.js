@@ -8,7 +8,6 @@ import { path } from '../../../utils';
 import OutsideAlerter from '../../../utils/OutSide';
 import Notification from '../bells/Notification';
 import { AES, enc } from 'crypto-js';
-import Cookies from 'js-cookie';
 
 function Navbar() {
     const navigate = useNavigate()
@@ -18,7 +17,8 @@ function Navbar() {
     })
 
     useEffect(() => {
-        const infoUser = Cookies.get('info')
+        // const infoUser = Cookies.get('info')
+        const infoUser = window.localStorage.getItem('info')
         if (!infoUser) {
             navigate(path.LOGIN)
         }
