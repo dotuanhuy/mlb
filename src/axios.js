@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { BACKEND_URL } from './utils';
 
 const instance = axios.create({
     // baseURL: process.env.REACT_APP_BACKEND_URL
-    baseURL: process.env.REACT_APP_URL_BACKEND,
+    baseURL: BACKEND_URL,
     withCredentials: true
 });
 

@@ -1,11 +1,11 @@
 import axios from "axios";
 import { refreshTokenService } from "./services/authService";
-import { API_VERSION } from "./utils";
+import { API_VERSION, BACKEND_URL } from "./utils";
 
 const api = `/api/${API_VERSION}`
 
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_URL_BACKEND,
+    baseURL: BACKEND_URL,
     withCredentials: true,
     timeout: 8000, // 8s,
     // headers: {
