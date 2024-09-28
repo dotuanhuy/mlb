@@ -19,19 +19,23 @@ function Action({ productId, isFavourite, bg }) {
 
     useEffect(() => {
         if (status && id === productId) {
+        console.log('check id: ', id);
+            console.log({status, id});
+            
             if (status === DELETE) {
                 toast.info(CustomToast('Bạn vừa bỏ sản phẩm ra khỏi mục yêu thích'), { autoClose: 2000 })
             }
             else {
                 toast.info(CustomToast('Bạn vừa thêm 1 sản phẩm vào mục yêu thích'), { autoClose: 2000 })
             }
+            setId('')
             dispatch(actions.refreshIStatusFavouriteProduct())
         }
     }, [status])
 
     const handleClose = () => setShow({});
 
-    const hanleClickFavourite = () => {
+    const hanleClickFavourite = () => {        
         if (accessToken) {
             if (bg === 'cover') {
                 dispatch(actions.changeProductFavourite({ productId }))

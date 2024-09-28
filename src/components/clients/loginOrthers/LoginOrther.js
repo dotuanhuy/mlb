@@ -6,7 +6,7 @@ import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 function LoginOrther() {
 
     const handleLoginWithGoogle = async () => {
-        window.open(`${process.env.REACT_APP_URL_BACKEND}/api/v1/auth/google', '_self`)
+        window.open(`${process.env.REACT_APP_URL_BACKEND}/api/v1/auth/google`)
     }
 
     return (

@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { connect, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { formatVND } from "../../../utils";
 import './ListProducts.scss';
 import { Link } from "react-router-dom";
@@ -107,14 +107,5 @@ function ListProducts({ bg = 'cover', products, col = 'col-4' }) {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-    }
-}
 
-const mapDispatchToProps = dispatch => {
-    return {
-    }
-}
-
-export default memo(connect(mapStateToProps, mapDispatchToProps)(ListProducts));
+export default memo(ListProducts);

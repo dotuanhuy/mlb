@@ -62,6 +62,7 @@ function Favourite({ titlePage }) {
     }, [params.get('page')])
 
     useEffect(() => {
+        console.log('check');
         if (status) {
             if (status === DELETE) {
                 toast.info(CustomToast('Bạn vừa bỏ sản phẩm ra khỏi mục yêu thích'), { autoClose: 2000 })

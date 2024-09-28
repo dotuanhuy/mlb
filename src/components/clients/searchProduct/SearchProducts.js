@@ -1,5 +1,5 @@
 import React, { useEffect, memo } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './SearchProducts.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
@@ -8,24 +8,40 @@ import { useState } from 'react';
 import { formatVND, path, limit_list_search } from '../../../utils';
 import { Link, useNavigate } from 'react-router-dom';
 
-function SearchProducts({ productSearch, searchProductByNameRedux, refreshProductSearchRedux }) {
+let timerId
+function SearchProducts() {
     const [isOnchange, setIsOnchange] = useState(false)
     const [productName, setProductName] = useState('')
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const {productSearch} = useSelector(state => state.product)
 
     useEffect(() => {
-        refreshProductSearchRedux()
+        dispatch(actions.refreshProductSearch())
     }, [])
 
     const handleOnchange = (e) => {
         e.target.value.length === 0 ? setIsOnchange(false) : setIsOnchange(true)
         setProductName(e.target.value)
-        searchProductByNameRedux(e.target.value, 1)
+        debounce(1000, e.target.value)
     }
 
     const handleSearch = (e) => {
         e.preventDefault()
         navigate(path.SEARCH_PRODUCT + `?pname=${productName}`)
+    }
+
+    const debounce = (delay, productName) => {
+        delay = delay || 0
+        if (timerId) {
+            clearTimeout(timerId)
+            timerId = null
+        }
+        timerId = setTimeout(() => {
+            if (productName.trim()) {
+                dispatch(actions.searchProductByName(productName, 1))
+            }
+        }, delay)
     }
 
     return (
@@ -111,17 +127,4 @@ function SearchProducts({ productSearch, searchProductByNameRedux, refreshProduc
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        productSearch: state.product.productSearch
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        searchProductByNameRedux: (productName, offset) => dispatch(actions.searchProductByName(productName, offset)),
-        refreshProductSearchRedux: () => dispatch(actions.refreshProductSearch()),
-    }
-}
-
-export default memo(connect(mapStateToProps, mapDispatchToProps)(SearchProducts));
+export default memo(SearchProducts);
