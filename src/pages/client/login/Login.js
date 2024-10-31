@@ -20,7 +20,7 @@ const initState = {
 
 function Login({ titlePage }) {
     const dispatch = useDispatch()
-    const { message, roleId, isLogin } = useSelector(state => state.auth)
+    const { messageLogin, roleId, isLogin } = useSelector(state => state.auth)
     const [dataInput, setDataInput] = useState(initState)
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
@@ -29,6 +29,7 @@ function Login({ titlePage }) {
 
     useEffect(() => {
         dispatch(actions.refreshStoreUser)
+        dispatch(actions.refreshStateMessage())
         document.title = titlePage
         if (isLogin) {
             navigate(path.HOMEPAGE)
@@ -61,11 +62,11 @@ function Login({ titlePage }) {
     }, [body.current])
 
     useEffect(() => {
-        if (message) {
-            toast.error(CustomToast(message), { autoClose: 3000 })
+        if (messageLogin) {            
+            toast.error(CustomToast(messageLogin), { autoClose: 3000 })
             dispatch(actions.refreshStateAuth())
         }
-    }, [message])
+    }, [messageLogin])
 
     useEffect(() => {
         if (isLogin && roleId === 1) {
@@ -99,7 +100,7 @@ function Login({ titlePage }) {
                         <div className='login-form-container shadow-sm mb-5 bg-body rounded'>
                             <div className='login-form-header d-flex align-items-center justify-content-around mb-2 border-bottom'>
                                 <div className='title title-login position-relative d-flex align-items-center justify-content-center'>
-                                    <Link className='fs-18' to='#'>Đăng nhập</Link>
+                                    <Link className='fs-18' to={path.LOGIN}>Đăng nhập</Link>
                                 </div>
                                 <div className='title d-flex align-items-center justify-content-center'>
                                     <Link className='fs-18 text-muted' to={path.REGISTER}>Đăng ký</Link>

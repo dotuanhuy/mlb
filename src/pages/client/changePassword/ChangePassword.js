@@ -19,7 +19,7 @@ const initInforChangePassword = {
 
 function ChangePassword({ titlePage }) {
     const dispatch = useDispatch()
-    const { isChangePassword, message } = useSelector(state => state.auth)
+    const { isChangePassword, messageChangePassword } = useSelector(state => state.auth)
     const [inforChangePassword, setInforChangePassword] = useState(initInforChangePassword);
     const [error, setError] = useState({})
     const navigate = useNavigate()
@@ -30,20 +30,20 @@ function ChangePassword({ titlePage }) {
     }, [])
 
     useEffect(() => {
-        if (isChangePassword && message) {
+        if (isChangePassword && messageChangePassword) {
             toast.success((
                 <span className='fw-light' style={{ fontSize: 14, fontFamily: 'serif' }}>
-                    {message}
+                    {messageChangePassword}
                 </span>
             ), { autoClose: 3000 })
             dispatch(actions.refreshStateAuth())
             dispatch(actions.logout())
             navigate(path.HOMEPAGE)
         }
-        else if (!isChangePassword && message) {
-            toast.error(CustomToast(message), { autoClose: 3000 })
+        else if (!isChangePassword && messageChangePassword) {
+            toast.error(CustomToast(messageChangePassword), { autoClose: 3000 })
         }
-    }, [isChangePassword, message])
+    }, [isChangePassword, messageChangePassword])
 
     const handleResetPassword = () => {
         let error = validate(inforChangePassword)

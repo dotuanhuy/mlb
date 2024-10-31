@@ -1,6 +1,7 @@
 import axios from "axios";
-import { refreshTokenService } from "./services/authService";
+import { logoutService, refreshTokenService } from "./services/authService";
 import { API_VERSION, BACKEND_URL } from "./utils";
+import { logout } from "./store/actions";
 
 const api = `/api/${API_VERSION}`
 
@@ -36,7 +37,16 @@ instance.interceptors.response.use(
         if (errCode && errCode === 401) {
             if (errMessage && errMessage === 'jwt expired') {
                 const { accessToken } = await refreshTokenService()
-                if (accessToken) {
+                console.log('check: ', accessToken);
+                if (!accessToken) {
+                    // const res = await logoutService()
+                    // if (res && res.)
+                    // window.localStorage.removeItem('accessToken')
+                    // window.localStorage.removeItem('orderId')
+                    // window.localStorage.removeItem('notifications')
+                    // window.localStorage.removeItem('info')
+                }
+                else {
                     config.headers['X-Token'] = accessToken
                     await instance.setLocalAccessToken(accessToken)
                     return instance(config)

@@ -2,17 +2,23 @@ const initState = {
     roleId: '',
     isLogin: false,
     isChangePassword: false,
-    message: '',
+    messageLogin: '',
     errCode: '',
     otp: '',
     isVerify: '',
-    email: ''
+    email: '',
+    messageRegister: '',
+    messageChangePassword: '',
+    message: ''
 }
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
         case 'REFRESH_STATE_AUTH':
             state.message = ''
+            state.messageRegister = ''
+            state.messageChangePassword = ''
+            state.messageLogin = ''
             state.isChangePassword = false
             state.errCode = ''
             state.isVerify = ''
@@ -29,7 +35,7 @@ const authReducer = (state = initState, action) => {
             }
         case 'LOGIN_FAILED':
             state.isLogin = false
-            state.message = action.message
+            state.messageLogin = action.message
             state.roleId = ''
             return {
                 ...state
@@ -49,7 +55,7 @@ const authReducer = (state = initState, action) => {
                 ...state
             }
         case 'REGISTER':
-            state.message = action?.message
+            state.messageRegister = action?.message
             state.errCode = action?.errCode
             return {
                 ...state
@@ -61,7 +67,7 @@ const authReducer = (state = initState, action) => {
             }
         case 'SEND_MAIL_FAILED':
             state.otp = ''
-            state.message = action?.message
+            state.messageRegister = action?.message
             state.errCode = action?.errCode
             return {
                 ...state
@@ -74,19 +80,19 @@ const authReducer = (state = initState, action) => {
             }
         case 'VERIFY_OTP_FAILED':
             state.email = ''
-            state.message = action.message
+            state.messageRegister = action.message
             return {
                 ...state
             }
         case 'CHANGE_PASSWORD_SUCCESS':
             state.isChangePassword = true
-            state.message = action.message
+            state.messageChangePassword = action.message
             return {
                 ...state
             }
         case 'CHANGE_PASSWORD_FAILED':
             state.isChangePassword = false
-            state.message = action.message
+            state.messageChangePassword = action.message
             return {
                 ...state
             }

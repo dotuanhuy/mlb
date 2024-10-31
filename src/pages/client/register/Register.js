@@ -30,7 +30,7 @@ const inforUserNotValue = {
 
 function Register({ titlePage }) {
     const dispatch = useDispatch()
-    const { message, errCode, isVerify, email } = useSelector(state => state.auth)
+    const { messageRegister, errCode, isVerify, email } = useSelector(state => state.auth)
     const [inforUser, setInforUser] = useState(inintState)
     const [errors, setErrors] = useState({})
     const [isVerifyState, setIsverifyState] = useState(false)
@@ -70,18 +70,18 @@ function Register({ titlePage }) {
     }, [body.current])
 
     useEffect(() => {
-        if (message) {
+        if (messageRegister) {
             if (errCode === 0) {
-                toast.success(CustomToast(message), { autoClose: 3000 })
+                toast.success(CustomToast(messageRegister), { autoClose: 3000 })
                 navigate(path.LOGIN)
             }
             else {
-                toast.error(CustomToast(message), { autoClose: 3000 })
+                toast.error(CustomToast(messageRegister), { autoClose: 3000 })
             }
-            dispatch(actions.refreshStateMessage())
+            dispatch(actions.refreshStateAuth())
             setIsLoading(false)
         }
-    }, [message])
+    }, [messageRegister])
 
     useEffect(() => {
         if (isVerify) {
@@ -123,7 +123,7 @@ function Register({ titlePage }) {
                                         <Link className='fs-18 text-muted' to={path.LOGIN}>Đăng nhập</Link>
                                     </div>
                                     <div className='title title-register position-relative d-flex align-items-center justify-content-center'>
-                                        <Link className='fs-18' to='#'>Đăng ký</Link>
+                                        <Link className='fs-18' to={path.REGISTER}>Đăng ký</Link>
                                     </div>
                                 </div>
                                 <div className='register-form-input'>
